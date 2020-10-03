@@ -4,6 +4,9 @@ import com.thenewboston.common.model.BankNode
 import com.thenewboston.common.model.NodeType
 import com.thenewboston.common.model.ValidatorNode
 
+/**
+ * The [Bank] entity holds the business relevant information
+ */
 data class Bank(
     val accountNumber: String,
     val ipAddress: String,
