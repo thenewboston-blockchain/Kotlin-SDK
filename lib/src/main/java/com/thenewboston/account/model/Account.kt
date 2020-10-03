@@ -1,4 +1,11 @@
 package com.thenewboston.account.model
 
-// todo implement the proper model, check Account Manager repository
-data class Account(val placeholder: String)
+import org.apache.commons.lang3.StringUtils
+
+data class Account(val id: String, val balance: Balance, val balanceLock: BalanceLock) {
+    init {
+        require(StringUtils.isNotBlank(id)) {
+            "id must not be empty"
+        }
+    }
+}
