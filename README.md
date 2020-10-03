@@ -8,9 +8,14 @@ The library itself will solely contain the domain and data layers of thenewbosto
 the host application (see our demo application). We'll be using Clean Architecture to structure the layers, dependencies and communication flow. <br/>
 A rough architecture pattern would look like this: <br/>
 
--- Domain Layer --                      -- Data Layer-- <br/>
-UseCase / Managers ---> Repository <--- Repository Impl -> Data Source (Local / Remote) --> DataSource (HTTP Service, Cache, ...)
+ ---------------------------------------------------------------------------------------------------------------
+|      Domain Layer              |     Data Layer                                                               |
+|--------------------------------|------------------------------------------------------------------------------|
+| UseCase -> IRepository <-- IMPLEMENTS -- Repository -> DataSource (Local / Remote) --> Service (Http, Cache)  |
+|--------------------------------|------------------------------------------------------------------------------|
 
+
+(see https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html for more information, or read the book, it's nice)
 Each layer would have its own layer model and mapping happens before data gets passed into the above layer, e.g.<br/>
 A HTTP Service class does a http call and gets a JSON response, maps it to a DTO (DataTransferObject) and returns it to the DataSource. 
 The DataSource has a mapper which transforms the DataSource to the entity (also called domain model). After mapping, the domain model
