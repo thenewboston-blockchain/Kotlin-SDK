@@ -1,6 +1,6 @@
 package com.thenewboston.bank.model
 
-import java.util.*
+import java.util.Date
 
 data class BankAccount(
     val id: String,
