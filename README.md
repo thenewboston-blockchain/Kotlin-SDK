@@ -9,7 +9,9 @@ the host application (see our demo application). We'll be using Clean Architectu
 A rough architecture pattern would look like this: <br/>
 Domain Layer | Data Layer                                                               
 -------------|-----------
-UseCase -> IRepository | RepositoryImpl -> DataSource (Local / Remote) --> Service (Http, Cache)  |
+UseCase -> IRepository | RepositoryImpl -> DataSource (Local / Remote) --> Service (Http, Cache)  
+
+
 Because of Dependency Injection the UseCase will know nothing about the actual repository.
 (see https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html for more information, or read the book, it's nice)
 Each layer would have its own layer model and mapping happens before data gets passed into the above layer, e.g.<br/>
