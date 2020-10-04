@@ -1,11 +1,12 @@
 package com.thenewboston.account.model
 
-import org.apache.commons.lang3.StringUtils
+import java.math.BigDecimal
 
-data class Account(val id: String, val balance: Balance, val balanceLock: BalanceLock) {
-    init {
-        require(StringUtils.isNotBlank(id)) {
-            "id must not be empty"
-        }
-    }
-}
+data class Account(
+    val id: String,
+    val accountNumber: String,
+    val nickName: String,
+    val signingKey: String,
+    val balance: BigDecimal,
+    val balanceLock: String
+);
