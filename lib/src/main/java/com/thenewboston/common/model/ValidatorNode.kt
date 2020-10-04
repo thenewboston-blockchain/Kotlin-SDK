@@ -1,5 +1,8 @@
 package com.thenewboston.common.model
 
+import kotlinx.serialization.SerialName
+import java.math.BigDecimal
+
 /**
  * Contains the meta information about the Validator Node
  *
@@ -24,9 +27,13 @@ sealed class ValidatorNode(
     port: String,
     trust: Float,
     version: String,
-    val dailyRate: Int,
+    @SerialName("daily_rate")
+    val dailyRate: BigDecimal,
+    @SerialName("root_account_file")
     val rootAccountFile: String,
+    @SerialName("root_account_file_hash")
     val rootAccountFileHash: String,
+    @SerialName("seed_block_identifier")
     val seedBlockIdentifier: String
 ) : Node(
     networkId = networkId,
