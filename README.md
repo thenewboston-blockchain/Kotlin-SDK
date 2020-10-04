@@ -37,7 +37,11 @@ The reason is that eventually, we'll have the whole SDK compatible with Kotlin M
 It's recommended to first go through https://www.thenewboston.com/guide/introduction <br/>
 Once you understood the concept of thenewboston then check out https://github.com/thenewboston-developers/Account-Manager and <br/>
 run the application. Create an account and play around a bit. Everything that happens behind the UI is what this SDK will cover. <br/>
+## Contribution
+To start contributing pick an issue, leave a comment that you want to work on this and once you're assigned then you are ready to go.
+Ideas for improvements or questions are always welcome, in this case feel free to create an issue.
 ## Outlook
 Once we finish development of the SDK there are two paths we can pursue: 
 1. Port the SDK to Kotlin Multiplatform to offer the SDK for iOS, Desktop and other Platforms
 2. Build an App using Kotlin-SDK (the app module in this repository)
+
