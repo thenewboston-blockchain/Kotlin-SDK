@@ -31,7 +31,8 @@ Besides Clean Architecture we'll use following libraries heavily:
 
 By using the SDK you can create your own client to manage thenewboston currency, the next great thing!<br/>
 As stated above, the SDK will not contain platform dependent details, such as storage engines or event / lifecycle handlers. <br/>
-The reason is that eventually, we'll have the whole SDK compatible with Kotlin Multi Platform and have one SDK to rule them all.<br/>
+The reason is that eventually, we'll have the whole SDK compatible with Kotlin Multiplatform and have one SDK to rule them all.<br/>
+(see https://kotlinlang.org/docs/reference/multiplatform.html)
 ## How to get started
 It's recommended to first go through https://www.thenewboston.com/guide/introduction <br/>
 Once you understood the concept of thenewboston then check out https://github.com/thenewboston-developers/Account-Manager and <br/>
