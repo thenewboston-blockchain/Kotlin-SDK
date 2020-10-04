@@ -39,7 +39,9 @@ Once you understood the concept of thenewboston then check out https://github.co
 run the application. Create an account and play around a bit. Everything that happens behind the UI is what this SDK will cover. <br/>
 ## Contribution
 To start contributing pick an issue, leave a comment that you want to work on this and once you're assigned then you are ready to go.
-Ideas for improvements or questions are always welcome, in this case feel free to create an issue.
+Ideas for improvements or questions are always welcome, in this case feel free to create an issue. <br/>
+Code that contains logic needs to be unit tested, if you have no experience with testing or questions feel free to join the #kotin-sdk channel.<br/>
+The community is happy to help you out.
 ## Outlook
 Once we finish development of the SDK there are two paths we can pursue: 
 1. Port the SDK to Kotlin Multiplatform to offer the SDK for iOS, Desktop and other Platforms
