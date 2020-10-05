@@ -1,0 +1,15 @@
+package com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto
+
+import com.google.gson.annotations.SerializedName
+import java.util.*
+
+data class ValidatorConfirmationServicesDTO(
+    val id: String,
+    @SerializedName("created_date")
+    val createdDate: Date,
+    @SerializedName("modified_date")
+    val modifiedDate: Date?,
+    val end: Date,
+    val start: Date,
+    val validator: String
+)
