@@ -8,7 +8,7 @@ data class ValidatorConfirmationServicesDTO(
     @SerializedName("created_date")
     val createdDate: Date,
     @SerializedName("modified_date")
-    val modifiedDate: Date,
+    val modifiedDate: Date?,
     val end: Date,
     val start: Date,
     val validator: String

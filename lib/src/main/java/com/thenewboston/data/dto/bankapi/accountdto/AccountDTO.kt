@@ -8,7 +8,7 @@ data class AccountDTO(
     @SerializedName("created_date")
     val createdDate: Date,
     @SerializedName("modified_date")
-    val modifiedDate: Date,
+    val modifiedDate: Date?,
     @SerializedName("account_number")
     val accountNumber: String,
     val trust: Double

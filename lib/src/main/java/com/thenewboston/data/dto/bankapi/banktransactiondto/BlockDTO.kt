@@ -8,7 +8,7 @@ data class BlockDTO(
     @SerializedName("created_date")
     val createdDate: Date,
     @SerializedName("modified_date")
-    val modifiedDate: Date,
+    val modifiedDate: Date?,
     @SerializedName("balance_key")
     val balanceKey: String,
     val sender: String,

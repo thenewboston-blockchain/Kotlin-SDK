@@ -8,7 +8,7 @@ data class InvalidBlockDTO(
     @SerializedName("created_date")
     val createdDate: Date,
     @SerializedName("modified_date")
-    val modifiedDate: Date,
+    val modifiedDate: Date?,
     @SerializedName("block_identifier")
     val blockIdentifier: String,
     val block: String,
