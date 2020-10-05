@@ -1,4 +1,4 @@
-package com.thenewboston.common.http.bankapi.invalidblockdto
+package com.thenewboston.data.dto.bankapi.invalidblockdto
 
 import com.google.gson.annotations.SerializedName
 import java.util.*
@@ -16,5 +16,4 @@ data class InvalidBlockDTO(
     val confirmationValidator: String,
     @SerializedName("primary_validator")
     val primaryValidator: String
-
 )

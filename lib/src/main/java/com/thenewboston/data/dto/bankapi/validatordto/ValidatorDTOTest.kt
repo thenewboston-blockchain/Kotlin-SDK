@@ -1,4 +1,4 @@
-package com.thenewboston.common.http.bankapi.validatordto
+package com.thenewboston.data.dto.bankapi.validatordto
 
 import com.google.gson.Gson
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
 
 class ValidatorDTOTest {
-
     private val accountNumbers = listOf<String>(
         "ad1f8845c6a1abb6011a2a434a079a087c460657aad54329a84b406dce8bf314",
         "4d2ec91f37bc553bc538e91195669b666e26b2ea3e4e31507e38102a758d4f86"
@@ -16,7 +15,6 @@ class ValidatorDTOTest {
         "3afdf37573f1a511def0bd85553404b7091a76bcd79cdcebba1310527b167521",
         "59479a31c3b91d96bb7a0b3e07f18d4bf301f1bb0bde05f8d36d9611dcbe7cbf"
     )
-
     private val ports = listOf<Int>(8000, 80)
     private val protocol = "http"
     private val defaultTransactionFees = listOf<Double>(4.0000000000000000, 2.0000000000000000)
@@ -32,7 +30,6 @@ class ValidatorDTOTest {
         "4694e1ee1dcfd8ee5f989e59ae40a9f751812bf5ca52aca2766b322c4060672b",
         "4694e1ee1dcfd8ee5f989e59ae40a9f751812bf5ca52aca2766b322c4060672b"
     )
-
     private val jsonStringArray = """
         [
           {
@@ -68,11 +65,9 @@ class ValidatorDTOTest {
 
     @Test
     fun validatorTest() {
-
         val validator = Gson().fromJson(jsonStringArray, Array<ValidatorDTO>::class.java).toList()
 
         validator.forEachIndexed { index, validatorDTO ->
-
             assertEquals(accountNumbers[index], validatorDTO.accountNumber)
             assertEquals(ipAddresses[index], validatorDTO.ipAddress)
             assertEquals(ports[index], validatorDTO.port)
@@ -87,7 +82,6 @@ class ValidatorDTOTest {
                 dailyRate,
                 validatorDTO.dailyConfirmationRate
             )
-
         }
     }
 }

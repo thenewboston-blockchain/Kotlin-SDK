@@ -1,4 +1,4 @@
-package com.thenewboston.common.http.bankapi.bankdto
+package com.thenewboston.data.dto.bankapi.bankdto
 
 import com.google.gson.annotations.SerializedName
 
@@ -15,5 +15,4 @@ data class BankDTO(
     @SerializedName("default_transaction_fee")
     val defaultTransactionFee: Double,
     val trust: Double
-
 )

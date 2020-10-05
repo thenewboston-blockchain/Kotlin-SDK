@@ -1,4 +1,4 @@
-package com.thenewboston.common.http.bankapi.confirmationblockdto
+package com.thenewboston.data.dto.bankapi.confirmationblockdto
 
 import com.google.gson.annotations.SerializedName
 import java.util.*

@@ -1,11 +1,10 @@
-package com.thenewboston.common.http.bankapi.validatorconfirmationservicesdto
+package com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto
 
 import com.google.gson.Gson
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class ValidatorConfirmationServicesDTOTest {
-
     private val ids = listOf<String>(
         "be9fbc3b-d4df-43d5-9bea-9882a6dd27f6",
         "e2055637-67ff-4479-aec6-a8095d513862"
@@ -36,10 +35,8 @@ class ValidatorConfirmationServicesDTOTest {
         ]
     """.trimIndent()
 
-
     @Test
     fun validatorConfirmationServicesTest() {
-
         val services =
             Gson().fromJson(jsonStringArray, Array<ValidatorConfirmationServicesDTO>::class.java)
                 .toList()
@@ -47,10 +44,6 @@ class ValidatorConfirmationServicesDTOTest {
         services.forEachIndexed { index, validatorConfirmationServicesDTO ->
             assertEquals(ids[index], validatorConfirmationServicesDTO.id)
             assertEquals(validators[index], validatorConfirmationServicesDTO.validator)
-
-
         }
-
-
     }
 }

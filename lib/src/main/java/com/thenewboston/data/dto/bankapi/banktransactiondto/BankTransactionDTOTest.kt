@@ -1,32 +1,26 @@
-package com.thenewboston.common.http.bankapi.banktransactiondto
+package com.thenewboston.data.dto.bankapi.banktransactiondto
 
 import com.google.gson.Gson
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class BankTransactionDTOTest {
-
-
     private val ids = listOf<String>(
         "a85a4692-e03d-4419-8b25-813598b367bd",
         "9273bcdb-61c9-4bc3-91c8-ebc4c2fe5894", "7f5cf013-f58a-4e80-97aa-f03309b1a4dd"
     )
     private val amounts =
         listOf<Double>(12.5000000000000000, 1.0000000000000000, 4.0000000000000000)
-
     private val recipients = listOf<String>(
         "484b3176c63d5f37d808404af1a12c4b9649cd6f6769f35bdf5a816133623fbc",
         "5e12967707909e62b2bb2036c209085a784fabbc3deccefee70052b6181c8ed8",
         "ad1f8845c6a1abb6011a2a434a079a087c460657aad54329a84b406dce8bf314"
     )
-
     private val blockIds = listOf<String>(
         "e00c5522-1b73-4a46-bd03-629d446eec19",
         "e00c5522-1b73-4a46-bd03-629d446eec19",
         "e00c5522-1b73-4a46-bd03-629d446eec19"
     )
-
-
     private val jsonStringArray = """
     [
   {
@@ -82,7 +76,6 @@ class BankTransactionDTOTest {
             assertEquals(amounts[index], bankTransactionDTO.amount)
             assertEquals(recipients[index], bankTransactionDTO.recipient)
             assertEquals(blockIds[index], bankTransactionDTO.block.id)
-
         }
     }
 }

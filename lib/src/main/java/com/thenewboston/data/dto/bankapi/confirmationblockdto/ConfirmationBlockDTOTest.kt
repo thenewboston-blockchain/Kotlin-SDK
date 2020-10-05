@@ -1,11 +1,10 @@
-package com.thenewboston.common.http.bankapi.confirmationblockdto
+package com.thenewboston.data.dto.bankapi.confirmationblockdto
 
 import com.google.gson.Gson
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class ConfirmationBlockDTOTest {
-
     private val jsonString = """{
     "id": 1,
     "created_date": "2020-05-28T23:41:54.749018Z",
@@ -15,10 +14,8 @@ class ConfirmationBlockDTOTest {
     "validator": 1
   }""".trimIndent()
 
-
     @Test
     fun confirmationBlockTest() {
-
         val confBlock = Gson().fromJson(jsonString, ConfirmationBlockDTO::class.java)
 
         confBlock.apply {
@@ -30,7 +27,6 @@ class ConfirmationBlockDTOTest {
             )
             assertEquals(1, block)
             assertEquals(1, validator)
-
         }
     }
 }

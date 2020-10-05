@@ -1,11 +1,10 @@
-package com.thenewboston.common.http.bankapi.accountdto
+package com.thenewboston.data.dto.bankapi.accountdto
 
 import com.google.gson.Gson
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class AccountDTOTest {
-
     private val ids = listOf<String>(
         "9eca00a5-d925-454c-a8d6-ecbb26ec2f76",
         "ae4d43b0-5c34-4e56-8266-0e3531268815"
@@ -15,8 +14,6 @@ class AccountDTOTest {
         "a29baa6ba36f6db707f8f8dacfa82d5e8a28fa616e8cc96cf6d7790f551d79f2"
     )
     private val trusts = listOf<Double>(75.21, 94.63)
-
-
     private val jsonStringArray = """
             [
   {
@@ -42,12 +39,9 @@ class AccountDTOTest {
             Gson().fromJson(jsonStringArray, Array<AccountDTO>::class.java).toList()
 
         accounts.forEachIndexed { index, accountDTO ->
-
             assertEquals(ids[index], accountDTO.id)
             assertEquals(accountNumbers[index], accountDTO.accountNumber)
             assertEquals(trusts[index], accountDTO.trust)
         }
-
-
     }
 }

@@ -1,4 +1,4 @@
-package com.thenewboston.common.http.bankapi.configdto
+package com.thenewboston.data.dto.bankapi.configdto
 
 import com.google.gson.Gson
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
 
 class ConfigDTOTest {
-
-
     private val jsonString = """
         {
           "primary_validator": {
@@ -38,7 +36,6 @@ class ConfigDTOTest {
 
     @Test
     fun configTest() {
-
         val config = Gson().fromJson(jsonString, ConfigDTO::class.java)
         val primaryValidator = config.primaryValidator
 
@@ -87,9 +84,6 @@ class ConfigDTOTest {
             assertEquals("v1.0", version)
             assertEquals(1.0000000000000000, defaultTransactionFee)
             assertEquals("BANK", nodeType)
-
         }
-
-
     }
 }
