@@ -6,6 +6,3 @@ data class BankTransactionDTO(
     val amount: Double,
     val recipient: String
 )
-
-
-

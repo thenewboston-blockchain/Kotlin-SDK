@@ -1,7 +1,7 @@
 package com.thenewboston.data.dto.bankapi.confirmationblockdto
 
 import com.google.gson.annotations.SerializedName
-import java.util.*
+import java.util.Date
 
 data class ConfirmationBlockDTO(
     val id: Int,

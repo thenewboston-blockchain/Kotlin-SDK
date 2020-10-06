@@ -23,14 +23,17 @@ class ValidatorDTOTest {
     private val trusts = listOf<Double>(100.00, 91.56)
     private val dailyRate = 1.2000000000000000
     private val rootFiles = listOf<String>(
-        "https://gist.githubusercontent.com/buckyroberts/519b5cb82a0a5b5d4ae8a2175b722520/raw/9237deb449e27cab93cb89ea3346ecdfc61fe9ea/0.json",
-        "https://gist.githubusercontent.com/buckyroberts/519b5cb82a0a5b5d4ae8a2175b722520/raw/9237deb449e27cab93cb89ea3346ecdfc61fe9ea/0.json"
+        "https://gist.githubusercontent.com/buckyroberts/" +
+            "519b5cb82a0a5b5d4ae8a2175b722520/raw/9237deb449e27cab93cb89ea3346ecdfc61fe9ea/0.json",
+        "https://gist.githubusercontent.com/buckyroberts/" +
+            "519b5cb82a0a5b5d4ae8a2175b722520/raw/9237deb449e27cab93cb89ea3346ecdfc61fe9ea/0.json"
     )
     private val rootHashes = listOf<String>(
         "4694e1ee1dcfd8ee5f989e59ae40a9f751812bf5ca52aca2766b322c4060672b",
         "4694e1ee1dcfd8ee5f989e59ae40a9f751812bf5ca52aca2766b322c4060672b"
     )
-    private val jsonStringArray = """
+    private val jsonStringArray =
+        """
         [
           {
             "account_number": "ad1f8845c6a1abb6011a2a434a079a087c460657aad54329a84b406dce8bf314",
@@ -61,7 +64,7 @@ class ValidatorDTOTest {
             "trust": "91.56"
           }
         ]
-    """.trimIndent()
+        """.trimIndent()
 
     @Test
     fun validatorTest() {

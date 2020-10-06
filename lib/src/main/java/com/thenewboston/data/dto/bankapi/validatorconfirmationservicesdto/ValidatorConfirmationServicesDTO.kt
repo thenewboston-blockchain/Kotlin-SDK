@@ -1,7 +1,7 @@
 package com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto
 
 import com.google.gson.annotations.SerializedName
-import java.util.*
+import java.util.Date
 
 data class ValidatorConfirmationServicesDTO(
     val id: String,

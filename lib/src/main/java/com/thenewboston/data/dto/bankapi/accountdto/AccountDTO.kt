@@ -1,7 +1,7 @@
 package com.thenewboston.data.dto.bankapi.accountdto
 
 import com.google.gson.annotations.SerializedName
-import java.util.*
+import java.util.Date
 
 data class AccountDTO(
     val id: String,

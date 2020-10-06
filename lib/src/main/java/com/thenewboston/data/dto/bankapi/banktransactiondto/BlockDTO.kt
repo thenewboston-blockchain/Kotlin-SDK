@@ -1,7 +1,7 @@
 package com.thenewboston.data.dto.bankapi.banktransactiondto
 
 import com.google.gson.annotations.SerializedName
-import java.util.*
+import java.util.Date
 
 data class BlockDTO(
     val id: String,

@@ -14,7 +14,8 @@ class AccountDTOTest {
         "a29baa6ba36f6db707f8f8dacfa82d5e8a28fa616e8cc96cf6d7790f551d79f2"
     )
     private val trusts = listOf<Double>(75.21, 94.63)
-    private val jsonStringArray = """
+    private val jsonStringArray =
+        """
             [
   {
     "id": "9eca00a5-d925-454c-a8d6-ecbb26ec2f76",

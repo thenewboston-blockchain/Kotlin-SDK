@@ -13,7 +13,8 @@ class ValidatorConfirmationServicesDTOTest {
         "51461a75-dd8d-4133-81f4-543a3b054149",
         "10308b02-d577-484e-953c-0a2bdb5e3d83"
     )
-    private val jsonStringArray = """
+    private val jsonStringArray =
+        """
         
         [
           {
@@ -33,7 +34,7 @@ class ValidatorConfirmationServicesDTOTest {
             "validator": "10308b02-d577-484e-953c-0a2bdb5e3d83"
           }
         ]
-    """.trimIndent()
+        """.trimIndent()
 
     @Test
     fun validatorConfirmationServicesTest() {

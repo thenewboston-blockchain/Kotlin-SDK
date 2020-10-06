@@ -21,7 +21,8 @@ class BankTransactionDTOTest {
         "e00c5522-1b73-4a46-bd03-629d446eec19",
         "e00c5522-1b73-4a46-bd03-629d446eec19"
     )
-    private val jsonStringArray = """
+    private val jsonStringArray =
+        """
     [
   {
     "id": "a85a4692-e03d-4419-8b25-813598b367bd",
