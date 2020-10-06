@@ -1,7 +1,7 @@
 package com.thenewboston.common.model
 
-import kotlinx.serialization.SerialName
 import java.math.BigDecimal
+import kotlinx.serialization.SerialName
 
 /**
  * Contains the meta information about the Validator Node

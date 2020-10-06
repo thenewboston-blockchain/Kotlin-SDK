@@ -1,4 +1,3 @@
 package com.thenewboston.bank
 
-interface BankRepository {
-}
+interface BankRepository

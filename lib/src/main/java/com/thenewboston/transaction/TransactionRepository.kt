@@ -1,4 +1,3 @@
 package com.thenewboston.transaction
 
-interface TransactionRepository {
-}
+interface TransactionRepository

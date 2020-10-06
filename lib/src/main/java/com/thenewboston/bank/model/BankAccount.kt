@@ -1,7 +1,7 @@
 package com.thenewboston.bank.model
 
-import kotlinx.serialization.SerialName
 import java.util.Date
+import kotlinx.serialization.SerialName
 
 data class BankAccount(
     val id: String,

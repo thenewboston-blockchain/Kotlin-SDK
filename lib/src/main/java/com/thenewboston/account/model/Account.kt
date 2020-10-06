@@ -1,7 +1,7 @@
 package com.thenewboston.account.model
 
-import kotlinx.serialization.SerialName
 import java.math.BigDecimal
+import kotlinx.serialization.SerialName
 
 data class Account(
     val id: String,
@@ -14,4 +14,4 @@ data class Account(
     val balance: BigDecimal,
     @SerialName("balance_lock")
     val balanceLock: String
-);
+)
