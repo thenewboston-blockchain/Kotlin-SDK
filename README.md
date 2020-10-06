@@ -3,7 +3,6 @@ Kotlin-SDK for thenewboston.
 
 ![Java CI with Gradle](https://github.com/thenewboston-developers/Kotlin-SDK/workflows/Java%20CI%20with%20Gradle/badge.svg)
 
->>>>>>> 6b0b8d4d041131c88b65fd352d54d26096a20f97
 ## Introduction
 This is the SDK written in Kotlin for thenewboston with primary focus for Android and Desktop clients. The repository contains an android project which will demonstrate how to use 
 the SDK. <br/><br/>
