@@ -18,7 +18,12 @@ class BankDTOTest {
     private val protocols = listOf<String>("http", "http")
     private val defaultTransactionFees = listOf<Double>(1.0000000000000000, 2.5000000000000000)
     private val trusts = listOf<Double>(100.00, 98.32)
+<<<<<<< HEAD
     private val jsonStringArray = """
+=======
+    private val jsonStringArray =
+        """
+>>>>>>> 6b0b8d4d041131c88b65fd352d54d26096a20f97
         [
   {
     "account_number": "5e12967707909e62b2bb2036c209085a784fabbc3deccefee70052b6181c8ed8",

@@ -6,7 +6,12 @@ import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
 
 class ConfigDTOTest {
+<<<<<<< HEAD
     private val jsonString = """
+=======
+    private val jsonString =
+        """
+>>>>>>> 6b0b8d4d041131c88b65fd352d54d26096a20f97
         {
           "primary_validator": {
             "account_number": "ad1f8845c6a1abb6011a2a434a079a087c460657aad54329a84b406dce8bf314",
@@ -32,7 +37,11 @@ class ConfigDTOTest {
           "node_type": "BANK"
         }
         
+<<<<<<< HEAD
     """.trimIndent()
+=======
+        """.trimIndent()
+>>>>>>> 6b0b8d4d041131c88b65fd352d54d26096a20f97
 
     @Test
     fun configTest() {
@@ -53,11 +62,19 @@ class ConfigDTOTest {
             assertEquals("http", protocol)
             assertEquals("v1.0", version)
 
+<<<<<<< HEAD
 
 
             assertEquals(4.0000000000000000, defaultTransactionFee)
             assertEquals(
                 "https://gist.githubusercontent.com/buckyroberts/519b5cb82a0a5b5d4ae8a2175b722520/raw/9237deb449e27cab93cb89ea3346ecdfc61fe9ea/0.json",
+=======
+            assertEquals(4.0000000000000000, defaultTransactionFee)
+            assertEquals(
+                "https://gist.githubusercontent.com/" +
+                    "buckyroberts/519b5cb82a0a5b5d4ae8a2175b722520/" +
+                    "raw/9237deb449e27cab93cb89ea3346ecdfc61fe9ea/0.json",
+>>>>>>> 6b0b8d4d041131c88b65fd352d54d26096a20f97
                 rootAccountFile
             )
             assertEquals(

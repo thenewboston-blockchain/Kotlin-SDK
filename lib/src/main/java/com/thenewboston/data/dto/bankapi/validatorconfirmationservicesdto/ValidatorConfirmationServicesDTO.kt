@@ -2,7 +2,8 @@ package com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto
 
 import com.google.gson.annotations.SerializedName
 import kotlinx.datetime.LocalDateTime
-import java.util.*
+import java.util.Date
+
 
 data class ValidatorConfirmationServicesDTO(
     val id: String,
@@ -11,6 +12,6 @@ data class ValidatorConfirmationServicesDTO(
     @SerializedName("modified_date")
     val modifiedDate: LocalDateTime?,
     val end: LocalDateTime,
-    val start: LocalDateTime,
+    val start: Date,
     val validator: String
 )

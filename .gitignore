@@ -31,12 +31,8 @@ gradle-app.setting
 # Cache of project
 .gradletasknamecache
 
-# Gradle files
-.gradle/
-build/
-
-.idea
-*.iml
+.gradle
+>>>>>>> 6b0b8d4d041131c88b65fd352d54d26096a20f97
 /local.properties
 /.idea/caches
 /.idea/libraries
@@ -46,8 +42,3 @@ build/
 /.idea/assetWizardSettings.xml
 .DS_Store
 
-
-# Generated files
-bin/
-gen/
-out/

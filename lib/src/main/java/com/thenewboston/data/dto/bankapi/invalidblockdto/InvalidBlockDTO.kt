@@ -3,6 +3,7 @@ package com.thenewboston.data.dto.bankapi.invalidblockdto
 import com.google.gson.annotations.SerializedName
 import kotlinx.datetime.LocalDateTime
 
+
 data class InvalidBlockDTO(
     val id: String,
     @SerializedName("created_date")
