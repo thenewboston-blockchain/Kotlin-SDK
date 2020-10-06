@@ -22,11 +22,9 @@ jobs:
           java-version: 1.8
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Install ktlint
-        run: curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.39.0/ktlint && chmod a+x ktlint && sudo mv ktlint /usr/local/bin/
       - name: Test lib
         run: ./gradlew test -p lib
       - name: Build with Gradle
         run: ./gradlew build -p lib
       - name: ktlint
-        run: ktlint -F "lib/**/*.kt"
+        run: ./gradlew ktlint
