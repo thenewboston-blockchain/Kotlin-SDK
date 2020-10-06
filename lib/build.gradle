@@ -1,0 +1,50 @@
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+apply plugin: 'kotlinx-serialization'
+apply from :'../ktlint.gradle'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+}
+
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}
+
+// Dependency Versions here
+ext {
+    ext.ktor_version = '1.4.0'
+    ext.mockk_version = '1.10.0'
+    ext.kserialization_version = "1.0.0-RC2"
+// ---
+}
+
+test {
+    useJUnitPlatform()
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9'
+    // Ktor related dependencies
+    implementation "io.ktor:ktor-client-core:$ktor_version"
+    implementation "io.ktor:ktor-client-android:$ktor_version"
+    implementation "io.ktor:ktor-client-cio:$ktor_version"
+    implementation "io.ktor:ktor-client-serialization-jvm:$ktor_version"
+
+
+    implementation 'org.junit.jupiter:junit-jupiter:5.4.2'
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.0-RC2"
+    implementation "org.jetbrains.kotlinx:kotlinx-datetime:0.1.0"
+    //GSON
+    implementation 'com.google.code.gson:gson:2.8.6'
+    testImplementation "io.mockk:mockk:$mockk_version"
+}
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
