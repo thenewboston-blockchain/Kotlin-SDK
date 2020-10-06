@@ -5,12 +5,8 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class InvalidBlockDTOTest {
-<<<<<<< HEAD
-    private val jsonString = """
-=======
     private val jsonString =
         """
->>>>>>> 6b0b8d4d041131c88b65fd352d54d26096a20f97
 {
     "id": "2bcd53c5-19f9-4226-ab04-3dfb17c3a1fe",
     "created_date": "2020-07-11T18:44:16.518695Z",
@@ -20,11 +16,7 @@ class InvalidBlockDTOTest {
     "confirmation_validator": "fcd2dce8-9e4f-4bf1-8dac-cdbaf64e5ce8",
     "primary_validator": "51461a75-dd8d-4133-81f4-543a3b054149"
   }
-<<<<<<< HEAD
-    """.trimIndent()
-=======
         """.trimIndent()
->>>>>>> 6b0b8d4d041131c88b65fd352d54d26096a20f97
 
     @Test
     fun invalidBlockTest() {

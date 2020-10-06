@@ -13,12 +13,8 @@ class ValidatorConfirmationServicesDTOTest {
         "51461a75-dd8d-4133-81f4-543a3b054149",
         "10308b02-d577-484e-953c-0a2bdb5e3d83"
     )
-<<<<<<< HEAD
-    private val jsonStringArray = """
-=======
     private val jsonStringArray =
         """
->>>>>>> 6b0b8d4d041131c88b65fd352d54d26096a20f97
         
         [
           {
@@ -38,11 +34,7 @@ class ValidatorConfirmationServicesDTOTest {
             "validator": "10308b02-d577-484e-953c-0a2bdb5e3d83"
           }
         ]
-<<<<<<< HEAD
-    """.trimIndent()
-=======
         """.trimIndent()
->>>>>>> 6b0b8d4d041131c88b65fd352d54d26096a20f97
 
     @Test
     fun validatorConfirmationServicesTest() {
