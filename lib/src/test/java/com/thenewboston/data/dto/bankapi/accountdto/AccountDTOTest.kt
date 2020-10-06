@@ -5,15 +5,15 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class AccountDTOTest {
-    private val ids = listOf<String>(
+    private val ids = listOf(
         "9eca00a5-d925-454c-a8d6-ecbb26ec2f76",
         "ae4d43b0-5c34-4e56-8266-0e3531268815"
     )
-    private val accountNumbers = listOf<String>(
+    private val accountNumbers = listOf(
         "4d2ec91f37bc553bc538e91195669b666e26b2ea3e4e31507e38102a758d4f86",
         "a29baa6ba36f6db707f8f8dacfa82d5e8a28fa616e8cc96cf6d7790f551d79f2"
     )
-    private val trusts = listOf<Double>(75.21, 94.63)
+    private val trusts = listOf(75.21, 94.63)
     private val jsonStringArray =
         """
             [
