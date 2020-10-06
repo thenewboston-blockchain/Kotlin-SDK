@@ -1,7 +1,7 @@
 package com.thenewboston.validator.model.request
 
-import kotlinx.serialization.SerialName
 import java.math.BigDecimal
+import kotlinx.serialization.SerialName
 
 data class ValidatorRequest(
     val message: Message,

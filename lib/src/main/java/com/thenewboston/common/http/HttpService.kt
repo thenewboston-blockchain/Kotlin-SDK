@@ -1,32 +1,22 @@
 package com.thenewboston.common.http
 
-import io.ktor.util.*
-
-interface HttpService {
-    suspend fun <T> doGet(url: String): Pair<out T?, Error>
-    suspend fun <T> doPost(url: String): Pair<T?, Error>
-    suspend fun <T> doDelete(url: String): Pair<T?, Error>
-    suspend fun <T> doPut(url: String): Pair<T?, Error>
-}
+import io.ktor.client.request.delete
+import io.ktor.client.request.get
+import io.ktor.client.request.post
+import io.ktor.client.request.put
+import io.ktor.client.statement.HttpResponse
+import io.ktor.util.KtorExperimentalAPI
 
 @KtorExperimentalAPI
-internal class HttpServiceImpl(private val networkClient: NetworkClient) : HttpService {
+internal class HttpService(private val networkClient: NetworkClient) {
 
-    override suspend fun <T> doGet(url: String): Pair<T?, Error> {
-        TODO("Not yet implemented")
-    }
+    suspend fun doGet(path: String): HttpResponse = networkClient.client.get(
+        "/$path"
+    )
 
-    override suspend fun <T> doPost(url: String): Pair<T?, Error> {
-        TODO("Not yet implemented")
-    }
+    suspend fun doPost(path: String): HttpResponse = networkClient.client.post(path)
 
-    override suspend fun <T> doDelete(url: String): Pair<T?, Error> {
-        TODO("Not yet implemented")
-    }
+    suspend fun doDelete(path: String): HttpResponse = networkClient.client.delete(path)
 
-    override suspend fun <T> doPut(url: String): Pair<T?, Error> {
-        TODO("Not yet implemented")
-    }
-
-
+    suspend fun doPut(path: String): HttpResponse = networkClient.client.put(path)
 }

@@ -15,6 +15,4 @@ abstract class Node(
     val port: String,
     val trust: Float,
     val version: String
-) {
-
-}
+)
