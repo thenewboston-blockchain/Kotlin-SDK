@@ -3,7 +3,6 @@ package com.thenewboston.data.dto.bankapi.bankdto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-
 @Serializable
 data class BankDTO(
     @SerialName("account_number")

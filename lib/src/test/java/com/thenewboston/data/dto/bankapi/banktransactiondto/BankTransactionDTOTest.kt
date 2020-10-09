@@ -70,7 +70,7 @@ class BankTransactionDTOTest {
 
     @Test
     fun bankTransactionsTest() {
-        val transactions : List<BankTransactionDTO> = Json.decodeFromString(jsonStringArray)
+        val transactions: List<BankTransactionDTO> = Json.decodeFromString(jsonStringArray)
 
         transactions.forEachIndexed { index, bankTransactionDTO ->
             assertEquals(ids[index], bankTransactionDTO.id)

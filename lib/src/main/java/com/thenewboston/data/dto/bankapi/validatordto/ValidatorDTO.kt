@@ -3,7 +3,6 @@ package com.thenewboston.data.dto.bankapi.validatordto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-
 @Serializable
 data class ValidatorDTO(
     @SerialName("account_number")

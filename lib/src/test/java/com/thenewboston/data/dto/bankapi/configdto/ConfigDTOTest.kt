@@ -59,8 +59,8 @@ class ConfigDTOTest {
             assertEquals(4.0000000000000000, defaultTransactionFee)
             assertEquals(
                 "https://gist.githubusercontent.com/" +
-                        "buckyroberts/519b5cb82a0a5b5d4ae8a2175b722520/" +
-                        "raw/9237deb449e27cab93cb89ea3346ecdfc61fe9ea/0.json",
+                    "buckyroberts/519b5cb82a0a5b5d4ae8a2175b722520/" +
+                    "raw/9237deb449e27cab93cb89ea3346ecdfc61fe9ea/0.json",
                 rootAccountFile
             )
             assertEquals(

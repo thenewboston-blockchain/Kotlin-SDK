@@ -3,7 +3,6 @@ package com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-
 @Serializable
 data class ValidatorConfirmationServicesDTO(
     val id: String,

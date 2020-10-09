@@ -1,9 +1,9 @@
 package com.thenewboston.data.dto.bankapi.invalidblockdto
 
 import com.thenewboston.data.dto.bankapi.DateSerializer
+import java.util.Date
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import java.util.Date
 
 @Serializable
 data class InvalidBlockDTO(

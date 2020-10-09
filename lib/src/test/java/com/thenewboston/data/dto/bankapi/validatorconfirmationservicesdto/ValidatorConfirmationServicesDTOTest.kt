@@ -39,7 +39,8 @@ class ValidatorConfirmationServicesDTOTest {
 
     @Test
     fun validatorConfirmationServicesTest() {
-        val services: List<ValidatorConfirmationServicesDTO> = Json.decodeFromString(jsonStringArray)
+        val services: List<ValidatorConfirmationServicesDTO> = Json
+            .decodeFromString(jsonStringArray)
 
         services.forEachIndexed { index, validatorConfirmationServicesDTO ->
             assertEquals(ids[index], validatorConfirmationServicesDTO.id)
