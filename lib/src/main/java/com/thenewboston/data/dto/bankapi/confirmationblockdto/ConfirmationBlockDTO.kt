@@ -1,7 +1,7 @@
 package com.thenewboston.data.dto.bankapi.confirmationblockdto
 
 import com.thenewboston.data.dto.bankapi.DateSerializer
-import java.util.Date
+import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -12,11 +12,11 @@ data class ConfirmationBlockDTO(
 
     @Serializable(with = DateSerializer::class)
     @SerialName("created_date")
-    val createdDate: Date,
+    val createdDate: LocalDateTime,
 
     @Serializable(with = DateSerializer::class)
     @SerialName("modified_date")
-    val modifiedDate: Date?,
+    val modifiedDate: LocalDateTime?,
 
     @SerialName("block_identifier")
     val blockIdentifier: String,

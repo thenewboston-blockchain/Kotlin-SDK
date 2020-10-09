@@ -1,8 +1,9 @@
 package com.thenewboston.data.dto.bankapi
 
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
@@ -10,19 +11,18 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-object DateSerializer : KSerializer<Date> {
+object DateSerializer : KSerializer<LocalDateTime> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
-        serialName = "Date", kind = PrimitiveKind.LONG
+        serialName = "Date", kind = PrimitiveKind.STRING
     )
 
-    override fun serialize(encoder: Encoder, value: Date) {
+    override fun serialize(encoder: Encoder, value: LocalDateTime) {
         // ignored
     }
 
-    override fun deserialize(decoder: Decoder): Date {
+    override fun deserialize(decoder: Decoder): LocalDateTime {
         val string = decoder.decodeString()
-        val format = SimpleDateFormat("yyyy-mm-dd", Locale.ROOT)
 
-        return format.parse(string)
+        return Instant.parse(string).toLocalDateTime(TimeZone.currentSystemDefault())
     }
 }
