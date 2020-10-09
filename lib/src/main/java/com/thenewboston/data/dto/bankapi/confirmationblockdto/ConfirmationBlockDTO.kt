@@ -1,16 +1,29 @@
 package com.thenewboston.data.dto.bankapi.confirmationblockdto
 
-import com.google.gson.annotations.SerializedName
+import com.thenewboston.data.dto.bankapi.DateSerializer
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import java.util.Date
 
+@Serializable
 data class ConfirmationBlockDTO(
+    @SerialName("id")
     val id: Int,
-    @SerializedName("created_date")
+
+    @Serializable(with = DateSerializer::class)
+    @SerialName("created_date")
     val createdDate: Date,
-    @SerializedName("modified_date")
+
+    @Serializable(with = DateSerializer::class)
+    @SerialName("modified_date")
     val modifiedDate: Date?,
-    @SerializedName("block_identifier")
+
+    @SerialName("block_identifier")
     val blockIdentifier: String,
+
+    @SerialName("block")
     val block: Int,
+
+    @SerialName("validator")
     val validator: Int
 )
