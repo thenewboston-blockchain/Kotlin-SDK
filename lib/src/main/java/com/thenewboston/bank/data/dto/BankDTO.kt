@@ -1,4 +1,4 @@
-package com.thenewboston.data.dto.bankapi.bankdto
+package com.thenewboston.bank.data.dto
 
 import com.google.gson.annotations.SerializedName
 

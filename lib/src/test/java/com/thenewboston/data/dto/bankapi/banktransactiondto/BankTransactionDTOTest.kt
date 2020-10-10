@@ -1,6 +1,7 @@
 package com.thenewboston.data.dto.bankapi.banktransactiondto
 
 import com.google.gson.Gson
+import com.thenewboston.bank.data.dto.BankTransactionDTO
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

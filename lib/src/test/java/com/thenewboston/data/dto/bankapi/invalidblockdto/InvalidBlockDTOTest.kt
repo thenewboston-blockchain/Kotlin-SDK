@@ -1,6 +1,7 @@
 package com.thenewboston.data.dto.bankapi.invalidblockdto
 
 import com.google.gson.Gson
+import com.thenewboston.data.dto.InvalidBlockDTO
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

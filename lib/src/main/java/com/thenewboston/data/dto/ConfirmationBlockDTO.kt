@@ -1,4 +1,4 @@
-package com.thenewboston.data.dto.bankapi.confirmationblockdto
+package com.thenewboston.data.dto
 
 import com.google.gson.annotations.SerializedName
 import java.util.Date

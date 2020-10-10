@@ -1,4 +1,4 @@
-package com.thenewboston.data.dto.bankapi.banktransactiondto
+package com.thenewboston.bank.data.dto
 
 import com.google.gson.annotations.SerializedName
 import java.util.Date

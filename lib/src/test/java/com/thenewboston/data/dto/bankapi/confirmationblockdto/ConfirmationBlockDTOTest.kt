@@ -1,6 +1,7 @@
 package com.thenewboston.data.dto.bankapi.confirmationblockdto
 
 import com.google.gson.Gson
+import com.thenewboston.data.dto.ConfirmationBlockDTO
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
