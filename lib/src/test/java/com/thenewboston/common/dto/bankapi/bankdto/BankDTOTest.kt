@@ -1,7 +1,8 @@
 package com.thenewboston.common.dto.bankapi.bankdto
 
-import com.google.gson.Gson
 import com.thenewboston.bank.data.dto.BankDTO
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -48,8 +49,7 @@ class BankDTOTest {
 
     @Test
     fun bankTest() {
-        val banks: List<BankDTO> =
-            Gson().fromJson(jsonStringArray, Array<BankDTO>::class.java).toList()
+        val banks: List<BankDTO> = Json.decodeFromString(jsonStringArray)
 
         banks.forEachIndexed { index, bankDTO ->
             Assertions.assertEquals(accountNumbers[index], bankDTO.accountNumber)

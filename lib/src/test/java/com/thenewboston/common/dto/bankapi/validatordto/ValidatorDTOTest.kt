@@ -1,7 +1,8 @@
 package com.thenewboston.common.dto.bankapi.validatordto
 
-import com.google.gson.Gson
 import com.thenewboston.common.dto.ValidatorDTO
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
@@ -25,9 +26,9 @@ class ValidatorDTOTest {
     private val dailyRate = 1.2000000000000000
     private val rootFiles = listOf<String>(
         "https://gist.githubusercontent.com/buckyroberts/" +
-            "519b5cb82a0a5b5d4ae8a2175b722520/raw/9237deb449e27cab93cb89ea3346ecdfc61fe9ea/0.json",
+                "519b5cb82a0a5b5d4ae8a2175b722520/raw/9237deb449e27cab93cb89ea3346ecdfc61fe9ea/0.json",
         "https://gist.githubusercontent.com/buckyroberts/" +
-            "519b5cb82a0a5b5d4ae8a2175b722520/raw/9237deb449e27cab93cb89ea3346ecdfc61fe9ea/0.json"
+                "519b5cb82a0a5b5d4ae8a2175b722520/raw/9237deb449e27cab93cb89ea3346ecdfc61fe9ea/0.json"
     )
     private val rootHashes = listOf<String>(
         "4694e1ee1dcfd8ee5f989e59ae40a9f751812bf5ca52aca2766b322c4060672b",
@@ -69,7 +70,7 @@ class ValidatorDTOTest {
 
     @Test
     fun validatorTest() {
-        val validator = Gson().fromJson(jsonStringArray, Array<ValidatorDTO>::class.java).toList()
+        val validator: List<ValidatorDTO> = Json.decodeFromString(jsonStringArray)
 
         validator.forEachIndexed { index, validatorDTO ->
             assertEquals(accountNumbers[index], validatorDTO.accountNumber)

@@ -1,7 +1,8 @@
 package com.thenewboston.common.dto.bankapi.invalidblockdto
 
-import com.google.gson.Gson
 import com.thenewboston.common.dto.InvalidBlockDTO
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -21,7 +22,7 @@ class InvalidBlockDTOTest {
 
     @Test
     fun invalidBlockTest() {
-        val invalidBlock = Gson().fromJson(jsonString, InvalidBlockDTO::class.java)
+        val invalidBlock: InvalidBlockDTO = Json.decodeFromString(jsonString)
 
         invalidBlock.apply {
             assertEquals("2bcd53c5-19f9-4226-ab04-3dfb17c3a1fe", id)

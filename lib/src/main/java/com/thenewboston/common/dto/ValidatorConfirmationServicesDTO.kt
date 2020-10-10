@@ -1,15 +1,23 @@
 package com.thenewboston.common.dto
 
-import com.google.gson.annotations.SerializedName
-import java.util.Date
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ValidatorConfirmationServicesDTO(
     val id: String,
-    @SerializedName("created_date")
-    val createdDate: Date,
-    @SerializedName("modified_date")
-    val modifiedDate: Date?,
-    val end: Date,
-    val start: Date,
+    @SerialName("created_date")
+    val createdDate: String,
+
+    @SerialName("modified_date")
+    val modifiedDate: String?,
+
+    @SerialName("end")
+    val end: String,
+
+    @SerialName("start")
+    val start: String,
+
+    @SerialName("validator")
     val validator: String
 )

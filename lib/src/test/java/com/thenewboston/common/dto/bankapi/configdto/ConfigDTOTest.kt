@@ -1,7 +1,8 @@
 package com.thenewboston.common.dto.bankapi.configdto
 
-import com.google.gson.Gson
 import com.thenewboston.common.dto.ConfigDTO
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
@@ -38,7 +39,8 @@ class ConfigDTOTest {
 
     @Test
     fun configTest() {
-        val config = Gson().fromJson(jsonString, ConfigDTO::class.java)
+        val config: ConfigDTO = Json.decodeFromString(jsonString)
+
         val primaryValidator = config.primaryValidator
 
         primaryValidator.apply {
