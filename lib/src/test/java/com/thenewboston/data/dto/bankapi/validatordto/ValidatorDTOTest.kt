@@ -1,6 +1,7 @@
 package com.thenewboston.data.dto.bankapi.validatordto
 
-import com.google.gson.Gson
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
@@ -68,7 +69,7 @@ class ValidatorDTOTest {
 
     @Test
     fun validatorTest() {
-        val validator = Gson().fromJson(jsonStringArray, Array<ValidatorDTO>::class.java).toList()
+        val validator: List<ValidatorDTO> = Json.decodeFromString(jsonStringArray)
 
         validator.forEachIndexed { index, validatorDTO ->
             assertEquals(accountNumbers[index], validatorDTO.accountNumber)

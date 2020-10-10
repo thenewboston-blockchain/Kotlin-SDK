@@ -1,6 +1,7 @@
 package com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto
 
-import com.google.gson.Gson
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -38,9 +39,8 @@ class ValidatorConfirmationServicesDTOTest {
 
     @Test
     fun validatorConfirmationServicesTest() {
-        val services =
-            Gson().fromJson(jsonStringArray, Array<ValidatorConfirmationServicesDTO>::class.java)
-                .toList()
+        val services: List<ValidatorConfirmationServicesDTO> = Json
+            .decodeFromString(jsonStringArray)
 
         services.forEachIndexed { index, validatorConfirmationServicesDTO ->
             assertEquals(ids[index], validatorConfirmationServicesDTO.id)

@@ -1,18 +1,31 @@
 package com.thenewboston.data.dto.bankapi.bankdto
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class BankDTO(
-    @SerializedName("account_number")
+    @SerialName("account_number")
     val accountNumber: String,
-    @SerializedName("ip_address")
+
+    @SerialName("ip_address")
     val ipAddress: String,
-    @SerializedName("node_identifier")
+
+    @SerialName("node_identifier")
     val nodeIdentifier: String,
+
+    @SerialName("port")
     val port: Int? = null,
+
+    @SerialName("protocol")
     val protocol: String,
+
+    @SerialName("version")
     val version: String,
-    @SerializedName("default_transaction_fee")
+
+    @SerialName("default_transaction_fee")
     val defaultTransactionFee: Double,
+
+    @SerialName("trust")
     val trust: Double
 )

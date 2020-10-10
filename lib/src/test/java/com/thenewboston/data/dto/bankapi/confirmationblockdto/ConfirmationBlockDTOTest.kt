@@ -1,6 +1,7 @@
 package com.thenewboston.data.dto.bankapi.confirmationblockdto
 
-import com.google.gson.Gson
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -18,8 +19,7 @@ class ConfirmationBlockDTOTest {
 
     @Test
     fun confirmationBlockTest() {
-        val confBlock = Gson().fromJson(jsonString, ConfirmationBlockDTO::class.java)
-
+        val confBlock: ConfirmationBlockDTO = Json.decodeFromString(jsonString)
         confBlock.apply {
             assertEquals(1, id)
 

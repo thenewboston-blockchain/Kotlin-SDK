@@ -1,15 +1,26 @@
 package com.thenewboston.data.dto.bankapi.accountdto
 
-import com.google.gson.annotations.SerializedName
-import java.util.Date
+import com.thenewboston.data.dto.bankapi.DateSerializer
+import kotlinx.datetime.LocalDateTime
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class AccountDTO(
+    @SerialName("id")
     val id: String,
-    @SerializedName("created_date")
-    val createdDate: Date,
-    @SerializedName("modified_date")
-    val modifiedDate: Date?,
-    @SerializedName("account_number")
+
+    @Serializable(with = DateSerializer::class)
+    @SerialName("created_date")
+    val createdDate: LocalDateTime,
+
+    @Serializable(with = DateSerializer::class)
+    @SerialName("modified_date")
+    val modifiedDate: LocalDateTime?,
+
+    @SerialName("account_number")
     val accountNumber: String,
+
+    @SerialName("trust")
     val trust: Double
 )
