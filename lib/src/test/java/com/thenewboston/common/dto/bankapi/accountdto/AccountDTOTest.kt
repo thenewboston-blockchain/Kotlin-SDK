@@ -1,7 +1,7 @@
-package com.thenewboston.data.dto.bankapi.accountdto
+package com.thenewboston.common.dto.bankapi.accountdto
 
 import com.google.gson.Gson
-import com.thenewboston.data.dto.AccountDTO
+import com.thenewboston.common.dto.AccountDTO
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

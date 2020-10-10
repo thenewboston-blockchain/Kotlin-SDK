@@ -1,6 +1,6 @@
 package com.thenewboston.common.model
 
-enum class NodeType(value: String) {
+enum class NodeType(val value: String) {
     BANK("BANK"),
     VALIDATOR("VALIDATOR"),
     PRIMARY_VALIDATOR("PRIMARY_VALIDATOR"),

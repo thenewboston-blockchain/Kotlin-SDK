@@ -1,4 +1,4 @@
-package com.thenewboston.data.dto.bankapi.banktransactiondto
+package com.thenewboston.common.dto.bankapi.banktransactiondto
 
 import com.google.gson.Gson
 import com.thenewboston.bank.data.dto.BankTransactionDTO

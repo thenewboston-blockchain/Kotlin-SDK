@@ -1,7 +1,7 @@
-package com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto
+package com.thenewboston.common.dto.bankapi.validatorconfirmationservicesdto
 
 import com.google.gson.Gson
-import com.thenewboston.data.dto.ValidatorConfirmationServicesDTO
+import com.thenewboston.common.dto.ValidatorConfirmationServicesDTO
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

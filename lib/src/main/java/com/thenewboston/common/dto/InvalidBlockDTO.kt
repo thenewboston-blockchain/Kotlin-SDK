@@ -1,4 +1,4 @@
-package com.thenewboston.data.dto
+package com.thenewboston.common.dto
 
 import com.google.gson.annotations.SerializedName
 import java.util.Date
