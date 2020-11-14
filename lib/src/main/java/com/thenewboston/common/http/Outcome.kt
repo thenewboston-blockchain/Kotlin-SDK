@@ -1,6 +1,5 @@
 package com.thenewboston.common.http
 
-
 /**
  * Based on Philipp Hauer's post: https://phauer.com/2019/sealed-classes-exceptions-kotlin/#sealed-classes-to-the-rescue
  */

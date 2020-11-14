@@ -4,8 +4,8 @@ import com.thenewboston.Config
 import com.thenewboston.common.http.NetworkClient
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.common.http.config.BankConfig
-import io.ktor.client.features.*
-import io.ktor.util.*
+import io.ktor.client.features.ClientRequestException
+import io.ktor.util.KtorExperimentalAPI
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -15,18 +15,19 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestInstance.Lifecycle
 
-
 /**
  * Checks that requests to a bank's validator endpoints using the [ValidatorDataSource] work as expected.
  */
 @KtorExperimentalAPI
 class ValidatorDataSourceTest {
 
-    private val networkClient = NetworkClient(BankConfig(
+    private val networkClient = NetworkClient(
+        BankConfig(
             ipAddress = Config.IP_ADDRESS,
             port = Config.PORT,
             protocol = Config.PROTOCOL
-    ))
+        )
+    )
 
     private val validatorDataSource = ValidatorDataSource(networkClient)
 

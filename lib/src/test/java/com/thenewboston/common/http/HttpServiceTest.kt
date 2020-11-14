@@ -2,8 +2,6 @@ package com.thenewboston.common.http
 
 import com.thenewboston.Config
 import com.thenewboston.common.http.config.BankConfig
-import com.thenewboston.data.source.bankapi.ValidatorDataSource
-import io.ktor.client.statement.*
 import io.ktor.http.HttpStatusCode
 import io.ktor.util.KtorExperimentalAPI
 import kotlinx.coroutines.runBlocking
@@ -13,11 +11,11 @@ import org.junit.jupiter.api.Test
 // This is an integration test to make sure that basic requests work as expected
 class HttpServiceTest {
     private val networkClient = NetworkClient(
-            BankConfig(
-                    ipAddress = Config.IP_ADDRESS,
-                    port = Config.PORT,
-                    protocol = Config.PROTOCOL
-            )
+        BankConfig(
+            ipAddress = Config.IP_ADDRESS,
+            port = Config.PORT,
+            protocol = Config.PROTOCOL
+        )
     )
 
     @KtorExperimentalAPI
