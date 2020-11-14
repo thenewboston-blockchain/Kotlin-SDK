@@ -10,9 +10,7 @@ import io.ktor.client.request.host
 import io.ktor.client.request.port
 import io.ktor.util.KtorExperimentalAPI
 
-internal class NetworkClient(
-    val bankConfig: BankConfig
-) {
+internal class NetworkClient(private val bankConfig: BankConfig) {
 
     @KtorExperimentalAPI
     val client: HttpClient by lazy {
