@@ -4,8 +4,8 @@ import com.thenewboston.Config
 import com.thenewboston.common.http.NetworkClient
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.common.http.config.BankConfig
-import io.ktor.client.features.ClientRequestException
 import io.ktor.util.KtorExperimentalAPI
+import io.ktor.utils.io.errors.IOException
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -77,7 +77,7 @@ class ValidatorDataSourceTest {
 
             // then
             check(body is Outcome.Error)
-            assertTrue(body.cause is ClientRequestException)
+            assertTrue(body.cause is IOException)
         }
     }
 }
