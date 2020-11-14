@@ -19,7 +19,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         val result = networkClient.client.get<Bank>("/banks")
 
         return when {
-            result.results.isNullOrEmpty() -> Outcome.Error("", IOException())
+            result.results.isNullOrEmpty() -> Outcome.Error("Error fetching banks", IOException())
             else -> Outcome.Success(result)
         }
     }
