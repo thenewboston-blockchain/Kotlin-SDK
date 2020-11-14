@@ -1,6 +1,7 @@
 package com.thenewboston.common.model
 
-sealed class BankNode(
+
+class BankNode(
     networkId: String,
     accountNumber: String,
     txFee: Int,

@@ -9,19 +9,27 @@ import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.host
 import io.ktor.client.request.port
 import io.ktor.util.KtorExperimentalAPI
+import kotlinx.serialization.json.Json
 
-internal class NetworkClient(private val bankConfig: BankConfig) {
+class NetworkClient(
+    val bankConfig: BankConfig
+) {
+
+    private val nonStrictJson = Json {
+        isLenient = true;
+        ignoreUnknownKeys = true
+    }
 
     @KtorExperimentalAPI
     val client: HttpClient by lazy {
         HttpClient(CIO) {
             defaultRequest {
                 host = this@NetworkClient.bankConfig.ipAddress
-                port = this@NetworkClient.bankConfig.port?.toInt() ?: 80
+                port = this@NetworkClient.bankConfig.port
             }
 
             install(JsonFeature) {
-                serializer = KotlinxSerializer()
+                serializer = KotlinxSerializer(nonStrictJson)
             }
         }
     }
