@@ -4,6 +4,14 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+data class ValidatorListDTO(
+    val count: Long,
+    val next: String?,
+    val previous: String?,
+    val results: List<ValidatorDTO>
+)
+
+@Serializable
 data class ValidatorDTO(
     @SerialName("account_number")
     val accountNumber: String,
@@ -15,7 +23,7 @@ data class ValidatorDTO(
     val nodeIdentifier: String,
 
     @SerialName("port")
-    val port: Int,
+    val port: Int?,
 
     @SerialName("protocol")
     val protocol: String,
