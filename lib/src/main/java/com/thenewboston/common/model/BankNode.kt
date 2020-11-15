@@ -1,6 +1,5 @@
 package com.thenewboston.common.model
 
-
 class BankNode(
     networkId: String,
     accountNumber: String,

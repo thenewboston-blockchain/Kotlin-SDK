@@ -6,12 +6,6 @@ import com.thenewboston.common.http.config.BankConfig
 import dagger.Component
 import dagger.Module
 import dagger.Provides
-import io.ktor.client.*
-import io.ktor.client.engine.cio.*
-import io.ktor.client.features.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import io.ktor.client.request.*
 import javax.inject.Scope
 
 @Retention(AnnotationRetention.RUNTIME)
@@ -28,7 +22,6 @@ class TNBNetworkModule {
     @TNBScope
     @Provides
     fun provideNetworkClient(bankConfig: BankConfig): NetworkClient = NetworkClient(bankConfig)
-
 }
 
 @TNBScope
@@ -36,4 +29,3 @@ class TNBNetworkModule {
 interface TNBComponent {
     fun repository(): BankRepository
 }
-

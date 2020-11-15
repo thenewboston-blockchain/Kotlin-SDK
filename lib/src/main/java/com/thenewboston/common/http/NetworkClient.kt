@@ -16,7 +16,7 @@ class NetworkClient(
 ) {
 
     private val nonStrictJson = Json {
-        isLenient = true;
+        isLenient = true
         ignoreUnknownKeys = true
     }
 

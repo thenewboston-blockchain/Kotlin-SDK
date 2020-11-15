@@ -4,10 +4,14 @@ import com.thenewboston.Config
 import com.thenewboston.common.http.NetworkClient
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.common.http.config.BankConfig
+
 import io.ktor.utils.io.errors.*
-import junit.framework.Assert.assertTrue
+
 import kotlinx.coroutines.runBlocking
+
 import org.junit.jupiter.api.*
+
+import kotlin.test.assertTrue
 
 class BankDataSourceTest {
 
@@ -31,7 +35,7 @@ class BankDataSourceTest {
             val response = bankDataSource.fetchBanks()
 
             check(response is Outcome.Success)
-            assertTrue(response.value.results.isNotEmpty())
+            assertTrue(response.value.banks.isNotEmpty())
         }
     }
 
@@ -41,7 +45,7 @@ class BankDataSourceTest {
     inner class GivenInvalidRequest {
 
         @Test
-        fun `should return error outcome for IOException when ip address is invalid`() = runBlocking {
+        fun `should return error outcome for IOException`() = runBlocking {
             networkClient = NetworkClient(
                 BankConfig(
                     ipAddress = "",

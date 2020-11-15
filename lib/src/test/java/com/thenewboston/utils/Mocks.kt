@@ -1,11 +1,11 @@
 package com.thenewboston.utils
 
-import com.thenewboston.bank.model.Bank
+import com.thenewboston.bank.model.BankList
 
 object Mocks {
 
-    fun banks(): Bank {
-        val result = com.thenewboston.bank.model.Result(
+    fun banks(): BankList {
+        val result = com.thenewboston.bank.model.Bank(
             "1",
             "",
             "",
@@ -13,11 +13,14 @@ object Mocks {
             "http",
             "v1",
             1,
-            100.00)
+            100.00
+        )
 
         val results = listOf(result)
 
-        return Bank(count = 1, results = results)
+        return BankList(
+            count = 1,
+            banks = results
+        )
     }
-
 }

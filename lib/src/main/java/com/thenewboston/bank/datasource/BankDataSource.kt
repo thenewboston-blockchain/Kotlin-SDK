@@ -1,6 +1,6 @@
 package com.thenewboston.bank.datasource
 
-import com.thenewboston.bank.model.Bank
+import com.thenewboston.bank.model.BankList
 import com.thenewboston.common.http.NetworkClient
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.common.http.makeApiCall
@@ -15,11 +15,11 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         errorMessage = "Failed to retrieve banks"
     )
 
-    private suspend fun banks(): Outcome<Bank> {
-        val result = networkClient.client.get<Bank>("/banks")
+    private suspend fun banks(): Outcome<BankList> {
+        val result = networkClient.client.get<BankList>("/banks")
 
         return when {
-            result.results.isNullOrEmpty() -> Outcome.Error("Error fetching banks", IOException())
+            result.banks.isNullOrEmpty() -> Outcome.Error("Error fetching banks", IOException())
             else -> Outcome.Success(result)
         }
     }
