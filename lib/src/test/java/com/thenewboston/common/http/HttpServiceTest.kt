@@ -17,7 +17,6 @@ class HttpServiceTest {
             protocol = Config.PROTOCOL
         )
     )
-
     @KtorExperimentalAPI
     private val httpService = HttpService(networkClient)
 
