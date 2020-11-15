@@ -11,13 +11,6 @@ buildscript {
     }
 }
 
-
-kotlin {
-    experimental {
-        coroutines "enable"
-    }
-}
-
 // Dependency Versions here
 ext {
     ext.ktor_version = '1.4.0'

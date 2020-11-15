@@ -1,4 +1,4 @@
-package com.thenewboston.data.source.bankapi
+package com.thenewboston.validator.datasource
 
 import com.thenewboston.Config
 import com.thenewboston.common.http.NetworkClient

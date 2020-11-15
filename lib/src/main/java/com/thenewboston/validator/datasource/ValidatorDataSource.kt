@@ -1,4 +1,4 @@
-package com.thenewboston.data.source.bankapi
+package com.thenewboston.validator.datasource
 
 import com.thenewboston.common.http.NetworkClient
 import com.thenewboston.common.http.Outcome
@@ -13,7 +13,7 @@ private const val VALIDATORS_ENDPOINT = "/validators"
 @KtorExperimentalAPI
 internal class ValidatorDataSource(private val networkClient: NetworkClient) {
 
-    suspend fun fetchValidators() = makeApiCall(
+    suspend fun fetchValidators(): Outcome<ValidatorListDTO> = makeApiCall(
         call = { doFetchValidators() },
         errorMessage = "Could not fetch list of validators"
     )
@@ -27,7 +27,7 @@ internal class ValidatorDataSource(private val networkClient: NetworkClient) {
         }
     }
 
-    suspend fun fetchValidator(nodeIdentifier: String) = makeApiCall(
+    suspend fun fetchValidator(nodeIdentifier: String): Outcome<ValidatorDTO> = makeApiCall(
         call = { doFetchValidator(nodeIdentifier) },
         errorMessage = "Could not fetch validator with NID $nodeIdentifier"
     )
