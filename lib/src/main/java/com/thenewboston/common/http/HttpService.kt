@@ -8,11 +8,9 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.util.KtorExperimentalAPI
 
 @KtorExperimentalAPI
-internal class HttpService(private val networkClient: NetworkClient) {
+class HttpService(private val networkClient: NetworkClient) {
 
-    suspend fun doGet(path: String): HttpResponse = networkClient.client.get(
-        "/$path"
-    )
+    suspend fun doGet(path: String): HttpResponse = networkClient.client.get(path)
 
     suspend fun doPost(path: String): HttpResponse = networkClient.client.post(path)
 
