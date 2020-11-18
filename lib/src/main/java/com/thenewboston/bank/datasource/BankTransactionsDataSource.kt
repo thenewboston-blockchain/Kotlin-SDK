@@ -5,6 +5,7 @@ import com.thenewboston.common.http.NetworkClient
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.common.http.makeApiCall
 import io.ktor.client.request.*
+import java.io.IOException
 import javax.inject.Inject
 
 class BankTransactionsDataSource @Inject constructor(private val networkClient: NetworkClient) {
@@ -19,9 +20,7 @@ class BankTransactionsDataSource @Inject constructor(private val networkClient: 
         val result = networkClient.client.get<BankTransactionList>("/bank_transactions")
 
         return when {
-            result.bankTransactions.isNullOrEmpty() -> Outcome.Error("Error bank transactions",
-                java.io.IOException()
-            )
+            result.bankTransactions.isNullOrEmpty() -> Outcome.Error("Error bank transactions", IOException())
             else -> Outcome.Success(result)
         }
     }

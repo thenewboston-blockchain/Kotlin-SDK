@@ -1,6 +1,6 @@
 package com.thenewboston.bank.model
 
-import java.util.Date
+//import java.util.Date
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
