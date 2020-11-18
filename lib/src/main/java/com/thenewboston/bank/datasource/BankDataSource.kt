@@ -10,12 +10,12 @@ import javax.inject.Inject
 
 class BankDataSource @Inject constructor(private val networkClient: NetworkClient) {
 
-    suspend fun fetchBanks() = makeApiCall(
-        call = { banks() },
+    suspend fun fetchBankTransactions() = makeApiCall(
+        call = { bankTransactions() },
         errorMessage = "Failed to retrieve banks"
     )
 
-    private suspend fun banks(): Outcome<BankList> {
+    private suspend fun bankTransactions(): Outcome<BankList> {
         val result = networkClient.client.get<BankList>("/banks")
 
         return when {

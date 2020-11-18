@@ -1,9 +1,16 @@
 package com.thenewboston.bank.model
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class BankTransaction(
+    @SerialName("id")
     val id: String,
-    val block: String,
-    val sender: String,
+    @SerialName("block")
+    val block: BankBlock,
+    @SerialName("recipient")
     val recipient: String,
-    val amount: Number
+    @SerialName("amount")
+    val amount: Int
 )
