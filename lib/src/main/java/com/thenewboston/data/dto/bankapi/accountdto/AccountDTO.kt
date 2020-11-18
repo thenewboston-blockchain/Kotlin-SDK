@@ -1,9 +1,18 @@
 package com.thenewboston.data.dto.bankapi.accountdto
 
 import com.thenewboston.data.dto.bankapi.DateSerializer
+import com.thenewboston.data.dto.bankapi.validatordto.ValidatorDTO
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+
+@Serializable
+data class AccountListDTO(
+    val count: Long,
+    val next: String?,
+    val previous: String?,
+    val accounts: List<AccountDTO>
+)
 
 @Serializable
 data class AccountDTO(
