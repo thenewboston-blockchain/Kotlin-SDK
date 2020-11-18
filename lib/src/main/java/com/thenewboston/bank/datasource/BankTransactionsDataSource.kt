@@ -20,7 +20,8 @@ class BankTransactionsDataSource @Inject constructor(private val networkClient: 
         val result = networkClient.client.get<BankTransactionList>("/bank_transactions")
 
         return when {
-            result.bankTransactions.isNullOrEmpty() -> Outcome.Error("Error bank transactions", IOException())
+            result.bankTransactions.isNullOrEmpty() ->
+                Outcome.Error("Error bank transactions", IOException())
             else -> Outcome.Success(result)
         }
     }

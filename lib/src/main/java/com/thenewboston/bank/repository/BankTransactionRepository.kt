@@ -7,8 +7,8 @@ import javax.inject.Inject
 
 class BankTransactionRepository @Inject constructor(
     private val dataSource: BankTransactionsDataSource
-)
-{
+) {
 
-    suspend fun bankTransactions(): Outcome<BankTransactionList> = dataSource.fetchBankTransactions()
+    suspend fun bankTransactions(): Outcome<BankTransactionList> =
+        dataSource.fetchBankTransactions()
 }

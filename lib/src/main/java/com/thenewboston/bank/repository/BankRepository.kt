@@ -2,7 +2,6 @@ package com.thenewboston.bank.repository
 
 import com.thenewboston.bank.datasource.BankDataSource
 import com.thenewboston.bank.model.BankList
-import com.thenewboston.bank.model.BankTransactionList
 import com.thenewboston.common.http.Outcome
 import javax.inject.Inject
 
