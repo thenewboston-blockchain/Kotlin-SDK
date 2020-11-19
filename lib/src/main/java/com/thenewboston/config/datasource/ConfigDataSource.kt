@@ -20,7 +20,8 @@ class ConfigDataSource(private val networkClient: NetworkClient) {
         val config = networkClient.client.get<ConfigDTO>(urlSuffix)
 
         return when {
-            config.accountNumber.isNullOrEmpty() -> Outcome.Error("Received null or empty account number in response", IOException())
+            config.accountNumber.isNullOrEmpty()
+            -> Outcome.Error("Received null or empty account number in response", IOException())
             else -> Outcome.Success(config)
         }
     }
