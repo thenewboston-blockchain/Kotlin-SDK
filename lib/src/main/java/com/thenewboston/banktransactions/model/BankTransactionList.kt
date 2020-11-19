@@ -1,5 +1,6 @@
 package com.thenewboston.banktransactions.model
 
+import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionDTO
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -15,5 +16,5 @@ data class BankTransactionList(
     @SerialName("previous")
     val previous: String? = null,
     @SerialName("results")
-    val bankTransactions: List<BankTransaction>
+    val bankTransactions: List<BankTransactionDTO>
 )
