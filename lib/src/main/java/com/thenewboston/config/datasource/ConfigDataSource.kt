@@ -5,6 +5,7 @@ import com.thenewboston.common.http.Outcome
 import com.thenewboston.common.http.makeApiCall
 import com.thenewboston.data.dto.bankapi.configdto.ConfigDTO
 import io.ktor.client.request.*
+import io.ktor.utils.io.errors.*
 
 private const val CONFIG_ENDPOINT = "/config"
 
@@ -18,6 +19,9 @@ class ConfigDataSource(private val networkClient: NetworkClient) {
         val urlSuffix = "$CONFIG_ENDPOINT"
         val config = networkClient.client.get<ConfigDTO>(urlSuffix)
 
-        return Outcome.Success(config)
+        return when {
+            config.accountNumber.isNullOrEmpty() -> Outcome.Error("Received null or empty account number in response", IOException())
+            else -> Outcome.Success(config)
+        }
     }
 }
