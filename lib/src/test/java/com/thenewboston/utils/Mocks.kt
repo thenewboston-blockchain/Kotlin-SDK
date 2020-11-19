@@ -2,8 +2,12 @@ package com.thenewboston.utils
 
 import com.thenewboston.bank.model.Bank
 import com.thenewboston.bank.model.BankList
+import com.thenewboston.banktransactions.model.BankTransactionList
+import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionDTO
+import com.thenewboston.data.dto.bankapi.banktransactiondto.BlockDTO
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorDTO
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorListDTO
+import kotlinx.datetime.LocalDateTime
 
 object Mocks {
 
@@ -43,5 +47,28 @@ object Mocks {
         seedBlockIdentifier = "",
         dailyConfirmationRate = null,
         trust = 100.0
+    )
+//    2020-11-19T19:57:31.799872Z
+    fun block() = BlockDTO(
+        id = "String",
+        createdDate = LocalDateTime.parse("2020-11-19T19:57:31.799872"),
+        modifiedDate = LocalDateTime.parse("2020-11-19T19:57:31.799872"),
+        balanceKey = "String",
+        sender = "String",
+        signature = "String"
+    )
+
+    fun bankTransaction() = BankTransactionDTO(
+        id = "String",
+        block = block(),
+        amount = 5.0,
+        recipient = "String"
+    )
+
+    fun bankTransactions() = BankTransactionList(
+        count = 1,
+        next = null,
+        previous = null,
+        bankTransactions = listOf(bankTransaction(), bankTransaction())
     )
 }
