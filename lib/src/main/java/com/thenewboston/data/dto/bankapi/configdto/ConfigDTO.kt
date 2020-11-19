@@ -18,7 +18,7 @@ data class ConfigDTO(
     val nodeIdentifier: String,
 
     @SerialName("port")
-    val port: Int,
+    val port: Int? = null,
 
     @SerialName("protocol")
     val protocol: String,
@@ -45,7 +45,7 @@ data class PrimaryValidator(
     val nodeIdentifier: String,
 
     @SerialName("port")
-    val port: Int,
+    val port: Int? = null,
 
     @SerialName("protocol")
     val protocol: String,

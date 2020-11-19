@@ -2,6 +2,8 @@ package com.thenewboston.utils
 
 import com.thenewboston.bank.model.Bank
 import com.thenewboston.bank.model.BankList
+import com.thenewboston.data.dto.bankapi.configdto.ConfigDTO
+import com.thenewboston.data.dto.bankapi.configdto.PrimaryValidator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorDTO
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorListDTO
 
@@ -43,5 +45,32 @@ object Mocks {
         seedBlockIdentifier = "",
         dailyConfirmationRate = null,
         trust = 100.0
+    )
+
+    fun primaryValidator() = PrimaryValidator(
+        accountNumber = "String",
+        ipAddress = "127.0.0.1",
+        nodeIdentifier = "String",
+        port = null,
+        protocol = "http",
+        version = "v1.0",
+        defaultTransactionFee = 1.0,
+        rootAccountFile = "String",
+        rootAccountFileHash = "String",
+        seedBlockIdentifier = "String",
+        dailyConfirmationRate = null,
+        trust = 100.0
+    )
+
+    fun config() = ConfigDTO(
+        primaryValidator = primaryValidator(),
+        accountNumber = "String",
+        ipAddress = "String",
+        nodeIdentifier = "String",
+        port = null,
+        protocol = "http",
+        version = "v1.0",
+        defaultTransactionFee = 1.0,
+        nodeType = "String"
     )
 }
