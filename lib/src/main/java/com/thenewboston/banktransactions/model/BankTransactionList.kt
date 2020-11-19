@@ -1,4 +1,4 @@
-package com.thenewboston.bank.model
+package com.thenewboston.banktransactions.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

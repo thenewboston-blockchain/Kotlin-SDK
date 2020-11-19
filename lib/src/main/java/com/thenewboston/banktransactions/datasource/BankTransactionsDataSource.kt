@@ -1,6 +1,6 @@
-package com.thenewboston.bank.datasource
+package com.thenewboston.banktransactions.datasource
 
-import com.thenewboston.bank.model.BankTransactionList
+import com.thenewboston.banktransactions.model.BankTransactionList
 import com.thenewboston.common.http.NetworkClient
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.common.http.makeApiCall
@@ -14,7 +14,6 @@ class BankTransactionsDataSource @Inject constructor(private val networkClient: 
         call = { bankTransactions() },
         errorMessage = "Failed to retrieve bank transactions"
     )
-
 
     private suspend fun bankTransactions(): Outcome<BankTransactionList> {
         val result = networkClient.client.get<BankTransactionList>("/bank_transactions")
