@@ -2,8 +2,11 @@ package com.thenewboston.utils
 
 import com.thenewboston.bank.model.Bank
 import com.thenewboston.bank.model.BankList
+import com.thenewboston.data.dto.bankapi.accountdto.AccountDTO
+import com.thenewboston.data.dto.bankapi.accountdto.AccountListDTO
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorDTO
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorListDTO
+import kotlinx.datetime.LocalDateTime
 
 object Mocks {
 
@@ -42,6 +45,21 @@ object Mocks {
         rootAccountFileHash = "",
         seedBlockIdentifier = "",
         dailyConfirmationRate = null,
+        trust = 100.0
+    )
+
+    fun accounts() = AccountListDTO(
+        count = 1,
+        previous = null,
+        next = null,
+        results = listOf(account(), account())
+    )
+
+    fun account() = AccountDTO(
+        id = "",
+        createdDate = LocalDateTime(2020, 8, 8, 12, 12, 23),
+        modifiedDate = LocalDateTime(2020, 8, 8, 12, 13, 23),
+        accountNumber = "",
         trust = 100.0
     )
 }
