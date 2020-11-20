@@ -50,7 +50,7 @@ object Mocks {
         dailyConfirmationRate = null,
         trust = 100.0
     )
-  
+
     fun block() = BlockDTO(
         id = "String",
         createdDate = LocalDateTime.parse("2020-11-19T19:57:31.799872"),
