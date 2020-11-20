@@ -4,6 +4,9 @@ import com.thenewboston.bank.model.Bank
 import com.thenewboston.bank.model.BankList
 import com.thenewboston.data.dto.bankapi.configdto.ConfigDTO
 import com.thenewboston.data.dto.bankapi.configdto.PrimaryValidator
+import com.thenewboston.banktransactions.model.BankTransactionList
+import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionDTO
+import com.thenewboston.data.dto.bankapi.banktransactiondto.BlockDTO
 import com.thenewboston.data.dto.bankapi.accountdto.AccountDTO
 import com.thenewboston.data.dto.bankapi.accountdto.AccountListDTO
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorDTO
@@ -75,6 +78,29 @@ object Mocks {
         version = "v1.0",
         defaultTransactionFee = 1.0,
         nodeType = "String"
+    )
+  
+    fun block() = BlockDTO(
+        id = "String",
+        createdDate = LocalDateTime.parse("2020-11-19T19:57:31.799872"),
+        modifiedDate = LocalDateTime.parse("2020-11-19T19:57:31.799872"),
+        balanceKey = "String",
+        sender = "String",
+        signature = "String"
+    )
+
+    fun bankTransaction() = BankTransactionDTO(
+        id = "String",
+        block = block(),
+        amount = 5.0,
+        recipient = "String"
+    )
+
+    fun bankTransactions() = BankTransactionList(
+        count = 1,
+        next = null,
+        previous = null,
+        bankTransactions = listOf(bankTransaction(), bankTransaction())
     )
 
     fun accounts() = AccountListDTO(
