@@ -79,7 +79,7 @@ object Mocks {
         defaultTransactionFee = 1.0,
         nodeType = "String"
     )
-  
+
     fun block() = BlockDTO(
         id = "String",
         createdDate = LocalDateTime.parse("2020-11-19T19:57:31.799872"),
