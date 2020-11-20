@@ -76,7 +76,7 @@ object Mocks {
         defaultTransactionFee = 1.0,
         nodeType = "String"
     )
-  
+
     fun accounts() = AccountListDTO(
         count = 1,
         previous = null,
