@@ -21,8 +21,10 @@ class AccountDataSource @Inject constructor(private val networkClient: NetworkCl
         val accounts = networkClient.client.get<AccountListDTO>("/accounts")
 
         return when {
-            accounts.results.isNullOrEmpty() -> Outcome.Error("Received null or empty list",
-                IOException())
+            accounts.results.isNullOrEmpty() -> Outcome.Error(
+                "Received null or empty list",
+                IOException()
+            )
             else -> Outcome.Success(accounts)
         }
     }
