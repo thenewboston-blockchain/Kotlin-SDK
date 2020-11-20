@@ -7,8 +7,11 @@ import com.thenewboston.common.http.config.BankConfig
 import io.ktor.util.KtorExperimentalAPI
 import io.ktor.utils.io.errors.IOException
 import kotlinx.coroutines.runBlocking
-import org.junit.jupiter.api.*
-import kotlin.test.assertTrue
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 
 @KtorExperimentalAPI
 class AccountDataSourceTest {
@@ -32,7 +35,8 @@ class AccountDataSourceTest {
             val response = accountDataSource.fetchAccounts()
 
             check(response is Outcome.Success)
-            assertTrue(response.value.accounts.isNotEmpty())
+            assertTrue(response.value.count > 0)
+            assertTrue(response.value.results.isNotEmpty())
         }
     }
 
@@ -57,7 +61,7 @@ class AccountDataSourceTest {
 
             // then
             check(response is Outcome.Error)
-            Assertions.assertTrue(response.cause is IOException)
+            assertTrue(response.cause is IOException)
         }
     }
 }
