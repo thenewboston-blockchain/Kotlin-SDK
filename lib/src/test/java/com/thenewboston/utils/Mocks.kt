@@ -71,7 +71,7 @@ object Mocks {
         count = 1,
         next = null,
         previous = null,
-        bankTransactions = listOf(bankTransaction(), bankTransaction()
+        bankTransactions = listOf(bankTransaction(), bankTransaction())
     )
 
     fun accounts() = AccountListDTO(
