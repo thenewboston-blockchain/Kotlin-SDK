@@ -57,7 +57,6 @@ class AccountRepositoryTest {
                 assertTrue(result is Outcome.Error)
             }
         }
-
     }
 
     @Nested
@@ -69,7 +68,6 @@ class AccountRepositoryTest {
         fun givenDataSourceSuccess() {
             val successOutcome = Outcome.Success(Mocks.accounts())
             coEvery { accountDataSource.fetchAccounts() } returns successOutcome
-
         }
 
         @Nested
@@ -87,6 +85,5 @@ class AccountRepositoryTest {
                 assertTrue(result is Outcome.Success)
             }
         }
-
     }
 }

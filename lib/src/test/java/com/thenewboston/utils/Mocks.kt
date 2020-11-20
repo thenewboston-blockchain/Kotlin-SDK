@@ -6,9 +6,7 @@ import com.thenewboston.data.dto.bankapi.accountdto.AccountDTO
 import com.thenewboston.data.dto.bankapi.accountdto.AccountListDTO
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorDTO
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorListDTO
-import kotlinx.datetime.DateTimePeriod
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.toInstant
 
 object Mocks {
 
@@ -59,8 +57,8 @@ object Mocks {
 
     fun account() = AccountDTO(
         id = "",
-        createdDate = LocalDateTime(2020,8,8,12,12,23),
-        modifiedDate = LocalDateTime(2020,8,8,12,13,23),
+        createdDate = LocalDateTime(2020, 8, 8, 12, 12, 23),
+        modifiedDate = LocalDateTime(2020, 8, 8, 12, 13, 23),
         accountNumber = "",
         trust = 100.0
     )
