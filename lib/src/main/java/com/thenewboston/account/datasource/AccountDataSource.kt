@@ -18,7 +18,7 @@ class AccountDataSource @Inject constructor(private val networkClient: NetworkCl
     )
 
     private suspend fun accounts(): Outcome<AccountListDTO> {
-        val accounts = networkClient.client.get<AccountListDTO>("/accounts")
+        val accounts = networkClient.defaultClient.get<AccountListDTO>("/accounts")
 
         return when {
             accounts.results.isNullOrEmpty() -> Outcome.Error(

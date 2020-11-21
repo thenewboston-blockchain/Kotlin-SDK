@@ -1,5 +1,7 @@
 package com.thenewboston.bank.model
 
+import com.thenewboston.data.dto.bankapi.validatordto.ValidatorDTO
+import com.thenewboston.validator.model.response.Validator
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -21,4 +23,24 @@ data class Bank(
     val default_transaction_fee: Int,
     @SerialName("trust")
     val trust: Double
+)
+
+@Serializable
+data class BankDetails(
+//    @SerialName("primary_validator")
+//    val primary_validator: Validator,
+    @SerialName("account_number")
+    val account_number: String,
+    @SerialName("ip_address")
+    val ip_address: String,
+    @SerialName("node_identifier")
+    val node_identifier: String,
+    @SerialName("port")
+    val port: String? = null,
+    @SerialName("protocol")
+    val protocol: String,
+    @SerialName("version")
+    val version: String,
+    @SerialName("default_transaction_fee")
+    val default_transaction_fee: Int
 )

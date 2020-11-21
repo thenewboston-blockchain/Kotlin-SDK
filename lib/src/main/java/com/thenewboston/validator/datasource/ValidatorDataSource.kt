@@ -19,7 +19,7 @@ internal class ValidatorDataSource(private val networkClient: NetworkClient) {
     )
 
     private suspend fun doFetchValidators(): Outcome<ValidatorListDTO> {
-        val validators = networkClient.client.get<ValidatorListDTO>(VALIDATORS_ENDPOINT)
+        val validators = networkClient.defaultClient.get<ValidatorListDTO>(VALIDATORS_ENDPOINT)
 
         return when {
             validators.results.isNullOrEmpty() -> Outcome.Error("Received null or empty list", null)
@@ -34,7 +34,7 @@ internal class ValidatorDataSource(private val networkClient: NetworkClient) {
 
     private suspend fun doFetchValidator(nodeIdentifier: String): Outcome<ValidatorDTO> {
         val urlSuffix = "$VALIDATORS_ENDPOINT/$nodeIdentifier"
-        val validator = networkClient.client.get<ValidatorDTO>(urlSuffix)
+        val validator = networkClient.defaultClient.get<ValidatorDTO>(urlSuffix)
 
         return Outcome.Success(validator)
     }

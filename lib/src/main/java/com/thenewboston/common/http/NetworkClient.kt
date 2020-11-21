@@ -21,11 +21,19 @@ class NetworkClient(
     }
 
     @KtorExperimentalAPI
-    val client: HttpClient by lazy {
-        HttpClient(CIO) {
+    val defaultClient: HttpClient by lazy {
+        newClient(
+            ipAddress = this@NetworkClient.bankConfig.ipAddress,
+            port = this@NetworkClient.bankConfig.port
+        )
+    }
+
+    @KtorExperimentalAPI
+    fun newClient(ipAddress: String, port: Int): HttpClient {
+        return HttpClient(CIO) {
             defaultRequest {
-                host = this@NetworkClient.bankConfig.ipAddress
-                port = this@NetworkClient.bankConfig.port
+                this.host = ipAddress
+                this.port = port
             }
 
             install(JsonFeature) {
