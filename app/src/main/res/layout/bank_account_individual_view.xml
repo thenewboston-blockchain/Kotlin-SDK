@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_12sdp"
+        android:layout_margin="@dimen/_3sdp"
+        android:background="@drawable/primary_button_bg"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ID:  "
+                android:id="@+id/id_head"
+                android:textColor="@color/primaryText"
+                android:fontFamily="@font/montserrat_semibold"
+                android:textSize="@dimen/_9sdp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="askdjhk1j23hkj123kj1h23k1h23kjhk1jh2c3kh12"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_toEndOf="@+id/id_head"
+                android:layout_toRightOf="@+id/id_head"
+                android:id="@+id/id_"
+                android:textColor="@color/secondaryText"
+                android:fontFamily="@font/montserrat_medium"
+                android:textSize="@dimen/_9sdp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Account No:  "
+                android:id="@+id/acc_no_head"
+                android:textColor="@color/primaryText"
+                android:fontFamily="@font/montserrat_semibold"
+                android:textSize="@dimen/_9sdp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="askdjhk1j23hkj123kj1h23k1h23kjhk1jh2c3kh12"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_toEndOf="@+id/acc_no_head"
+                android:layout_toRightOf="@+id/acc_no_head"
+                android:id="@+id/acc_no"
+                android:textColor="@color/secondaryText"
+                android:fontFamily="@font/montserrat_medium"
+                android:textSize="@dimen/_9sdp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Trust:  "
+                android:id="@+id/trust_head"
+                android:textColor="@color/primaryText"
+                android:fontFamily="@font/montserrat_semibold"
+                android:textSize="@dimen/_9sdp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="askdjhk1j23hkj123kj1h23k1h23kjhk1jh2c3kh12"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_toEndOf="@+id/trust_head"
+                android:layout_toRightOf="@+id/trust_head"
+                android:id="@+id/trust"
+                android:textColor="@color/secondaryText"
+                android:fontFamily="@font/montserrat_medium"
+                android:textSize="@dimen/_9sdp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Created:  "
+                android:id="@+id/created_head"
+                android:textColor="@color/primaryText"
+                android:fontFamily="@font/montserrat_semibold"
+                android:textSize="@dimen/_9sdp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="askdjhk1j23hkj123kj1h23k1h23kjhk1jh2c3kh12"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_toEndOf="@+id/created_head"
+                android:layout_toRightOf="@+id/created_head"
+                android:id="@+id/created"
+                android:textColor="@color/secondaryText"
+                android:fontFamily="@font/montserrat_medium"
+                android:textSize="@dimen/_9sdp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Modified:  "
+                android:id="@+id/modified_head"
+                android:layout_marginBottom="@dimen/_7sdp"
+                android:textColor="@color/primaryText"
+                android:fontFamily="@font/montserrat_semibold"
+                android:textSize="@dimen/_9sdp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="askdjhk1j23hkj123kj1h23k1h23kjhk1jh2c3kh12"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_toEndOf="@+id/modified_head"
+                android:layout_toRightOf="@+id/modified_head"
+                android:id="@+id/modified"
+                android:textColor="@color/secondaryText"
+                android:fontFamily="@font/montserrat_medium"
+                android:textSize="@dimen/_9sdp"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

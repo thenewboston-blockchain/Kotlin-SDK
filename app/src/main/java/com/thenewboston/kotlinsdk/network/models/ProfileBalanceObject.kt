@@ -1,5 +1,5 @@
 package com.thenewboston.kotlinsdk.network.models
 
-data class BalanceObject(
+data class ProfileBalanceObject(
     val balance: Int
 ) {}

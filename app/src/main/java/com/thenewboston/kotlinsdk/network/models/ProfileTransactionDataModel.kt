@@ -3,7 +3,7 @@ package com.thenewboston.kotlinsdk.network.models
 
 import com.google.gson.annotations.SerializedName
 
-data class AccountTransactionDataModel(
+data class ProfileTransactionDataModel(
     val amount: Long, // 19600
     val block: Block,
     val id: String, // e711b06e-29ea-40f0-96db-d9as78

@@ -10,13 +10,16 @@ import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.google.gson.reflect.TypeToken
 import com.thenewboston.kotlinsdk.*
-import com.thenewboston.kotlinsdk.network.models.AccountTransactionDataModel
+import com.thenewboston.kotlinsdk.network.models.BankAccountsDataModel
+import com.thenewboston.kotlinsdk.network.models.ProfileTransactionDataModel
 import com.thenewboston.kotlinsdk.network.models.ValidatorAccountDataModel
 import com.thenewboston.kotlinsdk.network.models.ValidatorBankDataModel
+import kotlinx.android.synthetic.main.bank_account_individual_view.view.*
 import kotlinx.android.synthetic.main.profile_account_transaction_individual_view.view.*
 import kotlinx.android.synthetic.main.validator_account_individual_view.view.*
 import kotlinx.android.synthetic.main.validator_account_individual_view.view.acc_no
 import kotlinx.android.synthetic.main.validator_bank_individual_view.view.*
+import kotlinx.android.synthetic.main.validator_bank_individual_view.view.trust
 import java.lang.NullPointerException
 
 class ListRecyclerViewAdapter(
@@ -54,9 +57,9 @@ class ListRecyclerViewAdapter(
     // handle the individual views for different layouts
     private fun getViewForList(currentPage: Int, type: String): Int? {
         return when(currentPage) {
-            PROFILE_PAGE -> {
+            BANK_PAGE -> {
                 when(type) {
-                    TRANSACTIONS -> R.layout.profile_account_transaction_individual_view
+                    ACCOUNTS -> R.layout.bank_account_individual_view
                     else -> null
                 }
             }
@@ -67,6 +70,12 @@ class ListRecyclerViewAdapter(
                     else -> null
                 }
             }
+            PROFILE_PAGE -> {
+                when(type) {
+                    TRANSACTIONS -> R.layout.profile_account_transaction_individual_view
+                    else -> null
+                }
+            }
             else -> null
         }
     }
@@ -74,10 +83,10 @@ class ListRecyclerViewAdapter(
     // set data
     private fun setDataForList(currentPage: Int, type: String, holder: ViewHolder, position: Int) {
         when(currentPage) {
-            PROFILE_PAGE -> {
-                when (type) {
-                    TRANSACTIONS -> handleTransactionViewsProfile(
-                        Gson().fromJson<ArrayList<AccountTransactionDataModel>>(data),
+            BANK_PAGE -> {
+                when(type) {
+                    ACCOUNTS -> handleAccountsViewsBank(
+                        Gson().fromJson<ArrayList<BankAccountsDataModel>>(data),
                         holder, position
                     )
                 }
@@ -90,6 +99,14 @@ class ListRecyclerViewAdapter(
                     )
                     BANKS -> handleBankViewsValidator(
                         Gson().fromJson<ArrayList<ValidatorBankDataModel>>(data),
+                        holder, position
+                    )
+                }
+            }
+            PROFILE_PAGE -> {
+                when (type) {
+                    TRANSACTIONS -> handleTransactionViewsProfile(
+                        Gson().fromJson<ArrayList<ProfileTransactionDataModel>>(data),
                         holder, position
                     )
                 }
@@ -107,6 +124,17 @@ class ListRecyclerViewAdapter(
         }
         nextOffset = nextOffset_
         notifyDataSetChanged()
+    }
+
+    /* Banks */
+    private fun handleAccountsViewsBank(data: ArrayList<BankAccountsDataModel>, holder: ViewHolder, position: Int) {
+        val accView = holder.itemView
+        val accData = data[position]
+        accView.id_.text = accData.id
+        accView.acc_no.text = accData.accountNumber
+        accView.trust.text = accData.trust
+        accView.created.text = accData.createdDate
+        accView.modified.text = accData.modifiedDate
     }
 
     /* Validators */
@@ -130,7 +158,7 @@ class ListRecyclerViewAdapter(
     }
 
     /* Profile */
-    private fun handleTransactionViewsProfile(data: ArrayList<AccountTransactionDataModel>, holder: ViewHolder, position: Int) {
+    private fun handleTransactionViewsProfile(data: ArrayList<ProfileTransactionDataModel>, holder: ViewHolder, position: Int) {
         val transactionsView = holder.itemView
         val transactionsData = data[position]
         transactionsView.indicator.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_received))

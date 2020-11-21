@@ -3,7 +3,7 @@ package com.thenewboston.kotlinsdk.home.repository.profile
 
 import com.thenewboston.kotlinsdk.network.apis.BankApis
 import com.thenewboston.kotlinsdk.network.apis.ValidatorsApi
-import com.thenewboston.kotlinsdk.network.models.BalanceObject
+import com.thenewboston.kotlinsdk.network.models.ProfileBalanceObject
 import com.thenewboston.kotlinsdk.network.models.GenericListDataModel
 import com.thenewboston.kotlinsdk.utils.NetworkUtils
 
@@ -12,7 +12,7 @@ class ProfileRepoImpl(
     private val validators: ValidatorsApi
 ) : ProfileRepo {
     override suspend fun getAccountBalance(accountNumber: String): Int? {
-        val data = NetworkUtils.callApiAndGetData<BalanceObject> { validators.getAccountBalance(accountNumber) }
+        val data = NetworkUtils.callApiAndGetData<ProfileBalanceObject> { validators.getAccountBalance(accountNumber) }
         return data.second?.balance
     }
 
