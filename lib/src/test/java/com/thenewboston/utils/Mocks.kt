@@ -1,6 +1,7 @@
 package com.thenewboston.utils
 
 import com.thenewboston.bank.model.Bank
+import com.thenewboston.bank.model.BankDetails
 import com.thenewboston.bank.model.BankList
 import com.thenewboston.banktransactions.model.BankTransactionList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionDTO
@@ -27,6 +28,17 @@ object Mocks {
         "v1",
         1,
         100.00
+    )
+
+    fun bankDetails() = BankDetails(
+        validator(),
+        "1",
+        "",
+        "",
+        "80",
+        "http",
+        "v1",
+        1
     )
 
     fun validators() = ValidatorListDTO(

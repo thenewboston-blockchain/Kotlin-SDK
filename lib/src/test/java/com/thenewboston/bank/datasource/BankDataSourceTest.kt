@@ -73,5 +73,18 @@ class BankDataSourceTest {
             check(response is Outcome.Error)
             Assertions.assertTrue(response.cause is IOException)
         }
+
+        @Test
+        fun `should return error outcome for bank details IOException`() = runBlocking {
+            networkClient = NetworkClient(BankConfig())
+
+            bankDataSource = BankDataSource(networkClient)
+            // when
+            val response = bankDataSource.fetchBankDetails(BankConfig(ipAddress = ""))
+
+            // then
+            check(response is Outcome.Error)
+            Assertions.assertTrue(response.cause is IOException)
+        }
     }
 }

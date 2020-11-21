@@ -2,7 +2,6 @@ package com.thenewboston.validator.model.response
 
 import java.math.BigDecimal
 import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 
 data class Validator(
     @SerialName("account_number")
