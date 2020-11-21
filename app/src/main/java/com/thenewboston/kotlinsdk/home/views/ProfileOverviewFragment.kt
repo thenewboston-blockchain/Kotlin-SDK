@@ -46,7 +46,6 @@ class ProfileOverviewFragment : Fragment() {
             }
         }
 
-        //TinyDB.saveDataLocally(requireContext(), ACCOUNT_NO, "f967bd5b2f846bc74cf7e7512fb0fab8ce7188a1e28cd9db2c6c77b42467ca10")
         var accNo = viewModel.accountNumber.value
         viewModel.accountNumber.observe(viewLifecycleOwner, Observer {
             accNo = it
