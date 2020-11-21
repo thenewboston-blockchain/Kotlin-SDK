@@ -47,6 +47,13 @@ Ideas for improvements or questions are always welcome, in this case feel free t
 Code that contains logic needs to be unit tested, if you have no experience with testing or questions feel free to join the #kotin-sdk channel.<br/>
 The community is happy to help you out.
 
+### Development Setup
+
+#### Static Code Analysis
+- We use [detekt](https://github.com/detekt/detekt) for static code analysis. If you're using IntelliJ, we recommend you install the [detekt IntelliJ plugin](https://github.com/detekt/detekt-intellij-plugin#intellij-detekt-plugin).
+- After running `gradle detekt`, you can find the entire analysis report in `<module>/build/reports/detekt/`
+    - The `gradle detekt` task runs as part of `gradle check`
+
 ## Outlook
 Once we finish development of the SDK there are two paths we can pursue: 
 1. Port the SDK to Kotlin Multiplatform to offer the SDK for iOS, Desktop and other Platforms
