@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">TNB</string>
+    <string name="app_name">&#xA0;&#xA0;TNB Account Manager</string>
+    <!-- ERRORS -->
+    <string name="err_something_went_wrong">Something went wrong. Try again.</string>
+    <string name="err_no_acc_no">Account number not found.</string>
+    <string name="err_no_primary_validator">Primary validator not found.</string>
 </resources>

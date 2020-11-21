@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPrimary">#C70913</color>
+    <color name="colorPrimaryDark">#eeC70913</color>
+    <color name="colorAccent">#C70913</color>
+    <color name="appGreen">#1EA672</color>
+    <color name="primaryText">#0f1d37</color>
+    <color name="secondaryText">#abacb0</color>
+    <color name="darkGrey">#CACACA</color>
+    <color name="lowOpacityWhite">#AAFFFFFF</color>
+    <color name="appPurple">#556cd6</color>
 </resources>
