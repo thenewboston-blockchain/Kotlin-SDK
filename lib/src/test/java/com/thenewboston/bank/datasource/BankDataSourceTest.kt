@@ -10,6 +10,7 @@ import io.ktor.utils.io.errors.*
 import kotlinx.coroutines.runBlocking
 
 import org.junit.jupiter.api.*
+import kotlin.test.assertEquals
 
 import kotlin.test.assertTrue
 
@@ -37,6 +38,16 @@ class BankDataSourceTest {
             check(response is Outcome.Success)
             assertTrue(response.value.banks.isNotEmpty())
         }
+
+        @Test
+        fun `test fetch bank details from config`() = runBlocking {
+            val response = bankDataSource.fetchBankDetails(
+                BankConfig(Config.IP_ADDRESS, Config.PORT, Config.PROTOCOL)
+            )
+
+            check(response is Outcome.Success)
+            assertEquals(Config.IP_ADDRESS, response.value.ip_address)
+        }
     }
 
     @Nested
@@ -57,6 +68,19 @@ class BankDataSourceTest {
             bankDataSource = BankDataSource(networkClient)
             // when
             val response = bankDataSource.fetchBanks()
+
+            // then
+            check(response is Outcome.Error)
+            Assertions.assertTrue(response.cause is IOException)
+        }
+
+        @Test
+        fun `should return error outcome for bank details IOException`() = runBlocking {
+            networkClient = NetworkClient(BankConfig())
+
+            bankDataSource = BankDataSource(networkClient)
+            // when
+            val response = bankDataSource.fetchBankDetails(BankConfig(ipAddress = ""))
 
             // then
             check(response is Outcome.Error)

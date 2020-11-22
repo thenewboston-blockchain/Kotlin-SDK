@@ -16,7 +16,7 @@ class BankTransactionsDataSource @Inject constructor(private val networkClient: 
     )
 
     private suspend fun bankTransactions(): Outcome<BankTransactionList> {
-        val result = networkClient.client.get<BankTransactionList>("/bank_transactions")
+        val result = networkClient.defaultClient.get<BankTransactionList>("/bank_transactions")
 
         return when {
             result.bankTransactions.isNullOrEmpty() ->

@@ -2,6 +2,7 @@ package com.thenewboston.bank.repository
 
 import com.thenewboston.bank.datasource.BankDataSource
 import com.thenewboston.common.http.Outcome
+import com.thenewboston.common.http.config.BankConfig
 import com.thenewboston.utils.Mocks
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -38,5 +39,23 @@ class BankRepositoryTest {
         coEvery { bankDataSource.fetchBanks() } returns Outcome.Success(Mocks.banks())
 
         assertTrue(repository.banks() is Outcome.Success)
+    }
+
+    @Test
+    fun `verify detail result is error`() = runBlockingTest {
+        coEvery {
+            bankDataSource.fetchBankDetails(any())
+        } returns Outcome.Error("", IOException())
+
+        assertTrue(repository.bankDetail(BankConfig()) is Outcome.Error)
+    }
+
+    @Test
+    fun `verify detail result is success`() = runBlockingTest {
+        coEvery {
+            bankDataSource.fetchBankDetails(any())
+        } returns Outcome.Success(Mocks.bankDetails())
+
+        assertTrue(repository.bankDetail(BankConfig()) is Outcome.Success)
     }
 }
