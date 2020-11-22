@@ -1,6 +1,6 @@
 package com.thenewboston.di.injector
 
-import com.thenewboston.bank.repository.BankRepository
+import com.thenewboston.api.bankapi.repository.BankRepository
 
 class TNBSDKBuilder {
 
