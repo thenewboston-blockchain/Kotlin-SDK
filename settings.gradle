@@ -1,3 +1,4 @@
+rootProject.name = "TNB"
+
 include ':lib'
 include ':app'
-rootProject.name = "TNB"
