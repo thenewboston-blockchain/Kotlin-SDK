@@ -14,9 +14,13 @@ class BankRepository @Inject constructor(private val dataSource: BankDataSource)
 
     suspend fun banks(): Outcome<BankList> = dataSource.fetchBanks()
 
-    suspend fun bankDetail(bankConfig: BankConfig): Outcome<BankDetails> = dataSource.fetchBankDetails(bankConfig)
+    suspend fun bankDetail(bankConfig: BankConfig): Outcome<BankDetails> {
+        return dataSource.fetchBankDetails(bankConfig)
+    }
 
-    suspend fun bankTransactions(): Outcome<BankTransactionList> = dataSource.fetchBankTransactions()
+    suspend fun bankTransactions(): Outcome<BankTransactionList> {
+        return dataSource.fetchBankTransactions()
+    }
 
     suspend fun validators(): Outcome<ValidatorList> = dataSource.fetchValidators()
 

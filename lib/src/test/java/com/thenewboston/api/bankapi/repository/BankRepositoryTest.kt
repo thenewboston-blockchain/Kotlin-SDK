@@ -102,7 +102,6 @@ class BankRepositoryTest {
         assertTrue(result is Outcome.Error)
     }
 
-
     @Test
     fun `verify validators result is success outcome`() = runBlockingTest {
         coEvery { bankDataSource.fetchValidators() } returns Outcome.Success(Mocks.validators())

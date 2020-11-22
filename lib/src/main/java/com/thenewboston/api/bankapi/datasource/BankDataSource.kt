@@ -51,7 +51,8 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
     )
 
     private suspend fun bankTransactions(): Outcome<BankTransactionList> {
-        val result = networkClient.defaultClient.get<BankTransactionList>(Endpoints.BANK_TRANSACTIONS_ENDPOINT)
+        val endpoint = Endpoints.BANK_TRANSACTIONS_ENDPOINT
+        val result = networkClient.defaultClient.get<BankTransactionList>(endpoint)
 
         return when {
             result.bankTransactions.isNullOrEmpty() ->
@@ -66,7 +67,8 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
     )
 
     private suspend fun doFetchValidators(): Outcome<ValidatorList> {
-        val validators = networkClient.defaultClient.get<ValidatorList>(Endpoints.VALIDATORS_ENDPOINT)
+        val endpoint = Endpoints.VALIDATORS_ENDPOINT
+        val validators = networkClient.defaultClient.get<ValidatorList>(endpoint)
 
         return when {
             validators.results.isNullOrEmpty() -> Outcome.Error("Received null or empty list", null)

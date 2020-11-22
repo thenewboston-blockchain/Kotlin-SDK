@@ -145,7 +145,7 @@ class BankDataSourceTest {
         }
 
         @Test
-        fun `test return error outcome for nonexistent node identifier when fetching validator`() = runBlocking {
+        fun `test return error outcome for nonexistent node identifier`() = runBlocking {
             // given
             val nodeIdentifier = "foo"
 
