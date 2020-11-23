@@ -1,15 +1,15 @@
 package com.thenewboston.utils
 
-import com.thenewboston.bank.model.Bank
-import com.thenewboston.bank.model.BankDetails
-import com.thenewboston.bank.model.BankList
-import com.thenewboston.banktransactions.model.BankTransactionList
-import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionDTO
-import com.thenewboston.data.dto.bankapi.banktransactiondto.BlockDTO
+import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.accountdto.AccountDTO
 import com.thenewboston.data.dto.bankapi.accountdto.AccountListDTO
-import com.thenewboston.data.dto.bankapi.validatordto.ValidatorDTO
-import com.thenewboston.data.dto.bankapi.validatordto.ValidatorListDTO
+import com.thenewboston.data.dto.bankapi.bankdto.Bank
+import com.thenewboston.data.dto.bankapi.bankdto.BankList
+import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransaction
+import com.thenewboston.data.dto.bankapi.banktransactiondto.Block
+import com.thenewboston.data.dto.bankapi.configdto.BankDetails
+import com.thenewboston.data.dto.bankapi.validatordto.Validator
+import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import kotlinx.datetime.LocalDateTime
 
 object Mocks {
@@ -41,14 +41,14 @@ object Mocks {
         1
     )
 
-    fun validators() = ValidatorListDTO(
+    fun validators() = ValidatorList(
         count = 1,
         previous = null,
         next = null,
         results = listOf(validator(), validator())
     )
 
-    fun validator() = ValidatorDTO(
+    fun validator() = Validator(
         accountNumber = "",
         ipAddress = "127.0.0.1",
         nodeIdentifier = "",
@@ -63,7 +63,7 @@ object Mocks {
         trust = 100.0
     )
 
-    fun block() = BlockDTO(
+    fun block() = Block(
         id = "String",
         createdDate = LocalDateTime.parse("2020-11-19T19:57:31.799872"),
         modifiedDate = LocalDateTime.parse("2020-11-19T19:57:31.799872"),
@@ -72,7 +72,7 @@ object Mocks {
         signature = "String"
     )
 
-    fun bankTransaction() = BankTransactionDTO(
+    fun bankTransaction() = BankTransaction(
         id = "String",
         block = block(),
         amount = 5.0,

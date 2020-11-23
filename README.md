@@ -41,6 +41,13 @@ It's recommended to first go through https://www.thenewboston.com/guide/introduc
 Once you understood the concept of thenewboston then check out https://github.com/thenewboston-developers/Account-Manager and <br/>
 run the application. Create an account and play around a bit. Everything that happens behind the UI is what this SDK will cover. <br/>
 
+## Project Structure
+Project structure contains the following skeleton structure:
+
+![alt tag](https://i.ibb.co/7XQhFM4/Screenshot-2020-11-22-at-14-54-15.png)
+
+When making an endpoint request to a specific api, for example, bank API. You make the request in the BankDataSource and then expose to the BankRepository.
+
 ## Contribution
 To start contributing pick an issue, leave a comment that you want to work on this and once you're assigned then you are ready to go.
 Ideas for improvements or questions are always welcome, in this case feel free to create an issue. <br/>
