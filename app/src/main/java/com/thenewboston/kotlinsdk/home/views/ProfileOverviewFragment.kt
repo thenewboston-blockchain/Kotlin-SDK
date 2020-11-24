@@ -46,30 +46,29 @@ class ProfileOverviewFragment : Fragment() {
             }
         }
 
-        //TinyDB.saveDataLocally(requireContext(), ACCOUNT_NO, "f967bd5b2f846bc74cf7e7512fb0fab8ce7188a1e28cd9db2c6c77b42467ca10")
-        var accNo = viewModel.accountNumber.value
-        viewModel.accountNumber.observe(viewLifecycleOwner, Observer {
-            accNo = it
-            getAndSetBalance(it, viewModel, balance)
+        var accNo = TinyDB.getDataFromLocal(requireContext(), ACCOUNT_NO)
+        viewModel.getAccountBalance(accNo ?: "")
+        viewModel.accountBalanceLiveData.observe(viewLifecycleOwner, Observer {
+            accNo = TinyDB.getDataFromLocal(requireContext(), ACCOUNT_NO)
+            balance.text = it.toString()
         })
         if(accNo == null) {
             AccountNumberEditDialog(
                 requireContext(),
                 "",
-                {updateAccNo(viewModel, it ?: "")},
+                {updateAccNo(viewModel, it)},
                 false
             ).show()
             acc_no.text = "-"
             balance.text = "-"
         } else {
             acc_no.text = accNo
-            getAndSetBalance(accNo ?: "", viewModel, balance)
         }
         edit_acc_no.setOnClickListener {
             AccountNumberEditDialog(
                 requireContext(),
                 accNo ?: "",
-                {updateAccNo(viewModel, it ?: "")}
+                {updateAccNo(viewModel, it)}
             ).show()
         }
     }
@@ -77,14 +76,5 @@ class ProfileOverviewFragment : Fragment() {
     private fun updateAccNo(viewModel: ProfileViewModel, accNo: String) {
         viewModel.updateAccountNumber(requireContext(), accNo)
         acc_no.text = accNo
-    }
-
-    private fun getAndSetBalance(accNo: String?, viewModel: ProfileViewModel, balance: TextView) {
-        balance.text = "-"
-        CoroutineScope(IO).launch {
-            withContext(Main) {
-                balance.text = if(accNo == null) "-" else viewModel.getAccountBalance(accNo)?.toString() ?: "-"
-            }
-        }
     }
 }

@@ -21,9 +21,6 @@ import com.thenewboston.kotlinsdk.home.views.BankFragment
 import com.thenewboston.kotlinsdk.home.views.ProfileFragment
 import com.thenewboston.kotlinsdk.home.views.ValidatorFragment
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -61,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         bankViewModel = initializeBankViewModel()
         validatorViewModel = initializeValidatorViewModel()
         profileViewModel = initializeProfileViewModel()
-        // set account number
+        // get acc no
         profileViewModel.accountNumber.postValue(TinyDB.getDataFromLocal(this, ACCOUNT_NO))
     }
 

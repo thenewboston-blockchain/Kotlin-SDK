@@ -1,7 +1,6 @@
 package com.thenewboston.kotlinsdk.home.views
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,25 +66,30 @@ class ListDisplayFragment(
                 profileViewModel!!.accountNumber.observe(viewLifecycleOwner, Observer {
                     if(it!=null) {
                         recView.adapter = null
-                        handleProfilePageDataFlow(type, accountNumber = it)
+                        handleProfilePage(type, accountNumber = it)
                     }
                 })
             }
         }
-
         recView.layoutManager = LinearLayoutManager(requireContext())
-
     }
 
-    private fun handleProfilePageDataFlow(type: String, offset: Int = LIST_DATA_OFFSET_DEFAULT, accountNumber: String?) {
+    private fun handleProfilePage(type: String, offset: Int = LIST_DATA_OFFSET_DEFAULT, accountNumber: String?) {
         val viewModel = profileViewModel!!
         if(accountNumber!=null) {
-            CoroutineScope(IO).launch {
-            val data = when(type) {
-                    TRANSACTIONS -> viewModel.getAccountTransactions(accountNumber, offset = offset)
-                    else -> null
+            when(type) {
+                TRANSACTIONS -> {
+                    viewModel.getAccountTransactions(accountNumber, offset = offset)
+                    if(offset == LIST_DATA_OFFSET_DEFAULT) {
+                        viewModel.liveDataProfileTransactions.observe(viewLifecycleOwner, Observer {
+                            handleDataDisplayAndUpdate(
+                                it?.second as GenericListDataModel?,
+                                it?.first ?: resources.getString(R.string.err_something_went_wrong),
+                                type
+                            )
+                        })
+                    }
                 }
-                handleDataDisplayAndUpdate(data?.second as GenericListDataModel?, data?.first ?: resources.getString(R.string.err_something_went_wrong), type)
             }
         } else {
             handleError(resources.getString(R.string.err_no_acc_no))
@@ -95,12 +99,19 @@ class ListDisplayFragment(
 
     private fun handleBankPage(type: String, offset: Int = LIST_DATA_OFFSET_DEFAULT) {
         val viewModel = bankViewModel!!
-        CoroutineScope(IO).launch {
-            val data = when(type) {
-                ACCOUNTS -> viewModel.getBankAccounts(offset = offset)
-                else -> null
+        when(type) {
+            ACCOUNTS -> {
+                viewModel.getBankAccounts(offset = offset)
+                if(offset == LIST_DATA_OFFSET_DEFAULT) {
+                    viewModel.liveDataBankAccounts.observe(viewLifecycleOwner, Observer {
+                        handleDataDisplayAndUpdate(
+                            it?.second as GenericListDataModel?,
+                            it?.first ?: resources.getString(R.string.err_something_went_wrong),
+                            type
+                        )
+                    })
+                }
             }
-            handleDataDisplayAndUpdate(data?.second as GenericListDataModel?, data?.first ?: resources.getString(R.string.err_something_went_wrong), type)
         }
     }
 
@@ -108,12 +119,19 @@ class ListDisplayFragment(
         val primaryValidator = TinyDB.getDataFromLocal(requireContext(), PRIMARY_VALIDATOR)
         val viewModel = validatorViewModel!!
         if(primaryValidator!=null) {
-            CoroutineScope(IO).launch {
-                val data= when(type) {
-                    ACCOUNTS -> viewModel.getValidatorAccounts(offset = offset)
-                    else -> null
+            when(type) {
+                ACCOUNTS -> {
+                    viewModel.getValidatorAccounts(offset = offset)
+                    if(offset == LIST_DATA_OFFSET_DEFAULT) {
+                        viewModel.validatorAccountLiveData.observe(viewLifecycleOwner, Observer {
+                            handleDataDisplayAndUpdate(
+                                it?.second as GenericListDataModel?,
+                                it?.first ?: resources.getString(R.string.err_something_went_wrong),
+                                type
+                            )
+                        })
+                    }
                 }
-                handleDataDisplayAndUpdate(data?.second as GenericListDataModel?, data?.first ?: resources.getString(R.string.err_something_went_wrong), type)
             }
         } else {
             handleError(resources.getString(R.string.err_no_primary_validator))
@@ -128,7 +146,10 @@ class ListDisplayFragment(
             progress_text.text = "1-$tillNow of $total"
             tillNow
         } else {
-            progress_text.text = if(total == 0) err else "1-$total of $total"
+            progress_text.text = if(total == 0) {
+                handleError(err)
+                err
+            } else "1-$total of $total"
             null
         }
     }
@@ -146,7 +167,7 @@ class ListDisplayFragment(
                 when(currentPage) {
                     BANK_PAGE -> handleBankPage(type, it)
                     VALIDATOR_PAGE -> handleValidatorsPage(type, it)
-                    PROFILE_PAGE -> handleProfilePageDataFlow(type, it, profileViewModel?.accountNumber?.value)
+                    PROFILE_PAGE -> handleProfilePage(type, it, profileViewModel?.accountNumber?.value)
                 }
             }
         } else {
@@ -156,22 +177,20 @@ class ListDisplayFragment(
 
     }
 
-    private suspend fun handleDataDisplayAndUpdate(
+    private fun handleDataDisplayAndUpdate(
         data: GenericListDataModel?,
         err: String,
         type: String
     ) {
-        withContext(Main) {
-            if (data!=null) {
-                handleShowData()
-                handleDataLoadMore(
-                    data.results,
-                    getOffsetFromLink(data.next, data.count, err),
-                    type
-                )
-            } else {
-                handleError(err)
-            }
+        if (data!=null) {
+            handleShowData()
+            handleDataLoadMore(
+                data.results,
+                getOffsetFromLink(data.next, data.count, err),
+                type
+            )
+        } else {
+            handleError(err)
         }
     }
 
@@ -181,6 +200,7 @@ class ListDisplayFragment(
         errorDisp.visibility = View.VISIBLE
         recView.visibility = View.GONE
         progressBar.visibility = View.GONE
+        recView.adapter = null
     }
 
     private fun handleLoading() {

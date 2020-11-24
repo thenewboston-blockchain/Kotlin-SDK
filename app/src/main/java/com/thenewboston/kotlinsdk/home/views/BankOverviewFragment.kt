@@ -1,10 +1,12 @@
 package com.thenewboston.kotlinsdk.home.views
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.thenewboston.kotlinsdk.BuildConfig
 import com.thenewboston.kotlinsdk.GENERAL_ERROR
@@ -20,10 +22,6 @@ import kotlinx.android.synthetic.main.bank_overview_fragment.protocol
 import kotlinx.android.synthetic.main.bank_overview_fragment.tx_fee
 import kotlinx.android.synthetic.main.bank_overview_fragment.version
 import kotlinx.android.synthetic.main.bank_overview_fragment.wholeLayout
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class BankOverviewFragment : Fragment() {
     override fun onCreateView(
@@ -39,31 +37,24 @@ class BankOverviewFragment : Fragment() {
         val viewModel = requireActivity().run {
             ViewModelProvider(this).get(BankViewModel::class.java)
         }
-
         active_bank.text = BuildConfig.BANK_BASE_URL
-
-        CoroutineScope(Dispatchers.IO).launch {
-            getConfig(viewModel)
-            getNumConfirmationServices(viewModel)
-        }
+        observeLiveData(viewModel)
     }
 
-    private suspend fun getConfig(viewModel: BankViewModel) {
-        val data = viewModel.getBankConfig()
-        withContext(Dispatchers.Main) {
-            if(data.second!=null) {
-                showData(data.second!!)
+    private fun observeLiveData(viewModel: BankViewModel) {
+        viewModel.getBankConfig()
+        viewModel.liveDataBankOverview.observe(viewLifecycleOwner, Observer {
+            Log.d("DATA_BANK", "$it")
+            if(it!=null) {
+                if (it.second != null) {
+                    showData(it.second!!)
+                } else {
+                    handleError(it.first)
+                }
             } else {
-                handleError(data.first)
-            }
-        }
-    }
 
-    private suspend fun getNumConfirmationServices(viewModel: BankViewModel) {
-        val data = viewModel.getNumOfConfServices()
-        withContext(Dispatchers.Main) {
-            confirmation_services.text = data?.toString() ?: "-"
-        }
+            }
+        })
     }
 
     private fun showData(data: BankConfigModel) {
@@ -75,6 +66,7 @@ class BankOverviewFragment : Fragment() {
         node_type.text = formatStr(data.nodeType)
         bank_network_id.text = formatStr(data.nodeIdentifier)
         bank_acc_no.text = formatStr(data.accountNumber)
+        confirmation_services.text = if(data.nConfServices!=null) data.nConfServices.toString() else "-"
     }
 
     private fun formatStr(data: String?) = if(!data.isNullOrEmpty()) data else "-"

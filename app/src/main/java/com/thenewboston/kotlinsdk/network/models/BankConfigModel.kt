@@ -4,6 +4,7 @@ package com.thenewboston.kotlinsdk.network.models
 import com.google.gson.annotations.SerializedName
 
 data class BankConfigModel(
+    var nConfServices: Int?,
     @SerializedName("account_number")
     val accountNumber: String, // acc_no
     @SerializedName("default_transaction_fee")
