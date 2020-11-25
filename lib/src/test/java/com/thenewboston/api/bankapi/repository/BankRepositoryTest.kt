@@ -179,4 +179,28 @@ class BankRepositoryTest {
         coVerify { bankDataSource.fetchBlocks() }
         assertTrue(result is Outcome.Success)
     }
+
+    @Test
+    fun `verify list of invalid blocks is error outcome`() = runBlockingTest {
+        coEvery { bankDataSource.fetchInvalidBlocks() } returns Outcome.Error("", IOException())
+
+        // when
+        val result = repository.invalidBlocks()
+
+        // then
+        coVerify { bankDataSource.fetchInvalidBlocks() }
+        assertTrue(result is Outcome.Error)
+    }
+
+    @Test
+    fun `verify list of invalid blocks is success outcome`() = runBlockingTest {
+        coEvery { bankDataSource.fetchInvalidBlocks() } returns Outcome.Success(Mocks.invalidBlocks())
+
+        // when
+        val result = repository.invalidBlocks()
+
+        // then
+        coVerify { bankDataSource.fetchInvalidBlocks() }
+        assertTrue(result is Outcome.Success)
+    }
 }

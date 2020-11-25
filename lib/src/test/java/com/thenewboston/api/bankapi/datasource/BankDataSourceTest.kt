@@ -97,6 +97,15 @@ class BankDataSourceTest {
             Assertions.assertTrue(response.value.count > 0)
             Assertions.assertTrue(response.value.results.isNotEmpty())
         }
+
+        @Test
+        fun `test fetch list of invalid blocks successfully`() = runBlocking {
+            val response = bankDataSource.fetchInvalidBlocks()
+
+            check(response is Outcome.Success)
+            Assertions.assertTrue(response.value.count > 0)
+            Assertions.assertTrue(response.value.results.isNotEmpty())
+        }
     }
 
     @Nested

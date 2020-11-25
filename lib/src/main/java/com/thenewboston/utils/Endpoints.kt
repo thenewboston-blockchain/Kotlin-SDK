@@ -8,4 +8,5 @@ object Endpoints {
     const val ACCOUNTS_ENDPOINT = "/accounts"
     const val BANK_TRANSACTIONS_ENDPOINT = "/bank_transactions"
     const val BLOCKS_ENDPOINT = "/blocks"
+    const val INVALID_BLOCKS = "/invalid_blocks"
 }
