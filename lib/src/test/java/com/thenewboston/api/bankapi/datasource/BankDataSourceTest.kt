@@ -4,12 +4,14 @@ import com.thenewboston.common.http.NetworkClient
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.common.http.config.BankConfig
 import com.thenewboston.common.http.config.Config
+import io.ktor.util.*
 import io.ktor.utils.io.errors.*
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.*
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
+@KtorExperimentalAPI
 class BankDataSourceTest {
 
     private var networkClient = NetworkClient(
@@ -81,6 +83,15 @@ class BankDataSourceTest {
         @Test
         fun `test fetch list of accounts successfully`() = runBlocking {
             val response = bankDataSource.fetchAccounts()
+
+            check(response is Outcome.Success)
+            Assertions.assertTrue(response.value.count > 0)
+            Assertions.assertTrue(response.value.results.isNotEmpty())
+        }
+
+        @Test
+        fun `test fetch list of blocks successfully`() = runBlocking {
+            val response = bankDataSource.fetchBlocks()
 
             check(response is Outcome.Success)
             Assertions.assertTrue(response.value.count > 0)
@@ -170,6 +181,19 @@ class BankDataSourceTest {
             bankDataSource = BankDataSource(networkClient)
             // when
             val response = bankDataSource.fetchAccounts()
+
+            // then
+            check(response is Outcome.Error)
+            Assertions.assertTrue(response.cause is IOException)
+        }
+
+        @Test
+        fun `test return error outcome for lis of blocks IOException`() = runBlocking {
+            networkClient = NetworkClient(BankConfig(ipAddress = ""))
+
+            bankDataSource = BankDataSource(networkClient)
+            // when
+            val response = bankDataSource.fetchBlocks()
 
             // then
             check(response is Outcome.Error)

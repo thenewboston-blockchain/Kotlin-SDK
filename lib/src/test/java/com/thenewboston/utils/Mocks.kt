@@ -2,11 +2,12 @@ package com.thenewboston.utils
 
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.accountdto.AccountDTO
-import com.thenewboston.data.dto.bankapi.accountdto.AccountListDTO
+import com.thenewboston.data.dto.bankapi.accountdto.AccountList
 import com.thenewboston.data.dto.bankapi.bankdto.Bank
 import com.thenewboston.data.dto.bankapi.bankdto.BankList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransaction
 import com.thenewboston.data.dto.bankapi.banktransactiondto.Block
+import com.thenewboston.data.dto.bankapi.banktransactiondto.BlockList
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.validatordto.Validator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
@@ -72,6 +73,13 @@ object Mocks {
         signature = "String"
     )
 
+    fun blocks() = BlockList(
+        count = 1,
+        previous = null,
+        next = null,
+        results = listOf(block(), block())
+    )
+
     fun bankTransaction() = BankTransaction(
         id = "String",
         block = block(),
@@ -86,7 +94,7 @@ object Mocks {
         bankTransactions = listOf(bankTransaction(), bankTransaction())
     )
 
-    fun accounts() = AccountListDTO(
+    fun accounts() = AccountList(
         count = 1,
         previous = null,
         next = null,

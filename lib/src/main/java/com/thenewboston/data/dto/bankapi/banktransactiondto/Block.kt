@@ -1,9 +1,19 @@
 package com.thenewboston.data.dto.bankapi.banktransactiondto
 
+import com.thenewboston.data.dto.bankapi.accountdto.AccountDTO
 import com.thenewboston.utils.DateSerializer
 import kotlinx.datetime.LocalDateTime
+import kotlinx.serialization.SerialInfo
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+
+@Serializable
+data class BlockList(
+    val count: Long,
+    val next: String?,
+    val previous: String?,
+    val results: List<Block>
+)
 
 @Serializable
 data class Block(

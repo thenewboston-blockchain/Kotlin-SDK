@@ -6,7 +6,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AccountListDTO(
+data class AccountList(
     val count: Long,
     val next: String?,
     val previous: String?,
