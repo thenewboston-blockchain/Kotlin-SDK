@@ -1,9 +1,7 @@
 package com.thenewboston.data.dto.bankapi.banktransactiondto
 
-import com.thenewboston.data.dto.bankapi.accountdto.AccountDTO
 import com.thenewboston.utils.DateSerializer
 import kotlinx.datetime.LocalDateTime
-import kotlinx.serialization.SerialInfo
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
