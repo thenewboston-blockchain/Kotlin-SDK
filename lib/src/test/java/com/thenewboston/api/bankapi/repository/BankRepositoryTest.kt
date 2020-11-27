@@ -4,6 +4,12 @@ import com.thenewboston.api.bankapi.datasource.BankDataSource
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.common.http.config.BankConfig
 import com.thenewboston.utils.Mocks
+import io.kotest.matchers.collections.beIn
+import io.kotest.matchers.collections.shouldBeIn
+import io.kotest.matchers.should
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.beInstanceOf
+import io.kotest.matchers.types.shouldBeInstanceOf
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -32,14 +38,14 @@ class BankRepositoryTest {
     fun `verify banks result is error`() = runBlockingTest {
         coEvery { bankDataSource.fetchBanks() } returns Outcome.Error("", IOException())
 
-        assertTrue(repository.banks() is Outcome.Error)
+        repository.banks() should beInstanceOf<Outcome.Error>()
     }
 
     @Test
     fun `verify banks result is success`() = runBlockingTest {
         coEvery { bankDataSource.fetchBanks() } returns Outcome.Success(Mocks.banks())
 
-        assertTrue(repository.banks() is Outcome.Success)
+        repository.banks() should beInstanceOf<Outcome.Success<*>>()
     }
 
     @Test
@@ -48,7 +54,7 @@ class BankRepositoryTest {
             bankDataSource.fetchBankDetails(any())
         } returns Outcome.Error("", IOException())
 
-        assertTrue(repository.bankDetail(BankConfig()) is Outcome.Error)
+        repository.bankDetail(BankConfig()) should beInstanceOf<Outcome.Error>()
     }
 
     @Test
@@ -57,7 +63,7 @@ class BankRepositoryTest {
             bankDataSource.fetchBankDetails(any())
         } returns Outcome.Success(Mocks.bankDetails())
 
-        assertTrue(repository.bankDetail(BankConfig()) is Outcome.Success)
+        repository.bankDetail(BankConfig()) should beInstanceOf<Outcome.Success<*>>()
     }
 
     @Test
@@ -65,7 +71,7 @@ class BankRepositoryTest {
         coEvery { bankDataSource.fetchBankTransactions() } returns
             Outcome.Error("", IOException())
 
-        assertTrue(repository.bankTransactions() is Outcome.Error)
+        repository.bankTransactions() should beInstanceOf<Outcome.Error>()
     }
 
     @Test
@@ -73,7 +79,7 @@ class BankRepositoryTest {
         coEvery { bankDataSource.fetchBankTransactions() } returns
             Outcome.Success(Mocks.bankTransactions())
 
-        assertTrue(repository.bankTransactions() is Outcome.Success)
+        repository.bankTransactions() should beInstanceOf<Outcome.Success<*>>()
     }
 
     @Test
@@ -85,7 +91,7 @@ class BankRepositoryTest {
 
         // then
         coVerify { bankDataSource.fetchValidators() }
-        assertTrue(result is Outcome.Error)
+        result should beInstanceOf<Outcome.Error>()
     }
 
     @Test
@@ -99,7 +105,7 @@ class BankRepositoryTest {
 
         // then
         coVerify { bankDataSource.fetchValidator(nodeIdentifier) }
-        assertTrue(result is Outcome.Error)
+        result should beInstanceOf<Outcome.Error>()
     }
 
     @Test
@@ -111,7 +117,7 @@ class BankRepositoryTest {
 
         // then
         coVerify { bankDataSource.fetchValidators() }
-        assertTrue(result is Outcome.Success)
+        result should beInstanceOf<Outcome.Success<*>>()
     }
 
     @Test
@@ -125,7 +131,7 @@ class BankRepositoryTest {
 
         // then
         coVerify { bankDataSource.fetchValidator(nodeIdentifier) }
-        assertTrue(result is Outcome.Success)
+        result should beInstanceOf<Outcome.Success<*>>()
     }
 
     @Test
@@ -137,7 +143,7 @@ class BankRepositoryTest {
 
         // then
         coVerify { bankDataSource.fetchAccounts() }
-        assertTrue(result is Outcome.Error)
+        result should beInstanceOf<Outcome.Error>()
     }
 
     @Test
@@ -149,6 +155,6 @@ class BankRepositoryTest {
 
         // then
         coVerify { bankDataSource.fetchAccounts() }
-        assertTrue(result is Outcome.Success)
+        result should beInstanceOf<Outcome.Success<*>>()
     }
 }
