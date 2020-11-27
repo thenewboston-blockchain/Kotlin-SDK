@@ -4,11 +4,17 @@ import com.thenewboston.common.http.NetworkClient
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.common.http.config.BankConfig
 import com.thenewboston.common.http.config.Config
+import io.kotest.matchers.collections.shouldNotBeEmpty
+import io.kotest.matchers.longs.shouldBeGreaterThan
+import io.kotest.matchers.should
+import io.kotest.matchers.string.contain
+import io.kotest.matchers.types.beInstanceOf
 import io.ktor.utils.io.errors.*
 import kotlinx.coroutines.runBlocking
-import org.junit.jupiter.api.*
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 
 class BankDataSourceTest {
 
@@ -32,7 +38,7 @@ class BankDataSourceTest {
             val response = bankDataSource.fetchBanks()
 
             check(response is Outcome.Success)
-            assertTrue(response.value.banks.isNotEmpty())
+            response.value.banks.shouldNotBeEmpty()
         }
 
         @Test
@@ -42,7 +48,7 @@ class BankDataSourceTest {
             )
 
             check(response is Outcome.Success)
-            assertEquals(Config.IP_ADDRESS, response.value.ip_address)
+            Config.IP_ADDRESS should contain(response.value.ip_address)
         }
 
         @Test
@@ -50,7 +56,8 @@ class BankDataSourceTest {
             val response = bankDataSource.fetchBankTransactions()
 
             check(response is Outcome.Success)
-            assertTrue(response.value.bankTransactions.isNotEmpty())
+
+            response.value.bankTransactions.shouldNotBeEmpty()
         }
 
         @Test
@@ -60,8 +67,8 @@ class BankDataSourceTest {
 
             // then
             check(body is Outcome.Success)
-            Assertions.assertTrue(body.value.count > 0)
-            Assertions.assertTrue(body.value.results.isNotEmpty())
+            body.value.count shouldBeGreaterThan 0
+            body.value.results.shouldNotBeEmpty()
         }
 
         @Test
@@ -74,8 +81,8 @@ class BankDataSourceTest {
 
             // then
             check(body is Outcome.Success)
-            Assertions.assertEquals(nodeIdentifier, body.value.nodeIdentifier)
-            Assertions.assertEquals("54.183.17.224", body.value.ipAddress)
+            body.value.nodeIdentifier should contain(nodeIdentifier)
+            body.value.ipAddress should contain("54.183.17.224")
         }
 
         @Test
@@ -83,8 +90,8 @@ class BankDataSourceTest {
             val response = bankDataSource.fetchAccounts()
 
             check(response is Outcome.Success)
-            Assertions.assertTrue(response.value.count > 0)
-            Assertions.assertTrue(response.value.results.isNotEmpty())
+            response.value.count shouldBeGreaterThan 0
+            response.value.results.shouldNotBeEmpty()
         }
     }
 
@@ -109,7 +116,7 @@ class BankDataSourceTest {
 
             // then
             check(response is Outcome.Error)
-            Assertions.assertTrue(response.cause is IOException)
+            response.cause should beInstanceOf<IOException>()
         }
 
         @Test
@@ -122,7 +129,7 @@ class BankDataSourceTest {
 
             // then
             check(response is Outcome.Error)
-            Assertions.assertTrue(response.cause is IOException)
+            response.cause should beInstanceOf<IOException>()
         }
 
         @Test
@@ -141,7 +148,7 @@ class BankDataSourceTest {
 
             // then
             check(response is Outcome.Error)
-            Assertions.assertTrue(response.cause is IOException)
+            response.cause should beInstanceOf<IOException>()
         }
 
         @Test
@@ -154,7 +161,7 @@ class BankDataSourceTest {
 
             // then
             check(body is Outcome.Error)
-            Assertions.assertTrue(body.cause is IOException)
+            body.cause should beInstanceOf<IOException>()
         }
 
         @Test
@@ -173,7 +180,7 @@ class BankDataSourceTest {
 
             // then
             check(response is Outcome.Error)
-            Assertions.assertTrue(response.cause is IOException)
+            response.cause should beInstanceOf<IOException>()
         }
     }
 }
