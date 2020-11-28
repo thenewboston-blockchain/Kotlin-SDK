@@ -6,6 +6,7 @@ import com.thenewboston.common.http.config.BankConfig
 import com.thenewboston.utils.Mocks
 import io.kotest.matchers.should
 import io.kotest.matchers.types.beInstanceOf
+import io.ktor.util.*
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -165,7 +166,7 @@ class BankRepositoryTest {
 
         // then
         coVerify { bankDataSource.fetchBlocks() }
-        assertTrue(result is Outcome.Error)
+        result should beInstanceOf<Outcome.Error>()
     }
 
     @Test
@@ -177,6 +178,6 @@ class BankRepositoryTest {
 
         // then
         coVerify { bankDataSource.fetchBlocks() }
-        assertTrue(result is Outcome.Success)
+        result should beInstanceOf<Outcome.Success<*>>()
     }
 }

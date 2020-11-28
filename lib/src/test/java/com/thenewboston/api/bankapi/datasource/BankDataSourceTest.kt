@@ -9,6 +9,7 @@ import io.kotest.matchers.longs.shouldBeGreaterThan
 import io.kotest.matchers.should
 import io.kotest.matchers.string.contain
 import io.kotest.matchers.types.beInstanceOf
+import io.ktor.util.*
 import io.ktor.utils.io.errors.*
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.DisplayName
@@ -100,8 +101,8 @@ class BankDataSourceTest {
             val response = bankDataSource.fetchBlocks()
 
             check(response is Outcome.Success)
-            Assertions.assertTrue(response.value.count > 0)
-            Assertions.assertTrue(response.value.results.isNotEmpty())
+            response.value.count shouldBeGreaterThan 0
+            response.value.results.shouldNotBeEmpty()
         }
     }
 
@@ -203,7 +204,8 @@ class BankDataSourceTest {
 
             // then
             check(response is Outcome.Error)
-            Assertions.assertTrue(response.cause is IOException)
+            response.cause should beInstanceOf<IOException>()
+
         }
     }
 }
