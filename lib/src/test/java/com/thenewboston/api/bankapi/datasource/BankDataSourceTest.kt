@@ -205,7 +205,6 @@ class BankDataSourceTest {
             // then
             check(response is Outcome.Error)
             response.cause should beInstanceOf<IOException>()
-
         }
     }
 }
