@@ -6,15 +6,19 @@ import com.thenewboston.common.http.config.BankConfig
 import com.thenewboston.utils.Mocks
 import io.kotest.matchers.should
 import io.kotest.matchers.types.beInstanceOf
+import io.ktor.util.*
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.io.IOException
 
+@ExperimentalCoroutinesApi
+@KtorExperimentalAPI
 class BankRepositoryTest {
 
     @MockK
@@ -150,6 +154,30 @@ class BankRepositoryTest {
 
         // then
         coVerify { bankDataSource.fetchAccounts() }
+        result should beInstanceOf<Outcome.Success<*>>()
+    }
+
+    @Test
+    fun `verify list of blocks is error outcome`() = runBlockingTest {
+        coEvery { bankDataSource.fetchBlocks() } returns Outcome.Error("", IOException())
+
+        // when
+        val result = repository.blocks()
+
+        // then
+        coVerify { bankDataSource.fetchBlocks() }
+        result should beInstanceOf<Outcome.Error>()
+    }
+
+    @Test
+    fun `verify list of blocks is success outcome`() = runBlockingTest {
+        coEvery { bankDataSource.fetchBlocks() } returns Outcome.Success(Mocks.blocks())
+
+        // when
+        val result = repository.blocks()
+
+        // then
+        coVerify { bankDataSource.fetchBlocks() }
         result should beInstanceOf<Outcome.Success<*>>()
     }
 }

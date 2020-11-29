@@ -6,6 +6,14 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+data class BlockList(
+    val count: Long,
+    val next: String?,
+    val previous: String?,
+    val results: List<Block>
+)
+
+@Serializable
 data class Block(
     @SerialName("id")
     val id: String,

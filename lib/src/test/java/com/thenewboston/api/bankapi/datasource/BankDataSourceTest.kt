@@ -9,6 +9,7 @@ import io.kotest.matchers.longs.shouldBeGreaterThan
 import io.kotest.matchers.should
 import io.kotest.matchers.string.contain
 import io.kotest.matchers.types.beInstanceOf
+import io.ktor.util.*
 import io.ktor.utils.io.errors.*
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.DisplayName
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 
+@KtorExperimentalAPI
 class BankDataSourceTest {
 
     private var networkClient = NetworkClient(
@@ -74,7 +76,7 @@ class BankDataSourceTest {
         @Test
         fun `test fetch single validator successfully`() = runBlocking {
             // given
-            val nodeIdentifier = "2262026a562b0274163158e92e8fbc4d28e519bc5ba8c1cf403703292be84a51"
+            val nodeIdentifier = "61dbf00c2dd7886f01fda60aca6fffd9799f4612110fe804220570add6b28923"
 
             // when
             val body = bankDataSource.fetchValidator(nodeIdentifier)
@@ -82,12 +84,21 @@ class BankDataSourceTest {
             // then
             check(body is Outcome.Success)
             body.value.nodeIdentifier should contain(nodeIdentifier)
-            body.value.ipAddress should contain("54.183.17.224")
+            body.value.ipAddress should contain("54.67.72.197")
         }
 
         @Test
         fun `test fetch list of accounts successfully`() = runBlocking {
             val response = bankDataSource.fetchAccounts()
+
+            check(response is Outcome.Success)
+            response.value.count shouldBeGreaterThan 0
+            response.value.results.shouldNotBeEmpty()
+        }
+
+        @Test
+        fun `test fetch list of blocks successfully`() = runBlocking {
+            val response = bankDataSource.fetchBlocks()
 
             check(response is Outcome.Success)
             response.value.count shouldBeGreaterThan 0
@@ -177,6 +188,19 @@ class BankDataSourceTest {
             bankDataSource = BankDataSource(networkClient)
             // when
             val response = bankDataSource.fetchAccounts()
+
+            // then
+            check(response is Outcome.Error)
+            response.cause should beInstanceOf<IOException>()
+        }
+
+        @Test
+        fun `test return error outcome for lis of blocks IOException`() = runBlocking {
+            networkClient = NetworkClient(BankConfig(ipAddress = ""))
+
+            bankDataSource = BankDataSource(networkClient)
+            // when
+            val response = bankDataSource.fetchBlocks()
 
             // then
             check(response is Outcome.Error)

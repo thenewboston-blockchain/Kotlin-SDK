@@ -4,17 +4,20 @@ import com.thenewboston.common.http.NetworkClient
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.common.http.config.BankConfig
 import com.thenewboston.common.http.makeApiCall
-import com.thenewboston.data.dto.bankapi.accountdto.AccountListDTO
+import com.thenewboston.data.dto.bankapi.accountdto.AccountList
 import com.thenewboston.data.dto.bankapi.bankdto.BankList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
+import com.thenewboston.data.dto.bankapi.banktransactiondto.BlockList
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.validatordto.Validator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import com.thenewboston.utils.Endpoints
 import io.ktor.client.request.*
+import io.ktor.util.*
 import io.ktor.utils.io.errors.*
 import javax.inject.Inject
 
+@KtorExperimentalAPI
 class BankDataSource @Inject constructor(private val networkClient: NetworkClient) {
 
     suspend fun fetchBanks() = makeApiCall(
@@ -89,13 +92,13 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         return Outcome.Success(validator)
     }
 
-    suspend fun fetchAccounts(): Outcome<AccountListDTO> = makeApiCall(
+    suspend fun fetchAccounts(): Outcome<AccountList> = makeApiCall(
         call = { accounts() },
         errorMessage = "Could not fetch list of accounts"
     )
 
-    private suspend fun accounts(): Outcome<AccountListDTO> {
-        val accounts = networkClient.defaultClient.get<AccountListDTO>(Endpoints.ACCOUNTS_ENDPOINT)
+    private suspend fun accounts(): Outcome<AccountList> {
+        val accounts = networkClient.defaultClient.get<AccountList>(Endpoints.ACCOUNTS_ENDPOINT)
 
         return when {
             accounts.results.isNullOrEmpty() -> Outcome.Error(
@@ -103,6 +106,23 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
                 IOException()
             )
             else -> Outcome.Success(accounts)
+        }
+    }
+
+    suspend fun fetchBlocks(): Outcome<BlockList> = makeApiCall(
+        call = { blocks() },
+        errorMessage = "Could not fetch list of blocks"
+    )
+
+    private suspend fun blocks(): Outcome<BlockList> {
+        val blocks = networkClient.defaultClient.get<BlockList>(Endpoints.BLOCKS_ENDPOINT)
+
+        return when {
+            blocks.results.isNullOrEmpty() -> Outcome.Error(
+                "Received null or empty list",
+                IOException()
+            )
+            else -> Outcome.Success(blocks)
         }
     }
 }
