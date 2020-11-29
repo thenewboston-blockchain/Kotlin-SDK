@@ -10,6 +10,7 @@ sonarqube {
     property "sonar.java.coveragePlugin", "jacoco"
     property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/testReport/testReport.xml"
     property "sonar.java.binaries", "build/classes/java, build/classes/kotlin"
+    property "detekt.sonar.kotlin.config.path", "${rootProject.projectDir}/config/detekt/detekt.yml"
     property "sonar.coverage.exclusions", "**/test/**,**/R.class,**/BuildConfig.*,**/Manifest*.*,**/*Test*.*,**/*Dto*.*,**/di/module/*,**/*MapperImpl*.*,**/BuildConfig.*,**/*Component*.*,**/*BR*.*,**/Manifest*.*,**/*Companion*.*,**/*Module.*,**/*Dagger*.*,**/*MembersInjector*.*,**/*Extensions*.*,**/InputMethodManagerLeaks.*,**/*_Factory*.*,**/*_Provide*Factory*.*"
   }
 }
