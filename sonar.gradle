@@ -2,7 +2,7 @@ apply plugin: "org.sonarqube"
 
 sonarqube {
   properties {
-    property "sonar.host.url", "https://sonarcloud.io/dashboard?id=thenewboston-developers_Kotlin-SDK"
+    property "sonar.host.url", "https://sonarcloud.io"
     property "sonar.projectName", "Kotlin-SDK"
     property "sonar.projectKey", "thenewboston-developers_Kotlin-SDK"
     property "sonar.projectVersion", "1.0.0"
