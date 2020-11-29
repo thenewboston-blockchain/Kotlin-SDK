@@ -1,0 +1,15 @@
+apply plugin: "org.sonarqube"
+
+sonarqube {
+  properties {
+    property "sonar.host.url", "https://sonarcloud.io/dashboard?id=thenewboston-developers_Kotlin-SDK"
+    property "sonar.projectName", "Kotlin-SDK"
+    property "sonar.projectKey", "thenewboston-developers_Kotlin-SDK"
+    property "sonar.projectVersion", "1.0.0"
+    property "sonar.sourceEncoding", "UTF-8"
+    property "sonar.java.coveragePlugin", "jacoco"
+    property "sonar.coverage.exclusions", "**/test/**,**/R.class,**/BuildConfig.*,**/Manifest*.*,**/*Test*.*,**/*Dto*.*,**/di/module/*,**/*MapperImpl*.*,**/BuildConfig.*,**/*Component*.*,**/*BR*.*,**/Manifest*.*,**/*Companion*.*,**/*Module.*,**/*Dagger*.*,**/*MembersInjector*.*,**/*Extensions*.*,**/InputMethodManagerLeaks.*,**/*_Factory*.*,**/*_Provide*Factory*.*"
+  }
+}
+
+tasks.sonarqube.dependsOn ":lib:testReport"
