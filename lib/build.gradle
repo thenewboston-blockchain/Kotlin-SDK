@@ -3,6 +3,26 @@ apply plugin: 'kotlin'
 apply plugin: 'kotlinx-serialization'
 apply plugin: 'kotlin-kapt'
 apply from: '../ktlint.gradle'
+apply from: './jacoco.gradle'
+apply from: '../sonar.gradle'
+
+configurations {
+  archives {
+    extendsFrom configurations.default
+  }
+}
+
+jacocoTestReport {
+  reports {
+    xml.enabled true
+    xml.destination = file("${buildDir}/reports/jacoco/testReport/testReport.xml")
+  }
+}
+
+tasks.withType(Test) {
+  jacoco.includeNoLocationClasses = true
+  jacoco.excludes = ['jdk.internal.*']
+}
 
 
 buildscript {
@@ -28,7 +48,7 @@ test {
 }
 
 dependencies {
-  implementation fileTree(dir: 'libs', include: ['*.jar'])
+  implementation fileTree(dir: 'lib', include: ['*.jar'])
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
   // Ktor related dependencies

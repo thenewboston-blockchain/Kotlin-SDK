@@ -76,7 +76,7 @@ class BankDataSourceTest {
         @Test
         fun `test fetch single validator successfully`() = runBlocking {
             // given
-            val nodeIdentifier = "61dbf00c2dd7886f01fda60aca6fffd9799f4612110fe804220570add6b28923"
+            val nodeIdentifier = "6871913581c3e689c9f39853a77e7263a96fd38596e9139f40a367e28364da53"
 
             // when
             val body = bankDataSource.fetchValidator(nodeIdentifier)
@@ -84,7 +84,7 @@ class BankDataSourceTest {
             // then
             check(body is Outcome.Success)
             body.value.nodeIdentifier should contain(nodeIdentifier)
-            body.value.ipAddress should contain("54.67.72.197")
+            body.value.ipAddress should contain("167.71.3.52")
         }
 
         @Test
