@@ -2,31 +2,24 @@ package com.thenewboston.kotlinsdk
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
-import com.thenewboston.kotlinsdk.network.apis.BankApis
-import com.thenewboston.kotlinsdk.network.apis.ApiClient
-import com.thenewboston.kotlinsdk.network.apis.ValidatorsApi
-import com.thenewboston.kotlinsdk.home.repository.bank.BankRepoImpl
-import com.thenewboston.kotlinsdk.home.repository.profile.ProfileRepoImpl
-import com.thenewboston.kotlinsdk.home.repository.validator.ValidatorRepoImpl
 import com.thenewboston.kotlinsdk.utils.TinyDB
-import com.thenewboston.kotlinsdk.home.viewModelProviders.BankViewModelProvider
-import com.thenewboston.kotlinsdk.home.viewModelProviders.ProfileViewModelProvider
-import com.thenewboston.kotlinsdk.home.viewModelProviders.ValidatorViewModelProvider
 import com.thenewboston.kotlinsdk.home.viewmodels.BankViewModel
 import com.thenewboston.kotlinsdk.home.viewmodels.ProfileViewModel
 import com.thenewboston.kotlinsdk.home.viewmodels.ValidatorViewModel
 import com.thenewboston.kotlinsdk.home.views.BankFragment
 import com.thenewboston.kotlinsdk.home.views.ProfileFragment
 import com.thenewboston.kotlinsdk.home.views.ValidatorFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var bankViewModel: BankViewModel
-    private lateinit var validatorViewModel: ValidatorViewModel
-    private lateinit var profileViewModel: ProfileViewModel
+    private val bankViewModel by viewModels<BankViewModel>()
+    private val validatorViewModel by viewModels<ValidatorViewModel>()
+    private val profileViewModel by viewModels<ProfileViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,14 +48,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        bankViewModel = initializeBankViewModel()
-        validatorViewModel = initializeValidatorViewModel()
-        profileViewModel = initializeProfileViewModel()
         // get acc no
         profileViewModel.accountNumber.postValue(TinyDB.getDataFromLocal(this, ACCOUNT_NO))
     }
 
-    /* TODO: inject as dependencies later */
+    /* TODO: inject as dependencies later
     private fun initializeBankViewModel() = ViewModelProvider(
             this,
             BankViewModelProvider(
@@ -91,5 +81,5 @@ class MainActivity : AppCompatActivity() {
                         .create(ValidatorsApi::class.java)
                 )
             )
-        ).get(ProfileViewModel::class.java)
+        ).get(ProfileViewModel::class.java)*/
 }

@@ -15,11 +15,6 @@ import com.thenewboston.kotlinsdk.utils.TinyDB
 import com.thenewboston.kotlinsdk.home.viewmodels.ProfileViewModel
 import com.thenewboston.kotlinsdk.utils.ViewUtils
 import kotlinx.android.synthetic.main.profile_overview_fragment.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ProfileOverviewFragment : Fragment() {
 

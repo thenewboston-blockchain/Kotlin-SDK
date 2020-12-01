@@ -3,6 +3,7 @@
     package="com.thenewboston.kotlinsdk">
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
+        android:name=".ApplicationClass"
         android:allowBackup="true"
         android:icon="@drawable/logo_square"
         android:label="@string/app_name"

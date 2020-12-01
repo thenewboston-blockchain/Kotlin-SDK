@@ -17,11 +17,6 @@ import com.thenewboston.kotlinsdk.home.viewmodels.ProfileViewModel
 import com.thenewboston.kotlinsdk.home.viewmodels.ValidatorViewModel
 import com.thenewboston.kotlinsdk.network.models.GenericListDataModel
 import kotlinx.android.synthetic.main.list_display_fragment.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ListDisplayFragment(
     private val currentPage: Int,

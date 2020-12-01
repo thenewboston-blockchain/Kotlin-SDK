@@ -1,10 +1,12 @@
 package com.thenewboston.kotlinsdk.home.views
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.thenewboston.kotlinsdk.GENERAL_ERROR
 import com.thenewboston.kotlinsdk.PRIMARY_VALIDATOR
@@ -13,11 +15,6 @@ import com.thenewboston.kotlinsdk.network.models.ValidatorConfigModel
 import com.thenewboston.kotlinsdk.utils.TinyDB
 import com.thenewboston.kotlinsdk.home.viewmodels.ValidatorViewModel
 import kotlinx.android.synthetic.main.validator_overview_fragment.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ValidatorOverviewFragment : Fragment() {
     override fun onCreateView(
@@ -36,16 +33,20 @@ class ValidatorOverviewFragment : Fragment() {
 
         primary_validator.text = TinyDB.getDataFromLocal(requireContext(), PRIMARY_VALIDATOR)
 
-        CoroutineScope(Dispatchers.IO).launch {
-            val data = viewModel.getValidatorConfig()
-            withContext(Main) {
-                if(data.second!=null) {
-                    showData(data.second!!)
+        viewModel.validatorConfigLiveData.observe(viewLifecycleOwner, Observer {
+            if(it!=null) {
+                if(it.second!=null) {
+                    showData(it.second!!)
                 } else {
-                    handleError(data.first)
+                    handleError(it.first)
                 }
+            } else {
+                handleError("Overview data is null")
             }
-        }
+        })
+
+        viewModel.getValidatorConfig()
+
     }
 
     private fun showData(data: ValidatorConfigModel) {

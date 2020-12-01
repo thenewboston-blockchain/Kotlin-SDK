@@ -42,7 +42,6 @@ class BankOverviewFragment : Fragment() {
     }
 
     private fun observeLiveData(viewModel: BankViewModel) {
-        viewModel.getBankConfig()
         viewModel.liveDataBankOverview.observe(viewLifecycleOwner, Observer {
             Log.d("DATA_BANK", "$it")
             if(it!=null) {
@@ -52,9 +51,10 @@ class BankOverviewFragment : Fragment() {
                     handleError(it.first)
                 }
             } else {
-
+                handleError("Overview data is null")
             }
         })
+        viewModel.getBankConfig()
     }
 
     private fun showData(data: BankConfigModel) {

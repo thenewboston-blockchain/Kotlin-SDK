@@ -1,4 +1,4 @@
-package com.thenewboston.kotlinsdk.home.repository.profile
+package com.thenewboston.kotlinsdk.home.repository
 
 
 import com.thenewboston.kotlinsdk.network.apis.BankApis
@@ -6,17 +6,20 @@ import com.thenewboston.kotlinsdk.network.apis.ValidatorsApi
 import com.thenewboston.kotlinsdk.network.models.ProfileBalanceObject
 import com.thenewboston.kotlinsdk.network.models.GenericListDataModel
 import com.thenewboston.kotlinsdk.utils.NetworkUtils
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class ProfileRepoImpl(
+@Singleton
+class ProfileRepository @Inject constructor(
     private val bank: BankApis,
     private val validators: ValidatorsApi
-) : ProfileRepo {
-    override suspend fun getAccountBalance(accountNumber: String): Int? {
+) {
+    suspend fun getAccountBalance(accountNumber: String): Int? {
         val data = NetworkUtils.callApiAndGetData<ProfileBalanceObject> { validators.getAccountBalance(accountNumber) }
         return data.second?.balance
     }
 
-    override suspend fun getAccountTransactions(accountNumber: String, limit: Int, offset: Int): Pair<String?, GenericListDataModel?> {
+    suspend fun getAccountTransactions(accountNumber: String, limit: Int, offset: Int): Pair<String?, GenericListDataModel?> {
         return NetworkUtils.callApiAndGetData<GenericListDataModel> {
             bank.getAccountTransactions(accountNumber, limit, offset)
         }

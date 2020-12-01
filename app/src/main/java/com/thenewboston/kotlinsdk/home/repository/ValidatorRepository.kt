@@ -1,19 +1,22 @@
-package com.thenewboston.kotlinsdk.home.repository.validator
+package com.thenewboston.kotlinsdk.home.repository
 
 import com.thenewboston.kotlinsdk.network.apis.ValidatorsApi
 import com.thenewboston.kotlinsdk.network.models.GenericListDataModel
 import com.thenewboston.kotlinsdk.network.models.ValidatorConfigModel
 import com.thenewboston.kotlinsdk.utils.NetworkUtils
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class ValidatorRepoImpl(
+@Singleton
+class ValidatorRepository @Inject constructor(
     private val validators: ValidatorsApi
-) : ValidatorRepo {
+) {
 
-    override suspend fun getValidatorConfig(): Pair<String?, ValidatorConfigModel?> {
+    suspend fun getValidatorConfig(): Pair<String?, ValidatorConfigModel?> {
         return NetworkUtils.callApiAndGetData<ValidatorConfigModel> { validators.getConfig() }
     }
 
-    override suspend fun getValidatorAccounts(limit: Int, offset: Int): Pair<String?, GenericListDataModel?> {
+    suspend fun getValidatorAccounts(limit: Int, offset: Int): Pair<String?, GenericListDataModel?> {
         return NetworkUtils.callApiAndGetData<GenericListDataModel> { validators.getAccounts(limit, offset) }
     }
 
