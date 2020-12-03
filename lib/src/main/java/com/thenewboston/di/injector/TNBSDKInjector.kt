@@ -1,9 +1,9 @@
 package com.thenewboston.di.injector
 
-import com.thenewboston.bank.repository.BankRepository
-import com.thenewboston.di.DaggerTNBComponent
-import com.thenewboston.di.TNBComponent
-import com.thenewboston.di.TNBNetworkModule
+import com.thenewboston.api.bankapi.repository.BankRepository
+import com.thenewboston.di.builder.DaggerTNBComponent
+import com.thenewboston.di.builder.TNBBankNetworkModule
+import com.thenewboston.di.builder.TNBComponent
 
 class TNBSDKInjector {
 
@@ -13,7 +13,7 @@ class TNBSDKInjector {
 
     private fun component(): TNBComponent {
         return DaggerTNBComponent.builder()
-            .tNBNetworkModule(TNBNetworkModule())
+            .tNBBankNetworkModule(TNBBankNetworkModule())
             .build()
     }
 }

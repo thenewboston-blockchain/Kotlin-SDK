@@ -4,15 +4,15 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ValidatorListDTO(
+data class ValidatorList(
     val count: Long,
     val next: String?,
     val previous: String?,
-    val results: List<ValidatorDTO>
+    val results: List<Validator>
 )
 
 @Serializable
-data class ValidatorDTO(
+data class Validator(
     @SerialName("account_number")
     val accountNumber: String,
 

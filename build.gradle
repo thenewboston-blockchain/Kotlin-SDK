@@ -1,30 +1,62 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.kotlin_version = "1.4.10"
-    repositories {
-        google()
-        jcenter()
-    }
-    dependencies {
-        classpath "com.android.tools.build:gradle:4.0.1"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
+  ext.kotlin_version = "1.4.20"
+  repositories {
+    google()
+    jcenter()
+  }
+  dependencies {
+    classpath "com.android.tools.build:gradle:4.0.2"
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
+    classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.0"
+    classpath 'org.jacoco:org.jacoco.core:0.8.6'
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
+    // NOTE: Do not place your application dependencies here; they belong
+    // in the individual module build.gradle files
+  }
+}
+
+plugins {
+  id "io.gitlab.arturbosch.detekt" version "$detektPluginVersion"
 }
 
 allprojects {
-    repositories {
-        google()
-        jcenter()
-        maven {
-            url "https://kotlin.bintray.com/kotlinx/"
-        }
+  repositories {
+    google()
+    jcenter()
+    maven {
+      url "https://kotlin.bintray.com/kotlinx/"
     }
+  }
+}
+
+subprojects {
+
+  apply {
+    plugin("io.gitlab.arturbosch.detekt")
+  }
+
+  detekt {
+    failFast = true
+    buildUponDefaultConfig = true
+    input = files(projectDir)
+    config = files("${rootProject.projectDir}/config/detekt/detekt.yml")
+
+    reports {
+      html.enabled = true
+      xml.enabled = true
+      txt.enabled = true
+    }
+  }
+
+  dependencies {
+    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:$detektPluginVersion"
+  }
+
+  tasks.detekt.jvmTarget = "1.8"
 }
 
 task clean(type: Delete) {
-    delete rootProject.buildDir
+  delete rootProject.buildDir
 }
