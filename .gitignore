@@ -24,7 +24,6 @@ hs_err_pid*
 
 # Build files
 **/build
-**/out
 
 # Ignore Gradle GUI config
 gradle-app.setting
