@@ -1,0 +1,45 @@
+apply plugin: 'jacoco'
+
+jacoco {
+  toolVersion "0.8.6"
+}
+// run ./gradlew clean testReport
+
+task testReport(type: JacocoReport, dependsOn: ['test']) {
+  group = "Reporting"
+  description = "Generate Jacoco coverage reports"
+
+  reports {
+    xml.enabled true
+    csv.enabled false
+    html.enabled true
+  }
+
+  def fileFilter = [
+                    // Dagger2 generated code
+                    '**/*Builder.*',
+                    '**/*_MembersInjector.class',
+                    '**/*_MembersInjector*.*',
+                    '**/*_*Factory*.*',
+                    '**/*Component*.*',
+                    '**/*Module*.*',
+
+                    '**/*Test*.*',
+                    '**/AutoValue_*.*'
+
+  ].asImmutable()
+
+  def javaReleaseTree = fileTree(dir: "${buildDir}/classes/java", excludes: fileFilter)
+  def kotlinReleaseTree = fileTree(dir: "${buildDir}/classes/kotlin", excludes: fileFilter)
+  def mainSrc = "${project.projectDir}/src/main/java"
+
+  sourceDirectories.setFrom(files([mainSrc]))
+  classDirectories.setFrom(files([javaReleaseTree, kotlinReleaseTree]))
+  executionData.setFrom(fileTree(dir: project.projectDir, includes:
+    ['**/*.exec' , '**/*.ec']))
+}
+
+task openCoverageReport(type: Exec, dependsOn: 'testReport') {
+  group = "Reporting"
+  commandLine "open", "$buildDir/reports/jacoco/testReport/html/index.html"
+}
