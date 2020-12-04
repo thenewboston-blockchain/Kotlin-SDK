@@ -11,22 +11,6 @@ buildscript {
     ext.hilt_version = "2.28-alpha"
     ext.hilt_viewmodels = "1.0.0-alpha02"
     ext.fragment_ktx = "1.3.0-beta01"
-
-  repositories {
-    google()
-    jcenter()
-  }
-
-  dependencies {
-    classpath "com.android.tools.build:gradle:4.0.2"
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
-    classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.0"
-    classpath 'org.jacoco:org.jacoco.core:0.8.6'
-    classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
-
-    // NOTE: Do not place your application dependencies here; they belong
-    // in the individual module build.gradle files
     repositories {
         google()
         jcenter()
