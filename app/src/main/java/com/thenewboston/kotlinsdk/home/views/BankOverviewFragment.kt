@@ -12,6 +12,7 @@ import com.thenewboston.kotlinsdk.BuildConfig
 import com.thenewboston.kotlinsdk.GENERAL_ERROR
 import com.thenewboston.kotlinsdk.R
 import com.thenewboston.kotlinsdk.home.viewmodels.BankViewModel
+import com.thenewboston.kotlinsdk.network.apis.ApiClient
 import com.thenewboston.kotlinsdk.network.models.BankConfigModel
 import kotlinx.android.synthetic.main.bank_overview_fragment.*
 import kotlinx.android.synthetic.main.bank_overview_fragment.errorText
@@ -37,7 +38,7 @@ class BankOverviewFragment : Fragment() {
         val viewModel = requireActivity().run {
             ViewModelProvider(this).get(BankViewModel::class.java)
         }
-        active_bank.text = BuildConfig.BANK_BASE_URL
+        active_bank.text = ApiClient.BANK_URL
         observeLiveData(viewModel)
     }
 

@@ -23,10 +23,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        debug {
-            applicationIdSuffix ".debug"
-            buildConfigField("String", 'BANK_BASE_URL', "\"http://143.110.137.54/\"")
-        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

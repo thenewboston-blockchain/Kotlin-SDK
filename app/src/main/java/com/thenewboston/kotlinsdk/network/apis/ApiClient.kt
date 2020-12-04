@@ -9,6 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
+    const val BANK_URL = "http://143.110.137.54/"
     private lateinit var retrofitForBank: Retrofit
     private lateinit var retrofitForValidators: Retrofit
     private val client by lazy {
@@ -19,7 +20,7 @@ object ApiClient {
 
     val defaultBankClient: Retrofit get() {
         if (!this::retrofitForBank.isInitialized) {
-            retrofitForBank = initializeClient(BuildConfig.BANK_BASE_URL)
+            retrofitForBank = initializeClient(BANK_URL)
         }
         return retrofitForBank
     }
