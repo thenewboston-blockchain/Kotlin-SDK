@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@drawable/primary_button_bg"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/close"
+        android:padding="@dimen/_10sdp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+        <ImageView
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:src="@drawable/ic_close"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_15sdp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit Account Number"
+            android:id="@+id/edit_acc_head"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textColor="@color/primaryText"
+            android:textSize="@dimen/_16sdp"
+            android:fontFamily="@font/montserrat_semibold"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/acc_no_edit"
+            android:layout_below="@+id/edit_acc_head"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:elevation="0dp"
+            android:layout_marginBottom="@dimen/_3sdp"
+            android:layout_marginEnd="@dimen/_2sdp"
+            android:layout_marginRight="2sp"
+            android:id="@+id/save"
+            android:background="@drawable/primary_button_bg"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/acc_no_edit"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>
