@@ -4,7 +4,7 @@ apply plugin: 'kotlinx-serialization'
 apply plugin: 'kotlin-kapt'
 apply from: '../ktlint.gradle'
 apply from: './jacoco.gradle'
-apply from: '../sonar.gradle'
+apply from: './sonar.gradle'
 apply from: './detekt.gradle'
 
 configurations {
