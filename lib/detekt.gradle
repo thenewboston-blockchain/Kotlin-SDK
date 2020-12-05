@@ -1,6 +1,4 @@
-apply {
-  plugin("io.gitlab.arturbosch.detekt")
-}
+apply plugin: "io.gitlab.arturbosch.detekt"
 
 detekt {
   failFast = true
