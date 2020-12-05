@@ -79,7 +79,8 @@ class BankDataSourceTest {
             @Test
             fun `should fetch single validator successfully`() = testBlocking {
                 // given
-                val nodeIdentifier = "6871913581c3e689c9f39853a77e7263a96fd38596e9139f40a367e28364da53"
+                val nodeIdentifier =
+                    "6871913581c3e689c9f39853a77e7263a96fd38596e9139f40a367e28364da53"
 
                 // when
                 val body = validBankDataSource.fetchValidator(nodeIdentifier)
@@ -120,11 +121,17 @@ class BankDataSourceTest {
                 // given
                 val nodeIdentifier = "foo"
                 val signature = "foo"
-                val accountNumber = "1111111111111111111111111111111111111111111111111111111111111111"
+                val accountNumber =
+                    "1111111111111111111111111111111111111111111111111111111111111111"
                 val newTrustLevel = 50.0
 
                 // when
-                val response = validBankDataSource.updateAccount(accountNumber, newTrustLevel, nodeIdentifier, signature)
+                val response = validBankDataSource.updateAccount(
+                    accountNumber,
+                    newTrustLevel,
+                    nodeIdentifier,
+                    signature
+                )
 
                 // then
                 check(response is Outcome.Success)
