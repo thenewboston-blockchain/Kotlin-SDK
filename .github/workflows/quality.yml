@@ -36,8 +36,8 @@ jobs:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
-      - name: Build and analyze
-        run: ./gradlew build testReport sonarqube --info
+      - name: Build and analyze SDK
+        run: ./gradlew clean :lib:testReport sonarqube --info
         env:
           # Needed to get some information about the pull request, if any
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
