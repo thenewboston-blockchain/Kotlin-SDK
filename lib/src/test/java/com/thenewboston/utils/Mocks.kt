@@ -1,7 +1,7 @@
 package com.thenewboston.utils
 
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
-import com.thenewboston.data.dto.bankapi.accountdto.AccountDTO
+import com.thenewboston.data.dto.bankapi.accountdto.Account
 import com.thenewboston.data.dto.bankapi.accountdto.AccountList
 import com.thenewboston.data.dto.bankapi.bankdto.Bank
 import com.thenewboston.data.dto.bankapi.bankdto.BankList
@@ -101,7 +101,7 @@ object Mocks {
         results = listOf(account(), account())
     )
 
-    fun account() = AccountDTO(
+    fun account() = Account(
         id = "",
         createdDate = LocalDateTime(2020, 8, 8, 12, 12, 23),
         modifiedDate = LocalDateTime(2020, 8, 8, 12, 13, 23),

@@ -10,11 +10,11 @@ data class AccountList(
     val count: Long,
     val next: String?,
     val previous: String?,
-    val results: List<AccountDTO>
+    val results: List<Account>
 )
 
 @Serializable
-data class AccountDTO(
+data class Account(
     @SerialName("id")
     val id: String,
 
@@ -28,6 +28,26 @@ data class AccountDTO(
 
     @SerialName("account_number")
     val accountNumber: String,
+
+    @SerialName("trust")
+    val trust: Double
+)
+
+@Serializable
+data class PatchAccountRequestBody(
+
+    @SerialName("message")
+    val message: PatchAccountMessage,
+
+    @SerialName("node_identifier")
+    val nodeIdentifier: String,
+
+    @SerialName("signature")
+    val signature: String
+)
+
+@Serializable
+data class PatchAccountMessage(
 
     @SerialName("trust")
     val trust: Double

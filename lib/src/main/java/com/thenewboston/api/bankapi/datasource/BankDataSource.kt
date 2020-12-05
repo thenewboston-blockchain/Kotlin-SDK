@@ -4,7 +4,10 @@ import com.thenewboston.common.http.NetworkClient
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.common.http.config.BankConfig
 import com.thenewboston.common.http.makeApiCall
+import com.thenewboston.data.dto.bankapi.accountdto.Account
 import com.thenewboston.data.dto.bankapi.accountdto.AccountList
+import com.thenewboston.data.dto.bankapi.accountdto.PatchAccountMessage
+import com.thenewboston.data.dto.bankapi.accountdto.PatchAccountRequestBody
 import com.thenewboston.data.dto.bankapi.bankdto.BankList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BlockList
@@ -13,6 +16,8 @@ import com.thenewboston.data.dto.bankapi.validatordto.Validator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import com.thenewboston.utils.Endpoints
 import io.ktor.client.request.*
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 import io.ktor.util.*
 import io.ktor.utils.io.errors.*
 import javax.inject.Inject
@@ -123,6 +128,41 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
                 IOException()
             )
             else -> Outcome.Success(blocks)
+        }
+    }
+
+    suspend fun updateAccount(
+        accountNumber: String,
+        trustLevel: Double,
+        nodeIdentifier: String,
+        signature: String
+    ): Outcome<Account> = makeApiCall(
+        call = { doUpdateAccount(accountNumber, trustLevel, nodeIdentifier, signature) },
+        errorMessage = "Could not update trust level of given account"
+    )
+
+    private suspend fun doUpdateAccount(
+        accountNumber: String,
+        trustLevel: Double,
+        nodeIdentifier: String,
+        signature: String
+    ): Outcome<Account> {
+        val patchAccountUrl = "${Endpoints.ACCOUNTS_ENDPOINT}/$accountNumber"
+        val message = PatchAccountMessage(trustLevel)
+        val requestBody = PatchAccountRequestBody(message, nodeIdentifier, signature)
+
+        val updatedAccount = networkClient.defaultClient.patch<Account> {
+            url(patchAccountUrl)
+            contentType(ContentType.Application.Json)
+            body = requestBody
+        }
+
+        return when {
+            updatedAccount.id.isBlank() -> Outcome.Error(
+                "Received unexpected response when updating trust level of account $accountNumber",
+                IOException()
+            )
+            else -> Outcome.Success(updatedAccount)
         }
     }
 }
