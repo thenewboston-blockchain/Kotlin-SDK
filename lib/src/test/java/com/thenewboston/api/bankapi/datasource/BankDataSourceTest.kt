@@ -39,10 +39,13 @@ class BankDataSourceTest {
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class GivenValidRequests {
 
+        @BeforeEach
+        fun setup() {
+            every { networkClient.defaultClient } returns mockEngine.getSuccess()
+        }
+
         @Test
         fun `test fetch list of available banks`() = runBlockingTest {
-            every { networkClient.defaultClient } returns mockEngine.getSuccess()
-
             val response = bankDataSource.fetchBanks()
 
             check(response is Outcome.Success)
@@ -51,8 +54,6 @@ class BankDataSourceTest {
 
         @Test
         fun `test fetch bank details from config`() = runBlockingTest {
-            every { networkClient.defaultClient } returns mockEngine.getSuccess()
-
             val response = bankDataSource.fetchBankDetails()
 
             check(response is Outcome.Success)
@@ -61,8 +62,6 @@ class BankDataSourceTest {
 
         @Test
         fun `test fetch list of available bank transactions`() = runBlockingTest {
-            every { networkClient.defaultClient } returns mockEngine.getSuccess()
-
             val response = bankDataSource.fetchBankTransactions()
 
             check(response is Outcome.Success)
@@ -72,8 +71,6 @@ class BankDataSourceTest {
 
         @Test
         fun `test fetch list of validators successfully`() = runBlockingTest {
-            every { networkClient.defaultClient } returns mockEngine.getSuccess()
-
             // when
             val body = bankDataSource.fetchValidators()
 
@@ -85,8 +82,6 @@ class BankDataSourceTest {
 
         @Test
         fun `test fetch single validator successfully`() = runBlockingTest {
-            every { networkClient.defaultClient } returns mockEngine.getSuccess()
-
             // given
             val nodeIdentifier = "6871913581c3e689c9f39853a77e7263a96fd38596e9139f40a367e28364da53"
 
@@ -101,8 +96,6 @@ class BankDataSourceTest {
 
         @Test
         fun `test fetch list of accounts successfully`() = runBlockingTest {
-            every { networkClient.defaultClient } returns mockEngine.getSuccess()
-
             val response = bankDataSource.fetchAccounts()
 
             check(response is Outcome.Success)
@@ -112,8 +105,6 @@ class BankDataSourceTest {
 
         @Test
         fun `test fetch list of blocks successfully`() = runBlockingTest {
-            every { networkClient.defaultClient } returns mockEngine.getSuccess()
-
             val response = bankDataSource.fetchBlocks()
 
             check(response is Outcome.Success)
@@ -127,10 +118,13 @@ class BankDataSourceTest {
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class GivenInvalidRequest {
 
+        @BeforeEach
+        fun setup() {
+            every { networkClient.defaultClient } returns mockEngine.getErrors()
+        }
+
         @Test
         fun `test return error outcome for IOException`() = runBlockingTest {
-            every { networkClient.defaultClient } returns mockEngine.getErrors()
-
             // when
             val response = bankDataSource.fetchBanks()
 
@@ -141,8 +135,6 @@ class BankDataSourceTest {
 
         @Test
         fun `test return error outcome for bank details IOException`() = runBlockingTest {
-            every { networkClient.defaultClient } returns mockEngine.getErrors()
-
             // when
             val response = bankDataSource.fetchBankDetails()
 
@@ -153,8 +145,6 @@ class BankDataSourceTest {
 
         @Test
         fun `test return error outcome for bank transactions IOException`() = runBlockingTest {
-            every { networkClient.defaultClient } returns mockEngine.getErrors()
-
             // when
             val response = bankDataSource.fetchBankTransactions()
 
@@ -165,8 +155,6 @@ class BankDataSourceTest {
 
         @Test
         fun `test return error outcome for single validator`() = runBlockingTest {
-            every { networkClient.defaultClient } returns mockEngine.getErrors()
-
             val nodeIdentifier = "6871913581c3e689c9f39853a77e7263a96fd38596e9139f40a367e28364da53"
             val response = bankDataSource.fetchValidator(nodeIdentifier)
 
@@ -191,8 +179,6 @@ class BankDataSourceTest {
 
         @Test
         fun `test return error outcome for list of accounts IOException`() = runBlockingTest {
-            every { networkClient.defaultClient } returns mockEngine.getErrors()
-
             // when
             val response = bankDataSource.fetchAccounts()
 
@@ -203,8 +189,6 @@ class BankDataSourceTest {
 
         @Test
         fun `test return error outcome for lis of blocks IOException`() = runBlockingTest {
-            every { networkClient.defaultClient } returns mockEngine.getErrors()
-
             // when
             val response = bankDataSource.fetchBlocks()
 
