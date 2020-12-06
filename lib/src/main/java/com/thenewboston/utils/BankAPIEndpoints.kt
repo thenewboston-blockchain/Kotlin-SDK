@@ -1,7 +1,6 @@
 package com.thenewboston.utils
 
-object Endpoints {
-    // Banks API endpoints
+object BankAPIEndpoints {
     const val VALIDATORS_ENDPOINT = "/validators"
     const val CONFIG_ENDPOINT = "/config"
     const val BANKS_ENDPOINT = "/banks"
