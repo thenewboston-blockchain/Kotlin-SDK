@@ -1,11 +1,11 @@
 package com.thenewboston.utils
 
-import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.accountdto.AccountDTO
 import com.thenewboston.data.dto.bankapi.accountdto.AccountList
 import com.thenewboston.data.dto.bankapi.bankdto.Bank
 import com.thenewboston.data.dto.bankapi.bankdto.BankList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransaction
+import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.Block
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BlockList
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
@@ -52,9 +52,9 @@ object Mocks {
     )
 
     fun validator() = Validator(
-        accountNumber = "",
+        accountNumber = "1",
         ipAddress = "127.0.0.1",
-        nodeIdentifier = "",
+        nodeIdentifier = "6871913581c3e689c9f39853a77e7263a96fd38596e9139f40a367e28364da53",
         port = 80,
         protocol = "http",
         version = "1",
@@ -127,4 +127,6 @@ object Mocks {
         next = null,
         results = listOf(invalidBlock(), invalidBlock())
     )
+
+    fun internalServerError() = BankAPIError(500, "Internal Server Error")
 }

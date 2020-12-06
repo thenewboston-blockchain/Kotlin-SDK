@@ -2,7 +2,6 @@ package com.thenewboston.api.bankapi.repository
 
 import com.thenewboston.api.bankapi.datasource.BankDataSource
 import com.thenewboston.common.http.Outcome
-import com.thenewboston.common.http.config.BankConfig
 import com.thenewboston.data.dto.bankapi.accountdto.AccountList
 import com.thenewboston.data.dto.bankapi.bankdto.BankList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
@@ -18,8 +17,8 @@ class BankRepository @Inject constructor(private val dataSource: BankDataSource)
 
     suspend fun banks(): Outcome<BankList> = dataSource.fetchBanks()
 
-    suspend fun bankDetail(bankConfig: BankConfig): Outcome<BankDetails> {
-        return dataSource.fetchBankDetails(bankConfig)
+    suspend fun bankDetail(): Outcome<BankDetails> {
+        return dataSource.fetchBankDetails()
     }
 
     suspend fun bankTransactions(): Outcome<BankTransactionList> {

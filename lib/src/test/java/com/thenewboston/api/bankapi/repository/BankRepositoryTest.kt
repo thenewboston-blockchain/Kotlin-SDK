@@ -2,7 +2,6 @@ package com.thenewboston.api.bankapi.repository
 
 import com.thenewboston.api.bankapi.datasource.BankDataSource
 import com.thenewboston.common.http.Outcome
-import com.thenewboston.common.http.config.BankConfig
 import com.thenewboston.utils.Mocks
 import io.kotest.matchers.should
 import io.kotest.matchers.types.beInstanceOf
@@ -50,19 +49,19 @@ class BankRepositoryTest {
     @Test
     fun `verify detail result is error`() = runBlockingTest {
         coEvery {
-            bankDataSource.fetchBankDetails(any())
+            bankDataSource.fetchBankDetails()
         } returns Outcome.Error("", IOException())
 
-        repository.bankDetail(BankConfig()) should beInstanceOf<Outcome.Error>()
+        repository.bankDetail() should beInstanceOf<Outcome.Error>()
     }
 
     @Test
     fun `verify detail result is success`() = runBlockingTest {
         coEvery {
-            bankDataSource.fetchBankDetails(any())
+            bankDataSource.fetchBankDetails()
         } returns Outcome.Success(Mocks.bankDetails())
 
-        repository.bankDetail(BankConfig()) should beInstanceOf<Outcome.Success<*>>()
+        repository.bankDetail() should beInstanceOf<Outcome.Success<*>>()
     }
 
     @Test
