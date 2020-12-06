@@ -30,8 +30,6 @@ data class InvalidBlockDTO(
     @SerialName("primary_validator")
     val primaryValidator: String,
 )
-
-
 @Serializable
 data class InvalidBlockList(
 

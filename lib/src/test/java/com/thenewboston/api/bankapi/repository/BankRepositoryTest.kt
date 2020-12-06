@@ -195,7 +195,8 @@ class BankRepositoryTest {
 
     @Test
     fun `verify list of invalid blocks is success outcome`() = runBlockingTest {
-        coEvery { bankDataSource.fetchInvalidBlocks() } returns Outcome.Success(Mocks.invalidBlocks())
+        coEvery { bankDataSource.fetchInvalidBlocks() } returns Outcome
+            .Success(Mocks.invalidBlocks())
 
         // when
         val result = repository.invalidBlocks()
