@@ -111,7 +111,7 @@ class BankDataSourceTest {
 
             check(response is Outcome.Success)
             response.value.count shouldBeGreaterThan 0
-            response.value.results.shoudlNotBeEmpty()
+            response.value.results.shouldNotBeEmpty()
         }
     }
 

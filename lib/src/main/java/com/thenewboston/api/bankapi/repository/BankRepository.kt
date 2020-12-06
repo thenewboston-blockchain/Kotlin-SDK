@@ -35,5 +35,4 @@ class BankRepository @Inject constructor(private val dataSource: BankDataSource)
     suspend fun blocks(): Outcome<BlockList> = dataSource.fetchBlocks()
 
     suspend fun invalidBlocks(): Outcome<InvalidBlockList> = dataSource.fetchInvalidBlocks()
-
 }

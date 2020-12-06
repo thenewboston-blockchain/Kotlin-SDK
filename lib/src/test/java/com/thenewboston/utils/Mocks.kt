@@ -9,6 +9,8 @@ import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransaction
 import com.thenewboston.data.dto.bankapi.banktransactiondto.Block
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BlockList
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
+import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockDTO
+import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.validatordto.Validator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import kotlinx.datetime.LocalDateTime
@@ -107,5 +109,22 @@ object Mocks {
         modifiedDate = LocalDateTime(2020, 8, 8, 12, 13, 23),
         accountNumber = "",
         trust = 100.0
+    )
+
+    fun invalidBlock() = InvalidBlockDTO(
+        id = "String",
+        createdDate = LocalDateTime.parse("2020-11-19T19:57:31.799872"),
+        modifiedDate = LocalDateTime.parse("2020-11-19T19:57:31.799872"),
+        blockIdentifier = "String",
+        block = "String",
+        confirmationValidator = "String",
+        primaryValidator = "String"
+    )
+
+    fun invalidBlocks() = InvalidBlockList(
+        count = 1,
+        previous = null,
+        next = null,
+        results = listOf(invalidBlock(), invalidBlock())
     )
 }
