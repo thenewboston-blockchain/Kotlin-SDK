@@ -27,4 +27,6 @@ object BankAPIJsonMapper {
     fun mapValidatorToJson(): String = Json.encodeToString(Mocks.validator())
 
     fun mapBankTransactionsToJson(): String = Json.encodeToString(Mocks.bankTransactions())
+
+    fun mapInternalServerErrorToJson(): String = Json.encodeToString(Mocks.internalServerError())
 }

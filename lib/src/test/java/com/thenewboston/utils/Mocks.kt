@@ -108,4 +108,6 @@ object Mocks {
         accountNumber = "",
         trust = 100.0
     )
+
+    fun internalServerError() = BankAPIError(500, "Internal Server Error")
 }

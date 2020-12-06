@@ -16,13 +16,14 @@ class BankApiMockEngine {
     private val responseHeaders = headersOf("Content-Type" to json)
 
     private fun getBankMockEngine(enableErrorResponse: Boolean = false) = HttpClient(MockEngine) {
+        val errorContent = BankAPIJsonMapper.mapInternalServerErrorToJson()
         engine {
             addHandler { request ->
                 when (request.url.encodedPath) {
                     BankAPIJsonMapper.ACCOUNTS_ENDPOINT -> {
                         val content = BankAPIJsonMapper.mapAccountsToJson()
                         if (enableErrorResponse) {
-                            respond(content, HttpStatusCode.InternalServerError, responseHeaders)
+                            respond(errorContent, HttpStatusCode.InternalServerError, responseHeaders)
                         } else {
                             respond(content, HttpStatusCode.OK, responseHeaders)
                         }
@@ -30,7 +31,7 @@ class BankApiMockEngine {
                     BankAPIJsonMapper.BANKS_ENDPOINT -> {
                         val content = BankAPIJsonMapper.mapBanksToJson()
                         if (enableErrorResponse) {
-                            respond(content, HttpStatusCode.InternalServerError, responseHeaders)
+                            respond(errorContent, HttpStatusCode.InternalServerError, responseHeaders)
                         } else {
                             respond(content, HttpStatusCode.OK, responseHeaders)
                         }
@@ -38,7 +39,7 @@ class BankApiMockEngine {
                     BankAPIJsonMapper.BANK_TRANSACTIONS_ENDPOINT -> {
                         val content = BankAPIJsonMapper.mapBankTransactionsToJson()
                         if (enableErrorResponse) {
-                            respond(content, HttpStatusCode.InternalServerError, responseHeaders)
+                            respond(errorContent, HttpStatusCode.InternalServerError, responseHeaders)
                         } else {
                             respond(content, HttpStatusCode.OK, responseHeaders)
                         }
@@ -46,7 +47,7 @@ class BankApiMockEngine {
                     BankAPIJsonMapper.BLOCKS_ENDPOINT -> {
                         val content = BankAPIJsonMapper.mapBlocksToJson()
                         if (enableErrorResponse) {
-                            respond(content, HttpStatusCode.InternalServerError, responseHeaders)
+                            respond(errorContent, HttpStatusCode.InternalServerError, responseHeaders)
                         } else {
                             respond(content, HttpStatusCode.OK, responseHeaders)
                         }
@@ -54,7 +55,7 @@ class BankApiMockEngine {
                     BankAPIJsonMapper.VALIDATORS_ENDPOINT -> {
                         val content = BankAPIJsonMapper.mapValidatorsToJson()
                         if (enableErrorResponse) {
-                            respond(content, HttpStatusCode.InternalServerError, responseHeaders)
+                            respond(errorContent, HttpStatusCode.InternalServerError, responseHeaders)
                         } else {
                             respond(content, HttpStatusCode.OK, responseHeaders)
                         }
@@ -62,7 +63,7 @@ class BankApiMockEngine {
                     BankAPIJsonMapper.SINGLE_VALIDATOR_ENDPOINT -> {
                         val content = BankAPIJsonMapper.mapValidatorToJson()
                         if (enableErrorResponse) {
-                            respond(content, HttpStatusCode.InternalServerError, responseHeaders)
+                            respond(errorContent, HttpStatusCode.InternalServerError, responseHeaders)
                         } else {
                             respond(content, HttpStatusCode.OK, responseHeaders)
                         }
@@ -70,7 +71,7 @@ class BankApiMockEngine {
                     BankAPIJsonMapper.CONFIG_ENDPOINT -> {
                         val content = BankAPIJsonMapper.mapBankDetailToJson()
                         if (enableErrorResponse) {
-                            respond(content, HttpStatusCode.InternalServerError, responseHeaders)
+                            respond(errorContent, HttpStatusCode.InternalServerError, responseHeaders)
                         } else {
                             respond(content, HttpStatusCode.OK, responseHeaders)
                         }
