@@ -8,6 +8,7 @@ import com.thenewboston.data.dto.bankapi.bankdto.BankList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BlockList
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
+import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import io.ktor.util.*
 import javax.inject.Inject

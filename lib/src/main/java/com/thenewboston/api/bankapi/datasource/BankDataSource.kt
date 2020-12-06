@@ -9,6 +9,7 @@ import com.thenewboston.data.dto.bankapi.bankdto.BankList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BlockList
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
+import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.validatordto.Validator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import com.thenewboston.utils.Endpoints
@@ -132,7 +133,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
     )
 
     private suspend fun getInvalidBlocks(): Outcome<InvalidBlockList> {
-        val invalidBlocks = networkClient.defaultClient.get<InvalidBlockList>(Endpoints.INVALID_BLOCKS)
+        val invalidBlocks = networkClient.defaultClient.get<InvalidBlockList>(Endpoints.INVALID_BLOCKS_ENDPOINT)
 
         return when {
             invalidBlocks.results.isNullOrEmpty() -> Outcome.Error(

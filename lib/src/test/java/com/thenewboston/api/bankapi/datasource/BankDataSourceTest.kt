@@ -104,6 +104,15 @@ class BankDataSourceTest {
             response.value.count shouldBeGreaterThan 0
             response.value.results.shouldNotBeEmpty()
         }
+
+        @Test
+        fun `test fetch list of invalid blocks successfully`() = runBlocking {
+            val response = bankDataSource.fetchInvalidBlocks()
+
+            check(response is Outcome.Success)
+            response.value.count shouldBeGreaterThan 0
+            response.value.results.shoudlNotBeEmpty()
+        }
     }
 
     @Nested
@@ -195,7 +204,7 @@ class BankDataSourceTest {
         }
 
         @Test
-        fun `test return error outcome for lis of blocks IOException`() = runBlocking {
+        fun `test return error outcome for list of blocks IOException`() = runBlocking {
             networkClient = NetworkClient(BankConfig(ipAddress = ""))
 
             bankDataSource = BankDataSource(networkClient)
