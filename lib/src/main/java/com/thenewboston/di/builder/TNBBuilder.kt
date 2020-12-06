@@ -46,7 +46,11 @@ class TNBBankNetworkModule {
 
     @TNBScope
     @Provides
-    fun provideBankHttpClient(engine: HttpClientEngine, bankConfig: BankConfig, json: Json): HttpClient =
+    fun provideBankHttpClient(
+        engine: HttpClientEngine,
+        bankConfig: BankConfig,
+        json: Json
+    ): HttpClient =
         HttpClient(engine) {
             defaultRequest {
                 this.host = bankConfig.ipAddress

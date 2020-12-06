@@ -167,7 +167,8 @@ class BankDataSourceTest {
         fun `test return error outcome for single validator`() = runBlockingTest {
             every { networkClient.defaultClient } returns mockEngine.getErrors()
 
-            val response = bankDataSource.fetchValidator("6871913581c3e689c9f39853a77e7263a96fd38596e9139f40a367e28364da53")
+            val nodeIdentifier = "6871913581c3e689c9f39853a77e7263a96fd38596e9139f40a367e28364da53"
+            val response = bankDataSource.fetchValidator(nodeIdentifier)
 
             check(response is Outcome.Error)
             response.cause should beInstanceOf<IOException>()

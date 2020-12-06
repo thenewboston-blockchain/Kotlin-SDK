@@ -94,7 +94,8 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
     )
 
     private suspend fun accounts(): Outcome<AccountList> {
-        val accounts = networkClient.defaultClient.get<AccountList>(BankAPIEndpoints.ACCOUNTS_ENDPOINT)
+        val urlString = BankAPIEndpoints.ACCOUNTS_ENDPOINT
+        val accounts = networkClient.defaultClient.get<AccountList>(urlString)
 
         return when {
             accounts.results.isNullOrEmpty() -> Outcome.Error(

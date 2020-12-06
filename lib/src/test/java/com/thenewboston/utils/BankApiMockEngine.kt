@@ -8,13 +8,12 @@ import io.ktor.http.*
 
 class BankApiMockEngine {
 
-
-
     fun getSuccess() = getBankMockEngine()
 
     fun getErrors() = getBankMockEngine(true)
 
-    private val responseHeaders = headersOf("Content-Type" to listOf(ContentType.Application.Json.toString()))
+    private val json = listOf(ContentType.Application.Json.toString())
+    private val responseHeaders = headersOf("Content-Type" to json)
 
     private fun getBankMockEngine(enableErrorResponse: Boolean = false) = HttpClient(MockEngine) {
         engine {
@@ -91,5 +90,4 @@ class BankApiMockEngine {
             serializer = KotlinxSerializer(json)
         }
     }
-
 }
