@@ -14,10 +14,12 @@ import io.ktor.utils.io.errors.*
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.*
 
 @KtorExperimentalAPI
+@ExperimentalCoroutinesApi
 class BankDataSourceTest {
 
     @MockK
@@ -113,7 +115,7 @@ class BankDataSourceTest {
         }
 
         @Test
-        fun `test fetch list of invalid blocks successfully`() = runBlocking {
+        fun `test fetch list of invalid blocks successfully`() = runBlockingTest {
             val response = bankDataSource.fetchInvalidBlocks()
 
             check(response is Outcome.Success)
@@ -197,9 +199,19 @@ class BankDataSourceTest {
         }
 
         @Test
-        fun `test return error outcome for lis of blocks IOException`() = runBlockingTest {
+        fun `test return error outcome for list of blocks IOException`() = runBlockingTest {
             // when
             val response = bankDataSource.fetchBlocks()
+
+            // then
+            check(response is Outcome.Error)
+            response.cause should beInstanceOf<IOException>()
+        }
+
+        @Test
+        fun `test return error outcome for list of invalid blocks IOException`() = runBlockingTest {
+            // when
+            val response = bankDataSource.fetchInvalidBlocks()
 
             // then
             check(response is Outcome.Error)

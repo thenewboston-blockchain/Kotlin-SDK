@@ -131,7 +131,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
 
     private suspend fun getInvalidBlocks(): Outcome<InvalidBlockList> {
         val invalidBlocks = networkClient.defaultClient
-            .get<InvalidBlockList>(Endpoints.INVALID_BLOCKS_ENDPOINT)
+            .get<InvalidBlockList>(BankAPIEndpoints.INVALID_BLOCKS_ENDPOINT)
 
         return when {
             invalidBlocks.results.isNullOrEmpty() -> Outcome.Error(
