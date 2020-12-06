@@ -2,6 +2,9 @@
 Kotlin-SDK for thenewboston.
 
 ![Java CI with Gradle](https://github.com/thenewboston-developers/Kotlin-SDK/workflows/Java%20CI%20with%20Gradle/badge.svg)
+<br/>
+<br/>
+![Sonarqube Analysis](https://github.com/thenewboston-developers/Kotlin-SDK/workflows/Sonarqube%20Analysis/badge.svg)
 
 ## Introduction
 This is the SDK written in Kotlin for thenewboston with primary focus for Android and Desktop clients. The repository contains an android project which will demonstrate how to use 
