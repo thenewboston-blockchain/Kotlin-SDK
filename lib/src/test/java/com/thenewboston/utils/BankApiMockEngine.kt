@@ -21,52 +21,59 @@ class BankApiMockEngine {
             addHandler { request ->
                 when (request.url.encodedPath) {
                     BankAPIJsonMapper.ACCOUNTS_ENDPOINT -> {
+                        val content = BankAPIJsonMapper.mapAccountsToJson()
                         if (enableErrorResponse) {
-                            respond(BankAPIJsonMapper.mapAccountsToJson(), HttpStatusCode.InternalServerError, responseHeaders)
+                            respond(content, HttpStatusCode.InternalServerError, responseHeaders)
                         } else {
-                            respond(BankAPIJsonMapper.mapAccountsToJson(), HttpStatusCode.OK, responseHeaders)
+                            respond(content, HttpStatusCode.OK, responseHeaders)
                         }
                     }
                     BankAPIJsonMapper.BANKS_ENDPOINT -> {
+                        val content = BankAPIJsonMapper.mapBanksToJson()
                         if (enableErrorResponse) {
-                            respond(BankAPIJsonMapper.mapBanksToJson(), HttpStatusCode.InternalServerError, responseHeaders)
+                            respond(content, HttpStatusCode.InternalServerError, responseHeaders)
                         } else {
-                            respond(BankAPIJsonMapper.mapBanksToJson(), HttpStatusCode.OK, responseHeaders)
+                            respond(content, HttpStatusCode.OK, responseHeaders)
                         }
                     }
                     BankAPIJsonMapper.BANK_TRANSACTIONS_ENDPOINT -> {
+                        val content = BankAPIJsonMapper.mapBankTransactionsToJson()
                         if (enableErrorResponse) {
-                            respond(BankAPIJsonMapper.mapBankTransactionsToJson(), HttpStatusCode.InternalServerError, responseHeaders)
+                            respond(content, HttpStatusCode.InternalServerError, responseHeaders)
                         } else {
-                            respond(BankAPIJsonMapper.mapBankTransactionsToJson(), HttpStatusCode.OK, responseHeaders)
+                            respond(content, HttpStatusCode.OK, responseHeaders)
                         }
                     }
                     BankAPIJsonMapper.BLOCKS_ENDPOINT -> {
+                        val content = BankAPIJsonMapper.mapBlocksToJson()
                         if (enableErrorResponse) {
-                            respond(BankAPIJsonMapper.mapBlocksToJson(), HttpStatusCode.InternalServerError, responseHeaders)
+                            respond(content, HttpStatusCode.InternalServerError, responseHeaders)
                         } else {
-                            respond(BankAPIJsonMapper.mapBlocksToJson(), HttpStatusCode.OK, responseHeaders)
+                            respond(content, HttpStatusCode.OK, responseHeaders)
                         }
                     }
                     BankAPIJsonMapper.VALIDATORS_ENDPOINT -> {
+                        val content = BankAPIJsonMapper.mapValidatorsToJson()
                         if (enableErrorResponse) {
-                            respond(BankAPIJsonMapper.mapValidatorsToJson(), HttpStatusCode.InternalServerError, responseHeaders)
+                            respond(content, HttpStatusCode.InternalServerError, responseHeaders)
                         } else {
-                            respond(BankAPIJsonMapper.mapValidatorsToJson(), HttpStatusCode.OK, responseHeaders)
+                            respond(content, HttpStatusCode.OK, responseHeaders)
                         }
                     }
                     BankAPIJsonMapper.SINGLE_VALIDATOR_ENDPOINT -> {
+                        val content = BankAPIJsonMapper.mapValidatorToJson()
                         if (enableErrorResponse) {
-                            respond(BankAPIJsonMapper.mapValidatorToJson(), HttpStatusCode.InternalServerError, responseHeaders)
+                            respond(content, HttpStatusCode.InternalServerError, responseHeaders)
                         } else {
-                            respond(BankAPIJsonMapper.mapValidatorToJson(), HttpStatusCode.OK, responseHeaders)
+                            respond(content, HttpStatusCode.OK, responseHeaders)
                         }
                     }
                     BankAPIJsonMapper.CONFIG_ENDPOINT -> {
+                        val content = BankAPIJsonMapper.mapBankDetailToJson()
                         if (enableErrorResponse) {
-                            respond(BankAPIJsonMapper.mapBankDetailToJson(), HttpStatusCode.InternalServerError, responseHeaders)
+                            respond(content, HttpStatusCode.InternalServerError, responseHeaders)
                         } else {
-                            respond(BankAPIJsonMapper.mapBankDetailToJson(), HttpStatusCode.OK, responseHeaders)
+                            respond(content, HttpStatusCode.OK, responseHeaders)
                         }
                     }
                     else -> {

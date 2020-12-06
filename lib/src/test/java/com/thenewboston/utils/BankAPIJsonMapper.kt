@@ -6,7 +6,8 @@ import kotlinx.serialization.json.Json
 object BankAPIJsonMapper {
 
     const val VALIDATORS_ENDPOINT = "validators"
-    const val SINGLE_VALIDATOR_ENDPOINT = VALIDATORS_ENDPOINT.plus("/6871913581c3e689c9f39853a77e7263a96fd38596e9139f40a367e28364da53")
+    const val SINGLE_VALIDATOR_ENDPOINT = VALIDATORS_ENDPOINT
+        .plus("/6871913581c3e689c9f39853a77e7263a96fd38596e9139f40a367e28364da53")
     const val CONFIG_ENDPOINT = "config"
     const val BANKS_ENDPOINT = "banks"
     const val ACCOUNTS_ENDPOINT = "accounts"
