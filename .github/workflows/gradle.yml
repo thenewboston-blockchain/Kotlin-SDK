@@ -28,3 +28,5 @@ jobs:
         run: ./gradlew build -p lib
       - name: ktlint
         run: ./gradlew ktlint
+      - name: Detekt Code analysis
+        run: ./gradlew :lib:detekt

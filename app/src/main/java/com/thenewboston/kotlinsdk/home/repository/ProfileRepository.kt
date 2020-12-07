@@ -5,7 +5,6 @@ import com.thenewboston.kotlinsdk.network.apis.BankApis
 import com.thenewboston.kotlinsdk.network.apis.ValidatorsApi
 import com.thenewboston.kotlinsdk.network.models.ProfileBalanceObject
 import com.thenewboston.kotlinsdk.network.models.GenericListDataModel
-import com.thenewboston.kotlinsdk.utils.NetworkUtils
 import javax.inject.Inject
 import javax.inject.Singleton
 
