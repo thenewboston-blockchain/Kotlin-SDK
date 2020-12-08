@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/whole_layout"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Account Balance"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:textColor="@color/primaryText"
+            android:textSize="@dimen/_14sdp"
+            android:fontFamily="@font/montserrat_extrabold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:id="@+id/balance"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textColor="@color/appGreen"
+            android:textSize="@dimen/_16sdp"
+            android:fontFamily="@font/montserrat_semibold"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Account Number"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:textColor="@color/primaryText"
+                android:textSize="@dimen/_14sdp"
+                android:id="@+id/acno_head"
+                android:fontFamily="@font/montserrat_extrabold"/>
+
+            <ImageView
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:src="@drawable/ic_edit"
+                android:layout_marginStart="@dimen/_7sdp"
+                android:layout_marginLeft="@dimen/_7sdp"
+                android:layout_marginTop="@dimen/_17sdp"
+                android:layout_toRightOf="@id/acno_head"
+                android:layout_toEndOf="@id/acno_head"
+                android:id="@+id/edit_acc_no"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/acno_head">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:text="aksldhjjshdahsdajksdkjahsdkhaksdhlajsdhashdlahsldasdkhalhdsa"
+                    android:id="@+id/acc_no"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:textColor="@color/secondaryText"
+                    android:textSize="@dimen/_13sdp"
+                    android:fontFamily="@font/montserrat_medium"/>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/copy"
+                    android:alpha="0.7"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/_10sdp"
+                        android:src="@drawable/ic_copy"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</ScrollView>

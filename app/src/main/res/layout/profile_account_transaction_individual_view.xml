@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
+        android:layout_margin="@dimen/_3sdp"
+        android:background="@drawable/primary_button_bg"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_marginRight="@dimen/_15sdp"
+            android:id="@+id/balance_holder">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_received"
+                android:layout_centerVertical="true"
+                android:id="@+id/indicator"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="19600"
+                android:layout_toEndOf="@id/indicator"
+                android:layout_toRightOf="@+id/indicator"
+                android:textColor="@color/primaryText"
+                android:textSize="@dimen/_14sdp"
+                android:id="@+id/amount"
+                android:fontFamily="@font/montserrat_semibold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2020-11-09 10:04:22 AM"
+                android:textColor="@color/secondaryText"
+                android:textSize="@dimen/_8sdp"
+                android:id="@+id/dateCreated"
+                android:alpha="0.7"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:fontFamily="@font/montserrat_medium"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp">
+
+            <ImageView
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:id="@+id/sender_head"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_sent"
+                android:textSize="@dimen/_9sdp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="askdjhk1j23hkj123kj1h23k1h23kjhk1jh2c3kh12"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_toEndOf="@+id/sender_head"
+                android:layout_toRightOf="@+id/sender_head"
+                android:layout_centerVertical="true"
+                android:id="@+id/sender"
+                android:textColor="@color/secondaryText"
+                android:fontFamily="@font/montserrat_medium"
+                android:textSize="@dimen/_9sdp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:id="@+id/recipient_head"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_received"
+                android:textSize="@dimen/_9sdp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="askdjhk1j23hkj123kj1h23k1h23kjhk1jh2c3kh12"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_toEndOf="@+id/recipient_head"
+                android:layout_toRightOf="@+id/recipient_head"
+                android:layout_centerVertical="true"
+                android:id="@+id/recipient"
+                android:textColor="@color/secondaryText"
+                android:fontFamily="@font/montserrat_medium"
+                android:textSize="@dimen/_9sdp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Balance Key:  "
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:id="@+id/balance_key_head"
+                android:textColor="@color/primaryText"
+                android:fontFamily="@font/montserrat_semibold"
+                android:textSize="@dimen/_9sdp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="askdjhk1j23hkj123kj1h23k1h23kjhk1jh2c3kh12"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_toEndOf="@+id/balance_key_head"
+                android:layout_toRightOf="@+id/balance_key_head"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:id="@+id/balance_key"
+                android:textColor="@color/secondaryText"
+                android:fontFamily="@font/montserrat_medium"
+                android:textSize="@dimen/_9sdp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Signature:  "
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:id="@+id/sign_head"
+                android:layout_marginBottom="@dimen/_7sdp"
+                android:textColor="@color/primaryText"
+                android:fontFamily="@font/montserrat_semibold"
+                android:textSize="@dimen/_9sdp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="askdjhk1j23hkj123kj1h23k1h23kjhk1jh2c3kh12"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_toEndOf="@+id/sign_head"
+                android:layout_toRightOf="@+id/sign_head"
+                android:id="@+id/sign"
+                android:textColor="@color/secondaryText"
+                android:fontFamily="@font/montserrat_medium"
+                android:textSize="@dimen/_9sdp"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

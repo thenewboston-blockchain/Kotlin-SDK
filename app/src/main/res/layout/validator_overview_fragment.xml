@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/wholeLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="54.67.72.197"
+                    android:id="@+id/primary_validator"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_16sdp"
+                    android:fontFamily="@font/montserrat_semibold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Primary"
+                    android:id="@+id/primaryTag"
+                    android:padding="@dimen/_5sdp"
+                    android:textSize="@dimen/_5sdp"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/primary_bg"
+                    android:layout_toEndOf="@+id/primary_validator"
+                    android:layout_toRightOf="@+id/primary_validator"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:letterSpacing="0.03"
+                    android:layout_marginTop="@dimen/_11sdp"/>
+
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tx fee"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:textColor="@color/primaryText"
+                        android:textSize="@dimen/_14sdp"
+                        android:fontFamily="@font/montserrat_semibold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:text="-"
+                        android:id="@+id/tx_fee"
+                        android:textColor="@color/secondaryText"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:textSize="@dimen/_13sdp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Daily Rate"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:textColor="@color/primaryText"
+                        android:textSize="@dimen/_14sdp"
+                        android:fontFamily="@font/montserrat_semibold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:text="-"
+                        android:id="@+id/daily_rate"
+                        android:textColor="@color/secondaryText"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:textSize="@dimen/_13sdp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="IP Address"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:textColor="@color/primaryText"
+                        android:textSize="@dimen/_14sdp"
+                        android:fontFamily="@font/montserrat_semibold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:text="-"
+                        android:id="@+id/ip_address"
+                        android:textColor="@color/secondaryText"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:textSize="@dimen/_13sdp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Port"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:textColor="@color/primaryText"
+                        android:textSize="@dimen/_14sdp"
+                        android:fontFamily="@font/montserrat_semibold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:text="-"
+                        android:id="@+id/port"
+                        android:textColor="@color/secondaryText"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:textSize="@dimen/_13sdp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Protocol"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:textColor="@color/primaryText"
+                        android:textSize="@dimen/_14sdp"
+                        android:fontFamily="@font/montserrat_semibold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:text="-"
+                        android:id="@+id/protocol"
+                        android:textColor="@color/secondaryText"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:textSize="@dimen/_13sdp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Version"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:textColor="@color/primaryText"
+                        android:textSize="@dimen/_14sdp"
+                        android:fontFamily="@font/montserrat_semibold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:text="-"
+                        android:id="@+id/version"
+                        android:textColor="@color/secondaryText"
+                        android:fontFamily="@font/montserrat_medium"
+                        android:textSize="@dimen/_13sdp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Root Account File"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:textColor="@color/primaryText"
+                android:textSize="@dimen/_14sdp"
+                android:fontFamily="@font/montserrat_semibold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:text="-"
+                android:id="@+id/root_account_file"
+                android:textColor="@color/secondaryText"
+                android:fontFamily="@font/montserrat_medium"
+                android:textSize="@dimen/_13sdp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Root Account File Hash"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:textColor="@color/primaryText"
+                android:textSize="@dimen/_14sdp"
+                android:fontFamily="@font/montserrat_semibold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:text="-"
+                android:id="@+id/root_account_file_hash"
+                android:textColor="@color/secondaryText"
+                android:fontFamily="@font/montserrat_medium"
+                android:textSize="@dimen/_13sdp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Seed Block Identifier"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:textColor="@color/primaryText"
+                android:textSize="@dimen/_14sdp"
+                android:fontFamily="@font/montserrat_semibold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:text="-"
+                android:id="@+id/seed_block_identifier"
+                android:textColor="@color/secondaryText"
+                android:fontFamily="@font/montserrat_medium"
+                android:textSize="@dimen/_13sdp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Node Type"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:textColor="@color/primaryText"
+                android:textSize="@dimen/_14sdp"
+                android:fontFamily="@font/montserrat_semibold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:text="-"
+                android:id="@+id/node_type"
+                android:textColor="@color/secondaryText"
+                android:fontFamily="@font/montserrat_medium"
+                android:textSize="@dimen/_13sdp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Validator Network ID"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:textColor="@color/primaryText"
+                android:textSize="@dimen/_14sdp"
+                android:fontFamily="@font/montserrat_semibold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:text="-"
+                android:id="@+id/validator_network_id"
+                android:textColor="@color/secondaryText"
+                android:fontFamily="@font/montserrat_medium"
+                android:textSize="@dimen/_13sdp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Validator Account Number"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:textColor="@color/primaryText"
+                android:textSize="@dimen/_14sdp"
+                android:fontFamily="@font/montserrat_semibold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:text="-"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:id="@+id/validator_acc_no"
+                android:textColor="@color/secondaryText"
+                android:fontFamily="@font/montserrat_medium"
+                android:textSize="@dimen/_13sdp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_12sdp"
+        android:id="@+id/errorText"
+        android:fontFamily="@font/montserrat_medium"
+        android:layout_centerInParent="true"/>
+
+</RelativeLayout>
