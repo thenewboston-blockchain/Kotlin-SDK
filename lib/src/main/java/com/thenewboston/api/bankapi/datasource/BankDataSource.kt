@@ -144,7 +144,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         nodeIdentifier: String,
         signature: String
     ): Outcome<Account> {
-        val patchAccountUrl = "${Endpoints.ACCOUNTS_ENDPOINT}/$accountNumber"
+        val patchAccountUrl = "${BankAPIEndpoints.ACCOUNTS_ENDPOINT}/$accountNumber"
         val message = PatchAccountMessage(trustLevel)
         val requestBody = PatchAccountRequestBody(message, nodeIdentifier, signature)
 

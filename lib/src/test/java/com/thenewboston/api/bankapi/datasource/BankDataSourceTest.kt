@@ -5,12 +5,14 @@ import com.thenewboston.common.http.Outcome
 import com.thenewboston.common.http.config.Config
 import com.thenewboston.utils.testBlocking
 import com.thenewboston.utils.BankApiMockEngine
+import com.thenewboston.utils.Some
 import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.longs.shouldBeGreaterThan
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.contain
 import io.kotest.matchers.types.beInstanceOf
+import io.ktor.client.request.patch
 import io.ktor.util.*
 import io.ktor.utils.io.errors.*
 import org.junit.jupiter.api.Disabled
@@ -21,10 +23,12 @@ import org.junit.jupiter.api.TestInstance
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.*
 
 @KtorExperimentalAPI
+@ExperimentalCoroutinesApi
 class BankDataSourceTest {
 
     @MockK
@@ -41,10 +45,10 @@ class BankDataSourceTest {
         bankDataSource = BankDataSource(networkClient)
     }
 
-        @Nested
-        @DisplayName("When performing a GET request...")
-        @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-        inner class WhenGetRequest {
+    @Nested
+    @DisplayName("When performing a GET request...")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class WhenGetRequest {
 
         @BeforeEach
         fun setup() {
@@ -55,99 +59,97 @@ class BankDataSourceTest {
         fun `test fetch list of available banks`() = runBlockingTest {
             val response = bankDataSource.fetchBanks()
 
-                check(response is Outcome.Success)
-                response.value.banks.shouldNotBeEmpty()
-            }
+            check(response is Outcome.Success)
+            response.value.banks.shouldNotBeEmpty()
+        }
 
         @Test
         fun `test fetch bank details from config`() = runBlockingTest {
             val response = bankDataSource.fetchBankDetails()
 
-                check(response is Outcome.Success)
-                Config.IP_ADDRESS should contain(response.value.ip_address)
-            }
+            check(response is Outcome.Success)
+            Config.IP_ADDRESS should contain(response.value.ip_address)
+        }
 
         @Test
         fun `test fetch list of available bank transactions`() = runBlockingTest {
             val response = bankDataSource.fetchBankTransactions()
 
-                check(response is Outcome.Success)
+            check(response is Outcome.Success)
 
-                response.value.bankTransactions.shouldNotBeEmpty()
-            }
+            response.value.bankTransactions.shouldNotBeEmpty()
+        }
 
         @Test
         fun `test fetch list of validators successfully`() = runBlockingTest {
             // when
             val body = bankDataSource.fetchValidators()
 
-                // then
-                check(body is Outcome.Success)
-                body.value.count shouldBeGreaterThan 0
-                body.value.results.shouldNotBeEmpty()
-            }
+            // then
+            check(body is Outcome.Success)
+            body.value.count shouldBeGreaterThan 0
+            body.value.results.shouldNotBeEmpty()
+        }
 
         @Test
         fun `test fetch single validator successfully`() = runBlockingTest {
             // given
             val nodeIdentifier = "6871913581c3e689c9f39853a77e7263a96fd38596e9139f40a367e28364da53"
 
-                // when
-                val body = validBankDataSource.fetchValidator(nodeIdentifier)
+            // when
+            val body = bankDataSource.fetchValidator(nodeIdentifier)
 
-                // then
-                check(body is Outcome.Success)
-                body.value.nodeIdentifier should contain(nodeIdentifier)
-                body.value.ipAddress should contain("127.0.0.1")
-            }
+            // then
+            check(body is Outcome.Success)
+            body.value.nodeIdentifier should contain(nodeIdentifier)
+            body.value.ipAddress should contain("127.0.0.1")
+        }
 
         @Test
         fun `test fetch list of accounts successfully`() = runBlockingTest {
             val response = bankDataSource.fetchAccounts()
 
-                check(response is Outcome.Success)
-                response.value.count shouldBeGreaterThan 0
-                response.value.results.shouldNotBeEmpty()
-            }
+            check(response is Outcome.Success)
+            response.value.count shouldBeGreaterThan 0
+            response.value.results.shouldNotBeEmpty()
+        }
 
         @Test
         fun `test fetch list of blocks successfully`() = runBlockingTest {
             val response = bankDataSource.fetchBlocks()
 
-                check(response is Outcome.Success)
-                response.value.count shouldBeGreaterThan 0
-                response.value.results.shouldNotBeEmpty()
-            }
+            check(response is Outcome.Success)
+            response.value.count shouldBeGreaterThan 0
+            response.value.results.shouldNotBeEmpty()
         }
+    }
 
-        @Nested
-        @DisplayName("When performing PATCH request...")
-        @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-        inner class WhenPatchRequest {
+    @Nested
+    @DisplayName("When performing PATCH request...")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class WhenPatchRequest {
 
-            @Test
-            @Disabled("Requires mock HTTP client (#52) to circumvent authorizations") // TODO
-            fun `should update account with given trust level`() = testBlocking {
-                // given
-                val nodeIdentifier = "foo"
-                val signature = "foo"
-                val accountNumber =
-                    "1111111111111111111111111111111111111111111111111111111111111111"
-                val newTrustLevel = 50.0
+        @Test
+        fun `should update account with given trust level`() = runBlockingTest {
+            // given
+            every { networkClient.defaultClient } returns mockEngine.getSuccess()
+            val nodeIdentifier = Some.nodeIdentifier
+            val signature = Some.signature
+            val accountNumber = Some.accountNumber
+            val newTrustLevel = 50.0
 
-                // when
-                val response = validBankDataSource.updateAccount(
-                    accountNumber,
-                    newTrustLevel,
-                    nodeIdentifier,
-                    signature
-                )
+            // when
+            val response = bankDataSource.updateAccount(
+                accountNumber,
+                newTrustLevel,
+                nodeIdentifier,
+                signature
+            )
 
-                // then
-                check(response is Outcome.Success)
-                response.value.accountNumber shouldBe accountNumber
-                response.value.trust shouldBe newTrustLevel
-            }
+            // then
+            check(response is Outcome.Success)
+            response.value.accountNumber shouldBe accountNumber
+            response.value.trust shouldBe newTrustLevel
         }
     }
 
@@ -164,7 +166,7 @@ class BankDataSourceTest {
         @Test
         fun `test return error outcome for IOException`() = runBlockingTest {
             // when
-            val response = invalidBankDataSource.fetchBanks()
+            val response = bankDataSource.fetchBanks()
 
             // then
             check(response is Outcome.Error)
@@ -174,7 +176,7 @@ class BankDataSourceTest {
         @Test
         fun `test return error outcome for bank details IOException`() = runBlockingTest {
             // when
-            val response = invalidBankDataSource.fetchBankDetails()
+            val response = bankDataSource.fetchBankDetails()
 
             // then
             check(response is Outcome.Error)
@@ -184,7 +186,7 @@ class BankDataSourceTest {
         @Test
         fun `test return error outcome for bank transactions IOException`() = runBlockingTest {
             // when
-            val response = invalidBankDataSource.fetchBankTransactions()
+            val response = bankDataSource.fetchBankTransactions()
 
             // then
             check(response is Outcome.Error)
@@ -208,7 +210,7 @@ class BankDataSourceTest {
             val nonExistentNodeIdentifier = "foo"
 
             // when
-            val body = validBankDataSource.fetchValidator(nonExistentNodeIdentifier)
+            val body = bankDataSource.fetchValidator(nonExistentNodeIdentifier)
 
             // then
             check(body is Outcome.Error)
@@ -218,7 +220,7 @@ class BankDataSourceTest {
         @Test
         fun `test return error outcome for list of accounts IOException`() = runBlockingTest {
             // when
-            val response = invalidBankDataSource.fetchAccounts()
+            val response = bankDataSource.fetchAccounts()
 
             // then
             check(response is Outcome.Error)
@@ -228,7 +230,7 @@ class BankDataSourceTest {
         @Test
         fun `test return error outcome for lis of blocks IOException`() = runBlockingTest {
             // when
-            val response = invalidBankDataSource.fetchBlocks()
+            val response = bankDataSource.fetchBlocks()
 
             // then
             check(response is Outcome.Error)

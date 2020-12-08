@@ -101,13 +101,21 @@ object Mocks {
         results = listOf(account(), account())
     )
 
-    fun account() = Account(
-        id = "",
+    fun account(trust: Double = 100.0) = Account(
+        id = Some.id,
         createdDate = LocalDateTime(2020, 8, 8, 12, 12, 23),
         modifiedDate = LocalDateTime(2020, 8, 8, 12, 13, 23),
-        accountNumber = "",
-        trust = 100.0
+        accountNumber = Some.accountNumber,
+        trust = trust
     )
 
     fun internalServerError() = BankAPIError(500, "Internal Server Error")
+}
+
+// Sample values taken from docs, see https://thenewboston.com/bank-api/
+object Some {
+    const val id = "64426fc5-b3ac-42fb-b75b-d5ccfcdc6872"
+    const val accountNumber = "0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb"
+    const val nodeIdentifier = "d5356888dc9303e44ce52b1e06c3165a7759b9df1e6a6dfbd33ee1c3df1ab4d1"
+    const val signature = "f41788fe19690a67abe3336d4ca84565c090691efae0e5cdd8bf02e126842215080405013b8461f734d091e673e9edefca53a51773fda59bbebcef77ab8e2901"
 }

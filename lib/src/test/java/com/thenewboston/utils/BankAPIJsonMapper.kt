@@ -18,6 +18,8 @@ object BankAPIJsonMapper {
 
     fun mapAccountsToJson(): String = Json.encodeToString(Mocks.accounts())
 
+    fun mapAccountToJson(): String = Json.encodeToString(Mocks.account())
+
     fun mapBlocksToJson(): String = Json.encodeToString(Mocks.blocks())
 
     fun mapBankDetailToJson(): String = Json.encodeToString(Mocks.bankDetails())
