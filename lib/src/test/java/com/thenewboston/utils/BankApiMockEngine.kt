@@ -94,7 +94,7 @@ class BankApiMockEngine {
         installJsonFeature()
     }
 
-    private fun patchBankEngine(enableErrorResponse: Boolean = false, isInvalidResponse: Boolean = true) = HttpClient(MockEngine) {
+    private fun patchBankEngine(enableErrorResponse: Boolean = false, isInvalidResponse: Boolean = false) = HttpClient(MockEngine) {
         val errorContent = BankAPIJsonMapper.mapInternalServerErrorToJson()
 
         engine {
