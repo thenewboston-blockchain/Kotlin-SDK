@@ -16,4 +16,5 @@ data class BankTrustRequest(
 @Serializable
 data class Message(
     @SerialName("trust")
-    val trust: Double)
+    val trust: Double
+)

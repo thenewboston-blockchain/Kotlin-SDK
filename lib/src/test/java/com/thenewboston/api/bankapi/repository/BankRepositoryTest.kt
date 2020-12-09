@@ -190,7 +190,8 @@ class BankRepositoryTest {
 
     @Test
     fun `verify send bank trust is success outcome`() = runBlockingTest {
-        coEvery { bankDataSource.sendBankTrust(Mocks.bankTrustRequest()) } returns Outcome.Success(Mocks.bankTrustResponse())
+        val response = Mocks.bankTrustResponse()
+        coEvery { bankDataSource.sendBankTrust(Mocks.bankTrustRequest()) } returns Outcome.Success(response)
 
         // when
         val result = repository.sendBankTrust(Mocks.bankTrustRequest())

@@ -97,7 +97,7 @@ class BankApiMockEngine {
 
         engine {
             addHandler { request ->
-                when(request.url.encodedPath) {
+                when (request.url.encodedPath) {
                     BankAPIJsonMapper.BANKS_TRUST_ENDPOINT -> {
                         val content = BankAPIJsonMapper.mapBankTrustResponseToJson()
                         if (enableErrorResponse) {

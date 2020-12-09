@@ -140,7 +140,8 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
 
         return when {
             response.accountNumber.isBlank() -> {
-                val message = "Received invalid request when updating trust level of bank with ${request.nodeIdentifier}"
+                val message = "Received invalid request when updating trust level of bank with" +
+                    " ${request.nodeIdentifier}"
                 Outcome.Error(message, IOException())
             }
             else -> {
