@@ -4,9 +4,11 @@ import com.thenewboston.common.http.NetworkClient
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.common.http.config.Config
 import com.thenewboston.utils.BankApiMockEngine
+import com.thenewboston.utils.Mocks
 import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.longs.shouldBeGreaterThan
 import io.kotest.matchers.should
+import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.contain
 import io.kotest.matchers.types.beInstanceOf
 import io.ktor.util.*
@@ -111,6 +113,19 @@ class BankDataSourceTest {
             response.value.count shouldBeGreaterThan 0
             response.value.results.shouldNotBeEmpty()
         }
+
+        @Test
+        fun `test send bank trust successfully`() = runBlockingTest {
+            every { networkClient.defaultClient } returns mockEngine.patchSuccess()
+
+            val request = Mocks.bankTrustRequest()
+
+            val response = bankDataSource.sendBankTrust(request)
+
+            check(response is Outcome.Success)
+            response.value.accountNumber shouldBe "dfddf07ec15cbf363ecb52eedd7133b70b3ec896b488460bcecaba63e8e36be5"
+            response.value.trust shouldBe 10.0
+        }
     }
 
     @Nested
@@ -131,6 +146,7 @@ class BankDataSourceTest {
             // then
             check(response is Outcome.Error)
             response.cause should beInstanceOf<IOException>()
+            response.cause?.message shouldBe "Failed to retrieve banks"
         }
 
         @Test
@@ -141,6 +157,7 @@ class BankDataSourceTest {
             // then
             check(response is Outcome.Error)
             response.cause should beInstanceOf<IOException>()
+            response.cause?.message shouldBe "Failed to retrieve bank details"
         }
 
         @Test
@@ -151,6 +168,7 @@ class BankDataSourceTest {
             // then
             check(response is Outcome.Error)
             response.cause should beInstanceOf<IOException>()
+            response.cause?.message shouldBe "Failed to retrieve bank transactions"
         }
 
         @Test
@@ -160,6 +178,7 @@ class BankDataSourceTest {
 
             check(response is Outcome.Error)
             response.cause should beInstanceOf<IOException>()
+            response.cause?.message shouldBe "Could not fetch validator with NID $nodeIdentifier"
         }
 
         @Test
@@ -175,6 +194,7 @@ class BankDataSourceTest {
             // then
             check(body is Outcome.Error)
             body.cause should beInstanceOf<IOException>()
+            body.cause?.message shouldBe "Could not fetch validator with NID $nodeIdentifier"
         }
 
         @Test
@@ -185,16 +205,31 @@ class BankDataSourceTest {
             // then
             check(response is Outcome.Error)
             response.cause should beInstanceOf<IOException>()
+            response.cause?.message shouldBe "Could not fetch list of accounts"
         }
 
         @Test
-        fun `test return error outcome for lis of blocks IOException`() = runBlockingTest {
+        fun `test return error outcome for list of blocks IOException`() = runBlockingTest {
             // when
             val response = bankDataSource.fetchBlocks()
 
             // then
             check(response is Outcome.Error)
             response.cause should beInstanceOf<IOException>()
+            response.cause?.message shouldBe "Could not fetch list of blocks"
+        }
+
+        @Test
+        fun `test return error outcome for sending bank trust`() = runBlockingTest {
+            every { networkClient.defaultClient } returns mockEngine.patchErrors()
+
+            // when
+            val response = bankDataSource.sendBankTrust(Mocks.bankTrustRequest())
+
+            // then
+            check(response is Outcome.Error)
+            response.cause should beInstanceOf<IOException>()
+            response.cause?.message shouldBe "Could not send bank trust for ${Mocks.bankTrustRequest().nodeIdentifier}"
         }
     }
 }

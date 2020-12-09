@@ -3,7 +3,9 @@ package com.thenewboston.api.bankapi.repository
 import com.thenewboston.api.bankapi.datasource.BankDataSource
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.data.dto.bankapi.accountdto.AccountList
-import com.thenewboston.data.dto.bankapi.bankdto.BankList
+import com.thenewboston.data.dto.bankapi.bankdto.request.BankTrustRequest
+import com.thenewboston.data.dto.bankapi.bankdto.response.BankList
+import com.thenewboston.data.dto.bankapi.bankdto.response.BankTrustResponse
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BlockList
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
@@ -31,4 +33,6 @@ class BankRepository @Inject constructor(private val dataSource: BankDataSource)
     suspend fun accounts(): Outcome<AccountList> = dataSource.fetchAccounts()
 
     suspend fun blocks(): Outcome<BlockList> = dataSource.fetchBlocks()
+
+    suspend fun sendBankTrust(request: BankTrustRequest): Outcome<BankTrustResponse> = dataSource.sendBankTrust(request)
 }
