@@ -231,5 +231,19 @@ class BankDataSourceTest {
             response.cause should beInstanceOf<IOException>()
             response.cause?.message shouldBe "Could not send bank trust for ${Mocks.bankTrustRequest().nodeIdentifier}"
         }
+
+        @Test
+        fun `test return error outcome for sending bank trust with invalid request`() = runBlockingTest {
+            every { networkClient.defaultClient } returns mockEngine.patchEmptySuccess()
+
+            // when
+            val response = bankDataSource.sendBankTrust(Mocks.bankTrustRequest())
+
+            // then
+            check(response is Outcome.Error)
+            response.cause should beInstanceOf<IOException>()
+            response.message shouldBe "Received invalid request when updating trust level of bank with" +
+                " ${Mocks.bankTrustRequest().nodeIdentifier}"
+        }
     }
 }

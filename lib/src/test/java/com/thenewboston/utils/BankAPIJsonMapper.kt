@@ -33,4 +33,6 @@ object BankAPIJsonMapper {
     fun mapInternalServerErrorToJson(): String = Json.encodeToString(Mocks.internalServerError())
 
     fun mapBankTrustResponseToJson(): String = Json.encodeToString(Mocks.bankTrustResponse())
+
+    fun mapInvalidBankTrustResponseToJson(): String = Json.encodeToString(Mocks.emptyBankTrustResponse())
 }

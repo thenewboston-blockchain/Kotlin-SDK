@@ -133,4 +133,13 @@ object Mocks {
         1.0,
         10.0
     )
+
+    fun emptyBankTrustResponse() = BankTrustResponse(
+        "",
+        "",
+        0,
+        "",
+        0.0,
+        0.0
+    )
 }

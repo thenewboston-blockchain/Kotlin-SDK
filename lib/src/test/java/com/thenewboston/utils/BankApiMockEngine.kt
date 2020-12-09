@@ -16,6 +16,8 @@ class BankApiMockEngine {
 
     fun patchSuccess() = patchBankEngine()
 
+    fun patchEmptySuccess() = patchBankEngine(isInvalidResponse = true)
+
     fun patchErrors() = patchBankEngine(true)
 
     private val json = listOf(ContentType.Application.Json.toString())
@@ -92,7 +94,7 @@ class BankApiMockEngine {
         installJsonFeature()
     }
 
-    private fun patchBankEngine(enableErrorResponse: Boolean = false) = HttpClient(MockEngine) {
+    private fun patchBankEngine(enableErrorResponse: Boolean = false, isInvalidResponse: Boolean = true) = HttpClient(MockEngine) {
         val errorContent = BankAPIJsonMapper.mapInternalServerErrorToJson()
 
         engine {
@@ -100,10 +102,11 @@ class BankApiMockEngine {
                 when (request.url.encodedPath) {
                     BankAPIJsonMapper.BANKS_TRUST_ENDPOINT -> {
                         val content = BankAPIJsonMapper.mapBankTrustResponseToJson()
-                        if (enableErrorResponse) {
-                            respond(errorContent, HttpStatusCode.InternalServerError, responseHeaders)
-                        } else {
-                            respond(content, HttpStatusCode.Created, responseHeaders)
+                        val invalidContent = BankAPIJsonMapper.mapInvalidBankTrustResponseToJson()
+                        when {
+                            enableErrorResponse -> respond(errorContent, HttpStatusCode.InternalServerError, responseHeaders)
+                            isInvalidResponse -> respond(invalidContent, HttpStatusCode.Accepted, responseHeaders)
+                            else -> respond(content, HttpStatusCode.Accepted, responseHeaders)
                         }
                     }
                     else -> {
