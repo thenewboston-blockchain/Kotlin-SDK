@@ -135,7 +135,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
 
         return when {
             invalidBlocks.results.isNullOrEmpty() -> Outcome.Error(
-                "Received null or empty list",
+                "No invalid blocks are available at this time",
                 IOException()
             )
             else -> Outcome.Success(invalidBlocks)
