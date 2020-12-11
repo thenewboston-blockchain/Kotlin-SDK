@@ -9,17 +9,18 @@ import com.thenewboston.data.dto.bankapi.bankdto.response.BankList
 import com.thenewboston.data.dto.bankapi.bankdto.response.BankTrustResponse
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BlockList
-import com.thenewboston.data.dto.bankapi.common.request.TrustMessage
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.validatordto.Validator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import com.thenewboston.utils.BankAPIEndpoints
-import io.ktor.client.request.*
+import io.ktor.client.request.get
+import io.ktor.client.request.patch
+import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import io.ktor.util.*
-import io.ktor.utils.io.errors.*
+import io.ktor.util.KtorExperimentalAPI
+import io.ktor.utils.io.errors.IOException
 import javax.inject.Inject
 
 @KtorExperimentalAPI

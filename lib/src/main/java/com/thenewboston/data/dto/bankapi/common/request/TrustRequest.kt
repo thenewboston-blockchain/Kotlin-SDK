@@ -3,7 +3,6 @@ package com.thenewboston.data.dto.bankapi.common.request
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-
 @Serializable
 data class UpdateTrustRequest(
 
