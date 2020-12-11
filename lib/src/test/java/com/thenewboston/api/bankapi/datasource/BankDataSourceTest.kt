@@ -99,7 +99,8 @@ class BankDataSourceTest {
             @Test
             fun `should fetch single validator successfully`() = runBlockingTest {
                 // given
-                val nodeIdentifier = "6871913581c3e689c9f39853a77e7263a96fd38596e9139f40a367e28364da53"
+                val nodeIdentifier =
+                    "6871913581c3e689c9f39853a77e7263a96fd38596e9139f40a367e28364da53"
 
                 // when
                 val body = bankDataSource.fetchValidator(nodeIdentifier)
@@ -126,6 +127,19 @@ class BankDataSourceTest {
                 check(response is Outcome.Success)
                 response.value.count shouldBeGreaterThan 0
                 response.value.results.shouldNotBeEmpty()
+            }
+
+            @Test
+            fun `test send bank trust successfully`() = runBlockingTest {
+                every { networkClient.defaultClient } returns mockEngine.patchSuccess()
+
+                val request = Mocks.trustRequest()
+
+                val response = bankDataSource.updateBankTrust(request)
+
+                check(response is Outcome.Success)
+                response.value.accountNumber shouldBe "dfddf07ec15cbf363ecb52eedd7133b70b3ec896b488460bcecaba63e8e36be5"
+                response.value.trust shouldBe 10.0
             }
         }
 
@@ -321,34 +335,36 @@ class BankDataSourceTest {
                 }
 
                 @Test
-                fun `should return error outcome for sending bank trust with invalid request`() = runBlockingTest {
-                    // given
-                    val request = Mocks.trustRequest()
+                fun `should return error outcome for sending bank trust with invalid request`() =
+                    runBlockingTest {
+                        // given
+                        val request = Mocks.trustRequest()
 
-                    // when
-                    val response = bankDataSource.updateBankTrust(request)
+                        // when
+                        val response = bankDataSource.updateBankTrust(request)
 
-                    // then
-                    check(response is Outcome.Error)
-                    response.cause should beInstanceOf<IOException>()
-                    response.message shouldBe "Received invalid request when updating trust level of bank with" +
-                        " ${request.nodeIdentifier}"
-                }
+                        // then
+                        check(response is Outcome.Error)
+                        response.cause should beInstanceOf<IOException>()
+                        response.message shouldBe "Received invalid request when updating trust level of bank with" +
+                            " ${request.nodeIdentifier}"
+                    }
 
                 @Test
-                fun `should return error outcome if account trust response is invalid`() = runBlockingTest {
-                    // given
-                    val request = Mocks.trustRequest()
-                    val accountNumber = Some.accountNumber
+                fun `should return error outcome if account trust response is invalid`() =
+                    runBlockingTest {
+                        // given
+                        val request = Mocks.trustRequest()
+                        val accountNumber = Some.accountNumber
 
-                    // when
-                    val response = bankDataSource.updateAccountTrust(accountNumber, request)
+                        // when
+                        val response = bankDataSource.updateAccountTrust(accountNumber, request)
 
-                    // then
-                    check(response is Outcome.Error)
-                    response.cause should beInstanceOf<IOException>()
-                    response.message shouldBe "Received unexpected response when updating trust level of account $accountNumber"
-                }
+                        // then
+                        check(response is Outcome.Error)
+                        response.cause should beInstanceOf<IOException>()
+                        response.message shouldBe "Received unexpected response when updating trust level of account $accountNumber"
+                    }
             }
         }
     }

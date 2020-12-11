@@ -11,7 +11,7 @@ import com.thenewboston.data.dto.bankapi.banktransactiondto.BlockList
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
-import io.ktor.util.*
+import io.ktor.util.KtorExperimentalAPI
 import javax.inject.Inject
 
 @KtorExperimentalAPI

@@ -195,7 +195,9 @@ class BankRepositoryTest {
     @Test
     fun `verify update bank trust returns success outcome`() = runBlockingTest {
         val response = Mocks.bankTrustResponse()
-        coEvery { bankDataSource.updateBankTrust(Mocks.trustRequest()) } returns Outcome.Success(response)
+        coEvery { bankDataSource.updateBankTrust(Mocks.trustRequest()) } returns Outcome.Success(
+            response
+        )
 
         // when
         val result = repository.updateBankTrust(Mocks.trustRequest())
@@ -207,7 +209,10 @@ class BankRepositoryTest {
 
     @Test
     fun `verify update bank trust returns error outcome`() = runBlockingTest {
-        coEvery { bankDataSource.updateBankTrust(Mocks.trustRequest()) } returns Outcome.Error("Failed to send bank trust", IOException())
+        coEvery { bankDataSource.updateBankTrust(Mocks.trustRequest()) } returns Outcome.Error(
+            "Failed to send bank trust",
+            IOException()
+        )
 
         // when
         val result = repository.updateBankTrust(Mocks.trustRequest())
@@ -223,7 +228,12 @@ class BankRepositoryTest {
         val accountNumber = Some.accountNumber
         val request = Mocks.trustRequest()
         val response = Mocks.account(42.0)
-        coEvery { bankDataSource.updateAccountTrust(accountNumber, request) } returns Outcome.Success(response)
+        coEvery {
+            bankDataSource.updateAccountTrust(
+                accountNumber,
+                request
+            )
+        } returns Outcome.Success(response)
 
         // when
         val result = repository.updateAccountTrust(accountNumber, request)
@@ -238,7 +248,12 @@ class BankRepositoryTest {
         // given
         val accountNumber = Some.accountNumber
         val trustRequest = Mocks.trustRequest()
-        coEvery { bankDataSource.updateAccountTrust(accountNumber, trustRequest) } returns Outcome.Error("Failed to send bank trust", IOException())
+        coEvery {
+            bankDataSource.updateAccountTrust(
+                accountNumber,
+                trustRequest
+            )
+        } returns Outcome.Error("Failed to send bank trust", IOException())
 
         // when
         val result = repository.updateAccountTrust(accountNumber, trustRequest)

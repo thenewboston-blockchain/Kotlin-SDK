@@ -153,12 +153,12 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         }
     }
 
-    suspend fun updateBankTrust(request: UpdateTrustRequest) = makeApiCall(
-        call = { doBankTrust(request) },
+    suspend fun updateBankTrust(request: UpdateTrustRequest): Outcome<BankTrustResponse> = makeApiCall(
+        call = { doUpdateBankTrust(request) },
         errorMessage = "Could not send bank trust for ${request.nodeIdentifier}"
     )
 
-    private suspend fun doBankTrust(request: UpdateTrustRequest): Outcome<BankTrustResponse> {
+    private suspend fun doUpdateBankTrust(request: UpdateTrustRequest): Outcome<BankTrustResponse> {
         val url = "${BankAPIEndpoints.BANKS_ENDPOINT}/${request.nodeIdentifier}"
 
         val response = networkClient.defaultClient.patch<BankTrustResponse> {

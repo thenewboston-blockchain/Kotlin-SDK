@@ -1,7 +1,7 @@
 package com.thenewboston.common.http
 
-import io.ktor.client.*
-import io.ktor.util.*
+import io.ktor.client.HttpClient
+import io.ktor.util.KtorExperimentalAPI
 
 class NetworkClient(
     private val client: HttpClient
