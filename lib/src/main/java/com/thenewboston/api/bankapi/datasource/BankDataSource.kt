@@ -3,13 +3,14 @@ package com.thenewboston.api.bankapi.datasource
 import com.thenewboston.common.http.NetworkClient
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.common.http.makeApiCall
-import com.thenewboston.data.dto.bankapi.accountdto.Account
-import com.thenewboston.data.dto.bankapi.accountdto.AccountList
-import com.thenewboston.data.dto.bankapi.accountdto.PatchAccountMessage
-import com.thenewboston.data.dto.bankapi.accountdto.PatchAccountRequestBody
-import com.thenewboston.data.dto.bankapi.bankdto.BankList
+import com.thenewboston.data.dto.bankapi.accountdto.response.Account
+import com.thenewboston.data.dto.bankapi.accountdto.response.AccountList
+import com.thenewboston.data.dto.bankapi.bankdto.response.BankList
+import com.thenewboston.data.dto.bankapi.bankdto.response.BankTrustResponse
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BlockList
+import com.thenewboston.data.dto.bankapi.common.request.TrustMessage
+import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.validatordto.Validator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
@@ -128,30 +129,18 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         }
     }
 
-    suspend fun updateAccount(
-        accountNumber: String,
-        trustLevel: Double,
-        nodeIdentifier: String,
-        signature: String
-    ): Outcome<Account> = makeApiCall(
-        call = { doUpdateAccount(accountNumber, trustLevel, nodeIdentifier, signature) },
+    suspend fun updateAccount(accountNumber: String, request: UpdateTrustRequest): Outcome<Account> = makeApiCall(
+        call = { doUpdateAccount(accountNumber, request) },
         errorMessage = "Could not update trust level of given account"
     )
 
-    private suspend fun doUpdateAccount(
-        accountNumber: String,
-        trustLevel: Double,
-        nodeIdentifier: String,
-        signature: String
-    ): Outcome<Account> {
+    private suspend fun doUpdateAccount(accountNumber: String, request: UpdateTrustRequest): Outcome<Account> {
         val patchAccountUrl = "${BankAPIEndpoints.ACCOUNTS_ENDPOINT}/$accountNumber"
-        val message = PatchAccountMessage(trustLevel)
-        val requestBody = PatchAccountRequestBody(message, nodeIdentifier, signature)
 
         val updatedAccount = networkClient.defaultClient.patch<Account> {
             url(patchAccountUrl)
             contentType(ContentType.Application.Json)
-            body = requestBody
+            body = request
         }
 
         return when {
@@ -160,6 +149,31 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
                 IOException()
             )
             else -> Outcome.Success(updatedAccount)
+        }
+    }
+
+    suspend fun sendBankTrust(request: UpdateTrustRequest) = makeApiCall(
+        call = { doBankTrust(request) },
+        errorMessage = "Could not send bank trust for ${request.nodeIdentifier}"
+    )
+
+    private suspend fun doBankTrust(request: UpdateTrustRequest): Outcome<BankTrustResponse> {
+        val url = "${BankAPIEndpoints.BANKS_ENDPOINT}/${request.nodeIdentifier}"
+
+        val response = networkClient.defaultClient.patch<BankTrustResponse> {
+            url(url)
+            body = request
+        }
+
+        return when {
+            response.accountNumber.isBlank() -> {
+                val message = "Received invalid request when updating trust level of bank with" +
+                    " ${request.nodeIdentifier}"
+                Outcome.Error(message, IOException())
+            }
+            else -> {
+                Outcome.Success(response)
+            }
         }
     }
 }

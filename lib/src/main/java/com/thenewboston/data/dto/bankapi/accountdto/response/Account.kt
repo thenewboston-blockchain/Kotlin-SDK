@@ -1,4 +1,4 @@
-package com.thenewboston.data.dto.bankapi.accountdto
+package com.thenewboston.data.dto.bankapi.accountdto.response
 
 import com.thenewboston.utils.DateSerializer
 import kotlinx.datetime.LocalDateTime
@@ -28,26 +28,6 @@ data class Account(
 
     @SerialName("account_number")
     val accountNumber: String,
-
-    @SerialName("trust")
-    val trust: Double
-)
-
-@Serializable
-data class PatchAccountRequestBody(
-
-    @SerialName("message")
-    val message: PatchAccountMessage,
-
-    @SerialName("node_identifier")
-    val nodeIdentifier: String,
-
-    @SerialName("signature")
-    val signature: String
-)
-
-@Serializable
-data class PatchAccountMessage(
 
     @SerialName("trust")
     val trust: Double
