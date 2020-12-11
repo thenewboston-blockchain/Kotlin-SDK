@@ -2,6 +2,7 @@ package com.thenewboston.api.bankapi.repository
 
 import com.thenewboston.api.bankapi.datasource.BankDataSource
 import com.thenewboston.common.http.Outcome
+import com.thenewboston.data.dto.bankapi.accountdto.response.Account
 import com.thenewboston.data.dto.bankapi.accountdto.response.AccountList
 import com.thenewboston.data.dto.bankapi.bankdto.response.BankList
 import com.thenewboston.data.dto.bankapi.bankdto.response.BankTrustResponse
@@ -34,5 +35,8 @@ class BankRepository @Inject constructor(private val dataSource: BankDataSource)
 
     suspend fun blocks(): Outcome<BlockList> = dataSource.fetchBlocks()
 
-    suspend fun sendBankTrust(request: UpdateTrustRequest): Outcome<BankTrustResponse> = dataSource.sendBankTrust(request)
+    suspend fun updateBankTrust(request: UpdateTrustRequest): Outcome<BankTrustResponse> = dataSource.updateBankTrust(request)
+
+    suspend fun updateAccountTrust(accountNumber: String, request: UpdateTrustRequest): Outcome<Account> =
+        dataSource.updateAccountTrust(accountNumber, request)
 }

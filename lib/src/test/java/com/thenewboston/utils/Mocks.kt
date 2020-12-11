@@ -112,6 +112,14 @@ object Mocks {
         trust = trust
     )
 
+    fun emptyAccount() = Account(
+        id = "",
+        createdDate = LocalDateTime(2020, 8, 8, 12, 12, 23),
+        modifiedDate = null,
+        accountNumber = "",
+        trust = 0.00
+    )
+
     fun internalServerError() = BankAPIError(500, "Internal Server Error")
 
     fun trustRequest(): UpdateTrustRequest {

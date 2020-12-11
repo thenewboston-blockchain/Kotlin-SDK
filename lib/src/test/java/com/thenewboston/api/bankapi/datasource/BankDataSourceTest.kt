@@ -46,9 +46,9 @@ class BankDataSourceTest {
     }
 
     @Nested
-    @DisplayName("Given valid request...")
+    @DisplayName("Given successful request...")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    inner class GivenValidRequest {
+    inner class GivenSucceedingRequest {
 
         @Nested
         @DisplayName("When performing a GET request...")
@@ -61,7 +61,7 @@ class BankDataSourceTest {
             }
 
             @Test
-            fun `test fetch list of available banks`() = runBlockingTest {
+            fun `should fetch list of available banks`() = runBlockingTest {
                 val response = bankDataSource.fetchBanks()
 
                 check(response is Outcome.Success)
@@ -69,7 +69,7 @@ class BankDataSourceTest {
             }
 
             @Test
-            fun `test fetch bank details from config`() = runBlockingTest {
+            fun `should fetch bank details from config`() = runBlockingTest {
                 val response = bankDataSource.fetchBankDetails()
 
                 check(response is Outcome.Success)
@@ -77,7 +77,7 @@ class BankDataSourceTest {
             }
 
             @Test
-            fun `test fetch list of available bank transactions`() = runBlockingTest {
+            fun `should fetch list of available bank transactions`() = runBlockingTest {
                 val response = bankDataSource.fetchBankTransactions()
 
                 check(response is Outcome.Success)
@@ -86,7 +86,7 @@ class BankDataSourceTest {
             }
 
             @Test
-            fun `test fetch list of validators successfully`() = runBlockingTest {
+            fun `should fetch list of validators successfully`() = runBlockingTest {
                 // when
                 val body = bankDataSource.fetchValidators()
 
@@ -97,7 +97,7 @@ class BankDataSourceTest {
             }
 
             @Test
-            fun `test fetch single validator successfully`() = runBlockingTest {
+            fun `should fetch single validator successfully`() = runBlockingTest {
                 // given
                 val nodeIdentifier = "6871913581c3e689c9f39853a77e7263a96fd38596e9139f40a367e28364da53"
 
@@ -111,7 +111,7 @@ class BankDataSourceTest {
             }
 
             @Test
-            fun `test fetch list of accounts successfully`() = runBlockingTest {
+            fun `should fetch list of accounts successfully`() = runBlockingTest {
                 val response = bankDataSource.fetchAccounts()
 
                 check(response is Outcome.Success)
@@ -120,25 +120,12 @@ class BankDataSourceTest {
             }
 
             @Test
-            fun `test fetch list of blocks successfully`() = runBlockingTest {
+            fun `should fetch list of blocks successfully`() = runBlockingTest {
                 val response = bankDataSource.fetchBlocks()
 
                 check(response is Outcome.Success)
                 response.value.count shouldBeGreaterThan 0
                 response.value.results.shouldNotBeEmpty()
-            }
-
-            @Test
-            fun `test send bank trust successfully`() = runBlockingTest {
-                every { networkClient.defaultClient } returns mockEngine.patchSuccess()
-
-                val request = Mocks.trustRequest()
-
-                val response = bankDataSource.sendBankTrust(request)
-
-                check(response is Outcome.Success)
-                response.value.accountNumber shouldBe "dfddf07ec15cbf363ecb52eedd7133b70b3ec896b488460bcecaba63e8e36be5"
-                response.value.trust shouldBe 10.0
             }
         }
 
@@ -153,13 +140,27 @@ class BankDataSourceTest {
             }
 
             @Test
+            fun `should send bank trust successfully`() = runBlockingTest {
+                // given
+                val request = Mocks.trustRequest()
+
+                // when
+                val response = bankDataSource.updateBankTrust(request)
+
+                // then
+                check(response is Outcome.Success)
+                response.value.accountNumber shouldBe "dfddf07ec15cbf363ecb52eedd7133b70b3ec896b488460bcecaba63e8e36be5"
+                response.value.trust shouldBe 10.0
+            }
+
+            @Test
             fun `should update account with given trust level`() = runBlockingTest {
                 // given
                 val trustRequest = Mocks.trustRequest()
                 val accountNumber = Some.accountNumber
 
                 // when
-                val response = bankDataSource.updateAccount(accountNumber, trustRequest)
+                val response = bankDataSource.updateAccountTrust(accountNumber, trustRequest)
 
                 // then
                 check(response is Outcome.Success)
@@ -170,9 +171,9 @@ class BankDataSourceTest {
     }
 
     @Nested
-    @DisplayName("Given invalid request that should fail")
+    @DisplayName("Given request that should fail")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    inner class GivenInvalidRequest {
+    inner class GivenFailingRequest {
 
         @BeforeEach
         fun setup() {
@@ -180,7 +181,7 @@ class BankDataSourceTest {
         }
 
         @Test
-        fun `test return error outcome for IOException`() = runBlockingTest {
+        fun `should return error outcome for IOException`() = runBlockingTest {
             // when
             val response = bankDataSource.fetchBanks()
 
@@ -191,7 +192,7 @@ class BankDataSourceTest {
         }
 
         @Test
-        fun `test return error outcome for bank details IOException`() = runBlockingTest {
+        fun `should return error outcome for bank details IOException`() = runBlockingTest {
             // when
             val response = bankDataSource.fetchBankDetails()
 
@@ -202,7 +203,7 @@ class BankDataSourceTest {
         }
 
         @Test
-        fun `test return error outcome for bank transactions IOException`() = runBlockingTest {
+        fun `should return error outcome for bank transactions IOException`() = runBlockingTest {
             // when
             val response = bankDataSource.fetchBankTransactions()
 
@@ -213,7 +214,7 @@ class BankDataSourceTest {
         }
 
         @Test
-        fun `test return error outcome for single validator`() = runBlockingTest {
+        fun `should return error outcome for single validator`() = runBlockingTest {
             val nodeIdentifier = "6871913581c3e689c9f39853a77e7263a96fd38596e9139f40a367e28364da53"
             val response = bankDataSource.fetchValidator(nodeIdentifier)
 
@@ -223,7 +224,7 @@ class BankDataSourceTest {
         }
 
         @Test
-        fun `test return error outcome for nonexistent node identifier`() = runBlockingTest {
+        fun `should return error outcome for nonexistent node identifier`() = runBlockingTest {
             every { networkClient.defaultClient } returns mockEngine.getSuccess()
 
             // given
@@ -239,7 +240,7 @@ class BankDataSourceTest {
         }
 
         @Test
-        fun `test return error outcome for list of accounts IOException`() = runBlockingTest {
+        fun `should return error outcome for list of accounts IOException`() = runBlockingTest {
             // when
             val response = bankDataSource.fetchAccounts()
 
@@ -250,7 +251,7 @@ class BankDataSourceTest {
         }
 
         @Test
-        fun `test return error outcome for list of blocks IOException`() = runBlockingTest {
+        fun `should return error outcome for list of blocks IOException`() = runBlockingTest {
             // when
             val response = bankDataSource.fetchBlocks()
 
@@ -260,31 +261,95 @@ class BankDataSourceTest {
             response.cause?.message shouldBe "Could not fetch list of blocks"
         }
 
-        @Test
-        fun `test return error outcome for sending bank trust`() = runBlockingTest {
-            every { networkClient.defaultClient } returns mockEngine.patchErrors()
+        @Nested
+        @DisplayName("When sending PATCH request...")
+        @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+        inner class WhenPatchRequest {
 
-            // when
-            val response = bankDataSource.sendBankTrust(Mocks.trustRequest())
+            @Nested
+            @DisplayName("Given server error response...")
+            @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+            inner class GivenServerErrorResponse {
 
-            // then
-            check(response is Outcome.Error)
-            response.cause should beInstanceOf<IOException>()
-            response.cause?.message shouldBe "Could not send bank trust for ${Mocks.trustRequest().nodeIdentifier}"
-        }
+                @BeforeEach
+                fun given() {
+                    every { networkClient.defaultClient } returns mockEngine.patchErrors()
+                }
 
-        @Test
-        fun `test return error outcome for sending bank trust with invalid request`() = runBlockingTest {
-            every { networkClient.defaultClient } returns mockEngine.patchEmptySuccess()
+                @Test
+                fun `should return error outcome for sending bank trust`() {
+                    runBlockingTest {
+                        // given
+                        val request = Mocks.trustRequest()
 
-            // when
-            val response = bankDataSource.sendBankTrust(Mocks.trustRequest())
+                        // when
+                        val response = bankDataSource.updateBankTrust(request)
 
-            // then
-            check(response is Outcome.Error)
-            response.cause should beInstanceOf<IOException>()
-            response.message shouldBe "Received invalid request when updating trust level of bank with" +
-                " ${Mocks.trustRequest().nodeIdentifier}"
+                        // then
+                        check(response is Outcome.Error)
+                        response.cause should beInstanceOf<IOException>()
+                        response.cause?.message shouldBe "Could not send bank trust for ${request.nodeIdentifier}"
+                    }
+                }
+
+                @Test
+                fun `should return error outcome for sending account trust`() {
+                    runBlockingTest {
+                        // given
+                        val accountNumber = Some.accountNumber
+                        val request = Mocks.trustRequest()
+
+                        // when
+                        val response = bankDataSource.updateAccountTrust(accountNumber, request)
+
+                        // then
+                        check(response is Outcome.Error)
+                        response.cause should beInstanceOf<IOException>()
+                        response.cause?.message shouldBe "Could not update trust level of given account"
+                    }
+                }
+            }
+
+            @Nested
+            @DisplayName("Given empty or invalid response body...")
+            @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+            inner class GivenInvalidResponseBody {
+
+                @BeforeEach
+                fun given() {
+                    every { networkClient.defaultClient } returns mockEngine.patchEmptySuccess()
+                }
+
+                @Test
+                fun `should return error outcome for sending bank trust with invalid request`() = runBlockingTest {
+                    // given
+                    val request = Mocks.trustRequest()
+
+                    // when
+                    val response = bankDataSource.updateBankTrust(request)
+
+                    // then
+                    check(response is Outcome.Error)
+                    response.cause should beInstanceOf<IOException>()
+                    response.message shouldBe "Received invalid request when updating trust level of bank with" +
+                        " ${request.nodeIdentifier}"
+                }
+
+                @Test
+                fun `should return error outcome if account trust response is invalid`() = runBlockingTest {
+                    // given
+                    val request = Mocks.trustRequest()
+                    val accountNumber = Some.accountNumber
+
+                    // when
+                    val response = bankDataSource.updateAccountTrust(accountNumber, request)
+
+                    // then
+                    check(response is Outcome.Error)
+                    response.cause should beInstanceOf<IOException>()
+                    response.message shouldBe "Received unexpected response when updating trust level of account $accountNumber"
+                }
+            }
         }
     }
 }

@@ -129,7 +129,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         }
     }
 
-    suspend fun updateAccount(accountNumber: String, request: UpdateTrustRequest): Outcome<Account> = makeApiCall(
+    suspend fun updateAccountTrust(accountNumber: String, request: UpdateTrustRequest): Outcome<Account> = makeApiCall(
         call = { doUpdateAccount(accountNumber, request) },
         errorMessage = "Could not update trust level of given account"
     )
@@ -152,7 +152,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         }
     }
 
-    suspend fun sendBankTrust(request: UpdateTrustRequest) = makeApiCall(
+    suspend fun updateBankTrust(request: UpdateTrustRequest) = makeApiCall(
         call = { doBankTrust(request) },
         errorMessage = "Could not send bank trust for ${request.nodeIdentifier}"
     )

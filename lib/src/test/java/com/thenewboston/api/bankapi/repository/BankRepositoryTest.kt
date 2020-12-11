@@ -2,6 +2,7 @@ package com.thenewboston.api.bankapi.repository
 
 import com.thenewboston.api.bankapi.datasource.BankDataSource
 import com.thenewboston.common.http.Outcome
+import com.thenewboston.data.dto.bankapi.accountdto.response.Account
 import com.thenewboston.data.dto.bankapi.accountdto.response.AccountList
 import com.thenewboston.data.dto.bankapi.bankdto.response.BankList
 import com.thenewboston.data.dto.bankapi.bankdto.response.BankTrustResponse
@@ -10,6 +11,7 @@ import com.thenewboston.data.dto.bankapi.banktransactiondto.BlockList
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import com.thenewboston.utils.Mocks
+import com.thenewboston.utils.Some
 import io.kotest.matchers.should
 import io.kotest.matchers.types.beInstanceOf
 import io.ktor.util.*
@@ -19,13 +21,15 @@ import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.io.IOException
 import javax.xml.validation.Validator
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.TestInstance
 
 @ExperimentalCoroutinesApi
 @KtorExperimentalAPI
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class BankRepositoryTest {
 
     @MockK
@@ -33,7 +37,7 @@ class BankRepositoryTest {
 
     private lateinit var repository: BankRepository
 
-    @BeforeEach
+    @BeforeAll
     fun setup() {
         MockKAnnotations.init(this)
 
@@ -189,27 +193,58 @@ class BankRepositoryTest {
     }
 
     @Test
-    fun `verify send bank trust is success outcome`() = runBlockingTest {
+    fun `verify update bank trust returns success outcome`() = runBlockingTest {
         val response = Mocks.bankTrustResponse()
-        coEvery { bankDataSource.sendBankTrust(Mocks.trustRequest()) } returns Outcome.Success(response)
+        coEvery { bankDataSource.updateBankTrust(Mocks.trustRequest()) } returns Outcome.Success(response)
 
         // when
-        val result = repository.sendBankTrust(Mocks.trustRequest())
+        val result = repository.updateBankTrust(Mocks.trustRequest())
 
         // then
-        coVerify { bankDataSource.sendBankTrust(Mocks.trustRequest()) }
+        coVerify { bankDataSource.updateBankTrust(Mocks.trustRequest()) }
         result should beInstanceOf<Outcome.Success<BankTrustResponse>>()
     }
 
     @Test
-    fun `verify send bank trust is error outcome`() = runBlockingTest {
-        coEvery { bankDataSource.sendBankTrust(Mocks.trustRequest()) } returns Outcome.Error("Failed to send bank trust", IOException())
+    fun `verify update bank trust returns error outcome`() = runBlockingTest {
+        coEvery { bankDataSource.updateBankTrust(Mocks.trustRequest()) } returns Outcome.Error("Failed to send bank trust", IOException())
 
         // when
-        val result = repository.sendBankTrust(Mocks.trustRequest())
+        val result = repository.updateBankTrust(Mocks.trustRequest())
 
         // then
-        coVerify { bankDataSource.sendBankTrust(Mocks.trustRequest()) }
+        coVerify { bankDataSource.updateBankTrust(Mocks.trustRequest()) }
+        result should beInstanceOf<Outcome.Error>()
+    }
+
+    @Test
+    fun `verify update account trust returns success outcome`() = runBlockingTest {
+        // given
+        val accountNumber = Some.accountNumber
+        val request = Mocks.trustRequest()
+        val response = Mocks.account(42.0)
+        coEvery { bankDataSource.updateAccountTrust(accountNumber, request) } returns Outcome.Success(response)
+
+        // when
+        val result = repository.updateAccountTrust(accountNumber, request)
+
+        // then
+        coVerify { bankDataSource.updateAccountTrust(accountNumber, request) }
+        result should beInstanceOf<Outcome.Success<Account>>()
+    }
+
+    @Test
+    fun `verify update account trust returns error outcome`() = runBlockingTest {
+        // given
+        val accountNumber = Some.accountNumber
+        val trustRequest = Mocks.trustRequest()
+        coEvery { bankDataSource.updateAccountTrust(accountNumber, trustRequest) } returns Outcome.Error("Failed to send bank trust", IOException())
+
+        // when
+        val result = repository.updateAccountTrust(accountNumber, trustRequest)
+
+        // then
+        coVerify { bankDataSource.updateAccountTrust(accountNumber, trustRequest) }
         result should beInstanceOf<Outcome.Error>()
     }
 }

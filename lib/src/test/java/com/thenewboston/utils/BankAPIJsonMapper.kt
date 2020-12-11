@@ -20,7 +20,9 @@ object BankAPIJsonMapper {
 
     fun mapAccountsToJson(): String = Json.encodeToString(Mocks.accounts())
 
-    fun mapAccountToJson(): String = Json.encodeToString(Mocks.account())
+    fun mapAccountToJson(trust: Double): String = Json.encodeToString(Mocks.account(trust))
+
+    fun mapEmptyAccountToJson(): String = Json.encodeToString(Mocks.emptyAccount())
 
     fun mapBlocksToJson(): String = Json.encodeToString(Mocks.blocks())
 
