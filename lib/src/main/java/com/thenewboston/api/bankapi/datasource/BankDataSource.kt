@@ -4,7 +4,9 @@ import com.thenewboston.common.http.NetworkClient
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.common.http.makeApiCall
 import com.thenewboston.data.dto.bankapi.accountdto.AccountList
-import com.thenewboston.data.dto.bankapi.bankdto.BankList
+import com.thenewboston.data.dto.bankapi.bankdto.request.BankTrustRequest
+import com.thenewboston.data.dto.bankapi.bankdto.response.BankList
+import com.thenewboston.data.dto.bankapi.bankdto.response.BankTrustResponse
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BlockList
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
@@ -120,6 +122,31 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
                 IOException()
             )
             else -> Outcome.Success(blocks)
+        }
+    }
+
+    suspend fun sendBankTrust(request: BankTrustRequest) = makeApiCall(
+        call = { doBankTrust(request) },
+        errorMessage = "Could not send bank trust for ${request.nodeIdentifier}"
+    )
+
+    private suspend fun doBankTrust(request: BankTrustRequest): Outcome<BankTrustResponse> {
+        val url = "${BankAPIEndpoints.BANKS_ENDPOINT}/${request.nodeIdentifier}"
+
+        val response = networkClient.defaultClient.patch<BankTrustResponse> {
+            url(url)
+            body = request
+        }
+
+        return when {
+            response.accountNumber.isBlank() -> {
+                val message = "Received invalid request when updating trust level of bank with" +
+                    " ${request.nodeIdentifier}"
+                Outcome.Error(message, IOException())
+            }
+            else -> {
+                Outcome.Success(response)
+            }
         }
     }
 }
