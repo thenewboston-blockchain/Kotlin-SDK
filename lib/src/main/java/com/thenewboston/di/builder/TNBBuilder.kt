@@ -13,6 +13,7 @@ import io.ktor.client.features.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
+import io.ktor.http.*
 import kotlinx.serialization.json.Json
 import javax.inject.Scope
 
@@ -55,6 +56,7 @@ class TNBBankNetworkModule {
             defaultRequest {
                 this.host = bankConfig.ipAddress
                 this.port = bankConfig.port
+                contentType(ContentType.Application.Json)
             }
 
             install(JsonFeature) {
