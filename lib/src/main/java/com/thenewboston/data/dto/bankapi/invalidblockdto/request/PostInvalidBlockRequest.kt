@@ -23,10 +23,10 @@ data class PostInvalidBlockMessage(
     val block: PostInvalidBlockMessageBlock,
 
     @SerialName("block_identifier")
-    val blockIdentifier : String,
+    val blockIdentifier: String,
 
     @SerialName("primary_validator_node_identifier")
-    val primaryValidatorNodeIdentifier : String,
+    val primaryValidatorNodeIdentifier: String,
 )
 
 @Serializable
