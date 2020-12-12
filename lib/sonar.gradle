@@ -12,7 +12,7 @@ sonarqube {
     property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/testReport/testReport.xml"
     property "sonar.java.binaries", "build/classes/java, build/classes/kotlin"
     property "detekt.sonar.kotlin.config.path", "${rootProject.projectDir}/config/detekt/detekt.yml"
-    property "sonar.coverage.exclusions", "**/test/**,**/R.class,**/BuildConfig.*,**/Manifest*.*,**/*Test*.*,**/data/dto/**.*,**/di/builder/*,**/*MapperImpl*.*,**/BuildConfig.*,**/*Component*.*,**/*BR*.*,**/Manifest*.*,**/*Companion*.*,**/*Module.*,**/*Dagger*.*,**/*MembersInjector*.*,**/*Extensions*.*,**/InputMethodManagerLeaks.*,**/*_Factory*.*,**/*_Provide*Factory*.*,src/main/java/com/thenewboston/utils/BankAPIEndpoints.kt,src/main/java/com/thenewboston/common/http/NetworkClient.kt"
+    property "sonar.coverage.exclusions", "**/test/**,**/R.class,**/BuildConfig.*,**/Manifest*.*,**/*Test*.*,**/data/dto/**.*,**/di/builder/*,**/*MapperImpl*.*,**/BuildConfig.*,**/*Component*.*,**/*BR*.*,**/Manifest*.*,**/*Companion*.*,**/*Module.*,**/*Dagger*.*,**/*MembersInjector*.*,**/*Extensions*.*,**/InputMethodManagerLeaks.*,**/*_Factory*.*,**/*_Provide*Factory*.*,src/main/java/com/thenewboston/utils/BankAPIEndpoints.kt,src/main/java/com/thenewboston/common/http/NetworkClient.kt,src/main/java/com/thenewboston/di/**/**,src/main/java/com/thenewboston/common/http/config/**"
   }
 }
 
