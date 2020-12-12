@@ -10,6 +10,7 @@ import io.ktor.client.engine.mock.respond
 import io.ktor.client.features.defaultRequest
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
+import io.ktor.client.request.HttpRequestData
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.HttpStatusCode.Companion.Accepted
@@ -98,7 +99,8 @@ class BankApiMockEngine {
             addHandler { request ->
                 when {
                     request.url.encodedPath == BankAPIJsonMapper.BANKS_TRUST_ENDPOINT -> {
-                        val content = BankAPIJsonMapper.mapBankTrustResponseToJson()
+                        val requestedTrust = readTrustFromRequest(request)
+                        val content = BankAPIJsonMapper.mapBankTrustResponseToJson(requestedTrust)
                         val invalidContent = BankAPIJsonMapper.mapInvalidBankTrustResponseToJson()
                         when {
                             enableErrorResponse -> respond(
@@ -115,11 +117,8 @@ class BankApiMockEngine {
                         }
                     }
                     request.url.encodedPath.startsWith(BankAPIJsonMapper.ACCOUNTS_ENDPOINT) -> {
-                        val requestBodyString = (request.body as TextContent).text
-                        val requestedTrust =
-                            Json.decodeFromString<UpdateTrustRequest>(requestBodyString).message.trust
-                        val responseBody =
-                            BankAPIJsonMapper.mapAccountToJson(trust = requestedTrust)
+                        val requestedTrust = readTrustFromRequest(request)
+                        val responseBody = BankAPIJsonMapper.mapAccountToJson(trust = requestedTrust)
                         when {
                             enableErrorResponse -> respond(
                                 errorContent,
@@ -146,6 +145,11 @@ class BankApiMockEngine {
         defaultRequest {
             contentType(ContentType.Application.Json)
         }
+    }
+
+    private fun readTrustFromRequest(request: HttpRequestData): Double {
+        val requestBodyString = (request.body as TextContent).text
+        return Json.decodeFromString<UpdateTrustRequest>(requestBodyString).message.trust
     }
 
     private fun HttpClientConfig<MockEngineConfig>.installJsonFeature() {

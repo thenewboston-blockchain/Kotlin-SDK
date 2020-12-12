@@ -122,24 +122,24 @@ object Mocks {
 
     fun internalServerError() = BankAPIError(500, "Internal Server Error")
 
-    fun trustRequest(): UpdateTrustRequest {
+    fun trustRequest(trust: Double = Some.trust): UpdateTrustRequest {
         val signature =
             "93952df29ae3885fd9c9f88721314236bdb53ca5632b2959dcf5cf3c38cb8b96ca57ff84c5337eb164f803237f901abcb0c41a9f71e14aa2fb3159c7ad7a7509"
         val nodeIdentifier = "35f4c988f425809ca7f5d0b319cdf8f7d7aba1b064fd0efc85d61fa0f4d05145"
         return UpdateTrustRequest(
-            TrustMessage(10.0),
+            TrustMessage(trust),
             nodeIdentifier,
             signature
         )
     }
 
-    fun bankTrustResponse() = BankTrustResponse(
+    fun bankTrustResponse(trust: Double = Some.trust) = BankTrustResponse(
         "dfddf07ec15cbf363ecb52eedd7133b70b3ec896b488460bcecaba63e8e36be5",
         "127.0.0.1",
         80,
         "http",
         1.0,
-        10.0
+        trust
     )
 
     fun emptyBankTrustResponse() = BankTrustResponse(
@@ -158,4 +158,5 @@ object Some {
     const val accountNumber = "0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb"
     const val nodeIdentifier = "d5356888dc9303e44ce52b1e06c3165a7759b9df1e6a6dfbd33ee1c3df1ab4d1"
     const val signature = "f41788fe19690a67abe3336d4ca84565c090691efae0e5cdd8bf02e126842215080405013b8461f734d091e673e9edefca53a51773fda59bbebcef77ab8e2901"
+    const val trust = 42.0
 }

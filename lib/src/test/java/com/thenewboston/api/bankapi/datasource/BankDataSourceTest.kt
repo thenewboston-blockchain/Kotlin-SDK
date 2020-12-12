@@ -133,13 +133,13 @@ class BankDataSourceTest {
             fun `test send bank trust successfully`() = runBlockingTest {
                 every { networkClient.defaultClient } returns mockEngine.patchSuccess()
 
-                val request = Mocks.trustRequest()
+                val request = Mocks.trustRequest(42.0)
 
                 val response = bankDataSource.updateBankTrust(request)
 
                 check(response is Outcome.Success)
                 response.value.accountNumber shouldBe "dfddf07ec15cbf363ecb52eedd7133b70b3ec896b488460bcecaba63e8e36be5"
-                response.value.trust shouldBe 10.0
+                response.value.trust shouldBe request.message.trust
             }
         }
 
@@ -156,7 +156,7 @@ class BankDataSourceTest {
             @Test
             fun `should send bank trust successfully`() = runBlockingTest {
                 // given
-                val request = Mocks.trustRequest()
+                val request = Mocks.trustRequest(3.14)
 
                 // when
                 val response = bankDataSource.updateBankTrust(request)
@@ -164,13 +164,13 @@ class BankDataSourceTest {
                 // then
                 check(response is Outcome.Success)
                 response.value.accountNumber shouldBe "dfddf07ec15cbf363ecb52eedd7133b70b3ec896b488460bcecaba63e8e36be5"
-                response.value.trust shouldBe 10.0
+                response.value.trust shouldBe request.message.trust
             }
 
             @Test
             fun `should update account with given trust level`() = runBlockingTest {
                 // given
-                val trustRequest = Mocks.trustRequest()
+                val trustRequest = Mocks.trustRequest(17.99)
                 val accountNumber = Some.accountNumber
 
                 // when
