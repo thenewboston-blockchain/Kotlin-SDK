@@ -9,6 +9,7 @@ import com.thenewboston.data.dto.bankapi.bankdto.response.BankTrustResponse
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
+import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import com.thenewboston.utils.Mocks
 import com.thenewboston.utils.Some
@@ -286,5 +287,33 @@ class BankRepositoryTest {
         // then
         coVerify { bankDataSource.fetchInvalidBlocks() }
         result should beInstanceOf<Outcome.Success<*>>()
+    }
+
+    @Test
+    fun `verify send invalid block returns success outcome`() = runBlockingTest {
+        val response = Mocks.invalidBlock()
+        coEvery { bankDataSource.sendInvalidBlock(any()) } returns Outcome.Success(response)
+        val postRequest = Mocks.postInvalidBlockRequest()
+
+        // when
+        val result = repository.sendInvalidBlock(postRequest)
+
+        // then
+        coVerify { bankDataSource.sendInvalidBlock(postRequest) }
+        result should beInstanceOf<Outcome.Success<InvalidBlock>>()
+    }
+
+    @Test
+    fun `verify send invalid block returns error outcome`() = runBlockingTest {
+        val error = Outcome.Error("Failed to send invalid block", IOException())
+        val request = Mocks.postInvalidBlockRequest()
+        coEvery { bankDataSource.sendInvalidBlock(request) } returns error
+
+        // when
+        val result = repository.sendInvalidBlock(request)
+
+        // then
+        coVerify { bankDataSource.sendInvalidBlock(request) }
+        result should beInstanceOf<Outcome.Error>()
     }
 }
