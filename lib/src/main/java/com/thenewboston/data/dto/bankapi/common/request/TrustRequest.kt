@@ -1,20 +1,24 @@
-package com.thenewboston.data.dto.bankapi.bankdto.request
+package com.thenewboston.data.dto.bankapi.common.request
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class BankTrustRequest(
+data class UpdateTrustRequest(
+
     @SerialName("message")
-    val message: Message,
+    val message: TrustMessage,
+
     @SerialName("node_identifier")
     val nodeIdentifier: String,
+
     @SerialName("signature")
     val signature: String
 )
 
 @Serializable
-data class Message(
+data class TrustMessage(
+
     @SerialName("trust")
     val trust: Double
 )

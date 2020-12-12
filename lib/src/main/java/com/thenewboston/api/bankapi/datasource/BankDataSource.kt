@@ -3,20 +3,25 @@ package com.thenewboston.api.bankapi.datasource
 import com.thenewboston.common.http.NetworkClient
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.common.http.makeApiCall
-import com.thenewboston.data.dto.bankapi.accountdto.AccountList
-import com.thenewboston.data.dto.bankapi.bankdto.request.BankTrustRequest
+import com.thenewboston.data.dto.bankapi.accountdto.response.Account
+import com.thenewboston.data.dto.bankapi.accountdto.response.AccountList
 import com.thenewboston.data.dto.bankapi.bankdto.response.BankList
 import com.thenewboston.data.dto.bankapi.bankdto.response.BankTrustResponse
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BlockList
+import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.validatordto.Validator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import com.thenewboston.utils.BankAPIEndpoints
-import io.ktor.client.request.*
-import io.ktor.util.*
-import io.ktor.utils.io.errors.*
+import io.ktor.client.request.get
+import io.ktor.client.request.patch
+import io.ktor.client.request.url
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
+import io.ktor.util.KtorExperimentalAPI
+import io.ktor.utils.io.errors.IOException
 import javax.inject.Inject
 
 @KtorExperimentalAPI
@@ -126,12 +131,35 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         }
     }
 
-    suspend fun sendBankTrust(request: BankTrustRequest) = makeApiCall(
-        call = { doBankTrust(request) },
+    suspend fun updateAccountTrust(accountNumber: String, request: UpdateTrustRequest): Outcome<Account> = makeApiCall(
+        call = { doUpdateAccount(accountNumber, request) },
+        errorMessage = "Could not update trust level of given account"
+    )
+
+    private suspend fun doUpdateAccount(accountNumber: String, request: UpdateTrustRequest): Outcome<Account> {
+        val patchAccountUrl = "${BankAPIEndpoints.ACCOUNTS_ENDPOINT}/$accountNumber"
+
+        val updatedAccount = networkClient.defaultClient.patch<Account> {
+            url(patchAccountUrl)
+            contentType(ContentType.Application.Json)
+            body = request
+        }
+
+        return when {
+            updatedAccount.id.isBlank() -> Outcome.Error(
+                "Received unexpected response when updating trust level of account $accountNumber",
+                IOException()
+            )
+            else -> Outcome.Success(updatedAccount)
+        }
+    }
+
+    suspend fun updateBankTrust(request: UpdateTrustRequest): Outcome<BankTrustResponse> = makeApiCall(
+        call = { doUpdateBankTrust(request) },
         errorMessage = "Could not send bank trust for ${request.nodeIdentifier}"
     )
 
-    private suspend fun doBankTrust(request: BankTrustRequest): Outcome<BankTrustResponse> {
+    private suspend fun doUpdateBankTrust(request: UpdateTrustRequest): Outcome<BankTrustResponse> {
         val url = "${BankAPIEndpoints.BANKS_ENDPOINT}/${request.nodeIdentifier}"
 
         val response = networkClient.defaultClient.patch<BankTrustResponse> {

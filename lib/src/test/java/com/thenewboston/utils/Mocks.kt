@@ -1,9 +1,7 @@
 package com.thenewboston.utils
 
-import com.thenewboston.data.dto.bankapi.accountdto.AccountDTO
-import com.thenewboston.data.dto.bankapi.accountdto.AccountList
-import com.thenewboston.data.dto.bankapi.bankdto.request.BankTrustRequest
-import com.thenewboston.data.dto.bankapi.bankdto.request.Message
+import com.thenewboston.data.dto.bankapi.accountdto.response.Account
+import com.thenewboston.data.dto.bankapi.accountdto.response.AccountList
 import com.thenewboston.data.dto.bankapi.bankdto.response.Bank
 import com.thenewboston.data.dto.bankapi.bankdto.response.BankList
 import com.thenewboston.data.dto.bankapi.bankdto.response.BankTrustResponse
@@ -11,6 +9,8 @@ import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransaction
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.Block
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BlockList
+import com.thenewboston.data.dto.bankapi.common.request.TrustMessage
+import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockDTO
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
@@ -106,12 +106,20 @@ object Mocks {
         results = listOf(account(), account())
     )
 
-    fun account() = AccountDTO(
-        id = "",
+    fun account(trust: Double = 100.0) = Account(
+        id = Some.id,
         createdDate = LocalDateTime(2020, 8, 8, 12, 12, 23),
         modifiedDate = LocalDateTime(2020, 8, 8, 12, 13, 23),
+        accountNumber = Some.accountNumber,
+        trust = trust
+    )
+
+    fun emptyAccount() = Account(
+        id = "",
+        createdDate = LocalDateTime(2020, 8, 8, 12, 12, 23),
+        modifiedDate = null,
         accountNumber = "",
-        trust = 100.0
+        trust = 0.00
     )
 
     fun invalidBlock() = InvalidBlockDTO(
@@ -133,24 +141,24 @@ object Mocks {
 
     fun internalServerError() = BankAPIError(500, "Internal Server Error")
 
-    fun bankTrustRequest(): BankTrustRequest {
+    fun trustRequest(trust: Double = Some.trust): UpdateTrustRequest {
         val signature =
             "93952df29ae3885fd9c9f88721314236bdb53ca5632b2959dcf5cf3c38cb8b96ca57ff84c5337eb164f803237f901abcb0c41a9f71e14aa2fb3159c7ad7a7509"
         val nodeIdentifier = "35f4c988f425809ca7f5d0b319cdf8f7d7aba1b064fd0efc85d61fa0f4d05145"
-        return BankTrustRequest(
-            Message(10.0),
+        return UpdateTrustRequest(
+            TrustMessage(trust),
             nodeIdentifier,
             signature
         )
     }
 
-    fun bankTrustResponse() = BankTrustResponse(
+    fun bankTrustResponse(trust: Double = Some.trust) = BankTrustResponse(
         "dfddf07ec15cbf363ecb52eedd7133b70b3ec896b488460bcecaba63e8e36be5",
         "127.0.0.1",
         80,
         "http",
         1.0,
-        10.0
+        trust
     )
 
     fun emptyBankTrustResponse() = BankTrustResponse(
@@ -161,4 +169,13 @@ object Mocks {
         0.0,
         0.0
     )
+}
+
+// Sample values taken from docs, see https://thenewboston.com/bank-api/
+object Some {
+    const val id = "64426fc5-b3ac-42fb-b75b-d5ccfcdc6872"
+    const val accountNumber = "0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb"
+    const val nodeIdentifier = "d5356888dc9303e44ce52b1e06c3165a7759b9df1e6a6dfbd33ee1c3df1ab4d1"
+    const val signature = "f41788fe19690a67abe3336d4ca84565c090691efae0e5cdd8bf02e126842215080405013b8461f734d091e673e9edefca53a51773fda59bbebcef77ab8e2901"
+    const val trust = 42.0
 }

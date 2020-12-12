@@ -1,18 +1,31 @@
 package com.thenewboston.utils
 
-import io.ktor.client.*
-import io.ktor.client.engine.mock.*
-import io.ktor.client.features.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import io.ktor.http.*
+import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
+import io.ktor.client.HttpClient
+import io.ktor.client.HttpClientConfig
+import io.ktor.client.engine.mock.MockEngine
+import io.ktor.client.engine.mock.MockEngineConfig
+import io.ktor.client.engine.mock.MockRequestHandleScope
+import io.ktor.client.engine.mock.respond
+import io.ktor.client.features.defaultRequest
+import io.ktor.client.features.json.JsonFeature
+import io.ktor.client.features.json.serializer.KotlinxSerializer
+import io.ktor.client.request.HttpRequestData
+import io.ktor.http.ContentType
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.HttpStatusCode.Companion.Accepted
+import io.ktor.http.HttpStatusCode.Companion.InternalServerError
+import io.ktor.http.content.TextContent
+import io.ktor.http.contentType
+import io.ktor.http.headersOf
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 class BankApiMockEngine {
 
     fun getSuccess() = getBankMockEngine()
 
-    fun getErrors() = getBankMockEngine(true)
+    fun getErrors() = getBankMockEngine(sendOnlyErrorResponses = true)
 
     fun patchSuccess() = patchBankEngine()
 
@@ -23,98 +36,113 @@ class BankApiMockEngine {
     private val json = listOf(ContentType.Application.Json.toString())
     private val responseHeaders = headersOf("Content-Type" to json)
 
-    private fun getBankMockEngine(enableErrorResponse: Boolean = false) = HttpClient(MockEngine) {
-        val errorContent = BankAPIJsonMapper.mapInternalServerErrorToJson()
-        engine {
-            addHandler { request ->
-                when (request.url.encodedPath) {
-                    BankAPIJsonMapper.ACCOUNTS_ENDPOINT -> {
-                        val content = BankAPIJsonMapper.mapAccountsToJson()
-                        if (enableErrorResponse) {
-                            respond(errorContent, HttpStatusCode.InternalServerError, responseHeaders)
-                        } else {
-                            respond(content, HttpStatusCode.OK, responseHeaders)
+    private fun getBankMockEngine(sendOnlyErrorResponses: Boolean = false) =
+        HttpClient(MockEngine) {
+            val errorContent = BankAPIJsonMapper.mapInternalServerErrorToJson()
+            engine {
+                addHandler { request ->
+                    when (request.url.encodedPath) {
+                        BankAPIJsonMapper.ACCOUNTS_ENDPOINT -> {
+                            val content = BankAPIJsonMapper.mapAccountsToJson()
+                            sendResponse(content, errorContent, sendOnlyErrorResponses)
                         }
-                    }
-                    BankAPIJsonMapper.BANKS_ENDPOINT -> {
-                        val content = BankAPIJsonMapper.mapBanksToJson()
-                        if (enableErrorResponse) {
-                            respond(errorContent, HttpStatusCode.InternalServerError, responseHeaders)
-                        } else {
-                            respond(content, HttpStatusCode.OK, responseHeaders)
+                        BankAPIJsonMapper.BANKS_ENDPOINT -> {
+                            val content = BankAPIJsonMapper.mapBanksToJson()
+                            sendResponse(content, errorContent, sendOnlyErrorResponses)
                         }
-                    }
-                    BankAPIJsonMapper.BANK_TRANSACTIONS_ENDPOINT -> {
-                        val content = BankAPIJsonMapper.mapBankTransactionsToJson()
-                        if (enableErrorResponse) {
-                            respond(errorContent, HttpStatusCode.InternalServerError, responseHeaders)
-                        } else {
-                            respond(content, HttpStatusCode.OK, responseHeaders)
+                        BankAPIJsonMapper.BANK_TRANSACTIONS_ENDPOINT -> {
+                            val content = BankAPIJsonMapper.mapBankTransactionsToJson()
+                            sendResponse(content, errorContent, sendOnlyErrorResponses)
                         }
-                    }
-                    BankAPIJsonMapper.BLOCKS_ENDPOINT -> {
-                        val content = BankAPIJsonMapper.mapBlocksToJson()
-                        if (enableErrorResponse) {
-                            respond(errorContent, HttpStatusCode.InternalServerError, responseHeaders)
-                        } else {
-                            respond(content, HttpStatusCode.OK, responseHeaders)
+                        BankAPIJsonMapper.BLOCKS_ENDPOINT -> {
+                            val content = BankAPIJsonMapper.mapBlocksToJson()
+                            sendResponse(content, errorContent, sendOnlyErrorResponses)
                         }
-                    }
-                    BankAPIJsonMapper.VALIDATORS_ENDPOINT -> {
-                        val content = BankAPIJsonMapper.mapValidatorsToJson()
-                        if (enableErrorResponse) {
-                            respond(errorContent, HttpStatusCode.InternalServerError, responseHeaders)
-                        } else {
-                            respond(content, HttpStatusCode.OK, responseHeaders)
+                        BankAPIJsonMapper.VALIDATORS_ENDPOINT -> {
+                            val content = BankAPIJsonMapper.mapValidatorsToJson()
+                            sendResponse(content, errorContent, sendOnlyErrorResponses)
                         }
-                    }
-                    BankAPIJsonMapper.SINGLE_VALIDATOR_ENDPOINT -> {
-                        val content = BankAPIJsonMapper.mapValidatorToJson()
-                        if (enableErrorResponse) {
-                            respond(errorContent, HttpStatusCode.InternalServerError, responseHeaders)
-                        } else {
-                            respond(content, HttpStatusCode.OK, responseHeaders)
+                        BankAPIJsonMapper.SINGLE_VALIDATOR_ENDPOINT -> {
+                            val content = BankAPIJsonMapper.mapValidatorToJson()
+                            sendResponse(content, errorContent, sendOnlyErrorResponses)
                         }
-                    }
-                    BankAPIJsonMapper.CONFIG_ENDPOINT -> {
-                        val content = BankAPIJsonMapper.mapBankDetailToJson()
-                        if (enableErrorResponse) {
-                            respond(errorContent, HttpStatusCode.InternalServerError, responseHeaders)
-                        } else {
-                            respond(content, HttpStatusCode.OK, responseHeaders)
+                        BankAPIJsonMapper.CONFIG_ENDPOINT -> {
+                            val content = BankAPIJsonMapper.mapBankDetailToJson()
+                            sendResponse(content, errorContent, sendOnlyErrorResponses)
                         }
-                    }
-                    BankAPIJsonMapper.INVALID_BLOCKS_ENDPOINT -> {
-                        val content = BankAPIJsonMapper.mapInvalidBlocksToJson()
-                        if (enableErrorResponse) {
-                            respond(errorContent, HttpStatusCode.InternalServerError, responseHeaders)
-                        } else {
-                            respond(content, HttpStatusCode.OK, responseHeaders)
+                        BankAPIJsonMapper.INVALID_BLOCKS_ENDPOINT -> {
+                            val content = BankAPIJsonMapper.mapInvalidBlocksToJson()
+                            if (sendOnlyErrorResponses) {
+                                respond(
+                                    errorContent,
+                                    InternalServerError,
+                                    responseHeaders
+                                )
+                            } else {
+                                respond(content, HttpStatusCode.OK, responseHeaders)
+                            }
                         }
-                    }
-                    else -> {
-                        error("Unhandled ${request.url.encodedPath}")
+                        else -> {
+                            error("Unhandled ${request.url.encodedPath}")
+                        }
                     }
                 }
             }
+
+            installJsonFeature()
         }
 
-        installJsonFeature()
+    private fun MockRequestHandleScope.sendResponse(
+        content: String,
+        errorContent: String,
+        isError: Boolean
+    ) = when {
+        isError -> respond(errorContent, InternalServerError, responseHeaders)
+        else -> respond(content, HttpStatusCode.OK, responseHeaders)
     }
 
-    private fun patchBankEngine(enableErrorResponse: Boolean = false, isInvalidResponse: Boolean = false) = HttpClient(MockEngine) {
+    private fun patchBankEngine(
+        enableErrorResponse: Boolean = false,
+        isInvalidResponse: Boolean = false
+    ) = HttpClient(MockEngine) {
         val errorContent = BankAPIJsonMapper.mapInternalServerErrorToJson()
 
         engine {
             addHandler { request ->
-                when (request.url.encodedPath) {
-                    BankAPIJsonMapper.BANKS_TRUST_ENDPOINT -> {
-                        val content = BankAPIJsonMapper.mapBankTrustResponseToJson()
+                when {
+                    request.url.encodedPath == BankAPIJsonMapper.BANKS_TRUST_ENDPOINT -> {
+                        val requestedTrust = readTrustFromRequest(request)
+                        val content = BankAPIJsonMapper.mapBankTrustResponseToJson(requestedTrust)
                         val invalidContent = BankAPIJsonMapper.mapInvalidBankTrustResponseToJson()
                         when {
-                            enableErrorResponse -> respond(errorContent, HttpStatusCode.InternalServerError, responseHeaders)
-                            isInvalidResponse -> respond(invalidContent, HttpStatusCode.Accepted, responseHeaders)
-                            else -> respond(content, HttpStatusCode.Accepted, responseHeaders)
+                            enableErrorResponse -> respond(
+                                errorContent,
+                                InternalServerError,
+                                responseHeaders
+                            )
+                            isInvalidResponse -> respond(
+                                invalidContent,
+                                Accepted,
+                                responseHeaders
+                            )
+                            else -> respond(content, Accepted, responseHeaders)
+                        }
+                    }
+                    request.url.encodedPath.startsWith(BankAPIJsonMapper.ACCOUNTS_ENDPOINT) -> {
+                        val requestedTrust = readTrustFromRequest(request)
+                        val responseBody = BankAPIJsonMapper.mapAccountToJson(trust = requestedTrust)
+                        when {
+                            enableErrorResponse -> respond(
+                                errorContent,
+                                InternalServerError,
+                                responseHeaders
+                            )
+                            isInvalidResponse -> respond(
+                                BankAPIJsonMapper.mapEmptyAccountToJson(),
+                                Accepted,
+                                responseHeaders
+                            )
+                            else -> respond(responseBody, Accepted, responseHeaders)
                         }
                     }
                     else -> {
@@ -129,6 +157,11 @@ class BankApiMockEngine {
         defaultRequest {
             contentType(ContentType.Application.Json)
         }
+    }
+
+    private fun readTrustFromRequest(request: HttpRequestData): Double {
+        val requestBodyString = (request.body as TextContent).text
+        return Json.decodeFromString<UpdateTrustRequest>(requestBodyString).message.trust
     }
 
     private fun HttpClientConfig<MockEngineConfig>.installJsonFeature() {

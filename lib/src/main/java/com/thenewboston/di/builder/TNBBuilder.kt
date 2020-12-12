@@ -6,16 +6,18 @@ import com.thenewboston.common.http.config.BankConfig
 import dagger.Component
 import dagger.Module
 import dagger.Provides
-import io.ktor.client.*
-import io.ktor.client.engine.*
-import io.ktor.client.engine.cio.*
-import io.ktor.client.features.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import io.ktor.client.request.*
-import io.ktor.http.*
-import kotlinx.serialization.json.Json
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.features.defaultRequest
+import io.ktor.client.features.json.JsonFeature
+import io.ktor.client.features.json.serializer.KotlinxSerializer
+import io.ktor.client.request.host
+import io.ktor.client.request.port
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 import javax.inject.Scope
+import kotlinx.serialization.json.Json
 
 @Retention(AnnotationRetention.RUNTIME)
 @Scope

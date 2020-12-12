@@ -1,4 +1,4 @@
-package com.thenewboston.data.dto.bankapi.accountdto
+package com.thenewboston.data.dto.bankapi.accountdto.response
 
 import com.thenewboston.utils.DateSerializer
 import kotlinx.datetime.LocalDateTime
@@ -10,11 +10,11 @@ data class AccountList(
     val count: Long,
     val next: String?,
     val previous: String?,
-    val results: List<AccountDTO>
+    val results: List<Account>
 )
 
 @Serializable
-data class AccountDTO(
+data class Account(
     @SerialName("id")
     val id: String,
 
