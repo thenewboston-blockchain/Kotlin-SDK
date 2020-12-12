@@ -11,7 +11,9 @@ import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
+import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
+import com.thenewboston.data.dto.bankapi.invalidblockdto.request.PostInvalidBlockRequest
 import com.thenewboston.data.dto.bankapi.validatordto.Validator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import com.thenewboston.utils.BankAPIEndpoints
@@ -194,6 +196,26 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
                 IOException()
             )
             else -> Outcome.Success(invalidBlocks)
+        }
+    }
+
+    suspend fun sendInvalidBlock(request: PostInvalidBlockRequest): Outcome<InvalidBlock> = makeApiCall(
+        call = { doSendInvalidBlock(request) },
+        errorMessage = "An error occurred while sending invalid block"
+    )
+
+    private suspend fun doSendInvalidBlock(request: PostInvalidBlockRequest): Outcome<InvalidBlock> {
+        val response = networkClient.defaultClient.patch<InvalidBlock> {
+            url(BankAPIEndpoints.INVALID_BLOCKS_ENDPOINT)
+            body = request
+        }
+
+        return when {
+            response.blockIdentifier.isBlank() -> {
+                val message = "Received invalid response when sending invalid block with identifier ${request.message.blockIdentifier}"
+                Outcome.Error(message, IOException())
+            }
+            else -> Outcome.Success(response)
         }
     }
 }

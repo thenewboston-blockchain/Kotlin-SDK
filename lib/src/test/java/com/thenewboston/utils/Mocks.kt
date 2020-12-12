@@ -14,6 +14,7 @@ import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
+import com.thenewboston.data.dto.bankapi.invalidblockdto.request.*
 import com.thenewboston.data.dto.bankapi.validatordto.Validator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import kotlinx.datetime.LocalDateTime
@@ -21,7 +22,7 @@ import kotlinx.datetime.LocalDateTime
 object Mocks {
 
     fun banks() = BankList(
-        count = 1,
+        count = 2,
         banks = listOf(bank(), bank())
     )
 
@@ -122,21 +123,31 @@ object Mocks {
         trust = 0.00
     )
 
-    fun invalidBlock() = InvalidBlock(
+    fun invalidBlocks() = InvalidBlockList(
+        count = 2,
+        previous = null,
+        next = null,
+        results = listOf(invalidBlock(), invalidBlock())
+    )
+
+    fun invalidBlock(blockIdentifier: String = Some.id) = InvalidBlock(
         id = "2bcd53c5-19f9-4226-ab04-3dfb17c3a1fe",
         createdDate = LocalDateTime.parse("2020-11-19T19:57:31.799872"),
         modifiedDate = LocalDateTime.parse("2020-11-19T19:57:31.799872"),
-        blockIdentifier = "65ae26192dfb9ec41f88c6d582b374a9b42ab58833e1612452d7a8f685dcd4d5",
+        blockIdentifier = blockIdentifier,
         block = "3ff4ebb0-2b3d-429b-ba90-08133fcdee4e",
         confirmationValidator = "fcd2dce8-9e4f-4bf1-8dac-cdbaf64e5ce8",
         primaryValidator = "51461a75-dd8d-4133-81f4-543a3b054149"
     )
 
-    fun invalidBlocks() = InvalidBlockList(
-        count = 1,
-        previous = null,
-        next = null,
-        results = listOf(invalidBlock(), invalidBlock())
+    fun emptyInvalidBlock() = InvalidBlock(
+        id = "",
+        createdDate = Some.dateTime,
+        modifiedDate = null,
+        blockIdentifier = "",
+        block = "",
+        confirmationValidator = "",
+        primaryValidator = ""
     )
 
     fun internalServerError() = BankAPIError(500, "Internal Server Error")
@@ -169,6 +180,23 @@ object Mocks {
         0.0,
         0.0
     )
+
+    fun postInvalidBlockRequest() = PostInvalidBlockRequest(
+        message = PostInvalidBlockMessage(
+            block = PostInvalidBlockMessageBlock(
+                accountNumber = Some.accountNumber,
+                message = PostInvalidBlockMessageBlockMessage(
+                    balanceKey = Some.balanceKey,
+                    transactions = listOf(Transaction(1234.5, recipient = Some.accountNumber))
+                ),
+                signature = Some.signature
+            ),
+            blockIdentifier = Some.id,
+            primaryValidatorNodeIdentifier = Some.nodeIdentifier
+        ),
+        nodeIdentifier = Some.nodeIdentifier,
+        signature = Some.signature
+    )
 }
 
 // Sample values taken from docs, see https://thenewboston.com/bank-api/
@@ -178,4 +206,6 @@ object Some {
     const val nodeIdentifier = "d5356888dc9303e44ce52b1e06c3165a7759b9df1e6a6dfbd33ee1c3df1ab4d1"
     const val signature = "f41788fe19690a67abe3336d4ca84565c090691efae0e5cdd8bf02e126842215080405013b8461f734d091e673e9edefca53a51773fda59bbebcef77ab8e2901"
     const val trust = 42.0
+    const val balanceKey = "ce51f0d9facaa7d3e69657429dd3f961ce70077a8efb53dcda508c7c0a19d2e3"
+    val dateTime = LocalDateTime.parse("2020-11-19T19:57:31.799872")
 }
