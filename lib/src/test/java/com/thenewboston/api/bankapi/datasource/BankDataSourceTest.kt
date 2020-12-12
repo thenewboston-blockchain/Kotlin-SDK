@@ -16,10 +16,12 @@ import io.ktor.utils.io.errors.*
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.*
 
 @KtorExperimentalAPI
+@ExperimentalCoroutinesApi
 class BankDataSourceTest {
 
     @MockK
@@ -125,6 +127,15 @@ class BankDataSourceTest {
             check(response is Outcome.Success)
             response.value.accountNumber shouldBe "dfddf07ec15cbf363ecb52eedd7133b70b3ec896b488460bcecaba63e8e36be5"
             response.value.trust shouldBe 10.0
+        }
+
+        @Test
+        fun `test fetch list of invalid blocks successfully`() = runBlockingTest {
+            val response = bankDataSource.fetchInvalidBlocks()
+
+            check(response is Outcome.Success)
+            response.value.count shouldBeGreaterThan 0
+            response.value.results.shouldNotBeEmpty()
         }
     }
 
@@ -244,6 +255,16 @@ class BankDataSourceTest {
             response.cause should beInstanceOf<IOException>()
             response.message shouldBe "Received invalid request when updating trust level of bank with" +
                 " ${Mocks.bankTrustRequest().nodeIdentifier}"
+        }
+
+        @Test
+        fun `test return error outcome for list of invalid blocks IOException`() = runBlockingTest {
+            // when
+            val response = bankDataSource.fetchInvalidBlocks()
+
+            // then
+            check(response is Outcome.Error)
+            response.cause should beInstanceOf<IOException>()
         }
     }
 }

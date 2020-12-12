@@ -12,6 +12,8 @@ import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.Block
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BlockList
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
+import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockDTO
+import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.validatordto.Validator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import kotlinx.datetime.LocalDateTime
@@ -110,6 +112,23 @@ object Mocks {
         modifiedDate = LocalDateTime(2020, 8, 8, 12, 13, 23),
         accountNumber = "",
         trust = 100.0
+    )
+
+    fun invalidBlock() = InvalidBlockDTO(
+        id = "2bcd53c5-19f9-4226-ab04-3dfb17c3a1fe",
+        createdDate = LocalDateTime.parse("2020-11-19T19:57:31.799872"),
+        modifiedDate = LocalDateTime.parse("2020-11-19T19:57:31.799872"),
+        blockIdentifier = "65ae26192dfb9ec41f88c6d582b374a9b42ab58833e1612452d7a8f685dcd4d5",
+        block = "3ff4ebb0-2b3d-429b-ba90-08133fcdee4e",
+        confirmationValidator = "fcd2dce8-9e4f-4bf1-8dac-cdbaf64e5ce8",
+        primaryValidator = "51461a75-dd8d-4133-81f4-543a3b054149"
+    )
+
+    fun invalidBlocks() = InvalidBlockList(
+        count = 1,
+        previous = null,
+        next = null,
+        results = listOf(invalidBlock(), invalidBlock())
     )
 
     fun internalServerError() = BankAPIError(500, "Internal Server Error")
