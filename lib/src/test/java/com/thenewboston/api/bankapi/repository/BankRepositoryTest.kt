@@ -7,7 +7,7 @@ import com.thenewboston.data.dto.bankapi.accountdto.response.AccountList
 import com.thenewboston.data.dto.bankapi.bankdto.response.BankList
 import com.thenewboston.data.dto.bankapi.bankdto.response.BankTrustResponse
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
-import com.thenewboston.data.dto.bankapi.banktransactiondto.BlockList
+import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import com.thenewboston.utils.Mocks

@@ -5,14 +5,14 @@ import com.thenewboston.data.dto.bankapi.accountdto.response.AccountList
 import com.thenewboston.data.dto.bankapi.bankdto.response.Bank
 import com.thenewboston.data.dto.bankapi.bankdto.response.BankList
 import com.thenewboston.data.dto.bankapi.bankdto.response.BankTrustResponse
-import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransaction
+import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactions
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
-import com.thenewboston.data.dto.bankapi.banktransactiondto.Block
-import com.thenewboston.data.dto.bankapi.banktransactiondto.BlockList
+import com.thenewboston.data.dto.bankapi.blockdto.Block
+import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.common.request.TrustMessage
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
-import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockDTO
+import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.validatordto.Validator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
@@ -82,10 +82,10 @@ object Mocks {
         count = 1,
         previous = null,
         next = null,
-        results = listOf(block(), block())
+        blocks = listOf(block(), block())
     )
 
-    fun bankTransaction() = BankTransaction(
+    fun bankTransaction() = BankTransactions(
         id = "String",
         block = block(),
         amount = 5.0,
@@ -122,7 +122,7 @@ object Mocks {
         trust = 0.00
     )
 
-    fun invalidBlock() = InvalidBlockDTO(
+    fun invalidBlock() = InvalidBlock(
         id = "2bcd53c5-19f9-4226-ab04-3dfb17c3a1fe",
         createdDate = LocalDateTime.parse("2020-11-19T19:57:31.799872"),
         modifiedDate = LocalDateTime.parse("2020-11-19T19:57:31.799872"),

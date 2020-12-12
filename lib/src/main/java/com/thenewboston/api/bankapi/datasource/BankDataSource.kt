@@ -8,7 +8,7 @@ import com.thenewboston.data.dto.bankapi.accountdto.response.AccountList
 import com.thenewboston.data.dto.bankapi.bankdto.response.BankList
 import com.thenewboston.data.dto.bankapi.bankdto.response.BankTrustResponse
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
-import com.thenewboston.data.dto.bankapi.banktransactiondto.BlockList
+import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
@@ -123,7 +123,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         val blocks = networkClient.defaultClient.get<BlockList>(BankAPIEndpoints.BLOCKS_ENDPOINT)
 
         return when {
-            blocks.results.isNullOrEmpty() -> Outcome.Error(
+            blocks.blocks.isNullOrEmpty() -> Outcome.Error(
                 "Received null or empty list",
                 IOException()
             )

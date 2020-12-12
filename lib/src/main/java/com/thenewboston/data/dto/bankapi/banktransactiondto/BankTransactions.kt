@@ -4,8 +4,23 @@ import com.thenewboston.data.dto.bankapi.blockdto.Block
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+/**
+ * The [BankTransactionList] entity holds the business relevant information
+ */
 @Serializable
-data class BankTransaction(
+data class BankTransactionList(
+    @SerialName("count")
+    val count: Int,
+    @SerialName("next")
+    val next: String? = null,
+    @SerialName("previous")
+    val previous: String? = null,
+    @SerialName("results")
+    val bankTransactions: List<BankTransactions>
+)
+
+@Serializable
+data class BankTransactions(
     @SerialName("id")
     val id: String,
     @SerialName("block")
