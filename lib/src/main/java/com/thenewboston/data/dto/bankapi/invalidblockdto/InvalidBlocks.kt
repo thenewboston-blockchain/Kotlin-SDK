@@ -6,7 +6,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class InvalidBlockDTO(
+data class InvalidBlock(
+
     @SerialName("id")
     val id: String,
 
@@ -30,11 +31,19 @@ data class InvalidBlockDTO(
     @SerialName("primary_validator")
     val primaryValidator: String,
 )
+
 @Serializable
 data class InvalidBlockList(
 
+    @SerialName("count")
     val count: Long,
+
+    @SerialName("next")
     val next: String?,
+
+    @SerialName("previous")
     val previous: String?,
-    val results: List<InvalidBlockDTO>
+
+    @SerialName("results")
+    val results: List<InvalidBlock>
 )

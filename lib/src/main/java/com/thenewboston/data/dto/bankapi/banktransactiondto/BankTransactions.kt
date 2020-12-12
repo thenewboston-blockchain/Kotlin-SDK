@@ -1,5 +1,6 @@
 package com.thenewboston.data.dto.bankapi.banktransactiondto
 
+import com.thenewboston.data.dto.bankapi.blockdto.Block
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
