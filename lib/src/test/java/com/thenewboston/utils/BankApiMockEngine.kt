@@ -70,6 +70,18 @@ class BankApiMockEngine {
                             val content = BankAPIJsonMapper.mapBankDetailToJson()
                             sendResponse(content, errorContent, sendOnlyErrorResponses)
                         }
+                        BankAPIJsonMapper.INVALID_BLOCKS_ENDPOINT -> {
+                            val content = BankAPIJsonMapper.mapInvalidBlocksToJson()
+                            if (sendOnlyErrorResponses) {
+                                respond(
+                                    errorContent,
+                                    InternalServerError,
+                                    responseHeaders
+                                )
+                            } else {
+                                respond(content, HttpStatusCode.OK, responseHeaders)
+                            }
+                        }
                         else -> {
                             error("Unhandled ${request.url.encodedPath}")
                         }

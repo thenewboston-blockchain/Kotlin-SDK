@@ -10,6 +10,7 @@ import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BlockList
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
+import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import io.ktor.util.KtorExperimentalAPI
 import javax.inject.Inject
@@ -39,4 +40,6 @@ class BankRepository @Inject constructor(private val dataSource: BankDataSource)
 
     suspend fun updateAccountTrust(accountNumber: String, request: UpdateTrustRequest): Outcome<Account> =
         dataSource.updateAccountTrust(accountNumber, request)
+
+    suspend fun invalidBlocks(): Outcome<InvalidBlockList> = dataSource.fetchInvalidBlocks()
 }

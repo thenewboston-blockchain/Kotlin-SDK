@@ -11,6 +11,7 @@ import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BlockList
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
+import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.validatordto.Validator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import com.thenewboston.utils.BankAPIEndpoints
@@ -175,6 +176,24 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
             else -> {
                 Outcome.Success(response)
             }
+        }
+    }
+
+    suspend fun fetchInvalidBlocks(): Outcome<InvalidBlockList> = makeApiCall(
+        call = { getInvalidBlocks() },
+        errorMessage = "Could not fetch list of invalid blocks"
+    )
+
+    private suspend fun getInvalidBlocks(): Outcome<InvalidBlockList> {
+        val invalidBlocks = networkClient.defaultClient
+            .get<InvalidBlockList>(BankAPIEndpoints.INVALID_BLOCKS_ENDPOINT)
+
+        return when {
+            invalidBlocks.results.isNullOrEmpty() -> Outcome.Error(
+                "No invalid blocks are available at this time",
+                IOException()
+            )
+            else -> Outcome.Success(invalidBlocks)
         }
     }
 }
