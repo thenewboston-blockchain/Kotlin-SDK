@@ -122,14 +122,14 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
     )
 
     private suspend fun blocks(): Outcome<BlockList> {
-        val blocks = networkClient.defaultClient.get<BlockList>(BankAPIEndpoints.BLOCKS_ENDPOINT)
+        val response = networkClient.defaultClient.get<BlockList>(BankAPIEndpoints.BLOCKS_ENDPOINT)
 
         return when {
-            blocks.blocks.isNullOrEmpty() -> Outcome.Error(
+            response.blocks.isNullOrEmpty() -> Outcome.Error(
                 "Received null or empty list",
                 IOException()
             )
-            else -> Outcome.Success(blocks)
+            else -> Outcome.Success(response)
         }
     }
 
