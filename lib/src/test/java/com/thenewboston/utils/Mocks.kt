@@ -182,10 +182,10 @@ object Mocks {
     )
 
     fun postInvalidBlockRequest() = PostInvalidBlockRequest(
-        message = PostInvalidBlockMessage(
-            block = PostInvalidBlockMessageBlock(
+        message = InvalidBlockMessage(
+            block = InvalidBlockMessageBlock(
                 accountNumber = Some.accountNumber,
-                message = PostInvalidBlockMessageBlockMessage(
+                message = InvalidBlockInnerMessage(
                     balanceKey = Some.balanceKey,
                     transactions = listOf(Transaction(1234.5, recipient = Some.accountNumber))
                 ),

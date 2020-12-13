@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class PostInvalidBlockRequest(
 
     @SerialName("message")
-    val message: PostInvalidBlockMessage,
+    val message: InvalidBlockMessage,
 
     @SerialName("node_identifier")
     val nodeIdentifier: String,
@@ -17,10 +17,10 @@ data class PostInvalidBlockRequest(
 )
 
 @Serializable
-data class PostInvalidBlockMessage(
+data class InvalidBlockMessage(
 
     @SerialName("block")
-    val block: PostInvalidBlockMessageBlock,
+    val block: InvalidBlockMessageBlock,
 
     @SerialName("block_identifier")
     val blockIdentifier: String,
@@ -30,20 +30,20 @@ data class PostInvalidBlockMessage(
 )
 
 @Serializable
-data class PostInvalidBlockMessageBlock(
+data class InvalidBlockMessageBlock(
 
     @SerialName("account_number")
     val accountNumber: String,
 
     @SerialName("message")
-    val message: PostInvalidBlockMessageBlockMessage,
+    val message: InvalidBlockInnerMessage,
 
     @SerialName("signature")
     val signature: String,
 )
 
 @Serializable
-data class PostInvalidBlockMessageBlockMessage(
+data class InvalidBlockInnerMessage(
 
     @SerialName("balance_key")
     val balanceKey: String,
