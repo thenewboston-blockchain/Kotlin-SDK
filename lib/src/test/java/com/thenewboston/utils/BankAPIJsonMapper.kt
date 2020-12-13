@@ -42,4 +42,8 @@ object BankAPIJsonMapper {
     fun mapInvalidBankTrustResponseToJson(): String = Json.encodeToString(Mocks.emptyBankTrustResponse())
 
     fun mapInvalidBlocksToJson(): String = Json.encodeToString(Mocks.invalidBlocks())
+
+    fun mapInvalidBlockToJson(blockIdentifier: String): String = Json.encodeToString(Mocks.invalidBlock(blockIdentifier))
+
+    fun mapInvalidResponseForInvalidBlocksRequest(): String = Json.encodeToString(Mocks.emptyInvalidBlock())
 }

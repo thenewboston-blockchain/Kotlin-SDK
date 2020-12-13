@@ -7,10 +7,12 @@ import com.thenewboston.data.dto.bankapi.accountdto.response.AccountList
 import com.thenewboston.data.dto.bankapi.bankdto.response.BankList
 import com.thenewboston.data.dto.bankapi.bankdto.response.BankTrustResponse
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
-import com.thenewboston.data.dto.bankapi.banktransactiondto.BlockList
+import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
+import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
+import com.thenewboston.data.dto.bankapi.invalidblockdto.request.PostInvalidBlockRequest
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import io.ktor.util.KtorExperimentalAPI
 import javax.inject.Inject
@@ -20,13 +22,9 @@ class BankRepository @Inject constructor(private val dataSource: BankDataSource)
 
     suspend fun banks(): Outcome<BankList> = dataSource.fetchBanks()
 
-    suspend fun bankDetail(): Outcome<BankDetails> {
-        return dataSource.fetchBankDetails()
-    }
+    suspend fun bankDetail(): Outcome<BankDetails> = dataSource.fetchBankDetails()
 
-    suspend fun bankTransactions(): Outcome<BankTransactionList> {
-        return dataSource.fetchBankTransactions()
-    }
+    suspend fun bankTransactions(): Outcome<BankTransactionList> = dataSource.fetchBankTransactions()
 
     suspend fun validators(): Outcome<ValidatorList> = dataSource.fetchValidators()
 
@@ -42,4 +40,6 @@ class BankRepository @Inject constructor(private val dataSource: BankDataSource)
         dataSource.updateAccountTrust(accountNumber, request)
 
     suspend fun invalidBlocks(): Outcome<InvalidBlockList> = dataSource.fetchInvalidBlocks()
+
+    suspend fun sendInvalidBlock(request: PostInvalidBlockRequest): Outcome<InvalidBlock> = dataSource.sendInvalidBlock(request)
 }

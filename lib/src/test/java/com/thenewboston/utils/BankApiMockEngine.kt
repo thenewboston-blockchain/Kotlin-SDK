@@ -1,6 +1,7 @@
 package com.thenewboston.utils
 
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
+import com.thenewboston.data.dto.bankapi.invalidblockdto.request.PostInvalidBlockRequest
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.engine.mock.MockEngine
@@ -24,13 +25,14 @@ import kotlinx.serialization.json.Json
 class BankApiMockEngine {
 
     fun getSuccess() = getBankMockEngine()
-
     fun getErrors() = getBankMockEngine(sendOnlyErrorResponses = true)
 
+    fun postSuccess() = postBankEngine()
+    fun postErrors() = postBankEngine(sendOnlyErrorResponses = true)
+    fun postInvalidSuccess() = postBankEngine(sendInvalidResponses = true)
+
     fun patchSuccess() = patchBankEngine()
-
-    fun patchEmptySuccess() = patchBankEngine(isInvalidResponse = true)
-
+    fun patchEmptySuccess() = patchBankEngine(sendInvalidResponses = true)
     fun patchErrors() = patchBankEngine(true)
 
     private val json = listOf(ContentType.Application.Json.toString())
@@ -101,9 +103,50 @@ class BankApiMockEngine {
         else -> respond(content, HttpStatusCode.OK, responseHeaders)
     }
 
+    private fun postBankEngine(
+        sendOnlyErrorResponses: Boolean = false,
+        sendInvalidResponses: Boolean = false
+    ) = HttpClient(MockEngine) {
+        val errorContent = BankAPIJsonMapper.mapInternalServerErrorToJson()
+
+        engine {
+            addHandler { request ->
+                when (request.url.encodedPath) {
+                    BankAPIJsonMapper.INVALID_BLOCKS_ENDPOINT -> {
+                        val blockIdentifier = readBlockIdentifierFromRequest(request)
+                        val content = BankAPIJsonMapper.mapInvalidBlockToJson(blockIdentifier)
+                        val invalidContent = BankAPIJsonMapper.mapInvalidResponseForInvalidBlocksRequest()
+                        when {
+                            sendOnlyErrorResponses -> respond(errorContent, InternalServerError, responseHeaders)
+                            sendInvalidResponses -> respond(invalidContent, Accepted, responseHeaders)
+                            else -> respond(content, Accepted, responseHeaders)
+                        }
+                    }
+                    else -> {
+                        error("Unhandled ${request.url.encodedPath}")
+                    }
+                }
+            }
+        }
+
+        installJsonFeature()
+
+        defaultRequest {
+            contentType(ContentType.Application.Json)
+        }
+    }
+
+    private fun readBlockIdentifierFromRequest(request: HttpRequestData): String =
+        request.extract<PostInvalidBlockRequest, String> { it.message.blockIdentifier }
+
+    private inline fun <reified T, R> HttpRequestData.extract(extractor: (T) -> R): R {
+        val requestBodyString = (this.body as TextContent).text
+        return extractor(Json.decodeFromString<T>(requestBodyString))
+    }
+
     private fun patchBankEngine(
         enableErrorResponse: Boolean = false,
-        isInvalidResponse: Boolean = false
+        sendInvalidResponses: Boolean = false
     ) = HttpClient(MockEngine) {
         val errorContent = BankAPIJsonMapper.mapInternalServerErrorToJson()
 
@@ -120,7 +163,7 @@ class BankApiMockEngine {
                                 InternalServerError,
                                 responseHeaders
                             )
-                            isInvalidResponse -> respond(
+                            sendInvalidResponses -> respond(
                                 invalidContent,
                                 Accepted,
                                 responseHeaders
@@ -137,7 +180,7 @@ class BankApiMockEngine {
                                 InternalServerError,
                                 responseHeaders
                             )
-                            isInvalidResponse -> respond(
+                            sendInvalidResponses -> respond(
                                 BankAPIJsonMapper.mapEmptyAccountToJson(),
                                 Accepted,
                                 responseHeaders
@@ -159,10 +202,8 @@ class BankApiMockEngine {
         }
     }
 
-    private fun readTrustFromRequest(request: HttpRequestData): Double {
-        val requestBodyString = (request.body as TextContent).text
-        return Json.decodeFromString<UpdateTrustRequest>(requestBodyString).message.trust
-    }
+    private fun readTrustFromRequest(request: HttpRequestData): Double =
+        request.extract<UpdateTrustRequest, Double> { it.message.trust }
 
     private fun HttpClientConfig<MockEngineConfig>.installJsonFeature() {
         install(JsonFeature) {

@@ -10,6 +10,8 @@ import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.longs.shouldBeGreaterThan
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNot
+import io.kotest.matchers.string.beEmpty
 import io.kotest.matchers.string.contain
 import io.kotest.matchers.types.beInstanceOf
 import io.ktor.util.KtorExperimentalAPI
@@ -25,10 +27,11 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.TestInstance.Lifecycle
 
 @KtorExperimentalAPI
 @ExperimentalCoroutinesApi
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestInstance(Lifecycle.PER_CLASS)
 class BankDataSourceTest {
 
     @MockK
@@ -47,12 +50,12 @@ class BankDataSourceTest {
 
     @Nested
     @DisplayName("Given successful request...")
-    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @TestInstance(Lifecycle.PER_CLASS)
     inner class GivenSucceedingRequest {
 
         @Nested
         @DisplayName("When performing a GET request...")
-        @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+        @TestInstance(Lifecycle.PER_CLASS)
         inner class WhenGetRequest {
 
             @BeforeEach
@@ -126,7 +129,7 @@ class BankDataSourceTest {
 
                 check(response is Outcome.Success)
                 response.value.count shouldBeGreaterThan 0
-                response.value.results.shouldNotBeEmpty()
+                response.value.blocks.shouldNotBeEmpty()
             }
 
             @Test
@@ -153,8 +156,33 @@ class BankDataSourceTest {
         }
 
         @Nested
+        @DisplayName("When performing POST request...")
+        @TestInstance(Lifecycle.PER_CLASS)
+        inner class WhenPostRequest {
+
+            @BeforeEach
+            fun given() {
+                every { networkClient.defaultClient } returns mockEngine.postSuccess()
+            }
+
+            @Test
+            fun `should return success with original invalid block identifier`() = runBlockingTest {
+                // given
+                val request = Mocks.postInvalidBlockRequest()
+
+                // when
+                val response = bankDataSource.sendInvalidBlock(request)
+
+                // then
+                check(response is Outcome.Success)
+                response.value.id shouldNot beEmpty()
+                response.value.blockIdentifier shouldBe request.message.blockIdentifier
+            }
+        }
+
+        @Nested
         @DisplayName("When performing PATCH request...")
-        @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+        @TestInstance(Lifecycle.PER_CLASS)
         inner class WhenPatchRequest {
 
             @BeforeEach
@@ -193,105 +221,179 @@ class BankDataSourceTest {
         }
     }
 
+    @Test
+    fun `test return error outcome for list of invalid blocks IOException`() = runBlockingTest {
+        // when
+        val response = bankDataSource.fetchInvalidBlocks()
+
+        // then
+        check(response is Outcome.Error)
+        response.cause should beInstanceOf<IOException>()
+    }
+
     @Nested
     @DisplayName("Given request that should fail")
-    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @TestInstance(Lifecycle.PER_CLASS)
     inner class GivenFailingRequest {
 
-        @BeforeEach
-        fun setup() {
-            every { networkClient.defaultClient } returns mockEngine.getErrors()
+        @Nested
+        @DisplayName("When performing GET request...")
+        @TestInstance(Lifecycle.PER_CLASS)
+        inner class WhenGetRequest {
+
+            @BeforeEach
+            fun setup() {
+                every { networkClient.defaultClient } returns mockEngine.getErrors()
+            }
+
+            @Test
+            fun `should return error outcome for IOException`() = runBlockingTest {
+                // when
+                val response = bankDataSource.fetchBanks()
+
+                // then
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.cause?.message shouldBe "Failed to retrieve banks"
+            }
+
+            @Test
+            fun `should return error outcome for bank details IOException`() = runBlockingTest {
+                // when
+                val response = bankDataSource.fetchBankDetails()
+
+                // then
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.cause?.message shouldBe "Failed to retrieve bank details"
+            }
+
+            @Test
+            fun `should return error outcome for bank transactions IOException`() = runBlockingTest {
+                // when
+                val response = bankDataSource.fetchBankTransactions()
+
+                // then
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.cause?.message shouldBe "Failed to retrieve bank transactions"
+            }
+
+            @Test
+            fun `should return error outcome for single validator`() = runBlockingTest {
+                val nodeIdentifier = "6871913581c3e689c9f39853a77e7263a96fd38596e9139f40a367e28364da53"
+                val response = bankDataSource.fetchValidator(nodeIdentifier)
+
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.cause?.message shouldBe "Could not fetch validator with NID $nodeIdentifier"
+            }
+
+            @Test
+            fun `should return error outcome for nonexistent node identifier`() = runBlockingTest {
+                every { networkClient.defaultClient } returns mockEngine.getSuccess()
+
+                // given
+                val nonExistentNodeIdentifier = "foo"
+
+                // when
+                val body = bankDataSource.fetchValidator(nonExistentNodeIdentifier)
+
+                // then
+                check(body is Outcome.Error)
+                body.cause should beInstanceOf<IOException>()
+                body.cause?.message shouldBe "Could not fetch validator with NID $nonExistentNodeIdentifier"
+            }
+
+            @Test
+            fun `should return error outcome for list of accounts IOException`() = runBlockingTest {
+                // when
+                val response = bankDataSource.fetchAccounts()
+
+                // then
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.cause?.message shouldBe "Could not fetch list of accounts"
+            }
+
+            @Test
+            fun `should return error outcome for list of blocks IOException`() = runBlockingTest {
+                // when
+                val response = bankDataSource.fetchBlocks()
+
+                // then
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.cause?.message shouldBe "Could not fetch list of blocks"
+            }
         }
 
-        @Test
-        fun `should return error outcome for IOException`() = runBlockingTest {
-            // when
-            val response = bankDataSource.fetchBanks()
+        @Nested
+        @DisplayName("When sending POST request...")
+        @TestInstance(Lifecycle.PER_CLASS)
+        inner class WhenPostRequest {
 
-            // then
-            check(response is Outcome.Error)
-            response.cause should beInstanceOf<IOException>()
-            response.cause?.message shouldBe "Failed to retrieve banks"
-        }
+            @Nested
+            @DisplayName("Given server error response...")
+            @TestInstance(Lifecycle.PER_CLASS)
+            inner class GivenServerErrorResponse {
 
-        @Test
-        fun `should return error outcome for bank details IOException`() = runBlockingTest {
-            // when
-            val response = bankDataSource.fetchBankDetails()
+                @BeforeEach
+                fun given() {
+                    every { networkClient.defaultClient } returns mockEngine.postErrors()
+                }
 
-            // then
-            check(response is Outcome.Error)
-            response.cause should beInstanceOf<IOException>()
-            response.cause?.message shouldBe "Failed to retrieve bank details"
-        }
+                @Test
+                fun `should return error outcome when sending invalid block`() {
+                    runBlockingTest {
+                        // given
+                        val request = Mocks.postInvalidBlockRequest()
 
-        @Test
-        fun `should return error outcome for bank transactions IOException`() = runBlockingTest {
-            // when
-            val response = bankDataSource.fetchBankTransactions()
+                        // when
+                        val response = bankDataSource.sendInvalidBlock(request)
 
-            // then
-            check(response is Outcome.Error)
-            response.cause should beInstanceOf<IOException>()
-            response.cause?.message shouldBe "Failed to retrieve bank transactions"
-        }
+                        // then
+                        check(response is Outcome.Error)
+                        response.cause should beInstanceOf<IOException>()
+                        response.cause?.message shouldBe "An error occurred while sending invalid block"
+                    }
+                }
+            }
 
-        @Test
-        fun `should return error outcome for single validator`() = runBlockingTest {
-            val nodeIdentifier = "6871913581c3e689c9f39853a77e7263a96fd38596e9139f40a367e28364da53"
-            val response = bankDataSource.fetchValidator(nodeIdentifier)
+            @Nested
+            @DisplayName("Given empty or invalid response body...")
+            @TestInstance(Lifecycle.PER_CLASS)
+            inner class GivenInvalidResponseBody {
 
-            check(response is Outcome.Error)
-            response.cause should beInstanceOf<IOException>()
-            response.cause?.message shouldBe "Could not fetch validator with NID $nodeIdentifier"
-        }
+                @BeforeEach
+                fun given() {
+                    every { networkClient.defaultClient } returns mockEngine.postInvalidSuccess()
+                }
 
-        @Test
-        fun `should return error outcome for nonexistent node identifier`() = runBlockingTest {
-            every { networkClient.defaultClient } returns mockEngine.getSuccess()
+                @Test
+                fun `should return error outcome when receiving invalid response`() = runBlockingTest {
+                    // given
+                    val request = Mocks.postInvalidBlockRequest()
 
-            // given
-            val nonExistentNodeIdentifier = "foo"
+                    // when
+                    val response = bankDataSource.sendInvalidBlock(request)
 
-            // when
-            val body = bankDataSource.fetchValidator(nonExistentNodeIdentifier)
-
-            // then
-            check(body is Outcome.Error)
-            body.cause should beInstanceOf<IOException>()
-            body.cause?.message shouldBe "Could not fetch validator with NID $nonExistentNodeIdentifier"
-        }
-
-        @Test
-        fun `should return error outcome for list of accounts IOException`() = runBlockingTest {
-            // when
-            val response = bankDataSource.fetchAccounts()
-
-            // then
-            check(response is Outcome.Error)
-            response.cause should beInstanceOf<IOException>()
-            response.cause?.message shouldBe "Could not fetch list of accounts"
-        }
-
-        @Test
-        fun `should return error outcome for list of blocks IOException`() = runBlockingTest {
-            // when
-            val response = bankDataSource.fetchBlocks()
-
-            // then
-            check(response is Outcome.Error)
-            response.cause should beInstanceOf<IOException>()
-            response.cause?.message shouldBe "Could not fetch list of blocks"
+                    // then
+                    check(response is Outcome.Error)
+                    response.cause should beInstanceOf<IOException>()
+                    response.message shouldBe "Received invalid response when sending invalid block with identifier ${request.message.blockIdentifier}"
+                }
+            }
         }
 
         @Nested
         @DisplayName("When sending PATCH request...")
-        @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+        @TestInstance(Lifecycle.PER_CLASS)
         inner class WhenPatchRequest {
 
             @Nested
             @DisplayName("Given server error response...")
-            @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+            @TestInstance(Lifecycle.PER_CLASS)
             inner class GivenServerErrorResponse {
 
                 @BeforeEach
@@ -335,7 +437,7 @@ class BankDataSourceTest {
 
             @Nested
             @DisplayName("Given empty or invalid response body...")
-            @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+            @TestInstance(Lifecycle.PER_CLASS)
             inner class GivenInvalidResponseBody {
 
                 @BeforeEach
@@ -375,16 +477,6 @@ class BankDataSourceTest {
                         response.message shouldBe "Received unexpected response when updating trust level of account $accountNumber"
                     }
             }
-        }
-
-        @Test
-        fun `test return error outcome for list of invalid blocks IOException`() = runBlockingTest {
-            // when
-            val response = bankDataSource.fetchInvalidBlocks()
-
-            // then
-            check(response is Outcome.Error)
-            response.cause should beInstanceOf<IOException>()
         }
     }
 }
