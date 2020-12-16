@@ -4,8 +4,8 @@ import com.thenewboston.api.bankapi.datasource.BankDataSource
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.data.dto.bankapi.accountdto.response.Account
 import com.thenewboston.data.dto.bankapi.accountdto.response.AccountList
-import com.thenewboston.data.dto.bankapi.bankdto.response.BankList
-import com.thenewboston.data.dto.bankapi.bankdto.response.BankTrustResponse
+import com.thenewboston.data.dto.bankcapi.bankdto.response.BankList
+import com.thenewboston.data.dto.bankcapi.bankdto.response.Bank
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
@@ -205,7 +205,7 @@ class BankRepositoryTest {
 
         // then
         coVerify { bankDataSource.updateBankTrust(Mocks.trustRequest()) }
-        result should beInstanceOf<Outcome.Success<BankTrustResponse>>()
+        result should beInstanceOf<Outcome.Success<Bank>>()
     }
 
     @Test

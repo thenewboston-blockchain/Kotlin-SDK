@@ -6,7 +6,7 @@ import com.thenewboston.common.http.makeApiCall
 import com.thenewboston.data.dto.bankapi.accountdto.response.Account
 import com.thenewboston.data.dto.bankapi.accountdto.response.AccountList
 import com.thenewboston.data.dto.bankapi.bankdto.response.BankList
-import com.thenewboston.data.dto.bankapi.bankdto.response.BankTrustResponse
+import com.thenewboston.data.dto.bankapi.bankdto.response.Bank
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
@@ -156,15 +156,15 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         }
     }
 
-    suspend fun updateBankTrust(request: UpdateTrustRequest): Outcome<BankTrustResponse> = makeApiCall(
+    suspend fun updateBankTrust(request: UpdateTrustRequest): Outcome<Bank> = makeApiCall(
         call = { doUpdateBankTrust(request) },
         errorMessage = "Could not send bank trust for ${request.nodeIdentifier}"
     )
 
-    private suspend fun doUpdateBankTrust(request: UpdateTrustRequest): Outcome<BankTrustResponse> {
+    private suspend fun doUpdateBankTrust(request: UpdateTrustRequest): Outcome<Bank> {
         val url = "${BankAPIEndpoints.BANKS_ENDPOINT}/${request.nodeIdentifier}"
 
-        val response = networkClient.defaultClient.patch<BankTrustResponse> {
+        val response = networkClient.defaultClient.patch<Bank> {
             url(url)
             body = request
         }

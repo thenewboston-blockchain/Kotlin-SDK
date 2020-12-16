@@ -4,7 +4,7 @@ import com.thenewboston.data.dto.bankapi.accountdto.response.Account
 import com.thenewboston.data.dto.bankapi.accountdto.response.AccountList
 import com.thenewboston.data.dto.bankapi.bankdto.response.Bank
 import com.thenewboston.data.dto.bankapi.bankdto.response.BankList
-import com.thenewboston.data.dto.bankapi.bankdto.response.BankTrustResponse
+import com.thenewboston.data.dto.bankapi.bankdto.response.Bank
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactions
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.blockdto.Block
@@ -163,19 +163,23 @@ object Mocks {
         )
     }
 
-    fun bankTrustResponse(trust: Double = Some.trust) = BankTrustResponse(
+    fun bankTrustResponse(trust: Double = Some.trust) = Bank(
         "dfddf07ec15cbf363ecb52eedd7133b70b3ec896b488460bcecaba63e8e36be5",
         "127.0.0.1",
+        "6dbaff44058e630cb375955c82b0d3bd7bc7e20cad93e74909a8951f747fb8a4",
         80,
         "http",
+        "v1.0",
         1.0,
         trust
     )
 
-    fun emptyBankTrustResponse() = BankTrustResponse(
+    fun emptyBankTrustResponse() = Bank(
+        "",
         "",
         "",
         0,
+        "",
         "",
         0.0,
         0.0
