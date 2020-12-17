@@ -27,7 +27,7 @@ data class Bank(
     @SerialName("node_identifier")
     val nodeIdentifier: String,
     @SerialName("port")
-    val port: String? = null,
+    val port: Int? = null,
     @SerialName("protocol")
     val protocol: String,
     @SerialName("version")
