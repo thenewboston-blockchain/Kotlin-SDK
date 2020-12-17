@@ -178,6 +178,20 @@ class BankDataSourceTest {
                 response.value.id shouldNot beEmpty()
                 response.value.blockIdentifier shouldBe request.message.blockIdentifier
             }
+
+            @Test
+            fun `should return success with balanceKey `() = runBlockingTest {
+                // given
+                val request = Mocks.postBlockRequest()
+
+                // when
+                val response = bankDataSource.sendBlock(request)
+
+                // then
+                check(response is Outcome.Success)
+                response.value.id shouldNot beEmpty()
+                response.value.balanceKey shouldBe request.message.balanceKey
+            }
         }
 
         @Nested
@@ -356,6 +370,22 @@ class BankDataSourceTest {
                         check(response is Outcome.Error)
                         response.cause should beInstanceOf<IOException>()
                         response.cause?.message shouldBe "An error occurred while sending invalid block"
+                    }
+                }
+
+                @Test
+                fun `should return error outcome when sending block`() {
+                    runBlockingTest {
+                        // given
+                        val request = Mocks.postBlockRequest()
+
+                        // when
+                        val response = bankDataSource.sendBlock(request)
+
+                        // then
+                        check(response is Outcome.Error)
+                        response.cause should beInstanceOf<IOException>()
+                        response.cause?.message shouldBe "An error occurred while sending the block"
                     }
                 }
             }

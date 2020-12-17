@@ -9,6 +9,8 @@ import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactions
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
+import com.thenewboston.data.dto.bankapi.blockdto.request.BlockMessage
+import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
 import com.thenewboston.data.dto.bankapi.common.request.TrustMessage
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
@@ -71,12 +73,30 @@ object Mocks {
     )
 
     fun block() = Block(
-        id = "String",
+        id = "3ff4ebb0-2b3d-429b-ba90-08133fcdee4e",
         createdDate = LocalDateTime.parse("2020-11-19T19:57:31.799872"),
         modifiedDate = LocalDateTime.parse("2020-11-19T19:57:31.799872"),
-        balanceKey = "String",
-        sender = "String",
-        signature = "String"
+        balanceKey = "ce51f0d9facaa7d3e69657429dd3f961ce70077a8efb53dcda508c7c0a19d2e3",
+        sender = "0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb",
+        signature = "ee5a2f2a2f5261c1b633e08dd61182fd0db5604c853ebd8498f6f28ce8e2ccbbc38093918610ea88a7ad47c7f3192ed955d9d1529e7e390013e43f25a5915c0f"
+    )
+
+    fun postBlock(balanceKey: String = "ce51f0d9facaa7d3e69657429dd3f961ce70077a8efb53dcda508c7c0a19d2e3") = Block(
+        id = "3ff4ebb0-2b3d-429b-ba90-08133fcdee4e",
+        createdDate = LocalDateTime.parse("2020-11-19T19:57:31.799872"),
+        modifiedDate = LocalDateTime.parse("2020-11-19T19:57:31.799872"),
+        balanceKey = balanceKey,
+        sender = "0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb",
+        signature = "ee5a2f2a2f5261c1b633e08dd61182fd0db5604c853ebd8498f6f28ce8e2ccbbc38093918610ea88a7ad47c7f3192ed955d9d1529e7e390013e43f25a5915c0f"
+    )
+
+    fun emptyBlock() = Block(
+        id = "",
+        createdDate = Some.dateTime,
+        modifiedDate = null,
+        balanceKey = "",
+        sender = "",
+        signature = ""
     )
 
     fun blocks() = BlockList(
@@ -196,6 +216,15 @@ object Mocks {
         ),
         nodeIdentifier = Some.nodeIdentifier,
         signature = Some.signature
+    )
+
+    fun postBlockRequest() = PostBlockRequest(
+        accountNumber = "0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb",
+        message = BlockMessage(
+            balanceKey = "ce51f0d9facaa7d3e69657429dd3f961ce70077a8efb53dcda508c7c0a19d2e3",
+            transactions = listOf(Transaction(12.5, "484b3176c63d5f37d808404af1a12c4b9649cd6f6769f35bdf5a816133623fbc"))
+        ),
+        signature = "ee5a2f2a2f5261c1b633e08dd61182fd0db5604c853ebd8498f6f28ce8e2ccbbc38093918610ea88a7ad47c7f3192ed955d9d1529e7e390013e43f25a5915c0f"
     )
 }
 

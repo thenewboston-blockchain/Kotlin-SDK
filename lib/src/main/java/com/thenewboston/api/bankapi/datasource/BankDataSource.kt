@@ -228,14 +228,13 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
 
     private suspend fun doSendBlock(request: PostBlockRequest): Outcome<Block> {
         val response = networkClient.defaultClient.patch<Block> {
-            url(BankAPIEndpoints.INVALID_BLOCKS_ENDPOINT)
+            url(BankAPIEndpoints.BLOCKS_ENDPOINT)
             body = request
         }
 
         return when {
-            // Need some better error checking
             response.balanceKey.isBlank() -> {
-                val message = "Received invalid response"
+                val message = "Received invalid response when sending block with balance key: ${request.message.balanceKey}"
                 Outcome.Error(message, IOException())
             }
             else -> Outcome.Success(response)

@@ -1,5 +1,6 @@
 package com.thenewboston.utils
 
+import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.PostInvalidBlockRequest
 import io.ktor.client.HttpClient
@@ -122,6 +123,16 @@ class BankApiMockEngine {
                             else -> respond(content, Accepted, responseHeaders)
                         }
                     }
+                    BankAPIJsonMapper.BLOCKS_ENDPOINT -> {
+                        val balanceKey = readBalanceKeyFromRequest(request)
+                        val content = BankAPIJsonMapper.mapBlockToJson(balanceKey)
+                        val invalidContent = BankAPIJsonMapper.mapBlockResponseForBlockRequest()
+                        when {
+                            sendOnlyErrorResponses -> respond(errorContent, InternalServerError, responseHeaders)
+                            sendInvalidResponses -> respond(invalidContent, Accepted, responseHeaders)
+                            else -> respond(content, Accepted, responseHeaders)
+                        }
+                    }
                     else -> {
                         error("Unhandled ${request.url.encodedPath}")
                     }
@@ -138,6 +149,9 @@ class BankApiMockEngine {
 
     private fun readBlockIdentifierFromRequest(request: HttpRequestData): String =
         request.extract<PostInvalidBlockRequest, String> { it.message.blockIdentifier }
+
+    private fun readBalanceKeyFromRequest(request: HttpRequestData): String =
+        request.extract<PostBlockRequest, String> { it.message.balanceKey }
 
     private inline fun <reified T, R> HttpRequestData.extract(extractor: (T) -> R): R {
         val requestBodyString = (this.body as TextContent).text
