@@ -4,10 +4,10 @@ import com.thenewboston.api.bankapi.datasource.BankDataSource
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.data.dto.bankapi.accountdto.response.Account
 import com.thenewboston.data.dto.bankapi.accountdto.response.AccountList
-import com.thenewboston.data.dto.bankcapi.bankdto.response.BankList
-import com.thenewboston.data.dto.bankcapi.bankdto.response.Bank
+import com.thenewboston.data.dto.bankapi.bankdto.response.BankList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
+import com.thenewboston.data.dto.bankapi.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
@@ -20,12 +20,12 @@ import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
-import org.junit.jupiter.api.Test
 import java.io.IOException
 import javax.xml.validation.Validator
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 
 @ExperimentalCoroutinesApi
@@ -195,7 +195,7 @@ class BankRepositoryTest {
 
     @Test
     fun `verify update bank trust returns success outcome`() = runBlockingTest {
-        val response = Mocks.bankTrustResponse()
+        val response = Mocks.bank()
         coEvery { bankDataSource.updateBankTrust(Mocks.trustRequest()) } returns Outcome.Success(
             response
         )

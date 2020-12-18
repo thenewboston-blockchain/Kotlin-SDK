@@ -2,15 +2,14 @@ package com.thenewboston.utils
 
 import com.thenewboston.data.dto.bankapi.accountdto.response.Account
 import com.thenewboston.data.dto.bankapi.accountdto.response.AccountList
-import com.thenewboston.data.dto.bankapi.bankdto.response.Bank
 import com.thenewboston.data.dto.bankapi.bankdto.response.BankList
-import com.thenewboston.data.dto.bankapi.bankdto.response.Bank
-import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactions
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
+import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactions
 import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.common.request.TrustMessage
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
+import com.thenewboston.data.dto.bankapi.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
@@ -35,6 +34,17 @@ object Mocks {
         "v1",
         1,
         100.00
+    )
+
+     fun emptyBank() = Bank(
+        "",
+        "",
+        "",
+        null,
+        "",
+        "",
+        0,
+        0.0
     )
 
     fun bankDetails() = BankDetails(
@@ -162,28 +172,6 @@ object Mocks {
             signature
         )
     }
-
-    fun bankTrustResponse(trust: Double = Some.trust) = Bank(
-        "dfddf07ec15cbf363ecb52eedd7133b70b3ec896b488460bcecaba63e8e36be5",
-        "127.0.0.1",
-        "6dbaff44058e630cb375955c82b0d3bd7bc7e20cad93e74909a8951f747fb8a4",
-        80,
-        "http",
-        "v1.0",
-        1.0,
-        trust
-    )
-
-    fun emptyBankTrustResponse() = Bank(
-        "",
-        "",
-        "",
-        null,
-        "",
-        "",
-        0.0,
-        0.0
-    )
 
     fun postInvalidBlockRequest() = PostInvalidBlockRequest(
         message = InvalidBlockMessage(
