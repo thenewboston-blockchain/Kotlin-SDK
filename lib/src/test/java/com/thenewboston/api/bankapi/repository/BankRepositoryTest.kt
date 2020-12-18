@@ -11,6 +11,7 @@ import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ValidatorConfirmationServicesList
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import com.thenewboston.utils.Mocks
 import com.thenewboston.utils.Some
@@ -23,11 +24,11 @@ import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import java.io.IOException
 import javax.xml.validation.Validator
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.TestInstance
 
 @ExperimentalCoroutinesApi
 @KtorExperimentalAPI
@@ -343,6 +344,30 @@ class BankRepositoryTest {
 
         // then
         coVerify { bankDataSource.sendBlock(request) }
+        result should beInstanceOf<Outcome.Error>()
+    }
+
+    @Test
+    fun `verify fetch validator confirmation services returns success outomce`() = runBlockingTest {
+        coEvery { bankDataSource.fetchValidatorConfirmationServices() } returns Outcome.Success(Mocks.confirmationServicesList())
+
+        // when
+        val result = repository.validatorConfirmationServices()
+
+        // then
+        coVerify { bankDataSource.fetchValidatorConfirmationServices() }
+        result should beInstanceOf<Outcome.Success<ValidatorConfirmationServicesList>>()
+    }
+
+    @Test
+    fun `verify fetch validator confirmation services returns error outomce`() = runBlockingTest {
+        coEvery { bankDataSource.fetchValidatorConfirmationServices() } returns Outcome.Error("Failed to fetch validator confirmation services", IOException())
+
+        // when
+        val result = repository.validatorConfirmationServices()
+
+        // then
+        coVerify { bankDataSource.fetchValidatorConfirmationServices() }
         result should beInstanceOf<Outcome.Error>()
     }
 }
