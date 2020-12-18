@@ -360,7 +360,7 @@ class BankRepositoryTest {
     }
 
     @Test
-    fun `verify fetch validator confirmation services returns error outomce`() = runBlockingTest {
+    fun `verify fetch validator confirmation services returns error outcome`() = runBlockingTest {
         coEvery { bankDataSource.fetchValidatorConfirmationServices() } returns Outcome.Error("Failed to fetch validator confirmation services", IOException())
 
         // when
