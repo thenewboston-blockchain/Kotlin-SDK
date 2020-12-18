@@ -219,12 +219,12 @@ object Mocks {
     )
 
     fun postBlockRequest() = PostBlockRequest(
-        accountNumber = "0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb",
+        accountNumber = Some.accountNumber,
         message = BlockMessage(
-            balanceKey = "ce51f0d9facaa7d3e69657429dd3f961ce70077a8efb53dcda508c7c0a19d2e3",
+            balanceKey = Some.balanceKey,
             transactions = listOf(Transaction(12.5, "484b3176c63d5f37d808404af1a12c4b9649cd6f6769f35bdf5a816133623fbc"))
         ),
-        signature = "ee5a2f2a2f5261c1b633e08dd61182fd0db5604c853ebd8498f6f28ce8e2ccbbc38093918610ea88a7ad47c7f3192ed955d9d1529e7e390013e43f25a5915c0f"
+        signature = Some.signature
     )
 }
 

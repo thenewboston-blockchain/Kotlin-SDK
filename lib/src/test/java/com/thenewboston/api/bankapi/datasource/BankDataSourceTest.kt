@@ -408,6 +408,20 @@ class BankDataSourceTest {
                     response.cause should beInstanceOf<IOException>()
                     response.message shouldBe "Received invalid response when sending invalid block with identifier ${request.message.blockIdentifier}"
                 }
+
+                @Test
+                fun `should return error outcome when receiving invalid response for sending block`() = runBlockingTest {
+                    // given
+                    val request = Mocks.postBlockRequest()
+
+                    // when
+                    val response = bankDataSource.sendBlock(request)
+
+                    // then
+                    check(response is Outcome.Error)
+                    response.cause should beInstanceOf<IOException>()
+                    response.message shouldBe "Received invalid response when sending block with balance key: ${request.message.balanceKey}"
+                }
             }
         }
 
