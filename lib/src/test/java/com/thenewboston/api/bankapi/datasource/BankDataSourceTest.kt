@@ -4,6 +4,7 @@ import com.thenewboston.common.http.NetworkClient
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.common.http.config.Config
 import com.thenewboston.utils.BankApiMockEngine
+import com.thenewboston.utils.ErrorMessages
 import com.thenewboston.utils.Mocks
 import com.thenewboston.utils.Some
 import io.kotest.matchers.collections.shouldNotBeEmpty
@@ -375,7 +376,7 @@ class BankDataSourceTest {
                     // then
                     check(response is Outcome.Error)
                     response.cause should beInstanceOf<IOException>()
-                    response.message shouldBe "Received null or empty list"
+                    response.message shouldBe ErrorMessages.EMPTY_LIST_MESSAGE
                 }
 
                 @Test
@@ -386,7 +387,7 @@ class BankDataSourceTest {
                     // then
                     check(response is Outcome.Error)
                     response.cause should beInstanceOf<IOException>()
-                    response.message shouldBe "Error fetching banks"
+                    response.message shouldBe ErrorMessages.EMPTY_LIST_MESSAGE
                 }
 
                 @Test
@@ -397,7 +398,7 @@ class BankDataSourceTest {
                     // then
                     check(response is Outcome.Error)
                     response.cause should beInstanceOf<IOException>()
-                    response.message shouldBe "Received null or empty list"
+                    response.message shouldBe ErrorMessages.EMPTY_LIST_MESSAGE
                 }
 
                 @Test
@@ -408,7 +409,7 @@ class BankDataSourceTest {
                     // then
                     check(response is Outcome.Error)
                     response.cause should beInstanceOf<IOException>()
-                    response.message shouldBe "Received null or empty list"
+                    response.message shouldBe ErrorMessages.EMPTY_LIST_MESSAGE
                 }
 
                 @Test
@@ -419,7 +420,7 @@ class BankDataSourceTest {
                     // then
                     check(response is Outcome.Error)
                     response.cause should beInstanceOf<IOException>()
-                    response.message shouldBe "Received null or empty list"
+                    response.message shouldBe ErrorMessages.EMPTY_LIST_MESSAGE
                 }
 
                 @Test

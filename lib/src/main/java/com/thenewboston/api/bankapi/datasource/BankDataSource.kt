@@ -20,6 +20,7 @@ import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.Valida
 import com.thenewboston.data.dto.bankapi.validatordto.Validator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import com.thenewboston.utils.BankAPIEndpoints
+import com.thenewboston.utils.ErrorMessages
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.util.*
@@ -38,7 +39,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         val result = networkClient.defaultClient.get<BankList>(BankAPIEndpoints.BANKS_ENDPOINT)
 
         return when {
-            result.banks.isNullOrEmpty() -> Outcome.Error("Error fetching banks", IOException())
+            result.banks.isNullOrEmpty() -> Outcome.Error(ErrorMessages.EMPTY_LIST_MESSAGE, IOException())
             else -> Outcome.Success(result)
         }
     }
@@ -80,7 +81,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         val validators = networkClient.defaultClient.get<ValidatorList>(endpoint)
 
         return when {
-            validators.results.isNullOrEmpty() -> Outcome.Error("Received null or empty list", IOException())
+            validators.results.isNullOrEmpty() -> Outcome.Error(ErrorMessages.EMPTY_LIST_MESSAGE, IOException())
             else -> Outcome.Success(validators)
         }
     }
@@ -109,7 +110,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
 
         return when {
             accounts.results.isNullOrEmpty() -> Outcome.Error(
-                "Received null or empty list",
+                ErrorMessages.EMPTY_LIST_MESSAGE,
                 IOException()
             )
             else -> Outcome.Success(accounts)
@@ -126,7 +127,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
 
         return when {
             response.blocks.isNullOrEmpty() -> Outcome.Error(
-                "Received null or empty list",
+                ErrorMessages.EMPTY_LIST_MESSAGE,
                 IOException()
             )
             else -> Outcome.Success(response)
@@ -252,7 +253,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
 
         return when {
             response.services.isNullOrEmpty() -> {
-                val message = "Received null or empty list"
+                val message = ErrorMessages.EMPTY_LIST_MESSAGE
                 Outcome.Error(message, IOException())
             }
             else -> Outcome.Success(response)
