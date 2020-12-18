@@ -8,7 +8,9 @@ import com.thenewboston.data.dto.bankapi.accountdto.response.AccountList
 import com.thenewboston.data.dto.bankapi.bankdto.response.BankList
 import com.thenewboston.data.dto.bankapi.bankdto.response.BankTrustResponse
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
+import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
+import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
@@ -213,6 +215,26 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         return when {
             response.blockIdentifier.isBlank() -> {
                 val message = "Received invalid response when sending invalid block with identifier ${request.message.blockIdentifier}"
+                Outcome.Error(message, IOException())
+            }
+            else -> Outcome.Success(response)
+        }
+    }
+
+    suspend fun sendBlock(request: PostBlockRequest): Outcome<Block> = makeApiCall(
+        call = { doSendBlock(request) },
+        errorMessage = "An error occurred while sending the block"
+    )
+
+    private suspend fun doSendBlock(request: PostBlockRequest): Outcome<Block> {
+        val response = networkClient.defaultClient.patch<Block> {
+            url(BankAPIEndpoints.BLOCKS_ENDPOINT)
+            body = request
+        }
+
+        return when {
+            response.balanceKey.isBlank() -> {
+                val message = "Received invalid response when sending block with balance key: ${request.message.balanceKey}"
                 Outcome.Error(message, IOException())
             }
             else -> Outcome.Success(response)

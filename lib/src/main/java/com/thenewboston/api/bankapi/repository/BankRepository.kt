@@ -7,7 +7,9 @@ import com.thenewboston.data.dto.bankapi.accountdto.response.AccountList
 import com.thenewboston.data.dto.bankapi.bankdto.response.BankList
 import com.thenewboston.data.dto.bankapi.bankdto.response.BankTrustResponse
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
+import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
+import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
@@ -42,4 +44,6 @@ class BankRepository @Inject constructor(private val dataSource: BankDataSource)
     suspend fun invalidBlocks(): Outcome<InvalidBlockList> = dataSource.fetchInvalidBlocks()
 
     suspend fun sendInvalidBlock(request: PostInvalidBlockRequest): Outcome<InvalidBlock> = dataSource.sendInvalidBlock(request)
+
+    suspend fun sendBlock(request: PostBlockRequest): Outcome<Block> = dataSource.sendBlock(request)
 }

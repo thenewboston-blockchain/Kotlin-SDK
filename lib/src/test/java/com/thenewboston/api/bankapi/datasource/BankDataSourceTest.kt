@@ -14,19 +14,14 @@ import io.kotest.matchers.shouldNot
 import io.kotest.matchers.string.beEmpty
 import io.kotest.matchers.string.contain
 import io.kotest.matchers.types.beInstanceOf
-import io.ktor.util.KtorExperimentalAPI
-import io.ktor.utils.io.errors.IOException
+import io.ktor.util.*
+import io.ktor.utils.io.errors.*
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.*
 import org.junit.jupiter.api.TestInstance.Lifecycle
 
 @KtorExperimentalAPI
@@ -177,6 +172,20 @@ class BankDataSourceTest {
                 check(response is Outcome.Success)
                 response.value.id shouldNot beEmpty()
                 response.value.blockIdentifier shouldBe request.message.blockIdentifier
+            }
+
+            @Test
+            fun `should return success with balanceKey `() = runBlockingTest {
+                // given
+                val request = Mocks.postBlockRequest()
+
+                // when
+                val response = bankDataSource.sendBlock(request)
+
+                // then
+                check(response is Outcome.Success)
+                response.value.id shouldNot beEmpty()
+                response.value.balanceKey shouldBe request.message.balanceKey
             }
         }
 
@@ -358,6 +367,22 @@ class BankDataSourceTest {
                         response.cause?.message shouldBe "An error occurred while sending invalid block"
                     }
                 }
+
+                @Test
+                fun `should return error outcome when sending block`() {
+                    runBlockingTest {
+                        // given
+                        val request = Mocks.postBlockRequest()
+
+                        // when
+                        val response = bankDataSource.sendBlock(request)
+
+                        // then
+                        check(response is Outcome.Error)
+                        response.cause should beInstanceOf<IOException>()
+                        response.cause?.message shouldBe "An error occurred while sending the block"
+                    }
+                }
             }
 
             @Nested
@@ -382,6 +407,20 @@ class BankDataSourceTest {
                     check(response is Outcome.Error)
                     response.cause should beInstanceOf<IOException>()
                     response.message shouldBe "Received invalid response when sending invalid block with identifier ${request.message.blockIdentifier}"
+                }
+
+                @Test
+                fun `should return error outcome when receiving invalid response for sending block`() = runBlockingTest {
+                    // given
+                    val request = Mocks.postBlockRequest()
+
+                    // when
+                    val response = bankDataSource.sendBlock(request)
+
+                    // then
+                    check(response is Outcome.Error)
+                    response.cause should beInstanceOf<IOException>()
+                    response.message shouldBe "Received invalid response when sending block with balance key: ${request.message.balanceKey}"
                 }
             }
         }
