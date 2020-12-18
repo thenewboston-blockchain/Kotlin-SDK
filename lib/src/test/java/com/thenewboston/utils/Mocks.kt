@@ -32,7 +32,7 @@ object Mocks {
         80,
         "http",
         "v1",
-        1,
+        1.0,
         100.00
     )
 
@@ -43,7 +43,7 @@ object Mocks {
         null,
         "",
         "",
-        0,
+        0.0,
         0.0
     )
 
@@ -55,7 +55,7 @@ object Mocks {
         80,
         "http",
         "v1",
-        1
+        1.0
     )
 
     fun validators() = ValidatorList(

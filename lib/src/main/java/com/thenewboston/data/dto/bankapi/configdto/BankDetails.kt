@@ -21,5 +21,5 @@ data class BankDetails(
     @SerialName("version")
     val version: String,
     @SerialName("default_transaction_fee")
-    val default_transaction_fee: Int
+    val default_transaction_fee: Double
 )
