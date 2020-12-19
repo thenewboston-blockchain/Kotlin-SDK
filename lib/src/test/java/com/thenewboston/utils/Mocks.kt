@@ -25,7 +25,7 @@ object Mocks {
         banks = listOf(bank(), bank())
     )
 
-    fun bank() = Bank(
+    fun bank(trust: Double = Some.trust) = Bank(
         "1",
         "",
         "",
@@ -33,7 +33,7 @@ object Mocks {
         "http",
         "v1",
         1.0,
-        100.00
+        trust
     )
 
      fun emptyBank() = Bank(
