@@ -32,7 +32,7 @@ object Mocks {
         80,
         "http",
         "v1",
-        1.0,
+        1,
         trust
     )
 
@@ -43,7 +43,7 @@ object Mocks {
         null,
         "",
         "",
-        0.0,
+        0,
         0.0
     )
 
@@ -55,7 +55,7 @@ object Mocks {
         80,
         "http",
         "v1",
-        1.0
+        1
     )
 
     fun validators() = ValidatorList(
@@ -72,7 +72,7 @@ object Mocks {
         port = 80,
         protocol = "http",
         version = "1",
-        defaultTransactionFee = 0.0,
+        defaultTransactionFee = 0,
         rootAccountFile = "",
         rootAccountFileHash = "",
         seedBlockIdentifier = "",

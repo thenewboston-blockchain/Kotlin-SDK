@@ -18,7 +18,7 @@ data class Bank(
     @SerialName("version")
     val version: String,
     @SerialName("default_transaction_fee")
-    val defaultTransactionFee: Double,
+    val defaultTransactionFee: Int,
     @SerialName("trust")
     val trust: Double
 )

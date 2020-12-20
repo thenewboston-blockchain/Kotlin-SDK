@@ -8,7 +8,7 @@ data class ValidatorConfigModel(
     @SerializedName("daily_confirmation_rate")
     val dailyConfirmationRate: Int?, //
     @SerializedName("default_transaction_fee")
-    val defaultTransactionFee: Double?, // 1.0
+    val defaultTransactionFee: Int?, // 1
     @SerializedName("ip_address")
     val ipAddress: String?, // 54.183.17.227
     @SerializedName("node_identifier")

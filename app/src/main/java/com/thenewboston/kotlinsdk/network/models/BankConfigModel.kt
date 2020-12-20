@@ -7,7 +7,7 @@ data class BankConfigModel(
     @SerializedName("account_number")
     val accountNumber: String, // acc_no
     @SerializedName("default_transaction_fee")
-    val defaultTransactionFee: Double?, // 1.0
+    val defaultTransactionFee: Int?, // 1
     @SerializedName("ip_address")
     val ipAddress: String, // 143.110.137.54
     @SerializedName("node_identifier")
@@ -26,7 +26,7 @@ data class BankConfigModel(
         @SerializedName("daily_confirmation_rate")
         val dailyConfirmationRate: Any?, // null
         @SerializedName("default_transaction_fee")
-        val defaultTransactionFee: Double, // 1.0
+        val defaultTransactionFee: Int, // 1
         @SerializedName("ip_address")
         val ipAddress: String, // 54.183.17.224
         @SerializedName("node_identifier")
