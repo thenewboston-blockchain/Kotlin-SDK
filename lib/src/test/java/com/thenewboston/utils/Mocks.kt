@@ -33,7 +33,7 @@ object Mocks {
         "http",
         "v1",
         1.0,
-        trust
+       trust
     )
 
      fun emptyBank() = Bank(

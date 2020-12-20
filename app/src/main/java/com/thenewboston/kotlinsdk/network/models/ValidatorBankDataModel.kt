@@ -1,8 +1,6 @@
 package com.thenewboston.kotlinsdk.network.models
 
-
 import com.google.gson.annotations.SerializedName
-
 
 data class ValidatorBankDataModel(
     @SerializedName("account_number")
@@ -10,7 +8,7 @@ data class ValidatorBankDataModel(
     @SerializedName("confirmation_expiration")
     val confirmationExpiration: Int?,
     @SerializedName("default_transaction_fee")
-    val defaultTransactionFee: Int, // 1
+    val defaultTransactionFee: Double, // 1.0
     @SerializedName("ip_address")
     val ipAddress: String, // 143.110.137.54
     @SerializedName("node_identifier")
