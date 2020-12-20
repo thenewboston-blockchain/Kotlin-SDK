@@ -26,8 +26,8 @@ object Mocks {
     )
 
     fun bank(trust: Double = Some.trust) = Bank(
-        "1",
-        "",
+        "dfddf07ec15cbf363ecb52eedd7133b70b3ec896b488460bcecaba63e8e36be5",
+        "127.0.0.1",
         "",
         80,
         "http",
