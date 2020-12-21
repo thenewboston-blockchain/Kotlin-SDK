@@ -4,9 +4,11 @@ import com.thenewboston.common.http.NetworkClient
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.common.http.config.Config
 import com.thenewboston.utils.BankApiMockEngine
+import com.thenewboston.utils.ErrorMessages
 import com.thenewboston.utils.Mocks
 import com.thenewboston.utils.Some
 import io.kotest.matchers.collections.shouldNotBeEmpty
+import io.kotest.matchers.ints.shouldBeGreaterThan
 import io.kotest.matchers.longs.shouldBeGreaterThan
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
@@ -148,6 +150,15 @@ class BankDataSourceTest {
                 response.value.count shouldBeGreaterThan 0
                 response.value.results.shouldNotBeEmpty()
             }
+
+            @Test
+            fun `test fetch list of validator confirmation services successfully`() = runBlockingTest {
+                val response = bankDataSource.fetchValidatorConfirmationServices()
+
+                check(response is Outcome.Success)
+                response.value.count shouldBeGreaterThan 0
+                response.value.services.shouldNotBeEmpty()
+            }
         }
 
         @Nested
@@ -228,16 +239,6 @@ class BankDataSourceTest {
                 response.value.trust shouldBe trustRequest.message.trust
             }
         }
-    }
-
-    @Test
-    fun `test return error outcome for list of invalid blocks IOException`() = runBlockingTest {
-        // when
-        val response = bankDataSource.fetchInvalidBlocks()
-
-        // then
-        check(response is Outcome.Error)
-        response.cause should beInstanceOf<IOException>()
     }
 
     @Nested
@@ -334,6 +335,115 @@ class BankDataSourceTest {
                 check(response is Outcome.Error)
                 response.cause should beInstanceOf<IOException>()
                 response.cause?.message shouldBe "Could not fetch list of blocks"
+            }
+
+            @Test
+            fun `should return error outcome for list of invalid blocks IOException`() = runBlockingTest {
+                // when
+                val response = bankDataSource.fetchInvalidBlocks()
+
+                // then
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+            }
+
+            @Test
+            fun `should return error outcome for validator confirmation services`() = runBlockingTest {
+                // when
+                val response = bankDataSource.fetchValidatorConfirmationServices()
+
+                // then
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.cause?.message shouldBe "An error occurred while fetching validator confirmation services"
+            }
+
+            @Nested
+            @DisplayName("Given empty or invalid response body...")
+            @TestInstance(Lifecycle.PER_CLASS)
+            inner class GivenInvalidResponseBody {
+
+                @BeforeEach
+                fun given() {
+                    every { networkClient.defaultClient } returns mockEngine.getEmptySuccess()
+                }
+
+                @Test
+                fun `should return error outcome for empty validator confirmation services`() = runBlockingTest {
+                    // when
+                    val response = bankDataSource.fetchValidatorConfirmationServices()
+
+                    // then
+                    check(response is Outcome.Error)
+                    response.cause should beInstanceOf<IOException>()
+                    response.message shouldBe ErrorMessages.EMPTY_LIST_MESSAGE
+                }
+
+                @Test
+                fun `should return error outcome for empty banks`() = runBlockingTest {
+                    // when
+                    val response = bankDataSource.fetchBanks()
+
+                    // then
+                    check(response is Outcome.Error)
+                    response.cause should beInstanceOf<IOException>()
+                    response.message shouldBe ErrorMessages.EMPTY_LIST_MESSAGE
+                }
+
+                @Test
+                fun `should return error outcome for empty accounts`() = runBlockingTest {
+                    // when
+                    val response = bankDataSource.fetchAccounts()
+
+                    // then
+                    check(response is Outcome.Error)
+                    response.cause should beInstanceOf<IOException>()
+                    response.message shouldBe ErrorMessages.EMPTY_LIST_MESSAGE
+                }
+
+                @Test
+                fun `should return error outcome for empty validators`() = runBlockingTest {
+                    // when
+                    val response = bankDataSource.fetchValidators()
+
+                    // then
+                    check(response is Outcome.Error)
+                    response.cause should beInstanceOf<IOException>()
+                    response.message shouldBe ErrorMessages.EMPTY_LIST_MESSAGE
+                }
+
+                @Test
+                fun `should return error outcome for empty blocks`() = runBlockingTest {
+                    // when
+                    val response = bankDataSource.fetchBlocks()
+
+                    // then
+                    check(response is Outcome.Error)
+                    response.cause should beInstanceOf<IOException>()
+                    response.message shouldBe ErrorMessages.EMPTY_LIST_MESSAGE
+                }
+
+                @Test
+                fun `should return error outcome for empty invalid blocks`() = runBlockingTest {
+                    // when
+                    val response = bankDataSource.fetchInvalidBlocks()
+
+                    // then
+                    check(response is Outcome.Error)
+                    response.cause should beInstanceOf<IOException>()
+                    response.message shouldBe "No invalid blocks are available at this time"
+                }
+
+                @Test
+                fun `should return error outcome for empty bank transactions`() = runBlockingTest {
+                    // when
+                    val response = bankDataSource.fetchBankTransactions()
+
+                    // then
+                    check(response is Outcome.Error)
+                    response.cause should beInstanceOf<IOException>()
+                    response.message shouldBe "Error bank transactions"
+                }
             }
         }
 
