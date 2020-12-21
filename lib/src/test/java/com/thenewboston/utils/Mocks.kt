@@ -72,7 +72,7 @@ object Mocks {
         "",
         "",
         "",
-        "",
+        null,
         "",
         "",
         0
@@ -114,7 +114,7 @@ object Mocks {
         port = 0,
         protocol = "",
         version = "",
-        defaultTransactionFee = 0.0,
+        defaultTransactionFee = 0,
         rootAccountFile = "",
         rootAccountFileHash = "",
         seedBlockIdentifier = "",
