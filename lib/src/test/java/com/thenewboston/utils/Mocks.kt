@@ -7,6 +7,8 @@ import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactions
 import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
+import com.thenewboston.data.dto.bankapi.blockdto.request.BlockMessage
+import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
 import com.thenewboston.data.dto.bankapi.common.request.TrustMessage
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.common.response.Bank
@@ -14,6 +16,8 @@ import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.*
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ValidatorConfirmationServices
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ValidatorConfirmationServicesList
 import com.thenewboston.data.dto.bankapi.validatordto.Validator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import kotlinx.datetime.LocalDateTime
@@ -23,6 +27,11 @@ object Mocks {
     fun banks() = BankList(
         count = 2,
         banks = listOf(bank(), bank())
+    )
+
+    fun emptyBanks() = BankList(
+        count = 0,
+        banks = emptyList()
     )
 
     fun bank(trust: Double = Some.trust) = Bank(
@@ -58,11 +67,29 @@ object Mocks {
         1
     )
 
+    fun emptyBankDetails() = BankDetails(
+        emptyValidator(),
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        0
+    )
+
     fun validators() = ValidatorList(
         count = 1,
         previous = null,
         next = null,
         results = listOf(validator(), validator())
+    )
+
+    fun emptyValidators() = ValidatorList(
+        count = 0,
+        previous = null,
+        next = null,
+        results = emptyList()
     )
 
     fun validator() = Validator(
@@ -80,13 +107,46 @@ object Mocks {
         trust = 100.0
     )
 
+    fun emptyValidator() = Validator(
+        accountNumber = "",
+        ipAddress = "",
+        nodeIdentifier = "",
+        port = 0,
+        protocol = "",
+        version = "",
+        defaultTransactionFee = 0.0,
+        rootAccountFile = "",
+        rootAccountFileHash = "",
+        seedBlockIdentifier = "",
+        dailyConfirmationRate = null,
+        trust = 0.0
+    )
+
     fun block() = Block(
-        id = "String",
+        id = "3ff4ebb0-2b3d-429b-ba90-08133fcdee4e",
         createdDate = LocalDateTime.parse("2020-11-19T19:57:31.799872"),
         modifiedDate = LocalDateTime.parse("2020-11-19T19:57:31.799872"),
-        balanceKey = "String",
-        sender = "String",
-        signature = "String"
+        balanceKey = "ce51f0d9facaa7d3e69657429dd3f961ce70077a8efb53dcda508c7c0a19d2e3",
+        sender = "0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb",
+        signature = "ee5a2f2a2f5261c1b633e08dd61182fd0db5604c853ebd8498f6f28ce8e2ccbbc38093918610ea88a7ad47c7f3192ed955d9d1529e7e390013e43f25a5915c0f"
+    )
+
+    fun postBlock(balanceKey: String = "ce51f0d9facaa7d3e69657429dd3f961ce70077a8efb53dcda508c7c0a19d2e3") = Block(
+        id = "3ff4ebb0-2b3d-429b-ba90-08133fcdee4e",
+        createdDate = LocalDateTime.parse("2020-11-19T19:57:31.799872"),
+        modifiedDate = LocalDateTime.parse("2020-11-19T19:57:31.799872"),
+        balanceKey = balanceKey,
+        sender = "0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb",
+        signature = "ee5a2f2a2f5261c1b633e08dd61182fd0db5604c853ebd8498f6f28ce8e2ccbbc38093918610ea88a7ad47c7f3192ed955d9d1529e7e390013e43f25a5915c0f"
+    )
+
+    fun emptyBlock() = Block(
+        id = "",
+        createdDate = Some.dateTime,
+        modifiedDate = null,
+        balanceKey = "",
+        sender = "",
+        signature = ""
     )
 
     fun blocks() = BlockList(
@@ -94,6 +154,13 @@ object Mocks {
         previous = null,
         next = null,
         blocks = listOf(block(), block())
+    )
+
+    fun emptyBlocks() = BlockList(
+        count = 0,
+        next = null,
+        previous = null,
+        blocks = emptyList()
     )
 
     fun bankTransaction() = BankTransactions(
@@ -110,11 +177,25 @@ object Mocks {
         bankTransactions = listOf(bankTransaction(), bankTransaction())
     )
 
+    fun emptyBankTransactions() = BankTransactionList(
+        count = 0,
+        next = null,
+        previous = null,
+        bankTransactions = emptyList()
+    )
+
     fun accounts() = AccountList(
         count = 1,
         previous = null,
         next = null,
         results = listOf(account(), account())
+    )
+
+    fun emptyAccounts() = AccountList(
+        count = 0,
+        next = null,
+        previous = null,
+        results = emptyList()
     )
 
     fun account(trust: Double = 100.0) = Account(
@@ -138,6 +219,13 @@ object Mocks {
         previous = null,
         next = null,
         results = listOf(invalidBlock(), invalidBlock())
+    )
+
+    fun emptyInvalidBlocks() = InvalidBlockList(
+        count = 0,
+        previous = null,
+        next = null,
+        results = emptyList()
     )
 
     fun invalidBlock(blockIdentifier: String = Some.id) = InvalidBlock(
@@ -189,6 +277,38 @@ object Mocks {
         nodeIdentifier = Some.nodeIdentifier,
         signature = Some.signature
     )
+
+    fun postBlockRequest() = PostBlockRequest(
+        accountNumber = Some.accountNumber,
+        message = BlockMessage(
+            balanceKey = Some.balanceKey,
+            transactions = listOf(Transaction(12.5, "484b3176c63d5f37d808404af1a12c4b9649cd6f6769f35bdf5a816133623fbc"))
+        ),
+        signature = Some.signature
+    )
+
+    fun confirmationServicesList() = ValidatorConfirmationServicesList(
+        1,
+        null,
+        null,
+        listOf(confirmationServices())
+    )
+
+    fun emptyConfirmationServicesList() = ValidatorConfirmationServicesList(
+        0,
+        null,
+        null,
+        emptyList()
+    )
+
+    private fun confirmationServices() = ValidatorConfirmationServices(
+        Some.id,
+        Some.dateTime.toString(),
+        Some.dateTime.toString(),
+        Some.endDate,
+        Some.startDate,
+        Some.signature
+    )
 }
 
 // Sample values taken from docs, see https://thenewboston.com/bank-api/
@@ -200,4 +320,6 @@ object Some {
     const val trust = 42.0
     const val balanceKey = "ce51f0d9facaa7d3e69657429dd3f961ce70077a8efb53dcda508c7c0a19d2e3"
     val dateTime = LocalDateTime.parse("2020-11-19T19:57:31.799872")
+    const val startDate = "2020-11-29T07:54:16.233806Z"
+    const val endDate = "2020-12-15T07:54:16.233806Z"
 }

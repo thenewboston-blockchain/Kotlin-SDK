@@ -5,6 +5,7 @@ import com.thenewboston.kotlinsdk.LIST_DATA_OFFSET_DEFAULT
 import com.thenewboston.kotlinsdk.network.apis.BankApis
 import com.thenewboston.kotlinsdk.network.models.BankConfigModel
 import com.thenewboston.kotlinsdk.network.models.GenericListDataModel
+import com.thenewboston.kotlinsdk.utils.NetworkUtils
 import javax.inject.Inject
 import javax.inject.Singleton
 

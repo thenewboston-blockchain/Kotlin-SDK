@@ -7,23 +7,24 @@ import com.thenewboston.data.dto.bankapi.accountdto.response.Account
 import com.thenewboston.data.dto.bankapi.accountdto.response.AccountList
 import com.thenewboston.data.dto.bankapi.bankdto.response.BankList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
+import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
+import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.PostInvalidBlockRequest
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ValidatorConfirmationServicesList
 import com.thenewboston.data.dto.bankapi.validatordto.Validator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import com.thenewboston.utils.BankAPIEndpoints
-import io.ktor.client.request.get
-import io.ktor.client.request.patch
-import io.ktor.client.request.url
-import io.ktor.http.ContentType
-import io.ktor.http.contentType
-import io.ktor.util.KtorExperimentalAPI
-import io.ktor.utils.io.errors.IOException
+import com.thenewboston.utils.ErrorMessages
+import io.ktor.client.request.*
+import io.ktor.http.*
+import io.ktor.util.*
+import io.ktor.utils.io.errors.*
 import javax.inject.Inject
 
 @KtorExperimentalAPI
@@ -38,7 +39,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         val result = networkClient.defaultClient.get<BankList>(BankAPIEndpoints.BANKS_ENDPOINT)
 
         return when {
-            result.banks.isNullOrEmpty() -> Outcome.Error("Error fetching banks", IOException())
+            result.banks.isNullOrEmpty() -> Outcome.Error(ErrorMessages.EMPTY_LIST_MESSAGE, IOException())
             else -> Outcome.Success(result)
         }
     }
@@ -65,7 +66,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
 
         return when {
             result.bankTransactions.isNullOrEmpty() ->
-                Outcome.Error("Error bank transactions", java.io.IOException())
+                Outcome.Error("Error bank transactions", IOException())
             else -> Outcome.Success(result)
         }
     }
@@ -80,7 +81,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         val validators = networkClient.defaultClient.get<ValidatorList>(endpoint)
 
         return when {
-            validators.results.isNullOrEmpty() -> Outcome.Error("Received null or empty list", null)
+            validators.results.isNullOrEmpty() -> Outcome.Error(ErrorMessages.EMPTY_LIST_MESSAGE, IOException())
             else -> Outcome.Success(validators)
         }
     }
@@ -93,9 +94,9 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
     private suspend fun doFetchValidator(nodeIdentifier: String): Outcome<Validator> {
         val validatorsEndpoint = BankAPIEndpoints.VALIDATORS_ENDPOINT
         val urlSuffix = "$validatorsEndpoint/$nodeIdentifier"
-        val validator = networkClient.defaultClient.get<Validator>(urlSuffix)
+        val response = networkClient.defaultClient.get<Validator>(urlSuffix)
 
-        return Outcome.Success(validator)
+        return Outcome.Success(response)
     }
 
     suspend fun fetchAccounts(): Outcome<AccountList> = makeApiCall(
@@ -109,7 +110,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
 
         return when {
             accounts.results.isNullOrEmpty() -> Outcome.Error(
-                "Received null or empty list",
+                ErrorMessages.EMPTY_LIST_MESSAGE,
                 IOException()
             )
             else -> Outcome.Success(accounts)
@@ -126,7 +127,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
 
         return when {
             response.blocks.isNullOrEmpty() -> Outcome.Error(
-                "Received null or empty list",
+                ErrorMessages.EMPTY_LIST_MESSAGE,
                 IOException()
             )
             else -> Outcome.Success(response)
@@ -212,7 +213,47 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
 
         return when {
             response.blockIdentifier.isBlank() -> {
-                val message = "Received invalid response when sending invalid block with identifier ${request.message.blockIdentifier}"
+                val blockIdentifier = request.message.blockIdentifier
+                val message = "Received invalid response when sending invalid block with identifier $blockIdentifier"
+                Outcome.Error(message, IOException())
+            }
+            else -> Outcome.Success(response)
+        }
+    }
+
+    suspend fun sendBlock(request: PostBlockRequest): Outcome<Block> = makeApiCall(
+        call = { doSendBlock(request) },
+        errorMessage = "An error occurred while sending the block"
+    )
+
+    private suspend fun doSendBlock(request: PostBlockRequest): Outcome<Block> {
+        val response = networkClient.defaultClient.patch<Block> {
+            url(BankAPIEndpoints.BLOCKS_ENDPOINT)
+            body = request
+        }
+
+        return when {
+            response.balanceKey.isBlank() -> {
+                val balanceKey = request.message.balanceKey
+                val message = "Received invalid response when sending block with balance key: $balanceKey"
+                Outcome.Error(message, IOException())
+            }
+            else -> Outcome.Success(response)
+        }
+    }
+
+    suspend fun fetchValidatorConfirmationServices() = makeApiCall(
+        call = { getValidatorConfirmationServices() },
+        errorMessage = "An error occurred while fetching validator confirmation services"
+    )
+
+    private suspend fun getValidatorConfirmationServices(): Outcome<ValidatorConfirmationServicesList> {
+        val endpoint = BankAPIEndpoints.VALIDATOR_CONFIRMATION_SERVICES_ENDPOINT
+        val response = networkClient.defaultClient.get<ValidatorConfirmationServicesList>(endpoint)
+
+        return when {
+            response.services.isNullOrEmpty() -> {
+                val message = ErrorMessages.EMPTY_LIST_MESSAGE
                 Outcome.Error(message, IOException())
             }
             else -> Outcome.Success(response)

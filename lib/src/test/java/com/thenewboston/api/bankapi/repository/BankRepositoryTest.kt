@@ -6,10 +6,12 @@ import com.thenewboston.data.dto.bankapi.accountdto.response.Account
 import com.thenewboston.data.dto.bankapi.accountdto.response.AccountList
 import com.thenewboston.data.dto.bankapi.bankdto.response.BankList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
+import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ValidatorConfirmationServicesList
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import com.thenewboston.utils.Mocks
 import com.thenewboston.utils.Some
@@ -314,6 +316,58 @@ class BankRepositoryTest {
 
         // then
         coVerify { bankDataSource.sendInvalidBlock(request) }
+        result should beInstanceOf<Outcome.Error>()
+    }
+
+    @Test
+    fun `verify send block returns success outcome`() = runBlockingTest {
+        val response = Mocks.block()
+        coEvery { bankDataSource.sendBlock(any()) } returns Outcome.Success(response)
+        val postRequest = Mocks.postBlockRequest()
+
+        // when
+        val result = repository.sendBlock(postRequest)
+
+        // then
+        coVerify { bankDataSource.sendBlock(postRequest) }
+        result should beInstanceOf<Outcome.Success<Block>>()
+    }
+
+    @Test
+    fun `verify send block returns error outcome`() = runBlockingTest {
+        val error = Outcome.Error("Failed to send the block", IOException())
+        val request = Mocks.postBlockRequest()
+        coEvery { bankDataSource.sendBlock(request) } returns error
+
+        // when
+        val result = repository.sendBlock(request)
+
+        // then
+        coVerify { bankDataSource.sendBlock(request) }
+        result should beInstanceOf<Outcome.Error>()
+    }
+
+    @Test
+    fun `verify fetch validator confirmation services returns success outomce`() = runBlockingTest {
+        coEvery { bankDataSource.fetchValidatorConfirmationServices() } returns Outcome.Success(Mocks.confirmationServicesList())
+
+        // when
+        val result = repository.validatorConfirmationServices()
+
+        // then
+        coVerify { bankDataSource.fetchValidatorConfirmationServices() }
+        result should beInstanceOf<Outcome.Success<ValidatorConfirmationServicesList>>()
+    }
+
+    @Test
+    fun `verify fetch validator confirmation services returns error outcome`() = runBlockingTest {
+        coEvery { bankDataSource.fetchValidatorConfirmationServices() } returns Outcome.Error("Failed to fetch validator confirmation services", IOException())
+
+        // when
+        val result = repository.validatorConfirmationServices()
+
+        // then
+        coVerify { bankDataSource.fetchValidatorConfirmationServices() }
         result should beInstanceOf<Outcome.Error>()
     }
 }
