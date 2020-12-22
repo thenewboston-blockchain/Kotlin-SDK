@@ -2,9 +2,7 @@ package com.thenewboston.utils
 
 import com.thenewboston.data.dto.bankapi.accountdto.response.Account
 import com.thenewboston.data.dto.bankapi.accountdto.response.AccountList
-import com.thenewboston.data.dto.bankapi.bankdto.response.Bank
 import com.thenewboston.data.dto.bankapi.bankdto.response.BankList
-import com.thenewboston.data.dto.bankapi.bankdto.response.BankTrustResponse
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactions
 import com.thenewboston.data.dto.bankapi.blockdto.Block
@@ -13,6 +11,7 @@ import com.thenewboston.data.dto.bankapi.blockdto.request.BlockMessage
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
 import com.thenewboston.data.dto.bankapi.common.request.TrustMessage
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
+import com.thenewboston.data.dto.bankapi.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
@@ -35,15 +34,26 @@ object Mocks {
         banks = emptyList()
     )
 
-    fun bank() = Bank(
-        "1",
+    fun bank(trust: Double = Some.trust) = Bank(
+        "dfddf07ec15cbf363ecb52eedd7133b70b3ec896b488460bcecaba63e8e36be5",
+        "127.0.0.1",
         "",
-        "",
-        "80",
+        80,
         "http",
         "v1",
         1,
-        100.00
+        trust
+    )
+
+    fun emptyBank() = Bank(
+        "",
+        "",
+        "",
+        null,
+        "",
+        "",
+        0,
+        0.0
     )
 
     fun bankDetails() = BankDetails(
@@ -51,7 +61,7 @@ object Mocks {
         "1",
         "",
         "",
-        "80",
+        80,
         "http",
         "v1",
         1
@@ -62,7 +72,7 @@ object Mocks {
         "",
         "",
         "",
-        "",
+        null,
         "",
         "",
         0
@@ -89,7 +99,7 @@ object Mocks {
         port = 80,
         protocol = "http",
         version = "1",
-        defaultTransactionFee = 0.0,
+        defaultTransactionFee = 0,
         rootAccountFile = "",
         rootAccountFileHash = "",
         seedBlockIdentifier = "",
@@ -104,7 +114,7 @@ object Mocks {
         port = 0,
         protocol = "",
         version = "",
-        defaultTransactionFee = 0.0,
+        defaultTransactionFee = 0,
         rootAccountFile = "",
         rootAccountFileHash = "",
         seedBlockIdentifier = "",
@@ -250,24 +260,6 @@ object Mocks {
             signature
         )
     }
-
-    fun bankTrustResponse(trust: Double = Some.trust) = BankTrustResponse(
-        "dfddf07ec15cbf363ecb52eedd7133b70b3ec896b488460bcecaba63e8e36be5",
-        "127.0.0.1",
-        80,
-        "http",
-        1.0,
-        trust
-    )
-
-    fun emptyBankTrustResponse() = BankTrustResponse(
-        "",
-        "",
-        0,
-        "",
-        0.0,
-        0.0
-    )
 
     fun postInvalidBlockRequest() = PostInvalidBlockRequest(
         message = InvalidBlockMessage(

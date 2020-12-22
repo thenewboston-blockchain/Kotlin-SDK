@@ -32,7 +32,7 @@ data class Validator(
     val version: String,
 
     @SerialName("default_transaction_fee")
-    val defaultTransactionFee: Double,
+    val defaultTransactionFee: Int,
 
     @SerialName("root_account_file")
     val rootAccountFile: String,
@@ -44,7 +44,7 @@ data class Validator(
     val seedBlockIdentifier: String,
 
     @SerialName("daily_confirmation_rate")
-    val dailyConfirmationRate: Double? = null,
+    val dailyConfirmationRate: Int? = null,
 
     @SerialName("trust")
     val trust: Double

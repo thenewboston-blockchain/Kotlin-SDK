@@ -52,9 +52,9 @@ object BankAPIJsonMapper {
 
     fun mapInternalServerErrorToJson(): String = Json.encodeToString(Mocks.internalServerError())
 
-    fun mapBankTrustResponseToJson(trust: Double): String = Json.encodeToString(Mocks.bankTrustResponse(trust))
+    fun mapBankToJson(trust: Double): String = Json.encodeToString(Mocks.bank(trust))
 
-    fun mapInvalidBankTrustResponseToJson(): String = Json.encodeToString(Mocks.emptyBankTrustResponse())
+    fun mapInvalidBankToJson(): String = Json.encodeToString(Mocks.emptyBank())
 
     fun mapInvalidBlocksToJson(): String = Json.encodeToString(Mocks.invalidBlocks())
 
