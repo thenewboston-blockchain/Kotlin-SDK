@@ -72,7 +72,7 @@ class BankDataSourceTest {
                 val response = bankDataSource.fetchBankDetails()
 
                 check(response is Outcome.Success)
-                "143.110.137.54" should contain(response.value.ip_address)
+                "143.110.137.54" should contain(response.value.ipAddress)
             }
 
             @Test

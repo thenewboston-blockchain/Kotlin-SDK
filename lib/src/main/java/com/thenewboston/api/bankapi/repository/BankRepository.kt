@@ -5,12 +5,12 @@ import com.thenewboston.common.http.Outcome
 import com.thenewboston.data.dto.bankapi.accountdto.response.Account
 import com.thenewboston.data.dto.bankapi.accountdto.response.AccountList
 import com.thenewboston.data.dto.bankapi.bankdto.response.BankList
-import com.thenewboston.data.dto.bankapi.bankdto.response.BankTrustResponse
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
+import com.thenewboston.data.dto.bankapi.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
@@ -37,8 +37,7 @@ class BankRepository @Inject constructor(private val dataSource: BankDataSource)
 
     suspend fun blocks(): Outcome<BlockList> = dataSource.fetchBlocks()
 
-    suspend fun updateBankTrust(request: UpdateTrustRequest): Outcome<BankTrustResponse> =
-        dataSource.updateBankTrust(request)
+    suspend fun updateBankTrust(request: UpdateTrustRequest): Outcome<Bank> = dataSource.updateBankTrust(request)
 
     suspend fun updateAccountTrust(accountNumber: String, request: UpdateTrustRequest): Outcome<Account> =
         dataSource.updateAccountTrust(accountNumber, request)

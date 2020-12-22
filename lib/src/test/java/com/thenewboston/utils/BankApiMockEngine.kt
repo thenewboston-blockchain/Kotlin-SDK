@@ -171,8 +171,8 @@ class BankApiMockEngine {
                 when {
                     request.url.encodedPath == BankAPIJsonMapper.BANKS_TRUST_ENDPOINT -> {
                         val requestedTrust = readTrustFromRequest(request)
-                        val content = BankAPIJsonMapper.mapBankTrustResponseToJson(requestedTrust)
-                        val invalidContent = BankAPIJsonMapper.mapInvalidBankTrustResponseToJson()
+                        val content = BankAPIJsonMapper.mapBankToJson(requestedTrust)
+                        val invalidContent = BankAPIJsonMapper.mapInvalidBankToJson()
                         when {
                             enableErrorResponse -> respond(
                                 errorContent,
