@@ -16,8 +16,10 @@ import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.*
-import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ValidatorConfirmationServices
-import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ValidatorConfirmationServicesList
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServices
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.Message
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
 import com.thenewboston.data.dto.bankapi.validatordto.Validator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import kotlinx.datetime.LocalDateTime
@@ -287,26 +289,53 @@ object Mocks {
         signature = Some.signature
     )
 
-    fun confirmationServicesList() = ValidatorConfirmationServicesList(
+    fun confirmationServicesList() = ConfirmationServicesList(
         1,
         null,
         null,
         listOf(confirmationServices())
     )
 
-    fun emptyConfirmationServicesList() = ValidatorConfirmationServicesList(
+    fun emptyConfirmationServicesList() = ConfirmationServicesList(
         0,
         null,
         null,
         emptyList()
     )
 
-    private fun confirmationServices() = ValidatorConfirmationServices(
+    private fun confirmationServices() = ConfirmationServices(
         Some.id,
         Some.dateTime.toString(),
         Some.dateTime.toString(),
         Some.endDate,
         Some.startDate,
+        Some.signature
+    )
+
+    fun emptyConfirmationServices() = ConfirmationServices(
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    )
+
+    fun confirmationServiceWithMessage(message: Message) = ConfirmationServices(
+        Some.id,
+        Some.dateTime.toString(),
+        Some.dateTime.toString(),
+        message.end.toString(),
+        message.start.toString(),
+        Some.signature
+    )
+
+    fun confirmationServiceRequest() = PostConfirmationServicesRequest(
+        Message(
+            Some.dateTime,
+            Some.dateTime
+        ),
+        Some.nodeIdentifier,
         Some.signature
     )
 }

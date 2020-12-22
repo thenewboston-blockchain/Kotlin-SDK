@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ValidatorConfirmationServicesList(
+data class ConfirmationServicesList(
     @SerialName("count")
     val count: Int,
     @SerialName("next")
@@ -12,11 +12,11 @@ data class ValidatorConfirmationServicesList(
     @SerialName("previous")
     val previous: String? = null,
     @SerialName("results")
-    val services: List<ValidatorConfirmationServices>
+    val services: List<ConfirmationServices>
 )
 
 @Serializable
-data class ValidatorConfirmationServices(
+data class ConfirmationServices(
     @SerialName("id")
     val id: String,
     @SerialName("created_date")
