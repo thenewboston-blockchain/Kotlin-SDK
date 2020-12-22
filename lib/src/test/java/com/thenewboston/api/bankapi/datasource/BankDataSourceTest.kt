@@ -179,8 +179,8 @@ class BankDataSourceTest {
 
                 // then
                 check(response is Outcome.Success)
-                response.value.start shouldBe "2020-11-19T19:57:31.799872"
-                response.value.end shouldBe "2020-11-19T19:57:31.799872"
+                response.value.start shouldBe request.message.start.toString()
+                response.value.end shouldBe request.message.end.toString()
             }
         }
 
