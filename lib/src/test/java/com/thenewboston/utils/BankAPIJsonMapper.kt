@@ -1,5 +1,6 @@
 package com.thenewboston.utils
 
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.Message
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -70,5 +71,9 @@ object BankAPIJsonMapper {
 
     fun mapValidatorConfirmationServicesToJson(): String = Json.encodeToString(Mocks.confirmationServicesList())
 
+    fun mapValidatorConfirmationServiceToJson(message: Message): String = Json.encodeToString(Mocks.confirmationServiceWithMessage(message))
+
     fun mapEmptyValidatorConfirmationServicesToJson(): String = Json.encodeToString(Mocks.emptyConfirmationServicesList())
+
+    fun mapEmptyValidatorConfirmationServiceToJson(): String = Json.encodeToString(Mocks.emptyConfirmationServices())
 }

@@ -11,7 +11,8 @@ import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
-import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ValidatorConfirmationServicesList
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServices
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import com.thenewboston.utils.Mocks
 import com.thenewboston.utils.Some
@@ -22,13 +23,13 @@ import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
-import java.io.IOException
-import javax.xml.validation.Validator
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import java.io.IOException
+import javax.xml.validation.Validator
 
 @ExperimentalCoroutinesApi
 @KtorExperimentalAPI
@@ -356,7 +357,7 @@ class BankRepositoryTest {
 
         // then
         coVerify { bankDataSource.fetchValidatorConfirmationServices() }
-        result should beInstanceOf<Outcome.Success<ValidatorConfirmationServicesList>>()
+        result should beInstanceOf<Outcome.Success<ConfirmationServicesList>>()
     }
 
     @Test
@@ -368,6 +369,32 @@ class BankRepositoryTest {
 
         // then
         coVerify { bankDataSource.fetchValidatorConfirmationServices() }
+        result should beInstanceOf<Outcome.Error>()
+    }
+
+    @Test
+    fun `verify send validator confirmation services returns success outcome`() = runBlockingTest {
+        val request = Mocks.confirmationServiceRequest()
+        coEvery { bankDataSource.sendValidatorConfirmationServices(request) } returns Outcome.Success(Mocks.confirmationServiceWithMessage(request.message))
+
+        // when
+        val result = repository.sendValidatorConfirmationServices(request)
+
+        // then
+        coVerify { bankDataSource.sendValidatorConfirmationServices(request) }
+        result should beInstanceOf<Outcome.Success<ConfirmationServices>>()
+    }
+
+    @Test
+    fun `verify send validator confirmation services returns error outcome`() = runBlockingTest {
+        val request = Mocks.confirmationServiceRequest()
+        coEvery { bankDataSource.sendValidatorConfirmationServices(request) } returns Outcome.Error("An error occurred while sending validator confirmation services")
+
+        // when
+        val result = repository.sendValidatorConfirmationServices(request)
+
+        // then
+        coVerify { bankDataSource.sendValidatorConfirmationServices(request) }
         result should beInstanceOf<Outcome.Error>()
     }
 }

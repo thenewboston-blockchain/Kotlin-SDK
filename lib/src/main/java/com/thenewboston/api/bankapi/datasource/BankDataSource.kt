@@ -16,7 +16,9 @@ import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.PostInvalidBlockRequest
-import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ValidatorConfirmationServicesList
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServices
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
 import com.thenewboston.data.dto.bankapi.validatordto.Validator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import com.thenewboston.utils.BankAPIEndpoints
@@ -247,14 +249,35 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         errorMessage = "An error occurred while fetching validator confirmation services"
     )
 
-    private suspend fun getValidatorConfirmationServices(): Outcome<ValidatorConfirmationServicesList> {
+    private suspend fun getValidatorConfirmationServices(): Outcome<ConfirmationServicesList> {
         val endpoint = BankAPIEndpoints.VALIDATOR_CONFIRMATION_SERVICES_ENDPOINT
-        val response = networkClient.defaultClient.get<ValidatorConfirmationServicesList>(endpoint)
+        val response = networkClient.defaultClient.get<ConfirmationServicesList>(endpoint)
 
         return when {
             response.services.isNullOrEmpty() -> {
                 val message = ErrorMessages.EMPTY_LIST_MESSAGE
                 Outcome.Error(message, IOException())
+            }
+            else -> Outcome.Success(response)
+        }
+    }
+
+    suspend fun sendValidatorConfirmationServices(request: PostConfirmationServicesRequest) = makeApiCall(
+        call = { doSendValidatorConfirmationServices(request) },
+        errorMessage = "An error occurred while sending validator confirmation services"
+    )
+
+    private suspend fun doSendValidatorConfirmationServices(request: PostConfirmationServicesRequest): Outcome<ConfirmationServices> {
+        val response = networkClient.defaultClient.post<ConfirmationServices> {
+            url(BankAPIEndpoints.VALIDATOR_CONFIRMATION_SERVICES_ENDPOINT)
+            body = request
+        }
+
+        return when {
+            response.id.isBlank() -> {
+                val nodeIdentifier = request.nodeIdentifier
+                val message = "Received invalid response sending confirmation services with node identifier: $nodeIdentifier"
+                return Outcome.Error(message, IOException())
             }
             else -> Outcome.Success(response)
         }

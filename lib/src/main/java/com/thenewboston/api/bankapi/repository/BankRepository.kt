@@ -15,7 +15,8 @@ import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.PostInvalidBlockRequest
-import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ValidatorConfirmationServicesList
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import io.ktor.util.*
 import javax.inject.Inject
@@ -49,6 +50,9 @@ class BankRepository @Inject constructor(private val dataSource: BankDataSource)
 
     suspend fun sendBlock(request: PostBlockRequest): Outcome<Block> = dataSource.sendBlock(request)
 
-    suspend fun validatorConfirmationServices(): Outcome<ValidatorConfirmationServicesList> =
+    suspend fun validatorConfirmationServices(): Outcome<ConfirmationServicesList> =
         dataSource.fetchValidatorConfirmationServices()
+
+    suspend fun sendValidatorConfirmationServices(request: PostConfirmationServicesRequest) =
+        dataSource.sendValidatorConfirmationServices(request)
 }
