@@ -262,20 +262,20 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         }
     }
 
-    suspend fun sendValidatorConfirmationServices(servicesRequest: PostConfirmationServicesRequest) = makeApiCall(
-        call = { doSendValidatorConfirmationServices(servicesRequest) },
+    suspend fun sendValidatorConfirmationServices(request: PostConfirmationServicesRequest) = makeApiCall(
+        call = { doSendValidatorConfirmationServices(request) },
         errorMessage = "An error occurred while sending validator confirmation services"
     )
 
-    private suspend fun doSendValidatorConfirmationServices(servicesRequest: PostConfirmationServicesRequest): Outcome<ConfirmationServices> {
+    private suspend fun doSendValidatorConfirmationServices(request: PostConfirmationServicesRequest): Outcome<ConfirmationServices> {
         val response = networkClient.defaultClient.post<ConfirmationServices> {
             url(BankAPIEndpoints.VALIDATOR_CONFIRMATION_SERVICES_ENDPOINT)
-            body = servicesRequest
+            body = request
         }
 
         return when {
             response.id.isBlank() -> {
-                val nodeIdentifier = servicesRequest.nodeIdentifier
+                val nodeIdentifier = request.nodeIdentifier
                 val message = "Received invalid response sending confirmation services with node identifier: $nodeIdentifier"
                 return Outcome.Error(message, IOException())
             }

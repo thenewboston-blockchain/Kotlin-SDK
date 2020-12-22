@@ -53,6 +53,6 @@ class BankRepository @Inject constructor(private val dataSource: BankDataSource)
     suspend fun validatorConfirmationServices(): Outcome<ConfirmationServicesList> =
         dataSource.fetchValidatorConfirmationServices()
 
-    suspend fun sendValidatorConfirmationServices(servicesRequest: PostConfirmationServicesRequest) =
-        dataSource.sendValidatorConfirmationServices(servicesRequest)
+    suspend fun sendValidatorConfirmationServices(request: PostConfirmationServicesRequest) =
+        dataSource.sendValidatorConfirmationServices(request)
 }
