@@ -2,7 +2,6 @@ package com.thenewboston.api.bankapi.datasource
 
 import com.thenewboston.common.http.NetworkClient
 import com.thenewboston.common.http.Outcome
-import com.thenewboston.common.http.config.Config
 import com.thenewboston.utils.BankApiMockEngine
 import com.thenewboston.utils.ErrorMessages
 import com.thenewboston.utils.Mocks
@@ -73,7 +72,7 @@ class BankDataSourceTest {
                 val response = bankDataSource.fetchBankDetails()
 
                 check(response is Outcome.Success)
-                Config.IP_ADDRESS should contain(response.value.ipAddress)
+                "143.110.137.54" should contain(response.value.ipAddress)
             }
 
             @Test
