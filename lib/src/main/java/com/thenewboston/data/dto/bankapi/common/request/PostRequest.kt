@@ -3,7 +3,7 @@ package com.thenewboston.data.dto.bankapi.common.request
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-typealias UpdateTrustRequest = PatchRequest<TrustMessage>
+typealias UpdateTrustRequest = PostRequest<TrustMessage>
 
 @Serializable
 data class TrustMessage(
@@ -13,7 +13,7 @@ data class TrustMessage(
 
 @Serializable
 @SerialName("Request")
-data class PatchRequest<T> (
+data class PostRequest<T> (
     @SerialName("message")
     val message: T,
     @SerialName("node_identifier")

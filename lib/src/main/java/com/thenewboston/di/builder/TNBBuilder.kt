@@ -3,7 +3,7 @@ package com.thenewboston.di.builder
 import com.thenewboston.api.bankapi.repository.BankRepository
 import com.thenewboston.common.http.NetworkClient
 import com.thenewboston.common.http.config.Config
-import com.thenewboston.data.dto.bankapi.common.request.PatchRequest
+import com.thenewboston.data.dto.bankapi.common.request.PostRequest
 import com.thenewboston.data.dto.bankapi.common.request.TrustMessage
 import dagger.Component
 import dagger.Module
@@ -46,7 +46,7 @@ class TNBBankNetworkModule(private val config: Config) {
         ignoreUnknownKeys = true
         serializersModule = SerializersModule {
             // https://github.com/ktorio/ktor/issues/1783
-            contextual(serializer<PatchRequest<TrustMessage>>())
+            contextual(serializer<PostRequest<TrustMessage>>())
         }
     }
 
