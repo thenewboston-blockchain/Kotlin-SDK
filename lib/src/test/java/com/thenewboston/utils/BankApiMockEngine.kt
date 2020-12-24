@@ -1,7 +1,7 @@
 package com.thenewboston.utils
 
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
-import com.thenewboston.data.dto.bankapi.common.request.PostRequest
+import com.thenewboston.data.dto.bankapi.common.request.PatchRequest
 import com.thenewboston.data.dto.bankapi.common.request.TrustMessage
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.PostInvalidBlockRequest
@@ -246,7 +246,7 @@ class BankApiMockEngine {
         isLenient = true
         ignoreUnknownKeys = true
         serializersModule = SerializersModule {
-            contextual(serializer<PostRequest<TrustMessage>>())
+            contextual(serializer<PatchRequest<TrustMessage>>())
         }
     }
 }
