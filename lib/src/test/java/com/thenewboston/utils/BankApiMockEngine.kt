@@ -1,6 +1,8 @@
 package com.thenewboston.utils
 
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
+import com.thenewboston.data.dto.bankapi.common.request.PostRequest
+import com.thenewboston.data.dto.bankapi.common.request.TrustMessage
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.PostInvalidBlockRequest
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.Message
@@ -17,6 +19,9 @@ import io.ktor.http.HttpStatusCode.Companion.InternalServerError
 import io.ktor.http.content.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.contextual
+import kotlinx.serialization.serializer
 
 class BankApiMockEngine {
 
@@ -240,5 +245,8 @@ class BankApiMockEngine {
     private fun json(): Json = Json {
         isLenient = true
         ignoreUnknownKeys = true
+        serializersModule = SerializersModule {
+            contextual(serializer<PostRequest<TrustMessage>>())
+        }
     }
 }

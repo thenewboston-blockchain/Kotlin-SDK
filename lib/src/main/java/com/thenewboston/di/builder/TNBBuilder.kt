@@ -3,6 +3,8 @@ package com.thenewboston.di.builder
 import com.thenewboston.api.bankapi.repository.BankRepository
 import com.thenewboston.common.http.NetworkClient
 import com.thenewboston.common.http.config.Config
+import com.thenewboston.data.dto.bankapi.common.request.PostRequest
+import com.thenewboston.data.dto.bankapi.common.request.TrustMessage
 import dagger.Component
 import dagger.Module
 import dagger.Provides
@@ -15,6 +17,9 @@ import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.contextual
+import kotlinx.serialization.serializer
 import javax.inject.Scope
 
 @Retention(AnnotationRetention.RUNTIME)
@@ -39,6 +44,10 @@ class TNBBankNetworkModule(private val config: Config) {
     fun provideJsonConfiguration(): Json = Json {
         isLenient = true
         ignoreUnknownKeys = true
+        serializersModule = SerializersModule {
+            // https://github.com/ktorio/ktor/issues/1783
+            contextual(serializer<PostRequest<TrustMessage>>())
+        }
     }
 
     @TNBScope

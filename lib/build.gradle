@@ -6,6 +6,7 @@ apply from: '../ktlint.gradle'
 apply from: './jacoco.gradle'
 apply from: './sonar.gradle'
 apply from: './detekt.gradle'
+apply plugin: 'org.jetbrains.kotlin.plugin.serialization'
 
 configurations {
   archives {
@@ -36,7 +37,7 @@ buildscript {
 ext {
   ext.ktor_version = '1.5.0'
   ext.mockk_version = '1.10.0'
-  ext.kserialization_version = "1.0.0"
+  ext.kserialization_version = "1.0.1"
   ext.kdatetime_version = "0.1.0"
   ext.coroutines_version = "1.4.0"
   ext.dagger_version = "2.28.3"
@@ -57,6 +58,7 @@ dependencies {
   implementation "io.ktor:ktor-client-cio:$ktor_version"
   implementation "io.ktor:ktor-client-serialization-jvm:$ktor_version"
   implementation "io.ktor:ktor-client-mock:$ktor_version"
+  implementation "io.ktor:ktor-serialization:$ktor_version"
 
   //Date time
   implementation "org.jetbrains.kotlinx:kotlinx-datetime:$kdatetime_version"
