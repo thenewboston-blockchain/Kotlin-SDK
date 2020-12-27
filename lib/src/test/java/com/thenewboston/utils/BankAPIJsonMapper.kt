@@ -18,6 +18,7 @@ object BankAPIJsonMapper {
     const val BLOCKS_ENDPOINT = "blocks"
     const val INVALID_BLOCKS_ENDPOINT = "invalid_blocks"
     const val VALIDATOR_CONFIRMATION_SERVICES_ENDPOINT = "validator_confirmation_services"
+    const val UPGRADE_NOTICE_ENDPOINT = "upgrade_notice"
 
     fun mapBanksToJson(): String = Json.encodeToString(Mocks.banks())
 

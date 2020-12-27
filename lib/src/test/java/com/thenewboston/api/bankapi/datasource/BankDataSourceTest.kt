@@ -182,6 +182,16 @@ class BankDataSourceTest {
                 response.value.start shouldBe request.message.start.toString()
                 response.value.end shouldBe request.message.end.toString()
             }
+
+            @Test
+            fun `should send upgrade notice successfully`() = runBlockingTest {
+                val request = Mocks.upgradeNoticeRequest()
+
+                val response = bankDataSource.sendUpgradeNotice(request)
+
+                check(response is Outcome.Success)
+                response.value shouldBe "Successfully sent upgrade notice"
+            }
         }
 
         @Nested
@@ -486,6 +496,20 @@ class BankDataSourceTest {
                     check(response is Outcome.Error)
                     response.cause should beInstanceOf<IOException>()
                     response.cause?.message shouldBe "An error occurred while sending validator confirmation services"
+                }
+
+                @Test
+                fun `should return error outcome for sending upgrade notice`() = runBlockingTest {
+                    // given
+                    val request = Mocks.upgradeNoticeRequest()
+
+                    // when
+                    val response = bankDataSource.sendUpgradeNotice(request)
+
+                    // then
+                    check(response is Outcome.Error)
+                    response.cause should beInstanceOf<IOException>()
+                    response.cause?.message shouldBe "An error occurred while sending upgrade notice"
                 }
             }
 

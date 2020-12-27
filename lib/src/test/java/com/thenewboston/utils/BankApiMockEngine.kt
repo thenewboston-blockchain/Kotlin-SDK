@@ -122,6 +122,11 @@ class BankApiMockEngine {
                         val invalidContent = BankAPIJsonMapper.mapEmptyValidatorConfirmationServiceToJson()
                         sendResponse(content, errorContent, invalidContent, sendOnlyErrorResponses, sendInvalidResponses)
                     }
+                    request.url.encodedPath.startsWith(BankAPIJsonMapper.UPGRADE_NOTICE_ENDPOINT) -> {
+                        val content = "Successfully sent upgrade notice"
+                        val invalidContent = ""
+                        sendResponse(content, errorContent, invalidContent, sendOnlyErrorResponses, sendInvalidResponses)
+                    }
                     else -> {
                         error("Unhandled ${request.url.encodedPath}")
                     }
