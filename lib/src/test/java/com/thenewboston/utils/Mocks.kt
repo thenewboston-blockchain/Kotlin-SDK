@@ -16,6 +16,8 @@ import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.*
+import com.thenewboston.data.dto.bankapi.upgradenoticedto.UpgradeNoticeMessage
+import com.thenewboston.data.dto.bankapi.upgradenoticedto.UpgradeNoticeRequest
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServices
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.Message
@@ -338,6 +340,14 @@ object Mocks {
         Some.nodeIdentifier,
         Some.signature
     )
+
+    fun upgradeNoticeRequest() = UpgradeNoticeRequest(
+        Some.nodeIdentifier,
+        Some.signature,
+        UpgradeNoticeMessage(
+            Some.bankNodeIdentifier
+        )
+    )
 }
 
 // Sample values taken from docs, see https://thenewboston.com/bank-api/
@@ -351,4 +361,5 @@ object Some {
     val dateTime = LocalDateTime.parse("2020-11-19T19:57:31.799872")
     const val startDate = "2020-11-29T07:54:16.233806Z"
     const val endDate = "2020-12-15T07:54:16.233806Z"
+    const val bankNodeIdentifier = "d5356888dc9303e44ce52b1e06c3165a7759b9df1e6a6dfbd33ee1c3df1ab4d1"
 }

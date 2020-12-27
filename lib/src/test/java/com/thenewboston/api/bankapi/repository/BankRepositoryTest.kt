@@ -397,4 +397,31 @@ class BankRepositoryTest {
         coVerify { bankDataSource.sendValidatorConfirmationServices(request) }
         result should beInstanceOf<Outcome.Error>()
     }
+
+    @Test
+    fun `verify send upgrade notice returns success outcome`() = runBlockingTest {
+        val request = Mocks.upgradeNoticeRequest()
+        coEvery { bankDataSource.sendUpgradeNotice(request) } returns Outcome.Success("Successfully sent upgrade notice")
+
+        // when
+        val result = repository.sendUpgradeNotice(request)
+
+        // then
+        coVerify { bankDataSource.sendUpgradeNotice(request) }
+        result should beInstanceOf<Outcome.Success<String>>()
+    }
+
+    @Test
+    fun `verify send upgrade notice returns error outcome`() = runBlockingTest {
+        val request = Mocks.upgradeNoticeRequest()
+        val message = "Error occurred while sending upgrade notice"
+        coEvery { bankDataSource.sendUpgradeNotice(request) } returns Outcome.Error(message, IOException())
+
+        // when
+        val result = repository.sendUpgradeNotice(request)
+
+        // then
+        coVerify { bankDataSource.sendUpgradeNotice(request) }
+        result should beInstanceOf<Outcome.Error>()
+    }
 }
