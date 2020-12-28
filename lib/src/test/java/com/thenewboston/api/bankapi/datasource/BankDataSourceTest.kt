@@ -269,6 +269,20 @@ class BankDataSourceTest {
                 response.value.id shouldNot beEmpty()
                 response.value.balanceKey shouldBe request.message.balanceKey
             }
+
+            @Test
+            fun `should return success with clean status `() = runBlockingTest {
+                // given
+                val request = Mocks.postCleanRequest()
+
+                // when
+                val response = bankDataSource.sendClean(request)
+
+                // then
+                check(response is Outcome.Success)
+                response.value.cleanStatus shouldNot beEmpty()
+                response.value.cleanStatus shouldBe request.data.clean
+            }
         }
     }
 
@@ -653,6 +667,22 @@ class BankDataSourceTest {
                         response.cause?.message shouldBe "An error occurred while sending the block"
                     }
                 }
+
+                @Test
+                fun `should return error outcome when sending clean`() {
+                    runBlockingTest {
+                        // given
+                        val request = Mocks.postCleanRequest()
+
+                        // when
+                        val response = bankDataSource.sendClean(request)
+
+                        // then
+                        check(response is Outcome.Error)
+                        response.cause should beInstanceOf<IOException>()
+                        response.cause?.message shouldBe "An error occurred while sending the clean request"
+                    }
+                }
             }
 
             @Nested
@@ -724,6 +754,21 @@ class BankDataSourceTest {
                         check(response is Outcome.Error)
                         response.cause should beInstanceOf<IOException>()
                         response.message shouldBe "Received invalid response when sending block with balance key: ${request.message.balanceKey}"
+                    }
+
+                @Test
+                fun `should return error outcome when receiving invalid response for sending clean`() =
+                    runBlockingTest {
+                        // given
+                        val request = Mocks.postCleanRequest()
+
+                        // when
+                        val response = bankDataSource.sendClean(request)
+
+                        // then
+                        check(response is Outcome.Error)
+                        response.cause should beInstanceOf<IOException>()
+                        response.message shouldBe "Received invalid response when sending block with clean: ${request.data.clean}"
                     }
             }
         }

@@ -85,4 +85,8 @@ object BankAPIJsonMapper {
     fun mapCleanToJson(): String = Json.encodeToString(Mocks.cleanSuccess())
 
     fun mapEmptyCleanToJson(): String = Json.encodeToString(Mocks.cleanFailure())
+
+    fun mapCleanToJson(clean: String): String = Json.encodeToString(Mocks.postClean(clean))
+
+    fun mapCleanResponseForPostRequest(): String = Json.encodeToString(Mocks.cleanFailure())
 }

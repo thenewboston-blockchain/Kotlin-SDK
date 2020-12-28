@@ -1,6 +1,7 @@
 package com.thenewboston.utils
 
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
+import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.PostInvalidBlockRequest
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.Message
@@ -155,6 +156,9 @@ class BankApiMockEngine {
     private fun readMessageFromRequest(request: HttpRequestData): Message =
         request.extract<PostConfirmationServicesRequest, Message> { it.message }
 
+    private fun readCleanFromRequest(request: HttpRequestData): String =
+        request.extract<PostCleanRequest, String> { it.data.clean }
+
     private inline fun <reified T, R> HttpRequestData.extract(extractor: (T) -> R): R {
         val requestBodyString = (this.body as TextContent).text
         return extractor(Json.decodeFromString<T>(requestBodyString))
@@ -218,6 +222,16 @@ class BankApiMockEngine {
                         val balanceKey = readBalanceKeyFromRequest(request)
                         val content = BankAPIJsonMapper.mapBlockToJson(balanceKey)
                         val invalidContent = BankAPIJsonMapper.mapBlockResponseForBlockRequest()
+                        when {
+                            enableErrorResponse -> respond(errorContent, InternalServerError, responseHeaders)
+                            sendInvalidResponses -> respond(invalidContent, Accepted, responseHeaders)
+                            else -> respond(content, Accepted, responseHeaders)
+                        }
+                    }
+                    request.url.encodedPath.startsWith(BankAPIJsonMapper.CLEAN_ENDPOINT) -> {
+                        val clean = readCleanFromRequest(request)
+                        val content = BankAPIJsonMapper.mapCleanToJson(clean)
+                        val invalidContent = BankAPIJsonMapper.mapCleanResponseForPostRequest()
                         when {
                             enableErrorResponse -> respond(errorContent, InternalServerError, responseHeaders)
                             sendInvalidResponses -> respond(invalidContent, Accepted, responseHeaders)
