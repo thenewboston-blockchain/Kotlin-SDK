@@ -59,6 +59,6 @@ class BankRepository @Inject constructor(private val dataSource: BankDataSource)
         dataSource.sendValidatorConfirmationServices(request)
 
     suspend fun sendUpgradeNotice(request: UpgradeNoticeRequest) = dataSource.sendUpgradeNotice(request)
-  
+
     suspend fun clean(): Outcome<Clean> = dataSource.fetchClean()
 }

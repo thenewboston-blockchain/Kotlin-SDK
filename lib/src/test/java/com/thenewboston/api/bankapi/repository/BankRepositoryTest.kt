@@ -24,13 +24,13 @@ import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
+import java.io.IOException
+import javax.xml.validation.Validator
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import java.io.IOException
-import javax.xml.validation.Validator
 
 @ExperimentalCoroutinesApi
 @KtorExperimentalAPI
@@ -363,7 +363,10 @@ class BankRepositoryTest {
 
     @Test
     fun `verify fetch validator confirmation services returns error outcome`() = runBlockingTest {
-        coEvery { bankDataSource.fetchValidatorConfirmationServices() } returns Outcome.Error("Failed to fetch validator confirmation services", IOException())
+        coEvery { bankDataSource.fetchValidatorConfirmationServices() } returns Outcome.Error(
+            "Failed to fetch validator confirmation services",
+            IOException()
+        )
 
         // when
         val result = repository.validatorConfirmationServices()
@@ -376,7 +379,11 @@ class BankRepositoryTest {
     @Test
     fun `verify send validator confirmation services returns success outcome`() = runBlockingTest {
         val request = Mocks.confirmationServiceRequest()
-        coEvery { bankDataSource.sendValidatorConfirmationServices(request) } returns Outcome.Success(Mocks.confirmationServiceWithMessage(request.message))
+        coEvery { bankDataSource.sendValidatorConfirmationServices(request) } returns Outcome.Success(
+            Mocks.confirmationServiceWithMessage(
+                request.message
+            )
+        )
 
         // when
         val result = repository.sendValidatorConfirmationServices(request)
@@ -425,7 +432,7 @@ class BankRepositoryTest {
         coVerify { bankDataSource.sendUpgradeNotice(request) }
         result should beInstanceOf<Outcome.Error>()
     }
-  
+
     @Test
     fun `verify clean result is success`() = runBlockingTest {
         coEvery { bankDataSource.fetchClean() } returns Outcome.Success(Mocks.cleanSuccess())

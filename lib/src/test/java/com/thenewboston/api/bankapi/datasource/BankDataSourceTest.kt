@@ -555,20 +555,22 @@ class BankDataSourceTest {
                 }
 
                 @Test
-                fun `should return error outcome for sending invalid request for confirmation services`() = runBlockingTest {
-                    // given
-                    val request = Mocks.confirmationServiceRequest()
+                fun `should return error outcome for sending invalid request for confirmation services`() =
+                    runBlockingTest {
+                        // given
+                        val request = Mocks.confirmationServiceRequest()
 
-                    // when
-                    val response = bankDataSource.sendValidatorConfirmationServices(request)
+                        // when
+                        val response = bankDataSource.sendValidatorConfirmationServices(request)
 
-                    // then
-                    check(response is Outcome.Error)
-                    response.cause should beInstanceOf<IOException>()
-                    val nodeIdentifier = request.nodeIdentifier
-                    val message = "Received invalid response sending confirmation services with node identifier: $nodeIdentifier"
-                    response.message shouldBe message
-                }
+                        // then
+                        check(response is Outcome.Error)
+                        response.cause should beInstanceOf<IOException>()
+                        val nodeIdentifier = request.nodeIdentifier
+                        val message =
+                            "Received invalid response sending confirmation services with node identifier: $nodeIdentifier"
+                        response.message shouldBe message
+                    }
             }
         }
 
@@ -710,18 +712,19 @@ class BankDataSourceTest {
                 }
 
                 @Test
-                fun `should return error outcome when receiving invalid response for sending block`() = runBlockingTest {
-                    // given
-                    val request = Mocks.postBlockRequest()
+                fun `should return error outcome when receiving invalid response for sending block`() =
+                    runBlockingTest {
+                        // given
+                        val request = Mocks.postBlockRequest()
 
-                    // when
-                    val response = bankDataSource.sendBlock(request)
+                        // when
+                        val response = bankDataSource.sendBlock(request)
 
-                    // then
-                    check(response is Outcome.Error)
-                    response.cause should beInstanceOf<IOException>()
-                    response.message shouldBe "Received invalid response when sending block with balance key: ${request.message.balanceKey}"
-                }
+                        // then
+                        check(response is Outcome.Error)
+                        response.cause should beInstanceOf<IOException>()
+                        response.message shouldBe "Received invalid response when sending block with balance key: ${request.message.balanceKey}"
+                    }
             }
         }
     }

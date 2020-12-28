@@ -279,7 +279,8 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         return when {
             response.id.isBlank() -> {
                 val nodeIdentifier = request.nodeIdentifier
-                val message = "Received invalid response sending confirmation services with node identifier: $nodeIdentifier"
+                val message =
+                    "Received invalid response sending confirmation services with node identifier: $nodeIdentifier"
                 return Outcome.Error(message, IOException())
             }
             else -> Outcome.Success(response)
@@ -300,7 +301,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         // Return success as response body is empty
         return Outcome.Success("Successfully sent upgrade notice")
     }
-  
+
     suspend fun fetchClean() = makeApiCall(
         call = { getClean() },
         errorMessage = "Failed to update the network"

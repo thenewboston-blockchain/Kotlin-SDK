@@ -20,7 +20,7 @@ object BankAPIJsonMapper {
     const val VALIDATOR_CONFIRMATION_SERVICES_ENDPOINT = "validator_confirmation_services"
     const val UPGRADE_NOTICE_ENDPOINT = "upgrade_notice"
     const val CLEAN_ENDPOINT = "clean"
-  
+
     fun mapBanksToJson(): String = Json.encodeToString(Mocks.banks())
 
     fun mapEmptyBanksToJson(): String = Json.encodeToString(Mocks.emptyBanks())
@@ -63,7 +63,8 @@ object BankAPIJsonMapper {
 
     fun mapEmptyInvalidBlocksToJson(): String = Json.encodeToString(Mocks.emptyInvalidBlocks())
 
-    fun mapInvalidBlockToJson(blockIdentifier: String): String = Json.encodeToString(Mocks.invalidBlock(blockIdentifier))
+    fun mapInvalidBlockToJson(blockIdentifier: String): String =
+        Json.encodeToString(Mocks.invalidBlock(blockIdentifier))
 
     fun mapInvalidResponseForInvalidBlocksRequest(): String = Json.encodeToString(Mocks.emptyInvalidBlock())
 
@@ -73,9 +74,11 @@ object BankAPIJsonMapper {
 
     fun mapValidatorConfirmationServicesToJson(): String = Json.encodeToString(Mocks.confirmationServicesList())
 
-    fun mapValidatorConfirmationServiceToJson(message: Message): String = Json.encodeToString(Mocks.confirmationServiceWithMessage(message))
+    fun mapValidatorConfirmationServiceToJson(message: Message): String =
+        Json.encodeToString(Mocks.confirmationServiceWithMessage(message))
 
-    fun mapEmptyValidatorConfirmationServicesToJson(): String = Json.encodeToString(Mocks.emptyConfirmationServicesList())
+    fun mapEmptyValidatorConfirmationServicesToJson(): String =
+        Json.encodeToString(Mocks.emptyConfirmationServicesList())
 
     fun mapEmptyValidatorConfirmationServiceToJson(): String = Json.encodeToString(Mocks.emptyConfirmationServices())
 
