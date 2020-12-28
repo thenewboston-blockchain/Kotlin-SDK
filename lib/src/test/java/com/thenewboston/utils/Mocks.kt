@@ -9,6 +9,7 @@ import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.blockdto.request.BlockMessage
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
+import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.common.request.TrustMessage
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.common.response.Bank
@@ -337,6 +338,22 @@ object Mocks {
         ),
         Some.nodeIdentifier,
         Some.signature
+    )
+
+    fun cleanSuccess() = Clean(
+        Some.dateTime,
+        "cleaning",
+        "20.188.56.203",
+        80,
+        "http",
+    )
+
+    fun cleanFailure() = Clean(
+        Some.dateTime,
+        "",
+        "20.188.56.203",
+        80,
+        "",
     )
 }
 

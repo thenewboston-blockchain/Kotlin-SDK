@@ -8,6 +8,7 @@ import com.thenewboston.data.dto.bankapi.bankdto.response.BankList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
+import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
@@ -396,5 +397,21 @@ class BankRepositoryTest {
         // then
         coVerify { bankDataSource.sendValidatorConfirmationServices(request) }
         result should beInstanceOf<Outcome.Error>()
+    }
+
+    @Test
+    fun `verify clean result is success`() = runBlockingTest {
+        coEvery { bankDataSource.fetchClean() } returns Outcome.Success(Mocks.cleanSuccess())
+
+        repository.clean() should beInstanceOf<Outcome.Success<Clean>>()
+    }
+
+    @Test
+    fun `verify clean result is error`() = runBlockingTest {
+        coEvery {
+            bankDataSource.fetchClean()
+        } returns Outcome.Error("The network clean process is not successful", IOException())
+
+        repository.clean() should beInstanceOf<Outcome.Error>()
     }
 }

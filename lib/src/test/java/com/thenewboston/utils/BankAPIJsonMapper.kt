@@ -18,6 +18,7 @@ object BankAPIJsonMapper {
     const val BLOCKS_ENDPOINT = "blocks"
     const val INVALID_BLOCKS_ENDPOINT = "invalid_blocks"
     const val VALIDATOR_CONFIRMATION_SERVICES_ENDPOINT = "validator_confirmation_services"
+    const val CLEAN_ENDPOINT = "clean"
 
     fun mapBanksToJson(): String = Json.encodeToString(Mocks.banks())
 
@@ -76,4 +77,8 @@ object BankAPIJsonMapper {
     fun mapEmptyValidatorConfirmationServicesToJson(): String = Json.encodeToString(Mocks.emptyConfirmationServicesList())
 
     fun mapEmptyValidatorConfirmationServiceToJson(): String = Json.encodeToString(Mocks.emptyConfirmationServices())
+
+    fun mapCleanToJson(): String = Json.encodeToString(Mocks.cleanSuccess())
+
+    fun mapEmptyCleanToJson(): String = Json.encodeToString(Mocks.cleanFailure())
 }

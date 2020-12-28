@@ -86,6 +86,11 @@ class BankApiMockEngine {
                             val emptyContent = BankAPIJsonMapper.mapEmptyValidatorConfirmationServicesToJson()
                             sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
                         }
+                        BankAPIJsonMapper.CLEAN_ENDPOINT -> {
+                            val content = BankAPIJsonMapper.mapCleanToJson()
+                            val emptyContent = BankAPIJsonMapper.mapEmptyCleanToJson()
+                            sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
+                        }
                         else -> {
                             error("Unhandled ${request.url.encodedPath}")
                         }

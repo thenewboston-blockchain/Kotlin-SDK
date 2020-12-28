@@ -286,11 +286,11 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
 
     suspend fun fetchClean() = makeApiCall(
         call = { getClean() },
-        errorMessage = "Could not update the network"
+        errorMessage = "Failed to update the network"
     )
 
     private suspend fun getClean(): Outcome<Clean> {
-        val response = networkClient.defaultClient.get<Clean>(BankAPIEndpoints.CLEAN)
+        val response = networkClient.defaultClient.get<Clean>(BankAPIEndpoints.CLEAN_ENDPOINT)
 
         return when {
             response.cleanStatus.isEmpty() -> Outcome.Error(

@@ -9,5 +9,5 @@ object BankAPIEndpoints {
     const val BLOCKS_ENDPOINT = "/blocks"
     const val INVALID_BLOCKS_ENDPOINT = "/invalid_blocks"
     const val VALIDATOR_CONFIRMATION_SERVICES_ENDPOINT = "/validator_confirmation_services"
-    const val CLEAN = "/clean"
+    const val CLEAN_ENDPOINT = "/clean"
 }
