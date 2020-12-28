@@ -10,6 +10,7 @@ import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
+import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
@@ -279,6 +280,23 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
                 val message = "Received invalid response sending confirmation services with node identifier: $nodeIdentifier"
                 return Outcome.Error(message, IOException())
             }
+            else -> Outcome.Success(response)
+        }
+    }
+
+    suspend fun fetchClean() = makeApiCall(
+        call = { getClean() },
+        errorMessage = "Could not update the network"
+    )
+
+    private suspend fun getClean(): Outcome<Clean> {
+        val response = networkClient.defaultClient.get<Clean>(BankAPIEndpoints.CLEAN)
+
+        return when {
+            response.cleanStatus.isEmpty() -> Outcome.Error(
+                "The network clean process is not successful",
+                IOException()
+            )
             else -> Outcome.Success(response)
         }
     }
