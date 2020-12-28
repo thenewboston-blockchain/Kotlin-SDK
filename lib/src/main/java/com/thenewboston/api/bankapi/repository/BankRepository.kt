@@ -16,6 +16,7 @@ import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.PostInvalidBlockRequest
+import com.thenewboston.data.dto.bankapi.upgradenoticedto.UpgradeNoticeRequest
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
@@ -57,5 +58,7 @@ class BankRepository @Inject constructor(private val dataSource: BankDataSource)
     suspend fun sendValidatorConfirmationServices(request: PostConfirmationServicesRequest) =
         dataSource.sendValidatorConfirmationServices(request)
 
+    suspend fun sendUpgradeNotice(request: UpgradeNoticeRequest) = dataSource.sendUpgradeNotice(request)
+  
     suspend fun clean(): Outcome<Clean> = dataSource.fetchClean()
 }

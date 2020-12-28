@@ -17,6 +17,7 @@ import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.PostInvalidBlockRequest
+import com.thenewboston.data.dto.bankapi.upgradenoticedto.UpgradeNoticeRequest
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServices
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
@@ -25,6 +26,7 @@ import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import com.thenewboston.utils.BankAPIEndpoints
 import com.thenewboston.utils.ErrorMessages
 import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.util.*
 import io.ktor.utils.io.errors.*
@@ -284,6 +286,21 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         }
     }
 
+    suspend fun sendUpgradeNotice(request: UpgradeNoticeRequest) = makeApiCall(
+        call = { doSendUpgradeNotice(request) },
+        errorMessage = "An error occurred while sending upgrade notice"
+    )
+
+    private suspend fun doSendUpgradeNotice(request: UpgradeNoticeRequest): Outcome<String> {
+        networkClient.defaultClient.post<HttpResponse> {
+            url(BankAPIEndpoints.UPGRADE_NOTICE_ENDPOINT)
+            body = request
+        }
+
+        // Return success as response body is empty
+        return Outcome.Success("Successfully sent upgrade notice")
+    }
+  
     suspend fun fetchClean() = makeApiCall(
         call = { getClean() },
         errorMessage = "Failed to update the network"
