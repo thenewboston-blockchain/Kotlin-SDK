@@ -8,6 +8,7 @@ import com.thenewboston.data.dto.bankapi.bankdto.response.BankList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
+import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
@@ -23,13 +24,13 @@ import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
+import java.io.IOException
+import javax.xml.validation.Validator
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import java.io.IOException
-import javax.xml.validation.Validator
 
 @ExperimentalCoroutinesApi
 @KtorExperimentalAPI
@@ -362,7 +363,10 @@ class BankRepositoryTest {
 
     @Test
     fun `verify fetch validator confirmation services returns error outcome`() = runBlockingTest {
-        coEvery { bankDataSource.fetchValidatorConfirmationServices() } returns Outcome.Error("Failed to fetch validator confirmation services", IOException())
+        coEvery { bankDataSource.fetchValidatorConfirmationServices() } returns Outcome.Error(
+            "Failed to fetch validator confirmation services",
+            IOException()
+        )
 
         // when
         val result = repository.validatorConfirmationServices()
@@ -375,7 +379,11 @@ class BankRepositoryTest {
     @Test
     fun `verify send validator confirmation services returns success outcome`() = runBlockingTest {
         val request = Mocks.confirmationServiceRequest()
-        coEvery { bankDataSource.sendValidatorConfirmationServices(request) } returns Outcome.Success(Mocks.confirmationServiceWithMessage(request.message))
+        coEvery { bankDataSource.sendValidatorConfirmationServices(request) } returns Outcome.Success(
+            Mocks.confirmationServiceWithMessage(
+                request.message
+            )
+        )
 
         // when
         val result = repository.sendValidatorConfirmationServices(request)
@@ -423,5 +431,21 @@ class BankRepositoryTest {
         // then
         coVerify { bankDataSource.sendUpgradeNotice(request) }
         result should beInstanceOf<Outcome.Error>()
+    }
+
+    @Test
+    fun `verify clean result is success`() = runBlockingTest {
+        coEvery { bankDataSource.fetchClean() } returns Outcome.Success(Mocks.cleanSuccess())
+
+        repository.clean() should beInstanceOf<Outcome.Success<Clean>>()
+    }
+
+    @Test
+    fun `verify clean result is error`() = runBlockingTest {
+        coEvery {
+            bankDataSource.fetchClean()
+        } returns Outcome.Error("The network clean process is not successful", IOException())
+
+        repository.clean() should beInstanceOf<Outcome.Error>()
     }
 }

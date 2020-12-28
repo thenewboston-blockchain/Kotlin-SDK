@@ -9,6 +9,7 @@ import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.blockdto.request.BlockMessage
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
+import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.common.request.TrustMessage
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.common.response.Bank
@@ -348,6 +349,22 @@ object Mocks {
             Some.bankNodeIdentifier
         )
     )
+
+    fun cleanSuccess() = Clean(
+        Some.dateTime,
+        "cleaning",
+        "20.188.56.203",
+        80,
+        "http",
+    )
+
+    fun cleanFailure() = Clean(
+        Some.dateTime,
+        "",
+        "20.188.56.203",
+        80,
+        "",
+    )
 }
 
 // Sample values taken from docs, see https://thenewboston.com/bank-api/
@@ -355,7 +372,8 @@ object Some {
     const val id = "64426fc5-b3ac-42fb-b75b-d5ccfcdc6872"
     const val accountNumber = "0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb"
     const val nodeIdentifier = "d5356888dc9303e44ce52b1e06c3165a7759b9df1e6a6dfbd33ee1c3df1ab4d1"
-    const val signature = "f41788fe19690a67abe3336d4ca84565c090691efae0e5cdd8bf02e126842215080405013b8461f734d091e673e9edefca53a51773fda59bbebcef77ab8e2901"
+    const val signature =
+        "f41788fe19690a67abe3336d4ca84565c090691efae0e5cdd8bf02e126842215080405013b8461f734d091e673e9edefca53a51773fda59bbebcef77ab8e2901"
     const val trust = 42.0
     const val balanceKey = "ce51f0d9facaa7d3e69657429dd3f961ce70077a8efb53dcda508c7c0a19d2e3"
     val dateTime = LocalDateTime.parse("2020-11-19T19:57:31.799872")
