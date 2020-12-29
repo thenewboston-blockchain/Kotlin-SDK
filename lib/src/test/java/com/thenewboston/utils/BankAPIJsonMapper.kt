@@ -20,6 +20,7 @@ object BankAPIJsonMapper {
     const val VALIDATOR_CONFIRMATION_SERVICES_ENDPOINT = "validator_confirmation_services"
     const val UPGRADE_NOTICE_ENDPOINT = "upgrade_notice"
     const val CLEAN_ENDPOINT = "clean"
+    const val CRAWL_ENDPOINT = "crawl"
 
     fun mapBanksToJson(): String = Json.encodeToString(Mocks.banks())
 
@@ -85,6 +86,10 @@ object BankAPIJsonMapper {
     fun mapCleanToJson(): String = Json.encodeToString(Mocks.cleanSuccess())
 
     fun mapEmptyCleanToJson(): String = Json.encodeToString(Mocks.cleanFailure())
+
+    fun mapCrawlToJson(): String = Json.encodeToString(Mocks.crawlSuccess())
+
+    fun mapEmptyCrawlToJson(): String = Json.encodeToString(Mocks.crawlFailure())
 
     fun mapCleanToJson(clean: String): String = Json.encodeToString(Mocks.postClean(clean))
 

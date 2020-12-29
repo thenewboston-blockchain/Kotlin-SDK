@@ -167,6 +167,14 @@ class BankDataSourceTest {
                 check(response is Outcome.Success)
                 response.value.cleanStatus.shouldNotBeEmpty()
             }
+
+            @Test
+            fun `should fetch crawl successfully`() = runBlockingTest {
+                val response = bankDataSource.fetchCrawl()
+
+                check(response is Outcome.Success)
+                response.value.crawlStatus.shouldNotBeEmpty()
+            }
         }
 
         @Nested
@@ -414,6 +422,17 @@ class BankDataSourceTest {
                 response.cause?.message shouldBe "Failed to update the network"
             }
 
+            @Test
+            fun `should return error outcome for crawling process`() = runBlockingTest {
+                // when
+                val response = bankDataSource.fetchCrawl()
+
+                // then
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.cause?.message shouldBe "An error occurred while sending crawl request"
+            }
+
             @Nested
             @DisplayName("Given empty or invalid response body...")
             @TestInstance(Lifecycle.PER_CLASS)
@@ -510,6 +529,17 @@ class BankDataSourceTest {
                     check(response is Outcome.Error)
                     response.cause should beInstanceOf<IOException>()
                     response.message shouldBe "The network clean process is not successful"
+                }
+
+                @Test
+                fun `should return error outcome for empty crawling process`() = runBlockingTest {
+                    // when
+                    val response = bankDataSource.fetchCrawl()
+
+                    // then
+                    check(response is Outcome.Error)
+                    response.cause should beInstanceOf<IOException>()
+                    response.message shouldBe "The network crawling process is not successful"
                 }
             }
         }

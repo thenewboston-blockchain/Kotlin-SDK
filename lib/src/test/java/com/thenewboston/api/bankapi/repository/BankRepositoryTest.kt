@@ -11,6 +11,7 @@ import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
+import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServices
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
@@ -447,6 +448,22 @@ class BankRepositoryTest {
         } returns Outcome.Error("The network clean process is not successful", IOException())
 
         repository.clean() should beInstanceOf<Outcome.Error>()
+    }
+
+    @Test
+    fun `verify crawl result is success`() = runBlockingTest {
+        coEvery { bankDataSource.fetchCrawl() } returns Outcome.Success(Mocks.crawlSuccess())
+
+        repository.crawl() should beInstanceOf<Outcome.Success<Crawl>>()
+    }
+
+    @Test
+    fun `verify crawl result is error`() = runBlockingTest {
+        coEvery {
+            bankDataSource.fetchCrawl()
+        } returns Outcome.Error("The network crawling process is not successful", IOException())
+
+        repository.crawl() should beInstanceOf<Outcome.Error>()
     }
 
     @Test

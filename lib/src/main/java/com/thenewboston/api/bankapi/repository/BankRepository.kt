@@ -14,6 +14,7 @@ import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
+import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.PostInvalidBlockRequest
@@ -62,6 +63,8 @@ class BankRepository @Inject constructor(private val dataSource: BankDataSource)
     suspend fun sendUpgradeNotice(request: UpgradeNoticeRequest) = dataSource.sendUpgradeNotice(request)
 
     suspend fun clean(): Outcome<Clean> = dataSource.fetchClean()
+
+    suspend fun crawl(): Outcome<Crawl> = dataSource.fetchCrawl()
 
     suspend fun sendClean(request: PostCleanRequest): Outcome<Clean> = dataSource.sendClean(request)
 }
