@@ -207,6 +207,7 @@ class BankDataSourceTest {
                 val response = bankDataSource.sendUpgradeNotice(request)
 
                 check(response is Outcome.Success)
+                response.value shouldNot beEmpty()
                 response.value shouldBe "Successfully sent upgrade notice"
             }
 
@@ -231,6 +232,7 @@ class BankDataSourceTest {
                 val response = bankDataSource.sendConnectionRequests(request)
 
                 check(response is Outcome.Success)
+                response.value shouldNot beEmpty()
                 response.value shouldBe "Successfully sent connection requests"
             }
         }

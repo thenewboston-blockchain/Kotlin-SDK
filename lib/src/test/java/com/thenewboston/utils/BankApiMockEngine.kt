@@ -177,7 +177,7 @@ class BankApiMockEngine {
 
     private inline fun <reified T, R> HttpRequestData.extract(extractor: (T) -> R): R {
         val requestBodyString = (this.body as TextContent).text
-        return extractor(Json.decodeFromString<T>(requestBodyString))
+        return extractor(Json.decodeFromString(requestBodyString))
     }
 
     private fun patchBankEngine(
