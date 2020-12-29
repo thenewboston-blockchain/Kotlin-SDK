@@ -10,6 +10,7 @@ import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
+import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.common.response.Bank
@@ -333,6 +334,27 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
                 "The network crawling process is not successful",
                 IOException()
             )
+            else -> Outcome.Success(response)
+        }
+    }
+
+    suspend fun sendClean(request: PostCleanRequest): Outcome<Clean> = makeApiCall(
+        call = { doSendClean(request) },
+        errorMessage = "An error occurred while sending the clean request"
+    )
+
+    private suspend fun doSendClean(request: PostCleanRequest): Outcome<Clean> {
+        val response = networkClient.defaultClient.post<Clean> {
+            url(BankAPIEndpoints.CLEAN_ENDPOINT)
+            body = request
+        }
+
+        return when {
+            response.cleanStatus.isEmpty() -> {
+                val clean = request.data.clean
+                val message = "Received invalid response when sending block with clean: $clean"
+                Outcome.Error(message, IOException())
+            }
             else -> Outcome.Success(response)
         }
     }

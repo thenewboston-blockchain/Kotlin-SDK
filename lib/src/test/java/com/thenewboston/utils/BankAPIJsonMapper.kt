@@ -90,4 +90,8 @@ object BankAPIJsonMapper {
     fun mapCrawlToJson(): String = Json.encodeToString(Mocks.crawlSuccess())
 
     fun mapEmptyCrawlToJson(): String = Json.encodeToString(Mocks.crawlFailure())
+
+    fun mapCleanToJson(clean: String): String = Json.encodeToString(Mocks.postClean(clean))
+
+    fun mapCleanResponseForPostRequest(): String = Json.encodeToString(Mocks.cleanFailure())
 }

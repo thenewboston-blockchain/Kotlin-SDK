@@ -9,6 +9,8 @@ import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.blockdto.request.BlockMessage
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
+import com.thenewboston.data.dto.bankapi.clean.request.Data
+import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.common.request.TrustMessage
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
@@ -362,7 +364,7 @@ object Mocks {
     fun cleanFailure() = Clean(
         Some.dateTime,
         "",
-        "20.188.56.203",
+        "",
         80,
         "",
     )
@@ -381,6 +383,19 @@ object Mocks {
         "20.188.56.203",
         80,
         "",
+    )
+
+    fun postClean(clean: String = "cleaning") = Clean(
+        cleanLastCompleted = Some.dateTime,
+        cleanStatus = clean,
+        ipAddress = "20.188.56.203",
+        port = 80,
+        protocol = "http"
+    )
+
+    fun postCleanRequest() = PostCleanRequest(
+        data = Data(clean = "start"),
+        signature = Some.signature
     )
 }
 
