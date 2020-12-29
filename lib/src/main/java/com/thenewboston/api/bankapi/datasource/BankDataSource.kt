@@ -326,7 +326,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
     )
 
     private suspend fun getCrawl(): Outcome<Crawl> {
-        val response = networkClient.defaultClient.get<Crawl>(BankAPIEndpoints.CLEAN_ENDPOINT)
+        val response = networkClient.defaultClient.get<Crawl>(BankAPIEndpoints.CRAWL_ENDPOINT)
 
         return when {
             response.crawlStatus.isEmpty() -> Outcome.Error(

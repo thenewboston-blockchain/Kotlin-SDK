@@ -14,6 +14,7 @@ import com.thenewboston.data.dto.bankapi.common.request.TrustMessage
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
+import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.*
@@ -359,6 +360,22 @@ object Mocks {
     )
 
     fun cleanFailure() = Clean(
+        Some.dateTime,
+        "",
+        "20.188.56.203",
+        80,
+        "",
+    )
+
+    fun crawlSuccess() = Crawl(
+        Some.dateTime,
+        "crawling",
+        "20.188.56.203",
+        80,
+        "http",
+    )
+
+    fun crawlFailure() = Crawl(
         Some.dateTime,
         "",
         "20.188.56.203",

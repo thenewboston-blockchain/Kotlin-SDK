@@ -5,6 +5,7 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+@Serializable
 data class Crawl(
     @Serializable(with = DateSerializer::class)
     @SerialName("crawl_last_completed")
