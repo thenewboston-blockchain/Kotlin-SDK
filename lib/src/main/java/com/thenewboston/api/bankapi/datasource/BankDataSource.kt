@@ -326,7 +326,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
     )
 
     private suspend fun doSendClean(request: PostCleanRequest): Outcome<Clean> {
-        val response = networkClient.defaultClient.patch<Clean> {
+        val response = networkClient.defaultClient.post<Clean> {
             url(BankAPIEndpoints.CLEAN_ENDPOINT)
             body = request
         }

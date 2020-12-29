@@ -133,6 +133,12 @@ class BankApiMockEngine {
                         val invalidContent = ""
                         sendResponse(content, errorContent, invalidContent, sendOnlyErrorResponses, sendInvalidResponses)
                     }
+                    request.url.encodedPath.startsWith(BankAPIJsonMapper.CLEAN_ENDPOINT) -> {
+                        val clean = readCleanFromRequest(request)
+                        val content = BankAPIJsonMapper.mapCleanToJson(clean)
+                        val invalidContent = BankAPIJsonMapper.mapCleanResponseForPostRequest()
+                        sendResponse(content, errorContent, invalidContent, sendOnlyErrorResponses, sendInvalidResponses)
+                    }
                     else -> {
                         error("Unhandled ${request.url.encodedPath}")
                     }
@@ -222,16 +228,6 @@ class BankApiMockEngine {
                         val balanceKey = readBalanceKeyFromRequest(request)
                         val content = BankAPIJsonMapper.mapBlockToJson(balanceKey)
                         val invalidContent = BankAPIJsonMapper.mapBlockResponseForBlockRequest()
-                        when {
-                            enableErrorResponse -> respond(errorContent, InternalServerError, responseHeaders)
-                            sendInvalidResponses -> respond(invalidContent, Accepted, responseHeaders)
-                            else -> respond(content, Accepted, responseHeaders)
-                        }
-                    }
-                    request.url.encodedPath.startsWith(BankAPIJsonMapper.CLEAN_ENDPOINT) -> {
-                        val clean = readCleanFromRequest(request)
-                        val content = BankAPIJsonMapper.mapCleanToJson(clean)
-                        val invalidContent = BankAPIJsonMapper.mapCleanResponseForPostRequest()
                         when {
                             enableErrorResponse -> respond(errorContent, InternalServerError, responseHeaders)
                             sendInvalidResponses -> respond(invalidContent, Accepted, responseHeaders)
