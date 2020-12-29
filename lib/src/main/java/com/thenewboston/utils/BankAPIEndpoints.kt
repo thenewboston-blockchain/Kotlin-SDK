@@ -11,4 +11,5 @@ object BankAPIEndpoints {
     const val VALIDATOR_CONFIRMATION_SERVICES_ENDPOINT = "/validator_confirmation_services"
     const val UPGRADE_NOTICE_ENDPOINT = "/upgrade_notice"
     const val CLEAN_ENDPOINT = "/clean"
+    const val CRAWL_ENDPOINT = "/crawl"
 }

@@ -91,6 +91,11 @@ class BankApiMockEngine {
                             val emptyContent = BankAPIJsonMapper.mapEmptyCleanToJson()
                             sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
                         }
+                        BankAPIJsonMapper.CRAWL_ENDPOINT -> {
+                            val content = BankAPIJsonMapper.mapCrawlToJson()
+                            val emptyContent = BankAPIJsonMapper.mapEmptyCrawlToJson()
+                            sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
+                        }
                         else -> {
                             error("Unhandled ${request.url.encodedPath}")
                         }

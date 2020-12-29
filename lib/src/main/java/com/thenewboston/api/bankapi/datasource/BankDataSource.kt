@@ -14,6 +14,7 @@ import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
+import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.PostInvalidBlockRequest
@@ -313,6 +314,23 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         return when {
             response.cleanStatus.isEmpty() -> Outcome.Error(
                 "The network clean process is not successful",
+                IOException()
+            )
+            else -> Outcome.Success(response)
+        }
+    }
+
+    suspend fun fetchCrawl() = makeApiCall(
+        call = { getCrawl() },
+        errorMessage = "An error occurred while sending crawl request"
+    )
+
+    private suspend fun getCrawl(): Outcome<Crawl> {
+        val response = networkClient.defaultClient.get<Crawl>(BankAPIEndpoints.CRAWL_ENDPOINT)
+
+        return when {
+            response.crawlStatus.isEmpty() -> Outcome.Error(
+                "The network crawling process is not successful",
                 IOException()
             )
             else -> Outcome.Success(response)
