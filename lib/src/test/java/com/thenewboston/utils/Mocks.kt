@@ -364,7 +364,7 @@ object Mocks {
     fun cleanFailure() = Clean(
         Some.dateTime,
         "",
-        "20.188.56.203",
+        "",
         80,
         "",
     )
@@ -394,7 +394,7 @@ object Mocks {
     )
 
     fun postCleanRequest() = PostCleanRequest(
-        data = Data(clean = "cleaning"),
+        data = Data(clean = "start"),
         signature = Some.signature
     )
 }
