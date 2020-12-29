@@ -15,6 +15,7 @@ import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
+import com.thenewboston.data.dto.bankapi.connectionrequestsdto.ConnectionRequest
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
@@ -357,5 +358,19 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
             }
             else -> Outcome.Success(response)
         }
+    }
+
+    suspend fun sendConnectionRequests(request: ConnectionRequest) = makeApiCall(
+        call = { doSendConnectionRequests(request) },
+        errorMessage = "An error occurred while sending connection requests"
+    )
+
+    private suspend fun doSendConnectionRequests(request: ConnectionRequest): Outcome<String> {
+        networkClient.defaultClient.post<HttpResponse> {
+            url(BankAPIEndpoints.CONNECTION_REQUESTS_ENDPOINT)
+            body = request
+        }
+
+        return Outcome.Success("Successfully sent connection requests")
     }
 }

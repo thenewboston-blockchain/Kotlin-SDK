@@ -16,6 +16,8 @@ import com.thenewboston.data.dto.bankapi.common.request.TrustMessage
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
+import com.thenewboston.data.dto.bankapi.connectionrequestsdto.ConnectionRequest
+import com.thenewboston.data.dto.bankapi.connectionrequestsdto.ConnectionRequestMessage
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
@@ -397,6 +399,16 @@ object Mocks {
         data = Data(clean = "start"),
         signature = Some.signature
     )
+
+    fun connectionRequest() = ConnectionRequest(
+        ConnectionRequestMessage(
+            Some.ipAddress,
+            Some.port,
+            Some.protocol
+        ),
+        Some.nodeIdentifier,
+        Some.signature
+    )
 }
 
 // Sample values taken from docs, see https://thenewboston.com/bank-api/
@@ -412,4 +424,7 @@ object Some {
     const val startDate = "2020-11-29T07:54:16.233806Z"
     const val endDate = "2020-12-15T07:54:16.233806Z"
     const val bankNodeIdentifier = "d5356888dc9303e44ce52b1e06c3165a7759b9df1e6a6dfbd33ee1c3df1ab4d1"
+    const val ipAddress = "172.19.0.13"
+    const val port = 8080
+    const val protocol = "http"
 }
