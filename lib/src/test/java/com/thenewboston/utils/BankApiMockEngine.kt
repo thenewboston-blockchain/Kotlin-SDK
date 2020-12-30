@@ -139,16 +139,16 @@ class BankApiMockEngine {
                     sendResponse(content, errorContent, invalidContent, sendOnlyErrorResponses, sendInvalidResponses)
                 }
                 request.url.encodedPath.startsWith(BankAPIJsonMapper.CONNECTION_REQUESTS_ENDPOINT) -> {
-                        val content = "Successfully sent connection requests"
-                        val invalidContent = ""
-                        sendResponse(content, errorContent, invalidContent, sendOnlyErrorResponses, sendInvalidResponses)
-                    }
-                    else -> {
-                        error("Unhandled ${request.url.encodedPath}")
-                    }
+                    val content = "Successfully sent connection requests"
+                    val invalidContent = ""
+                    sendResponse(content, errorContent, invalidContent, sendOnlyErrorResponses, sendInvalidResponses)
+                }
+                else -> {
+                    error("Unhandled ${request.url.encodedPath}")
                 }
             }
         }
+    }
 
     private fun readBlockIdentifierFromRequest(request: HttpRequestData): String =
         request.extract<PostInvalidBlockRequest, String> { it.message.blockIdentifier }
