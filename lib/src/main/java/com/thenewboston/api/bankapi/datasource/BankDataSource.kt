@@ -73,7 +73,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         val result = networkClient.defaultClient.get<BankTransactionList>(endpoint)
 
         return when {
-            result.bankTransactions.isNullOrEmpty() ->
+            result.bankTransactions.isEmpty() ->
                 Outcome.Error("Error bank transactions", IOException())
             else -> Outcome.Success(result)
         }
@@ -89,7 +89,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         val validators = networkClient.defaultClient.get<ValidatorList>(endpoint)
 
         return when {
-            validators.results.isNullOrEmpty() -> Outcome.Error(ErrorMessages.EMPTY_LIST_MESSAGE, IOException())
+            validators.results.isEmpty() -> Outcome.Error(ErrorMessages.EMPTY_LIST_MESSAGE, IOException())
             else -> Outcome.Success(validators)
         }
     }
