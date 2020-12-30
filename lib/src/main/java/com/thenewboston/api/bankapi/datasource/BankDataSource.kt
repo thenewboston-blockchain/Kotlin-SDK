@@ -47,7 +47,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         val result = networkClient.defaultClient.get<BankList>(BankAPIEndpoints.BANKS_ENDPOINT)
 
         return when {
-            result.banks.isNullOrEmpty() -> Outcome.Error(ErrorMessages.EMPTY_LIST_MESSAGE, IOException())
+            result.banks.isEmpty() -> Outcome.Error(ErrorMessages.EMPTY_LIST_MESSAGE, IOException())
             else -> Outcome.Success(result)
         }
     }
@@ -117,7 +117,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         val accounts = networkClient.defaultClient.get<AccountList>(urlString)
 
         return when {
-            accounts.results.isNullOrEmpty() -> Outcome.Error(
+            accounts.results.isEmpty() -> Outcome.Error(
                 ErrorMessages.EMPTY_LIST_MESSAGE,
                 IOException()
             )
@@ -134,7 +134,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         val response = networkClient.defaultClient.get<BlockList>(BankAPIEndpoints.BLOCKS_ENDPOINT)
 
         return when {
-            response.blocks.isNullOrEmpty() -> Outcome.Error(
+            response.blocks.isEmpty() -> Outcome.Error(
                 ErrorMessages.EMPTY_LIST_MESSAGE,
                 IOException()
             )
@@ -200,7 +200,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
             .get<InvalidBlockList>(BankAPIEndpoints.INVALID_BLOCKS_ENDPOINT)
 
         return when {
-            invalidBlocks.results.isNullOrEmpty() -> Outcome.Error(
+            invalidBlocks.results.isEmpty() -> Outcome.Error(
                 "No invalid blocks are available at this time",
                 IOException()
             )
@@ -260,7 +260,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         val response = networkClient.defaultClient.get<ConfirmationServicesList>(endpoint)
 
         return when {
-            response.services.isNullOrEmpty() -> {
+            response.services.isEmpty() -> {
                 val message = ErrorMessages.EMPTY_LIST_MESSAGE
                 Outcome.Error(message, IOException())
             }
