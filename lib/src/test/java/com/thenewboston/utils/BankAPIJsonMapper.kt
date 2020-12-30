@@ -21,6 +21,7 @@ object BankAPIJsonMapper {
     const val UPGRADE_NOTICE_ENDPOINT = "upgrade_notice"
     const val CLEAN_ENDPOINT = "clean"
     const val CRAWL_ENDPOINT = "crawl"
+    const val CONNECTION_REQUESTS_ENDPOINT = "connection_requests"
 
     fun mapBanksToJson(): String = Json.encodeToString(Mocks.banks())
 

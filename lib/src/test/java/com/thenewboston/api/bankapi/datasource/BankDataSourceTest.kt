@@ -207,6 +207,7 @@ class BankDataSourceTest {
                 val response = bankDataSource.sendUpgradeNotice(request)
 
                 check(response is Outcome.Success)
+                response.value shouldNot beEmpty()
                 response.value shouldBe "Successfully sent upgrade notice"
             }
 
@@ -222,6 +223,17 @@ class BankDataSourceTest {
                 check(response is Outcome.Success)
                 response.value.cleanStatus shouldNot beEmpty()
                 response.value.cleanStatus shouldBe request.data.clean
+            }
+
+            @Test
+            fun `should send connection requests successfully`() = runBlockingTest {
+                val request = Mocks.connectionRequest()
+
+                val response = bankDataSource.sendConnectionRequests(request)
+
+                check(response is Outcome.Success)
+                response.value shouldNot beEmpty()
+                response.value shouldBe "Successfully sent connection requests"
             }
         }
 
@@ -601,6 +613,20 @@ class BankDataSourceTest {
                         response.cause should beInstanceOf<IOException>()
                         response.cause?.message shouldBe "An error occurred while sending the clean request"
                     }
+                }
+
+                @Test
+                fun `should return error outcome for sending connection requests`() = runBlockingTest {
+                    // given
+                    val request = Mocks.connectionRequest()
+
+                    // when
+                    val response = bankDataSource.sendConnectionRequests(request)
+
+                    // then
+                    check(response is Outcome.Error)
+                    response.cause should beInstanceOf<IOException>()
+                    response.cause?.message shouldBe "An error occurred while sending connection requests"
                 }
             }
 

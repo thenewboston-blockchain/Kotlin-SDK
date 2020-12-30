@@ -25,13 +25,13 @@ import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
-import java.io.IOException
-import javax.xml.validation.Validator
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import java.io.IOException
+import javax.xml.validation.Validator
 
 @ExperimentalCoroutinesApi
 @KtorExperimentalAPI
@@ -435,14 +435,14 @@ class BankRepositoryTest {
     }
 
     @Test
-    fun `verify clean result is success`() = runBlockingTest {
+    fun `verify clean result returns success outcome`() = runBlockingTest {
         coEvery { bankDataSource.fetchClean() } returns Outcome.Success(Mocks.cleanSuccess())
 
         repository.clean() should beInstanceOf<Outcome.Success<Clean>>()
     }
 
     @Test
-    fun `verify clean result is error`() = runBlockingTest {
+    fun `verify clean result returns error outcome`() = runBlockingTest {
         coEvery {
             bankDataSource.fetchClean()
         } returns Outcome.Error("The network clean process is not successful", IOException())
@@ -451,17 +451,16 @@ class BankRepositoryTest {
     }
 
     @Test
-    fun `verify crawl result is success`() = runBlockingTest {
+    fun `verify crawl result returns success outcome`() = runBlockingTest {
         coEvery { bankDataSource.fetchCrawl() } returns Outcome.Success(Mocks.crawlSuccess())
 
         repository.crawl() should beInstanceOf<Outcome.Success<Crawl>>()
     }
 
     @Test
-    fun `verify crawl result is error`() = runBlockingTest {
-        coEvery {
-            bankDataSource.fetchCrawl()
-        } returns Outcome.Error("The network crawling process is not successful", IOException())
+    fun `verify crawl result returns error outcome`() = runBlockingTest {
+        val message = "The network crawling process is not successful"
+        coEvery { bankDataSource.fetchCrawl() } returns Outcome.Error(message, IOException())
 
         repository.crawl() should beInstanceOf<Outcome.Error>()
     }
@@ -492,5 +491,22 @@ class BankRepositoryTest {
         // then
         coVerify { bankDataSource.sendClean(request) }
         result should beInstanceOf<Outcome.Error>()
+    }
+
+    @Test
+    fun `verify connection requests returns success outcome`() = runBlockingTest {
+        val request = Mocks.connectionRequest()
+        coEvery { bankDataSource.sendConnectionRequests(request) } returns Outcome.Success("Successfully sent connection requests")
+
+        repository.sendConnectionRequests(request) should beInstanceOf<Outcome.Success<String>>()
+    }
+
+    @Test
+    fun `verify connection requests returns error outcome`() = runBlockingTest {
+        val request = Mocks.connectionRequest()
+        val message = "Error while sending connection requests"
+        coEvery { bankDataSource.sendConnectionRequests(request) } returns Outcome.Error(message, IOException())
+
+        repository.sendConnectionRequests(request) should beInstanceOf<Outcome.Error>()
     }
 }

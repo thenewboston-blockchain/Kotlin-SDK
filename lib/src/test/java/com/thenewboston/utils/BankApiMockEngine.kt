@@ -144,6 +144,11 @@ class BankApiMockEngine {
                         val invalidContent = BankAPIJsonMapper.mapCleanResponseForPostRequest()
                         sendResponse(content, errorContent, invalidContent, sendOnlyErrorResponses, sendInvalidResponses)
                     }
+                    request.url.encodedPath.startsWith(BankAPIJsonMapper.CONNECTION_REQUESTS_ENDPOINT) -> {
+                        val content = "Successfully sent connection requests"
+                        val invalidContent = ""
+                        sendResponse(content, errorContent, invalidContent, sendOnlyErrorResponses, sendInvalidResponses)
+                    }
                     else -> {
                         error("Unhandled ${request.url.encodedPath}")
                     }
@@ -172,7 +177,7 @@ class BankApiMockEngine {
 
     private inline fun <reified T, R> HttpRequestData.extract(extractor: (T) -> R): R {
         val requestBodyString = (this.body as TextContent).text
-        return extractor(Json.decodeFromString<T>(requestBodyString))
+        return extractor(Json.decodeFromString(requestBodyString))
     }
 
     private fun patchBankEngine(
