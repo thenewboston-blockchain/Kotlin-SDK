@@ -10,7 +10,7 @@ import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
-import com.thenewboston.data.dto.bankapi.common.request.PostOrPatchRequest
+import com.thenewboston.data.dto.bankapi.common.request.PostRequest
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
@@ -201,12 +201,12 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         }
     }
 
-    suspend fun sendInvalidBlock(request: PostOrPatchRequest): Outcome<InvalidBlock> = makeApiCall(
+    suspend fun sendInvalidBlock(request: PostInvalidBlockRequest): Outcome<InvalidBlock> = makeApiCall(
         call = { doSendInvalidBlock(request) },
         errorMessage = "An error occurred while sending invalid block"
     )
 
-    private suspend fun doSendInvalidBlock(request: PostOrPatchRequest): Outcome<InvalidBlock> {
+    private suspend fun doSendInvalidBlock(request: PostInvalidBlockRequest): Outcome<InvalidBlock> {
         val response = networkClient.defaultClient.patch<InvalidBlock> {
             url(BankAPIEndpoints.INVALID_BLOCKS_ENDPOINT)
             body = request

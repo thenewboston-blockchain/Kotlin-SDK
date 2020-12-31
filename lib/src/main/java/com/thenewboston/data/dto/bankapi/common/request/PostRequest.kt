@@ -1,6 +1,5 @@
 package com.thenewboston.data.dto.bankapi.common.request
 
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -8,10 +7,11 @@ import com.thenewboston.data.dto.bankapi.invalidblockdto.request.InvalidBlockMes
 
 
 @Serializable
-data class PostOrPatchRequest(
+@SerialName("Request")
+data class PostRequest<T> (
 
-
-    val message: InvalidBlockMessage,
+    @SerialName("message")
+    val message: T,
 
     @SerialName("node_identifier")
     val nodeIdentifier: String,
@@ -19,3 +19,5 @@ data class PostOrPatchRequest(
     @SerialName("signature")
     val signature: String
 )
+
+typealias PatchRequest<T> = PostRequest<T>

@@ -9,7 +9,7 @@ import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.blockdto.request.BlockMessage
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
-import com.thenewboston.data.dto.bankapi.common.request.PostOrPatchRequest
+import com.thenewboston.data.dto.bankapi.common.request.PostRequest
 import com.thenewboston.data.dto.bankapi.common.request.TrustMessage
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.common.response.Bank
@@ -262,7 +262,7 @@ object Mocks {
         )
     }
 
-    fun postInvalidBlockRequest() = PostOrPatchRequest(
+    fun postInvalidBlockRequest() = PostInvalidBlockRequest(
         message = InvalidBlockMessage(
             block = InvalidBlockMessageBlock(
                 accountNumber = Some.accountNumber,

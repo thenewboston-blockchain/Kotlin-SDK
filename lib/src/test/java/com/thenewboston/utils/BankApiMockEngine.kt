@@ -1,7 +1,7 @@
 package com.thenewboston.utils
 
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
-import com.thenewboston.data.dto.bankapi.common.request.PostOrPatchRequest
+import com.thenewboston.data.dto.bankapi.common.request.PostRequest
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.PostInvalidBlockRequest
 import io.ktor.client.*
@@ -151,7 +151,7 @@ class BankApiMockEngine {
     }
 
     private fun readBlockIdentifierFromRequest(request: HttpRequestData): String =
-        request.extract<PostOrPatchRequest, String> { it.message.blockIdentifier }
+        request.extract<PostInvalidBlockRequest, String> { it.message.blockIdentifier }
 
     private fun readBalanceKeyFromRequest(request: HttpRequestData): String =
         request.extract<PostBlockRequest, String> { it.message.balanceKey }
