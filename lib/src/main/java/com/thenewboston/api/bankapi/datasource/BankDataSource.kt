@@ -22,6 +22,7 @@ import com.thenewboston.data.dto.bankapi.validatordto.Validator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import com.thenewboston.utils.BankAPIEndpoints
 import com.thenewboston.utils.ErrorMessages
+import com.thenewboston.utils.PaginationOptions
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.util.*
