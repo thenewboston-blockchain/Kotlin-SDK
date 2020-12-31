@@ -1,5 +1,6 @@
 package com.thenewboston.utils
 
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.Message
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -17,6 +18,10 @@ object BankAPIJsonMapper {
     const val BLOCKS_ENDPOINT = "blocks"
     const val INVALID_BLOCKS_ENDPOINT = "invalid_blocks"
     const val VALIDATOR_CONFIRMATION_SERVICES_ENDPOINT = "validator_confirmation_services"
+    const val UPGRADE_NOTICE_ENDPOINT = "upgrade_notice"
+    const val CLEAN_ENDPOINT = "clean"
+    const val CRAWL_ENDPOINT = "crawl"
+    const val CONNECTION_REQUESTS_ENDPOINT = "connection_requests"
 
     fun mapBanksToJson(): String = Json.encodeToString(Mocks.banks())
 
@@ -60,7 +65,8 @@ object BankAPIJsonMapper {
 
     fun mapEmptyInvalidBlocksToJson(): String = Json.encodeToString(Mocks.emptyInvalidBlocks())
 
-    fun mapInvalidBlockToJson(blockIdentifier: String): String = Json.encodeToString(Mocks.invalidBlock(blockIdentifier))
+    fun mapInvalidBlockToJson(blockIdentifier: String): String =
+        Json.encodeToString(Mocks.invalidBlock(blockIdentifier))
 
     fun mapInvalidResponseForInvalidBlocksRequest(): String = Json.encodeToString(Mocks.emptyInvalidBlock())
 
@@ -70,5 +76,23 @@ object BankAPIJsonMapper {
 
     fun mapValidatorConfirmationServicesToJson(): String = Json.encodeToString(Mocks.confirmationServicesList())
 
-    fun mapEmptyValidatorConfirmationServicesToJson(): String = Json.encodeToString(Mocks.emptyConfirmationServicesList())
+    fun mapValidatorConfirmationServiceToJson(message: Message): String =
+        Json.encodeToString(Mocks.confirmationServiceWithMessage(message))
+
+    fun mapEmptyValidatorConfirmationServicesToJson(): String =
+        Json.encodeToString(Mocks.emptyConfirmationServicesList())
+
+    fun mapEmptyValidatorConfirmationServiceToJson(): String = Json.encodeToString(Mocks.emptyConfirmationServices())
+
+    fun mapCleanToJson(): String = Json.encodeToString(Mocks.cleanSuccess())
+
+    fun mapEmptyCleanToJson(): String = Json.encodeToString(Mocks.cleanFailure())
+
+    fun mapCrawlToJson(): String = Json.encodeToString(Mocks.crawlSuccess())
+
+    fun mapEmptyCrawlToJson(): String = Json.encodeToString(Mocks.crawlFailure())
+
+    fun mapCleanToJson(clean: String): String = Json.encodeToString(Mocks.postClean(clean))
+
+    fun mapCleanResponseForPostRequest(): String = Json.encodeToString(Mocks.cleanFailure())
 }

@@ -8,10 +8,13 @@ import com.thenewboston.data.dto.bankapi.bankdto.response.BankList
 import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
+import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
+import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
-import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ValidatorConfirmationServicesList
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServices
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import com.thenewboston.utils.Mocks
 import com.thenewboston.utils.Some
@@ -356,12 +359,15 @@ class BankRepositoryTest {
 
         // then
         coVerify { bankDataSource.fetchValidatorConfirmationServices() }
-        result should beInstanceOf<Outcome.Success<ValidatorConfirmationServicesList>>()
+        result should beInstanceOf<Outcome.Success<ConfirmationServicesList>>()
     }
 
     @Test
     fun `verify fetch validator confirmation services returns error outcome`() = runBlockingTest {
-        coEvery { bankDataSource.fetchValidatorConfirmationServices() } returns Outcome.Error("Failed to fetch validator confirmation services", IOException())
+        coEvery { bankDataSource.fetchValidatorConfirmationServices() } returns Outcome.Error(
+            "Failed to fetch validator confirmation services",
+            IOException()
+        )
 
         // when
         val result = repository.validatorConfirmationServices()
@@ -369,5 +375,138 @@ class BankRepositoryTest {
         // then
         coVerify { bankDataSource.fetchValidatorConfirmationServices() }
         result should beInstanceOf<Outcome.Error>()
+    }
+
+    @Test
+    fun `verify send validator confirmation services returns success outcome`() = runBlockingTest {
+        val request = Mocks.confirmationServiceRequest()
+        coEvery { bankDataSource.sendValidatorConfirmationServices(request) } returns Outcome.Success(
+            Mocks.confirmationServiceWithMessage(
+                request.message
+            )
+        )
+
+        // when
+        val result = repository.sendValidatorConfirmationServices(request)
+
+        // then
+        coVerify { bankDataSource.sendValidatorConfirmationServices(request) }
+        result should beInstanceOf<Outcome.Success<ConfirmationServices>>()
+    }
+
+    @Test
+    fun `verify send validator confirmation services returns error outcome`() = runBlockingTest {
+        val request = Mocks.confirmationServiceRequest()
+        coEvery { bankDataSource.sendValidatorConfirmationServices(request) } returns Outcome.Error("An error occurred while sending validator confirmation services")
+
+        // when
+        val result = repository.sendValidatorConfirmationServices(request)
+
+        // then
+        coVerify { bankDataSource.sendValidatorConfirmationServices(request) }
+        result should beInstanceOf<Outcome.Error>()
+    }
+
+    @Test
+    fun `verify send upgrade notice returns success outcome`() = runBlockingTest {
+        val request = Mocks.upgradeNoticeRequest()
+        coEvery { bankDataSource.sendUpgradeNotice(request) } returns Outcome.Success("Successfully sent upgrade notice")
+
+        // when
+        val result = repository.sendUpgradeNotice(request)
+
+        // then
+        coVerify { bankDataSource.sendUpgradeNotice(request) }
+        result should beInstanceOf<Outcome.Success<String>>()
+    }
+
+    @Test
+    fun `verify send upgrade notice returns error outcome`() = runBlockingTest {
+        val request = Mocks.upgradeNoticeRequest()
+        val message = "Error occurred while sending upgrade notice"
+        coEvery { bankDataSource.sendUpgradeNotice(request) } returns Outcome.Error(message, IOException())
+
+        // when
+        val result = repository.sendUpgradeNotice(request)
+
+        // then
+        coVerify { bankDataSource.sendUpgradeNotice(request) }
+        result should beInstanceOf<Outcome.Error>()
+    }
+
+    @Test
+    fun `verify clean result returns success outcome`() = runBlockingTest {
+        coEvery { bankDataSource.fetchClean() } returns Outcome.Success(Mocks.cleanSuccess())
+
+        repository.clean() should beInstanceOf<Outcome.Success<Clean>>()
+    }
+
+    @Test
+    fun `verify clean result returns error outcome`() = runBlockingTest {
+        coEvery {
+            bankDataSource.fetchClean()
+        } returns Outcome.Error("The network clean process is not successful", IOException())
+
+        repository.clean() should beInstanceOf<Outcome.Error>()
+    }
+
+    @Test
+    fun `verify crawl result returns success outcome`() = runBlockingTest {
+        coEvery { bankDataSource.fetchCrawl() } returns Outcome.Success(Mocks.crawlSuccess())
+
+        repository.crawl() should beInstanceOf<Outcome.Success<Crawl>>()
+    }
+
+    @Test
+    fun `verify crawl result returns error outcome`() = runBlockingTest {
+        val message = "The network crawling process is not successful"
+        coEvery { bankDataSource.fetchCrawl() } returns Outcome.Error(message, IOException())
+
+        repository.crawl() should beInstanceOf<Outcome.Error>()
+    }
+
+    @Test
+    fun `verify send clean returns success outcome`() = runBlockingTest {
+        val response = Mocks.cleanSuccess()
+        coEvery { bankDataSource.sendClean(any()) } returns Outcome.Success(response)
+        val postRequest = Mocks.postCleanRequest()
+
+        // when
+        val result = repository.sendClean(postRequest)
+
+        // then
+        coVerify { bankDataSource.sendClean(postRequest) }
+        result should beInstanceOf<Outcome.Success<Clean>>()
+    }
+
+    @Test
+    fun `verify send clean returns error outcome`() = runBlockingTest {
+        val error = Outcome.Error("An error occurred while sending the clean request", IOException())
+        val request = Mocks.postCleanRequest()
+        coEvery { bankDataSource.sendClean(request) } returns error
+
+        // when
+        val result = repository.sendClean(request)
+
+        // then
+        coVerify { bankDataSource.sendClean(request) }
+        result should beInstanceOf<Outcome.Error>()
+    }
+
+    @Test
+    fun `verify connection requests returns success outcome`() = runBlockingTest {
+        val request = Mocks.connectionRequest()
+        coEvery { bankDataSource.sendConnectionRequests(request) } returns Outcome.Success("Successfully sent connection requests")
+
+        repository.sendConnectionRequests(request) should beInstanceOf<Outcome.Success<String>>()
+    }
+
+    @Test
+    fun `verify connection requests returns error outcome`() = runBlockingTest {
+        val request = Mocks.connectionRequest()
+        val message = "Error while sending connection requests"
+        coEvery { bankDataSource.sendConnectionRequests(request) } returns Outcome.Error(message, IOException())
+
+        repository.sendConnectionRequests(request) should beInstanceOf<Outcome.Error>()
     }
 }

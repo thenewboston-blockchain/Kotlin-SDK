@@ -2,33 +2,27 @@ package com.thenewboston.di.builder
 
 import com.thenewboston.api.bankapi.repository.BankRepository
 import com.thenewboston.common.http.NetworkClient
-import com.thenewboston.common.http.config.BankConfig
+import com.thenewboston.common.http.config.Config
 import dagger.Component
 import dagger.Module
 import dagger.Provides
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.HttpClientEngine
-import io.ktor.client.engine.cio.CIO
-import io.ktor.client.features.defaultRequest
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.features.json.serializer.KotlinxSerializer
-import io.ktor.client.request.host
-import io.ktor.client.request.port
-import io.ktor.http.ContentType
-import io.ktor.http.contentType
-import javax.inject.Scope
+import io.ktor.client.*
+import io.ktor.client.engine.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.features.*
+import io.ktor.client.features.json.*
+import io.ktor.client.features.json.serializer.*
+import io.ktor.client.request.*
+import io.ktor.http.*
 import kotlinx.serialization.json.Json
+import javax.inject.Scope
 
 @Retention(AnnotationRetention.RUNTIME)
 @Scope
 annotation class TNBScope
 
 @Module
-class TNBBankNetworkModule {
-
-    @TNBScope
-    @Provides
-    fun provideBankConfig(): BankConfig = BankConfig()
+class TNBBankNetworkModule(private val config: Config) {
 
     @TNBScope
     @Provides
@@ -51,13 +45,12 @@ class TNBBankNetworkModule {
     @Provides
     fun provideBankHttpClient(
         engine: HttpClientEngine,
-        bankConfig: BankConfig,
         json: Json
     ): HttpClient =
         HttpClient(engine) {
             defaultRequest {
-                this.host = bankConfig.ipAddress
-                this.port = bankConfig.port
+                this.host = config.ipAddress
+                this.port = config.port
                 contentType(ContentType.Application.Json)
             }
 

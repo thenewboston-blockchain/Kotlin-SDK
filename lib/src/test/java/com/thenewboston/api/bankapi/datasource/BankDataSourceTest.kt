@@ -2,7 +2,6 @@ package com.thenewboston.api.bankapi.datasource
 
 import com.thenewboston.common.http.NetworkClient
 import com.thenewboston.common.http.Outcome
-import com.thenewboston.common.http.config.Config
 import com.thenewboston.utils.BankApiMockEngine
 import com.thenewboston.utils.ErrorMessages
 import com.thenewboston.utils.Mocks
@@ -15,6 +14,7 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNot
 import io.kotest.matchers.string.beEmpty
 import io.kotest.matchers.string.contain
+import io.kotest.matchers.string.shouldNotBeEmpty
 import io.kotest.matchers.types.beInstanceOf
 import io.ktor.util.*
 import io.ktor.utils.io.errors.*
@@ -73,7 +73,7 @@ class BankDataSourceTest {
                 val response = bankDataSource.fetchBankDetails()
 
                 check(response is Outcome.Success)
-                Config.IP_ADDRESS should contain(response.value.ipAddress)
+                "143.110.137.54" should contain(response.value.ipAddress)
             }
 
             @Test
@@ -159,6 +159,22 @@ class BankDataSourceTest {
                 response.value.count shouldBeGreaterThan 0
                 response.value.services.shouldNotBeEmpty()
             }
+
+            @Test
+            fun `should fetch clean successfully`() = runBlockingTest {
+                val response = bankDataSource.fetchClean()
+
+                check(response is Outcome.Success)
+                response.value.cleanStatus.shouldNotBeEmpty()
+            }
+
+            @Test
+            fun `should fetch crawl successfully`() = runBlockingTest {
+                val response = bankDataSource.fetchCrawl()
+
+                check(response is Outcome.Success)
+                response.value.crawlStatus.shouldNotBeEmpty()
+            }
         }
 
         @Nested
@@ -172,31 +188,52 @@ class BankDataSourceTest {
             }
 
             @Test
-            fun `should return success with original invalid block identifier`() = runBlockingTest {
-                // given
-                val request = Mocks.postInvalidBlockRequest()
+            fun `should send validator confirmation successfully`() = runBlockingTest {
+                val request = Mocks.confirmationServiceRequest()
 
                 // when
-                val response = bankDataSource.sendInvalidBlock(request)
+                val response = bankDataSource.sendValidatorConfirmationServices(request)
 
                 // then
                 check(response is Outcome.Success)
-                response.value.id shouldNot beEmpty()
-                response.value.blockIdentifier shouldBe request.message.blockIdentifier
+                response.value.start shouldBe request.message.start.toString()
+                response.value.end shouldBe request.message.end.toString()
             }
 
             @Test
-            fun `should return success with balanceKey `() = runBlockingTest {
+            fun `should send upgrade notice successfully`() = runBlockingTest {
+                val request = Mocks.upgradeNoticeRequest()
+
+                val response = bankDataSource.sendUpgradeNotice(request)
+
+                check(response is Outcome.Success)
+                response.value shouldNot beEmpty()
+                response.value shouldBe "Successfully sent upgrade notice"
+            }
+
+            @Test
+            fun `should return success with clean status `() = runBlockingTest {
                 // given
-                val request = Mocks.postBlockRequest()
+                val request = Mocks.postCleanRequest()
 
                 // when
-                val response = bankDataSource.sendBlock(request)
+                val response = bankDataSource.sendClean(request)
 
                 // then
                 check(response is Outcome.Success)
-                response.value.id shouldNot beEmpty()
-                response.value.balanceKey shouldBe request.message.balanceKey
+                response.value.cleanStatus shouldNot beEmpty()
+                response.value.cleanStatus shouldBe request.data.clean
+            }
+
+            @Test
+            fun `should send connection requests successfully`() = runBlockingTest {
+                val request = Mocks.connectionRequest()
+
+                val response = bankDataSource.sendConnectionRequests(request)
+
+                check(response is Outcome.Success)
+                response.value shouldNot beEmpty()
+                response.value shouldBe "Successfully sent connection requests"
             }
         }
 
@@ -237,6 +274,34 @@ class BankDataSourceTest {
                 check(response is Outcome.Success)
                 response.value.accountNumber shouldBe accountNumber
                 response.value.trust shouldBe trustRequest.message.trust
+            }
+
+            @Test
+            fun `should return success with original invalid block identifier`() = runBlockingTest {
+                // given
+                val request = Mocks.postInvalidBlockRequest()
+
+                // when
+                val response = bankDataSource.sendInvalidBlock(request)
+
+                // then
+                check(response is Outcome.Success)
+                response.value.id shouldNot beEmpty()
+                response.value.blockIdentifier shouldBe request.message.blockIdentifier
+            }
+
+            @Test
+            fun `should return success with balanceKey `() = runBlockingTest {
+                // given
+                val request = Mocks.postBlockRequest()
+
+                // when
+                val response = bankDataSource.sendBlock(request)
+
+                // then
+                check(response is Outcome.Success)
+                response.value.id shouldNot beEmpty()
+                response.value.balanceKey shouldBe request.message.balanceKey
             }
         }
     }
@@ -358,6 +423,28 @@ class BankDataSourceTest {
                 response.cause?.message shouldBe "An error occurred while fetching validator confirmation services"
             }
 
+            @Test
+            fun `should return error outcome for clean process`() = runBlockingTest {
+                // when
+                val response = bankDataSource.fetchClean()
+
+                // then
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.cause?.message shouldBe "Failed to update the network"
+            }
+
+            @Test
+            fun `should return error outcome for crawling process`() = runBlockingTest {
+                // when
+                val response = bankDataSource.fetchCrawl()
+
+                // then
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.cause?.message shouldBe "An error occurred while sending crawl request"
+            }
+
             @Nested
             @DisplayName("Given empty or invalid response body...")
             @TestInstance(Lifecycle.PER_CLASS)
@@ -444,6 +531,28 @@ class BankDataSourceTest {
                     response.cause should beInstanceOf<IOException>()
                     response.message shouldBe "Error bank transactions"
                 }
+
+                @Test
+                fun `should return error outcome for empty clean process`() = runBlockingTest {
+                    // when
+                    val response = bankDataSource.fetchClean()
+
+                    // then
+                    check(response is Outcome.Error)
+                    response.cause should beInstanceOf<IOException>()
+                    response.message shouldBe "The network clean process is not successful"
+                }
+
+                @Test
+                fun `should return error outcome for empty crawling process`() = runBlockingTest {
+                    // when
+                    val response = bankDataSource.fetchCrawl()
+
+                    // then
+                    check(response is Outcome.Error)
+                    response.cause should beInstanceOf<IOException>()
+                    response.message shouldBe "The network crawling process is not successful"
+                }
             }
         }
 
@@ -463,35 +572,61 @@ class BankDataSourceTest {
                 }
 
                 @Test
-                fun `should return error outcome when sending invalid block`() {
+                fun `should return error outcome for sending validator confirmation services`() = runBlockingTest {
+                    // given
+                    val request = Mocks.confirmationServiceRequest()
+
+                    // when
+                    val response = bankDataSource.sendValidatorConfirmationServices(request)
+
+                    // then
+                    check(response is Outcome.Error)
+                    response.cause should beInstanceOf<IOException>()
+                    response.cause?.message shouldBe "An error occurred while sending validator confirmation services"
+                }
+
+                @Test
+                fun `should return error outcome for sending upgrade notice`() = runBlockingTest {
+                    // given
+                    val request = Mocks.upgradeNoticeRequest()
+
+                    // when
+                    val response = bankDataSource.sendUpgradeNotice(request)
+
+                    // then
+                    check(response is Outcome.Error)
+                    response.cause should beInstanceOf<IOException>()
+                    response.cause?.message shouldBe "An error occurred while sending upgrade notice"
+                }
+
+                @Test
+                fun `should return error outcome when sending clean`() {
                     runBlockingTest {
                         // given
-                        val request = Mocks.postInvalidBlockRequest()
+                        val request = Mocks.postCleanRequest()
 
                         // when
-                        val response = bankDataSource.sendInvalidBlock(request)
+                        val response = bankDataSource.sendClean(request)
 
                         // then
                         check(response is Outcome.Error)
                         response.cause should beInstanceOf<IOException>()
-                        response.cause?.message shouldBe "An error occurred while sending invalid block"
+                        response.cause?.message shouldBe "An error occurred while sending the clean request"
                     }
                 }
 
                 @Test
-                fun `should return error outcome when sending block`() {
-                    runBlockingTest {
-                        // given
-                        val request = Mocks.postBlockRequest()
+                fun `should return error outcome for sending connection requests`() = runBlockingTest {
+                    // given
+                    val request = Mocks.connectionRequest()
 
-                        // when
-                        val response = bankDataSource.sendBlock(request)
+                    // when
+                    val response = bankDataSource.sendConnectionRequests(request)
 
-                        // then
-                        check(response is Outcome.Error)
-                        response.cause should beInstanceOf<IOException>()
-                        response.cause?.message shouldBe "An error occurred while sending the block"
-                    }
+                    // then
+                    check(response is Outcome.Error)
+                    response.cause should beInstanceOf<IOException>()
+                    response.cause?.message shouldBe "An error occurred while sending connection requests"
                 }
             }
 
@@ -506,32 +641,37 @@ class BankDataSourceTest {
                 }
 
                 @Test
-                fun `should return error outcome when receiving invalid response`() = runBlockingTest {
-                    // given
-                    val request = Mocks.postInvalidBlockRequest()
+                fun `should return error outcome for sending invalid request for confirmation services`() =
+                    runBlockingTest {
+                        // given
+                        val request = Mocks.confirmationServiceRequest()
 
-                    // when
-                    val response = bankDataSource.sendInvalidBlock(request)
+                        // when
+                        val response = bankDataSource.sendValidatorConfirmationServices(request)
 
-                    // then
-                    check(response is Outcome.Error)
-                    response.cause should beInstanceOf<IOException>()
-                    response.message shouldBe "Received invalid response when sending invalid block with identifier ${request.message.blockIdentifier}"
-                }
+                        // then
+                        check(response is Outcome.Error)
+                        response.cause should beInstanceOf<IOException>()
+                        val nodeIdentifier = request.nodeIdentifier
+                        val message =
+                            "Received invalid response sending confirmation services with node identifier: $nodeIdentifier"
+                        response.message shouldBe message
+                    }
 
                 @Test
-                fun `should return error outcome when receiving invalid response for sending block`() = runBlockingTest {
-                    // given
-                    val request = Mocks.postBlockRequest()
+                fun `should return error outcome when receiving invalid response for sending clean`() =
+                    runBlockingTest {
+                        // given
+                        val request = Mocks.postCleanRequest()
 
-                    // when
-                    val response = bankDataSource.sendBlock(request)
+                        // when
+                        val response = bankDataSource.sendClean(request)
 
-                    // then
-                    check(response is Outcome.Error)
-                    response.cause should beInstanceOf<IOException>()
-                    response.message shouldBe "Received invalid response when sending block with balance key: ${request.message.balanceKey}"
-                }
+                        // then
+                        check(response is Outcome.Error)
+                        response.cause should beInstanceOf<IOException>()
+                        response.message shouldBe "Received invalid response when sending block with clean: ${request.data.clean}"
+                    }
             }
         }
 
@@ -582,6 +722,38 @@ class BankDataSourceTest {
                         response.cause?.message shouldBe "Could not update trust level of given account"
                     }
                 }
+
+                @Test
+                fun `should return error outcome when sending invalid block`() {
+                    runBlockingTest {
+                        // given
+                        val request = Mocks.postInvalidBlockRequest()
+
+                        // when
+                        val response = bankDataSource.sendInvalidBlock(request)
+
+                        // then
+                        check(response is Outcome.Error)
+                        response.cause should beInstanceOf<IOException>()
+                        response.cause?.message shouldBe "An error occurred while sending invalid block"
+                    }
+                }
+
+                @Test
+                fun `should return error outcome when sending block`() {
+                    runBlockingTest {
+                        // given
+                        val request = Mocks.postBlockRequest()
+
+                        // when
+                        val response = bankDataSource.sendBlock(request)
+
+                        // then
+                        check(response is Outcome.Error)
+                        response.cause should beInstanceOf<IOException>()
+                        response.cause?.message shouldBe "An error occurred while sending the block"
+                    }
+                }
             }
 
             @Nested
@@ -624,6 +796,35 @@ class BankDataSourceTest {
                         check(response is Outcome.Error)
                         response.cause should beInstanceOf<IOException>()
                         response.message shouldBe "Received unexpected response when updating trust level of account $accountNumber"
+                    }
+
+                @Test
+                fun `should return error outcome when receiving invalid response`() = runBlockingTest {
+                    // given
+                    val request = Mocks.postInvalidBlockRequest()
+
+                    // when
+                    val response = bankDataSource.sendInvalidBlock(request)
+
+                    // then
+                    check(response is Outcome.Error)
+                    response.cause should beInstanceOf<IOException>()
+                    response.message shouldBe "Received invalid response when sending invalid block with identifier ${request.message.blockIdentifier}"
+                }
+
+                @Test
+                fun `should return error outcome when receiving invalid response for sending block`() =
+                    runBlockingTest {
+                        // given
+                        val request = Mocks.postBlockRequest()
+
+                        // when
+                        val response = bankDataSource.sendBlock(request)
+
+                        // then
+                        check(response is Outcome.Error)
+                        response.cause should beInstanceOf<IOException>()
+                        response.message shouldBe "Received invalid response when sending block with balance key: ${request.message.balanceKey}"
                     }
             }
         }

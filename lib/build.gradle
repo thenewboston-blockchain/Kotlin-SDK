@@ -34,7 +34,7 @@ buildscript {
 
 // Dependency Versions here
 ext {
-  ext.ktor_version = '1.4.0'
+  ext.ktor_version = '1.5.0'
   ext.mockk_version = '1.10.0'
   ext.kserialization_version = "1.0.0"
   ext.kdatetime_version = "0.1.0"

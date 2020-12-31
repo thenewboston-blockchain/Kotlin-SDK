@@ -10,13 +10,19 @@ import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
 import com.thenewboston.data.dto.bankapi.common.request.PostRequest
+import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
+import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
+import com.thenewboston.data.dto.bankapi.connectionrequestsdto.ConnectionRequest
+import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.PostInvalidBlockRequest
-import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ValidatorConfirmationServicesList
+import com.thenewboston.data.dto.bankapi.upgradenoticedto.UpgradeNoticeRequest
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import io.ktor.util.*
 import javax.inject.Inject
@@ -50,6 +56,19 @@ class BankRepository @Inject constructor(private val dataSource: BankDataSource)
 
     suspend fun sendBlock(request: PostBlockRequest): Outcome<Block> = dataSource.sendBlock(request)
 
-    suspend fun validatorConfirmationServices(): Outcome<ValidatorConfirmationServicesList> =
+    suspend fun validatorConfirmationServices(): Outcome<ConfirmationServicesList> =
         dataSource.fetchValidatorConfirmationServices()
+
+    suspend fun sendValidatorConfirmationServices(request: PostConfirmationServicesRequest) =
+        dataSource.sendValidatorConfirmationServices(request)
+
+    suspend fun sendUpgradeNotice(request: UpgradeNoticeRequest) = dataSource.sendUpgradeNotice(request)
+
+    suspend fun clean(): Outcome<Clean> = dataSource.fetchClean()
+
+    suspend fun crawl(): Outcome<Crawl> = dataSource.fetchCrawl()
+
+    suspend fun sendClean(request: PostCleanRequest): Outcome<Clean> = dataSource.sendClean(request)
+
+    suspend fun sendConnectionRequests(request: ConnectionRequest) = dataSource.sendConnectionRequests(request)
 }

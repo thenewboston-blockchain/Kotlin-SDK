@@ -9,16 +9,29 @@ import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.blockdto.request.BlockMessage
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
+<<<<<<< HEAD
 import com.thenewboston.data.dto.bankapi.common.request.PostRequest
+=======
+import com.thenewboston.data.dto.bankapi.clean.request.Data
+import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
+import com.thenewboston.data.dto.bankapi.clean.response.Clean
+>>>>>>> 94c47e11e019abbbe4296bdd29c339767d6d8fbd
 import com.thenewboston.data.dto.bankapi.common.request.TrustMessage
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
+import com.thenewboston.data.dto.bankapi.connectionrequestsdto.ConnectionRequest
+import com.thenewboston.data.dto.bankapi.connectionrequestsdto.ConnectionRequestMessage
+import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.*
-import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ValidatorConfirmationServices
-import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ValidatorConfirmationServicesList
+import com.thenewboston.data.dto.bankapi.upgradenoticedto.UpgradeNoticeMessage
+import com.thenewboston.data.dto.bankapi.upgradenoticedto.UpgradeNoticeRequest
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServices
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.Message
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
 import com.thenewboston.data.dto.bankapi.validatordto.Validator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import kotlinx.datetime.LocalDateTime
@@ -288,26 +301,116 @@ object Mocks {
         signature = Some.signature
     )
 
-    fun confirmationServicesList() = ValidatorConfirmationServicesList(
+    fun confirmationServicesList() = ConfirmationServicesList(
         1,
         null,
         null,
         listOf(confirmationServices())
     )
 
-    fun emptyConfirmationServicesList() = ValidatorConfirmationServicesList(
+    fun emptyConfirmationServicesList() = ConfirmationServicesList(
         0,
         null,
         null,
         emptyList()
     )
 
-    private fun confirmationServices() = ValidatorConfirmationServices(
+    private fun confirmationServices() = ConfirmationServices(
         Some.id,
         Some.dateTime.toString(),
         Some.dateTime.toString(),
         Some.endDate,
         Some.startDate,
+        Some.signature
+    )
+
+    fun emptyConfirmationServices() = ConfirmationServices(
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    )
+
+    fun confirmationServiceWithMessage(message: Message) = ConfirmationServices(
+        Some.id,
+        Some.dateTime.toString(),
+        Some.dateTime.toString(),
+        message.end.toString(),
+        message.start.toString(),
+        Some.signature
+    )
+
+    fun confirmationServiceRequest() = PostConfirmationServicesRequest(
+        Message(
+            Some.dateTime,
+            Some.dateTime
+        ),
+        Some.nodeIdentifier,
+        Some.signature
+    )
+
+    fun upgradeNoticeRequest() = UpgradeNoticeRequest(
+        Some.nodeIdentifier,
+        Some.signature,
+        UpgradeNoticeMessage(
+            Some.bankNodeIdentifier
+        )
+    )
+
+    fun cleanSuccess() = Clean(
+        Some.dateTime,
+        "cleaning",
+        "20.188.56.203",
+        80,
+        "http",
+    )
+
+    fun cleanFailure() = Clean(
+        Some.dateTime,
+        "",
+        "",
+        80,
+        "",
+    )
+
+    fun crawlSuccess() = Crawl(
+        Some.dateTime,
+        "crawling",
+        "20.188.56.203",
+        80,
+        "http",
+    )
+
+    fun crawlFailure() = Crawl(
+        Some.dateTime,
+        "",
+        "20.188.56.203",
+        80,
+        "",
+    )
+
+    fun postClean(clean: String = "cleaning") = Clean(
+        cleanLastCompleted = Some.dateTime,
+        cleanStatus = clean,
+        ipAddress = "20.188.56.203",
+        port = 80,
+        protocol = "http"
+    )
+
+    fun postCleanRequest() = PostCleanRequest(
+        data = Data(clean = "start"),
+        signature = Some.signature
+    )
+
+    fun connectionRequest() = ConnectionRequest(
+        ConnectionRequestMessage(
+            Some.ipAddress,
+            Some.port,
+            Some.protocol
+        ),
+        Some.nodeIdentifier,
         Some.signature
     )
 }
@@ -317,10 +420,15 @@ object Some {
     const val id = "64426fc5-b3ac-42fb-b75b-d5ccfcdc6872"
     const val accountNumber = "0cdd4ba04456ca169baca3d66eace869520c62fe84421329086e03d91a68acdb"
     const val nodeIdentifier = "d5356888dc9303e44ce52b1e06c3165a7759b9df1e6a6dfbd33ee1c3df1ab4d1"
-    const val signature = "f41788fe19690a67abe3336d4ca84565c090691efae0e5cdd8bf02e126842215080405013b8461f734d091e673e9edefca53a51773fda59bbebcef77ab8e2901"
+    const val signature =
+        "f41788fe19690a67abe3336d4ca84565c090691efae0e5cdd8bf02e126842215080405013b8461f734d091e673e9edefca53a51773fda59bbebcef77ab8e2901"
     const val trust = 42.0
     const val balanceKey = "ce51f0d9facaa7d3e69657429dd3f961ce70077a8efb53dcda508c7c0a19d2e3"
     val dateTime = LocalDateTime.parse("2020-11-19T19:57:31.799872")
     const val startDate = "2020-11-29T07:54:16.233806Z"
     const val endDate = "2020-12-15T07:54:16.233806Z"
+    const val bankNodeIdentifier = "d5356888dc9303e44ce52b1e06c3165a7759b9df1e6a6dfbd33ee1c3df1ab4d1"
+    const val ipAddress = "172.19.0.13"
+    const val port = 8080
+    const val protocol = "http"
 }

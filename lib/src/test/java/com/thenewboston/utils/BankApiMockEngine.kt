@@ -2,8 +2,11 @@ package com.thenewboston.utils
 
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
 import com.thenewboston.data.dto.bankapi.common.request.PostRequest
+import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.PostInvalidBlockRequest
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.Message
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
 import io.ktor.client.*
 import io.ktor.client.engine.mock.*
 import io.ktor.client.features.*
@@ -85,6 +88,16 @@ class BankApiMockEngine {
                             val emptyContent = BankAPIJsonMapper.mapEmptyValidatorConfirmationServicesToJson()
                             sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
                         }
+                        BankAPIJsonMapper.CLEAN_ENDPOINT -> {
+                            val content = BankAPIJsonMapper.mapCleanToJson()
+                            val emptyContent = BankAPIJsonMapper.mapEmptyCleanToJson()
+                            sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
+                        }
+                        BankAPIJsonMapper.CRAWL_ENDPOINT -> {
+                            val content = BankAPIJsonMapper.mapCrawlToJson()
+                            val emptyContent = BankAPIJsonMapper.mapEmptyCrawlToJson()
+                            sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
+                        }
                         else -> {
                             error("Unhandled ${request.url.encodedPath}")
                         }
@@ -115,26 +128,27 @@ class BankApiMockEngine {
 
         engine {
             addHandler { request ->
-                when (request.url.encodedPath) {
-                    BankAPIJsonMapper.INVALID_BLOCKS_ENDPOINT -> {
-                        val blockIdentifier = readBlockIdentifierFromRequest(request)
-                        val content = BankAPIJsonMapper.mapInvalidBlockToJson(blockIdentifier)
-                        val invalidContent = BankAPIJsonMapper.mapInvalidResponseForInvalidBlocksRequest()
-                        when {
-                            sendOnlyErrorResponses -> respond(errorContent, InternalServerError, responseHeaders)
-                            sendInvalidResponses -> respond(invalidContent, Accepted, responseHeaders)
-                            else -> respond(content, Accepted, responseHeaders)
-                        }
+                when {
+                    request.url.encodedPath.startsWith(BankAPIJsonMapper.VALIDATOR_CONFIRMATION_SERVICES_ENDPOINT) -> {
+                        val content = BankAPIJsonMapper.mapValidatorConfirmationServiceToJson(readMessageFromRequest(request))
+                        val invalidContent = BankAPIJsonMapper.mapEmptyValidatorConfirmationServiceToJson()
+                        sendResponse(content, errorContent, invalidContent, sendOnlyErrorResponses, sendInvalidResponses)
                     }
-                    BankAPIJsonMapper.BLOCKS_ENDPOINT -> {
-                        val balanceKey = readBalanceKeyFromRequest(request)
-                        val content = BankAPIJsonMapper.mapBlockToJson(balanceKey)
-                        val invalidContent = BankAPIJsonMapper.mapBlockResponseForBlockRequest()
-                        when {
-                            sendOnlyErrorResponses -> respond(errorContent, InternalServerError, responseHeaders)
-                            sendInvalidResponses -> respond(invalidContent, Accepted, responseHeaders)
-                            else -> respond(content, Accepted, responseHeaders)
-                        }
+                    request.url.encodedPath.startsWith(BankAPIJsonMapper.UPGRADE_NOTICE_ENDPOINT) -> {
+                        val content = "Successfully sent upgrade notice"
+                        val invalidContent = ""
+                        sendResponse(content, errorContent, invalidContent, sendOnlyErrorResponses, sendInvalidResponses)
+                    }
+                    request.url.encodedPath.startsWith(BankAPIJsonMapper.CLEAN_ENDPOINT) -> {
+                        val clean = readCleanFromRequest(request)
+                        val content = BankAPIJsonMapper.mapCleanToJson(clean)
+                        val invalidContent = BankAPIJsonMapper.mapCleanResponseForPostRequest()
+                        sendResponse(content, errorContent, invalidContent, sendOnlyErrorResponses, sendInvalidResponses)
+                    }
+                    request.url.encodedPath.startsWith(BankAPIJsonMapper.CONNECTION_REQUESTS_ENDPOINT) -> {
+                        val content = "Successfully sent connection requests"
+                        val invalidContent = ""
+                        sendResponse(content, errorContent, invalidContent, sendOnlyErrorResponses, sendInvalidResponses)
                     }
                     else -> {
                         error("Unhandled ${request.url.encodedPath}")
@@ -156,9 +170,15 @@ class BankApiMockEngine {
     private fun readBalanceKeyFromRequest(request: HttpRequestData): String =
         request.extract<PostBlockRequest, String> { it.message.balanceKey }
 
+    private fun readMessageFromRequest(request: HttpRequestData): Message =
+        request.extract<PostConfirmationServicesRequest, Message> { it.message }
+
+    private fun readCleanFromRequest(request: HttpRequestData): String =
+        request.extract<PostCleanRequest, String> { it.data.clean }
+
     private inline fun <reified T, R> HttpRequestData.extract(extractor: (T) -> R): R {
         val requestBodyString = (this.body as TextContent).text
-        return extractor(Json.decodeFromString<T>(requestBodyString))
+        return extractor(Json.decodeFromString(requestBodyString))
     }
 
     private fun patchBankEngine(
@@ -203,6 +223,26 @@ class BankApiMockEngine {
                                 responseHeaders
                             )
                             else -> respond(responseBody, Accepted, responseHeaders)
+                        }
+                    }
+                    request.url.encodedPath.startsWith(BankAPIJsonMapper.INVALID_BLOCKS_ENDPOINT) -> {
+                        val blockIdentifier = readBlockIdentifierFromRequest(request)
+                        val content = BankAPIJsonMapper.mapInvalidBlockToJson(blockIdentifier)
+                        val invalidContent = BankAPIJsonMapper.mapInvalidResponseForInvalidBlocksRequest()
+                        when {
+                            enableErrorResponse -> respond(errorContent, InternalServerError, responseHeaders)
+                            sendInvalidResponses -> respond(invalidContent, Accepted, responseHeaders)
+                            else -> respond(content, Accepted, responseHeaders)
+                        }
+                    }
+                    request.url.encodedPath.startsWith(BankAPIJsonMapper.BLOCKS_ENDPOINT) -> {
+                        val balanceKey = readBalanceKeyFromRequest(request)
+                        val content = BankAPIJsonMapper.mapBlockToJson(balanceKey)
+                        val invalidContent = BankAPIJsonMapper.mapBlockResponseForBlockRequest()
+                        when {
+                            enableErrorResponse -> respond(errorContent, InternalServerError, responseHeaders)
+                            sendInvalidResponses -> respond(invalidContent, Accepted, responseHeaders)
+                            else -> respond(content, Accepted, responseHeaders)
                         }
                     }
                     else -> {
