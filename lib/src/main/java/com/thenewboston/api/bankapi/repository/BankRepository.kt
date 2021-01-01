@@ -15,6 +15,7 @@ import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.connectionrequestsdto.ConnectionRequest
+import com.thenewboston.data.dto.bankapi.crawl.request.PostCrawlRequest
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
@@ -70,4 +71,6 @@ class BankRepository @Inject constructor(private val dataSource: BankDataSource)
     suspend fun sendClean(request: PostCleanRequest): Outcome<Clean> = dataSource.sendClean(request)
 
     suspend fun sendConnectionRequests(request: ConnectionRequest) = dataSource.sendConnectionRequests(request)
+
+    suspend fun sendCrawl(request: PostCrawlRequest): Outcome<Crawl> = dataSource.sendCrawl(request)
 }
