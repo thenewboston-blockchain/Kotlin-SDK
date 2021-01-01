@@ -24,13 +24,14 @@ import com.thenewboston.data.dto.bankapi.upgradenoticedto.UpgradeNoticeRequest
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
+import com.thenewboston.utils.PaginationOptions
 import io.ktor.util.*
 import javax.inject.Inject
 
 @KtorExperimentalAPI
 class BankRepository @Inject constructor(private val dataSource: BankDataSource) {
 
-    suspend fun banks(): Outcome<BankList> = dataSource.fetchBanks()
+    suspend fun banks(pagination: PaginationOptions): Outcome<BankList> = dataSource.fetchBanks(pagination)
 
     suspend fun bankDetail(): Outcome<BankDetails> = dataSource.fetchBankDetails()
 

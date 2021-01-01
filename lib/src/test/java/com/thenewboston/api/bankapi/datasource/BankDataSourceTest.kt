@@ -5,6 +5,8 @@ import com.thenewboston.common.http.Outcome
 import com.thenewboston.utils.BankApiMockEngine
 import com.thenewboston.utils.ErrorMessages
 import com.thenewboston.utils.Mocks
+import com.thenewboston.utils.Pagination
+import com.thenewboston.utils.PaginationOptions
 import com.thenewboston.utils.Some
 import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.ints.shouldBeGreaterThan
@@ -62,7 +64,7 @@ class BankDataSourceTest {
 
             @Test
             fun `should fetch list of available banks`() = runBlockingTest {
-                val response = bankDataSource.fetchBanks()
+                val response = bankDataSource.fetchBanks(Pagination.DEFAULT)
 
                 check(response is Outcome.Success)
                 response.value.banks.shouldNotBeEmpty()
@@ -324,7 +326,7 @@ class BankDataSourceTest {
             @Test
             fun `should return error outcome for IOException`() = runBlockingTest {
                 // when
-                val response = bankDataSource.fetchBanks()
+                val response = bankDataSource.fetchBanks(Pagination.DEFAULT)
 
                 // then
                 check(response is Outcome.Error)
@@ -469,7 +471,7 @@ class BankDataSourceTest {
                 @Test
                 fun `should return error outcome for empty banks`() = runBlockingTest {
                     // when
-                    val response = bankDataSource.fetchBanks()
+                    val response = bankDataSource.fetchBanks(Pagination.DEFAULT)
 
                     // then
                     check(response is Outcome.Error)

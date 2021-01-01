@@ -40,13 +40,13 @@ import javax.inject.Inject
 @KtorExperimentalAPI
 class BankDataSource @Inject constructor(private val networkClient: NetworkClient) {
 
-    suspend fun fetchBanks() = makeApiCall(
-        call = { banks() },
+    suspend fun fetchBanks(pagination: PaginationOptions) = makeApiCall(
+        call = { banks(pagination) },
         errorMessage = "Failed to retrieve banks"
     )
 
-    private suspend fun banks(): Outcome<BankList> {
-        val result = networkClient.defaultClient.get<BankList>(BankAPIEndpoints.BANKS_ENDPOINT)
+    private suspend fun banks(pagination: PaginationOptions): Outcome<BankList> {
+        val result = networkClient.defaultClient.get<BankList>(BankAPIEndpoints.BANKS_ENDPOINT + pagination.toQuery())
 
         return when {
             result.banks.isNullOrEmpty() -> Outcome.Error(ErrorMessages.EMPTY_LIST_MESSAGE, IOException())
