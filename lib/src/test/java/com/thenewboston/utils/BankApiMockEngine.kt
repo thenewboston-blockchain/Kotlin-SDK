@@ -3,6 +3,7 @@ package com.thenewboston.utils
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
 import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
+import com.thenewboston.data.dto.bankapi.crawl.request.PostCrawlRequest
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.PostInvalidBlockRequest
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.Message
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
@@ -149,6 +150,12 @@ class BankApiMockEngine {
                         val invalidContent = ""
                         sendResponse(content, errorContent, invalidContent, sendOnlyErrorResponses, sendInvalidResponses)
                     }
+                    request.url.encodedPath.startsWith(BankAPIJsonMapper.CRAWL_ENDPOINT) -> {
+                        val crawl = readCrawlFromRequest(request)
+                        val content = BankAPIJsonMapper.mapCrawlToJson(crawl)
+                        val invalidContent = BankAPIJsonMapper.mapCrawlResponseForPostRequest()
+                        sendResponse(content, errorContent, invalidContent, sendOnlyErrorResponses, sendInvalidResponses)
+                    }
                     else -> {
                         error("Unhandled ${request.url.encodedPath}")
                     }
@@ -174,6 +181,9 @@ class BankApiMockEngine {
 
     private fun readCleanFromRequest(request: HttpRequestData): String =
         request.extract<PostCleanRequest, String> { it.data.clean }
+
+    private fun readCrawlFromRequest(request: HttpRequestData): String =
+        request.extract<PostCrawlRequest, String> { it.data.crawl }
 
     private inline fun <reified T, R> HttpRequestData.extract(extractor: (T) -> R): R {
         val requestBodyString = (this.body as TextContent).text

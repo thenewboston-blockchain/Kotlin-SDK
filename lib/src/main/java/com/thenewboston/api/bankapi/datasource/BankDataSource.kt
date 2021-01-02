@@ -382,7 +382,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
 
     private suspend fun doSendCrawl(request: PostCrawlRequest): Outcome<Crawl> {
         val response = networkClient.defaultClient.post<Crawl> {
-            url(BankAPIEndpoints.CLEAN_ENDPOINT)
+            url(BankAPIEndpoints.CRAWL_ENDPOINT)
             body = request
         }
 
