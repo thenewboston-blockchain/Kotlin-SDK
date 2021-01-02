@@ -31,13 +31,15 @@ import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.reques
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
 import com.thenewboston.data.dto.bankapi.validatordto.Validator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
+import com.thenewboston.utils.PaginationOptions
+import com.thenewboston.utils.PaginationResult
 import kotlinx.datetime.LocalDateTime
 
 object Mocks {
 
-    fun banks() = BankList(
+    fun banks(pagination:PaginationOptions) = BankList(
         count = 2,
-        banks = listOf(bank(), bank())
+        banks = PaginationResult<Bank>(pagination.limit, bank()).toList()
     )
 
     fun emptyBanks() = BankList(
@@ -45,7 +47,7 @@ object Mocks {
         banks = emptyList()
     )
 
-    fun bank(trust: Double = Some.trust) = Bank(
+    fun bank(trust: Double = Some.truPst) = Bank(
         "dfddf07ec15cbf363ecb52eedd7133b70b3ec896b488460bcecaba63e8e36be5",
         "127.0.0.1",
         "",

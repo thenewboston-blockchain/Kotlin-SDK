@@ -49,7 +49,9 @@ class BankApiMockEngine {
                             sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
                         }
                         BankAPIJsonMapper.BANKS_ENDPOINT -> {
-                            val content = BankAPIJsonMapper.mapBanksToJson()
+                            val limit = request.url.parameters.get("limit")!!.toInt()
+                            val offset = request.url.parameters.get("offset")!!.toInt()
+                            val content = BankAPIJsonMapper.mapBanksToJson(offset, limit)
                             val emptyContent = BankAPIJsonMapper.mapEmptyBanksToJson()
                             sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
                         }

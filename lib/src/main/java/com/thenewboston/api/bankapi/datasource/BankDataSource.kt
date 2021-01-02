@@ -11,27 +11,20 @@ import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
 import com.thenewboston.data.dto.bankapi.common.request.PostRequest
-import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
-import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
-import com.thenewboston.data.dto.bankapi.connectionrequestsdto.ConnectionRequest
-import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.PostInvalidBlockRequest
-import com.thenewboston.data.dto.bankapi.upgradenoticedto.UpgradeNoticeRequest
-import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServices
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
-import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
 import com.thenewboston.data.dto.bankapi.validatordto.Validator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import com.thenewboston.utils.BankAPIEndpoints
 import com.thenewboston.utils.ErrorMessages
+import com.thenewboston.utils.Page
 import com.thenewboston.utils.PaginationOptions
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.util.*
 import io.ktor.utils.io.errors.*
@@ -40,13 +33,13 @@ import javax.inject.Inject
 @KtorExperimentalAPI
 class BankDataSource @Inject constructor(private val networkClient: NetworkClient) {
 
-    suspend fun fetchBanks(pagination: PaginationOptions) = makeApiCall(
+    suspend fun fetchBanks(pagination:PaginationOptions) = makeApiCall(
         call = { banks(pagination) },
         errorMessage = "Failed to retrieve banks"
     )
 
-    private suspend fun banks(pagination: PaginationOptions): Outcome<BankList> {
-        val result = networkClient.defaultClient.get<BankList>(BankAPIEndpoints.BANKS_ENDPOINT + pagination.toQuery())
+    private suspend fun banks(pagination:PaginationOptions): Outcome<BankList> {
+        val result = networkClient.defaultClient.get<BankList>(BankAPIEndpoints.BANKS_ENDPOINT +pagination.toQuery())
 
         return when {
             result.banks.isNullOrEmpty() -> Outcome.Error(ErrorMessages.EMPTY_LIST_MESSAGE, IOException())
@@ -268,111 +261,5 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
             }
             else -> Outcome.Success(response)
         }
-    }
-
-    suspend fun sendValidatorConfirmationServices(request: PostConfirmationServicesRequest) = makeApiCall(
-        call = { doSendValidatorConfirmationServices(request) },
-        errorMessage = "An error occurred while sending validator confirmation services"
-    )
-
-    private suspend fun doSendValidatorConfirmationServices(request: PostConfirmationServicesRequest): Outcome<ConfirmationServices> {
-        val response = networkClient.defaultClient.post<ConfirmationServices> {
-            url(BankAPIEndpoints.VALIDATOR_CONFIRMATION_SERVICES_ENDPOINT)
-            body = request
-        }
-
-        return when {
-            response.id.isBlank() -> {
-                val nodeIdentifier = request.nodeIdentifier
-                val message =
-                    "Received invalid response sending confirmation services with node identifier: $nodeIdentifier"
-                return Outcome.Error(message, IOException())
-            }
-            else -> Outcome.Success(response)
-        }
-    }
-
-    suspend fun sendUpgradeNotice(request: UpgradeNoticeRequest) = makeApiCall(
-        call = { doSendUpgradeNotice(request) },
-        errorMessage = "An error occurred while sending upgrade notice"
-    )
-
-    private suspend fun doSendUpgradeNotice(request: UpgradeNoticeRequest): Outcome<String> {
-        networkClient.defaultClient.post<HttpResponse> {
-            url(BankAPIEndpoints.UPGRADE_NOTICE_ENDPOINT)
-            body = request
-        }
-
-        // Return success as response body is empty
-        return Outcome.Success("Successfully sent upgrade notice")
-    }
-
-    suspend fun fetchClean() = makeApiCall(
-        call = { getClean() },
-        errorMessage = "Failed to update the network"
-    )
-
-    private suspend fun getClean(): Outcome<Clean> {
-        val response = networkClient.defaultClient.get<Clean>(BankAPIEndpoints.CLEAN_ENDPOINT)
-
-        return when {
-            response.cleanStatus.isEmpty() -> Outcome.Error(
-                "The network clean process is not successful",
-                IOException()
-            )
-            else -> Outcome.Success(response)
-        }
-    }
-
-    suspend fun fetchCrawl() = makeApiCall(
-        call = { getCrawl() },
-        errorMessage = "An error occurred while sending crawl request"
-    )
-
-    private suspend fun getCrawl(): Outcome<Crawl> {
-        val response = networkClient.defaultClient.get<Crawl>(BankAPIEndpoints.CRAWL_ENDPOINT)
-
-        return when {
-            response.crawlStatus.isEmpty() -> Outcome.Error(
-                "The network crawling process is not successful",
-                IOException()
-            )
-            else -> Outcome.Success(response)
-        }
-    }
-
-    suspend fun sendClean(request: PostCleanRequest): Outcome<Clean> = makeApiCall(
-        call = { doSendClean(request) },
-        errorMessage = "An error occurred while sending the clean request"
-    )
-
-    private suspend fun doSendClean(request: PostCleanRequest): Outcome<Clean> {
-        val response = networkClient.defaultClient.post<Clean> {
-            url(BankAPIEndpoints.CLEAN_ENDPOINT)
-            body = request
-        }
-
-        return when {
-            response.cleanStatus.isEmpty() -> {
-                val clean = request.data.clean
-                val message = "Received invalid response when sending block with clean: $clean"
-                Outcome.Error(message, IOException())
-            }
-            else -> Outcome.Success(response)
-        }
-    }
-
-    suspend fun sendConnectionRequests(request: ConnectionRequest) = makeApiCall(
-        call = { doSendConnectionRequests(request) },
-        errorMessage = "An error occurred while sending connection requests"
-    )
-
-    private suspend fun doSendConnectionRequests(request: ConnectionRequest): Outcome<String> {
-        networkClient.defaultClient.post<HttpResponse> {
-            url(BankAPIEndpoints.CONNECTION_REQUESTS_ENDPOINT)
-            body = request
-        }
-
-        return Outcome.Success("Successfully sent connection requests")
     }
 }

@@ -5,8 +5,6 @@ import com.thenewboston.common.http.Outcome
 import com.thenewboston.utils.BankApiMockEngine
 import com.thenewboston.utils.ErrorMessages
 import com.thenewboston.utils.Mocks
-import com.thenewboston.utils.Pagination
-import com.thenewboston.utils.PaginationOptions
 import com.thenewboston.utils.Some
 import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.ints.shouldBeGreaterThan
@@ -64,7 +62,7 @@ class BankDataSourceTest {
 
             @Test
             fun `should fetch list of available banks`() = runBlockingTest {
-                val response = bankDataSource.fetchBanks(Pagination.DEFAULT)
+                val response = bankDataSource.fetchBanks()
 
                 check(response is Outcome.Success)
                 response.value.banks.shouldNotBeEmpty()
@@ -75,7 +73,11 @@ class BankDataSourceTest {
                 val response = bankDataSource.fetchBankDetails()
 
                 check(response is Outcome.Success)
+<<<<<<< HEAD
+                Config.IP_ADDRESS should contain(response.value.ipAddress)
+=======
                 "143.110.137.54" should contain(response.value.ipAddress)
+>>>>>>> 94c47e11e019abbbe4296bdd29c339767d6d8fbd
             }
 
             @Test
@@ -326,7 +328,7 @@ class BankDataSourceTest {
             @Test
             fun `should return error outcome for IOException`() = runBlockingTest {
                 // when
-                val response = bankDataSource.fetchBanks(Pagination.DEFAULT)
+                val response = bankDataSource.fetchBanks()
 
                 // then
                 check(response is Outcome.Error)
@@ -471,7 +473,7 @@ class BankDataSourceTest {
                 @Test
                 fun `should return error outcome for empty banks`() = runBlockingTest {
                     // when
-                    val response = bankDataSource.fetchBanks(Pagination.DEFAULT)
+                    val response = bankDataSource.fetchBanks()
 
                     // then
                     check(response is Outcome.Error)

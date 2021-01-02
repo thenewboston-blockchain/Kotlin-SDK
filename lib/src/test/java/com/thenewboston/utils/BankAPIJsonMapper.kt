@@ -1,6 +1,7 @@
 package com.thenewboston.utils
 
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.Message
+import com.thenewboston.utils.PaginationOptions
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -23,7 +24,7 @@ object BankAPIJsonMapper {
     const val CRAWL_ENDPOINT = "crawl"
     const val CONNECTION_REQUESTS_ENDPOINT = "connection_requests"
 
-    fun mapBanksToJson(): String = Json.encodeToString(Mocks.banks())
+    fun mapBanksToJson(offset:Int, limit:Int): String = Json.encodeToString(Mocks.banks(PaginationOptions(offset, limit)))
 
     fun mapEmptyBanksToJson(): String = Json.encodeToString(Mocks.emptyBanks())
 
