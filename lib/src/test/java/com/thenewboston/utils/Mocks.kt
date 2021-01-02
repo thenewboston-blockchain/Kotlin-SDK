@@ -38,7 +38,7 @@ import kotlinx.datetime.LocalDateTime
 object Mocks {
 
     fun banks(pagination:PaginationOptions) = BankList(
-        count = 2,
+        count = 20,
         banks = PaginationResult<Bank>(pagination.limit, bank()).toList()
     )
 
@@ -47,7 +47,7 @@ object Mocks {
         banks = emptyList()
     )
 
-    fun bank(trust: Double = Some.truPst) = Bank(
+    fun bank(trust: Double = Some.trust) = Bank(
         "dfddf07ec15cbf363ecb52eedd7133b70b3ec896b488460bcecaba63e8e36be5",
         "127.0.0.1",
         "",

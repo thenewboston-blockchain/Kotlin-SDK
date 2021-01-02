@@ -28,6 +28,8 @@ import com.thenewboston.data.dto.bankapi.validatordto.Validator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import com.thenewboston.utils.BankAPIEndpoints
 import com.thenewboston.utils.ErrorMessages
+import com.thenewboston.utils.Page
+import com.thenewboston.utils.PaginationOptions
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -38,13 +40,14 @@ import javax.inject.Inject
 @KtorExperimentalAPI
 class BankDataSource @Inject constructor(private val networkClient: NetworkClient) {
 
-    suspend fun fetchBanks(pagination:PaginationOptions) = makeApiCall(
+    suspend fun fetchBanks(pagination:PaginationOptions = Page.DEFAULT) = makeApiCall(
         call = { banks(pagination) },
         errorMessage = "Failed to retrieve banks"
     )
 
     private suspend fun banks(pagination:PaginationOptions): Outcome<BankList> {
-        val result = networkClient.defaultClient.get<BankList>(BankAPIEndpoints.BANKS_ENDPOINT +pagination.toQuery())
+        val request = BankAPIEndpoints.BANKS_ENDPOINT + pagination.toQuery()
+        val result = networkClient.defaultClient.get<BankList>(request)
 
         return when {
             result.banks.isEmpty() -> Outcome.Error(ErrorMessages.EMPTY_LIST_MESSAGE, IOException())

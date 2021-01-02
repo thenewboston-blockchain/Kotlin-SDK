@@ -5,7 +5,7 @@ data class PaginationOptions(
    val limit: Int
 ){
    fun toQuery():String{
-    return "?limit=${limit}?offset=${offset}"
+    return "?limit=${limit}&offset=${offset}"
     }
 }
 
@@ -41,9 +41,8 @@ data class PaginationResult<T> (
 
      fun toList(): List<T> { 
         val list:ArrayList<T> = arrayListOf()
-        for (i in 1..limit){
-        list.add(item)
-        } 
+        for (i in 1..limit) list.add(item)
+ 
       return list
     }  
 }

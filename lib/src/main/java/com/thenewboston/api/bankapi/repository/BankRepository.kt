@@ -32,7 +32,7 @@ import javax.inject.Inject
 @KtorExperimentalAPI
 class BankRepository @Inject constructor(private val dataSource: BankDataSource) {
 
-    suspend fun banks(pagination: PaginationOptions= Page.DEFAULT): Outcome<BankList> = dataSource.fetchBanks(pagination)
+    suspend fun banks(pagination: PaginationOptions = Page.DEFAULT): Outcome<BankList> = dataSource.fetchBanks(pagination)
 
     suspend fun bankDetail(): Outcome<BankDetails> = dataSource.fetchBankDetails()
 

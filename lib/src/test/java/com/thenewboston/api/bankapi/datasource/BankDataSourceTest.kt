@@ -5,6 +5,7 @@ import com.thenewboston.common.http.Outcome
 import com.thenewboston.utils.BankApiMockEngine
 import com.thenewboston.utils.ErrorMessages
 import com.thenewboston.utils.Mocks
+import com.thenewboston.utils.Page
 import com.thenewboston.utils.Some
 import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.ints.shouldBeGreaterThan
@@ -69,15 +70,19 @@ class BankDataSourceTest {
             }
 
             @Test
+            fun `should fetch list of 10 available banks`() = runBlockingTest {
+                val response = bankDataSource.fetchBanks(Page.TEN_ITEMS)
+
+                check(response is Outcome.Success)
+                response.value.banks.size shouldBe 10
+            }
+
+            @Test
             fun `should fetch bank details from config`() = runBlockingTest {
                 val response = bankDataSource.fetchBankDetails()
 
                 check(response is Outcome.Success)
-<<<<<<< HEAD
-                Config.IP_ADDRESS should contain(response.value.ipAddress)
-=======
                 "143.110.137.54" should contain(response.value.ipAddress)
->>>>>>> 94c47e11e019abbbe4296bdd29c339767d6d8fbd
             }
 
             @Test

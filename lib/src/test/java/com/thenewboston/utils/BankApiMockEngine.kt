@@ -1,7 +1,6 @@
 package com.thenewboston.utils
 
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
-import com.thenewboston.data.dto.bankapi.common.request.PostRequest
 import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.PostInvalidBlockRequest
@@ -46,7 +45,9 @@ class BankApiMockEngine {
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
                     }
                     BankAPIJsonMapper.BANKS_ENDPOINT -> {
-                        val content = BankAPIJsonMapper.mapBanksToJson()
+                        val limit = request.url.parameters.get("limit")!!.toInt()
+                        val offset = request.url.parameters.get("offset")!!.toInt()
+                        val content = BankAPIJsonMapper.mapBanksToJson(offset = offset, limit = limit)
                         val emptyContent = BankAPIJsonMapper.mapEmptyBanksToJson()
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
                     }
