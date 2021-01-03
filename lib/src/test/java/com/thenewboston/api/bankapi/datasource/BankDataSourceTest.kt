@@ -235,6 +235,20 @@ class BankDataSourceTest {
                 response.value shouldNot beEmpty()
                 response.value shouldBe "Successfully sent connection requests"
             }
+
+            @Test
+            fun `should return success with crawl status `() = runBlockingTest {
+                // given
+                val request = Mocks.postCrawlRequest()
+
+                // when
+                val response = bankDataSource.sendCrawl(request)
+
+                // then
+                check(response is Outcome.Success)
+                response.value.crawlStatus shouldNot beEmpty()
+                response.value.crawlStatus shouldBe request.data.crawl
+            }
         }
 
         @Nested
@@ -628,6 +642,22 @@ class BankDataSourceTest {
                     response.cause should beInstanceOf<IOException>()
                     response.cause?.message shouldBe "An error occurred while sending connection requests"
                 }
+
+                @Test
+                fun `should return error outcome when sending crawl`() {
+                    runBlockingTest {
+                        // given
+                        val request = Mocks.postCrawlRequest()
+
+                        // when
+                        val response = bankDataSource.sendCrawl(request)
+
+                        // then
+                        check(response is Outcome.Error)
+                        response.cause should beInstanceOf<IOException>()
+                        response.cause?.message shouldBe "An error occurred while sending the crawl request"
+                    }
+                }
             }
 
             @Nested
@@ -671,6 +701,21 @@ class BankDataSourceTest {
                         check(response is Outcome.Error)
                         response.cause should beInstanceOf<IOException>()
                         response.message shouldBe "Received invalid response when sending block with clean: ${request.data.clean}"
+                    }
+
+                @Test
+                fun `should return error outcome when receiving invalid response for sending crawl`() =
+                    runBlockingTest {
+                        // given
+                        val request = Mocks.postCrawlRequest()
+
+                        // when
+                        val response = bankDataSource.sendCrawl(request)
+
+                        // then
+                        check(response is Outcome.Error)
+                        response.cause should beInstanceOf<IOException>()
+                        response.message shouldBe "Received invalid response when sending block with crawl: ${request.data.crawl}"
                     }
             }
         }

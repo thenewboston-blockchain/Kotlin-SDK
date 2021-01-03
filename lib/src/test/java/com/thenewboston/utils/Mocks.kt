@@ -9,7 +9,7 @@ import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.blockdto.request.BlockMessage
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
-import com.thenewboston.data.dto.bankapi.clean.request.Data
+import com.thenewboston.data.dto.bankapi.clean.request.Data as cleanData
 import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.common.request.TrustMessage
@@ -18,6 +18,8 @@ import com.thenewboston.data.dto.bankapi.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.connectionrequestsdto.ConnectionRequest
 import com.thenewboston.data.dto.bankapi.connectionrequestsdto.ConnectionRequestMessage
+import com.thenewboston.data.dto.bankapi.crawl.request.Data as crawlData
+import com.thenewboston.data.dto.bankapi.crawl.request.PostCrawlRequest
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
@@ -396,7 +398,7 @@ object Mocks {
     )
 
     fun postCleanRequest() = PostCleanRequest(
-        data = Data(clean = "start"),
+        data = cleanData(clean = "start"),
         signature = Some.signature
     )
 
@@ -408,6 +410,19 @@ object Mocks {
         ),
         Some.nodeIdentifier,
         Some.signature
+    )
+
+    fun postCrawlRequest() = PostCrawlRequest(
+        data = crawlData(crawl = "start"),
+        signature = Some.signature
+    )
+
+    fun postCrawl(crawl: String = "crawling") = Crawl(
+        crawlLastCompleted = Some.dateTime,
+        crawlStatus = crawl,
+        ipAddress = "20.188.56.203",
+        port = 80,
+        protocol = "http"
     )
 }
 

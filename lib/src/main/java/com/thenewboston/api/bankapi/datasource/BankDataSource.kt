@@ -16,6 +16,7 @@ import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.connectionrequestsdto.ConnectionRequest
+import com.thenewboston.data.dto.bankapi.crawl.request.PostCrawlRequest
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
@@ -372,5 +373,26 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         }
 
         return Outcome.Success("Successfully sent connection requests")
+    }
+
+    suspend fun sendCrawl(request: PostCrawlRequest): Outcome<Crawl> = makeApiCall(
+        call = { doSendCrawl(request) },
+        errorMessage = "An error occurred while sending the crawl request"
+    )
+
+    private suspend fun doSendCrawl(request: PostCrawlRequest): Outcome<Crawl> {
+        val response = networkClient.defaultClient.post<Crawl> {
+            url(BankAPIEndpoints.CRAWL_ENDPOINT)
+            body = request
+        }
+
+        return when {
+            response.crawlStatus.isEmpty() -> {
+                val crawl = request.data.crawl
+                val message = "Received invalid response when sending block with crawl: $crawl"
+                Outcome.Error(message, IOException())
+            }
+            else -> Outcome.Success(response)
+        }
     }
 }
