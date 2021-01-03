@@ -17,7 +17,6 @@ import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.Confir
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import com.thenewboston.utils.Mocks
-import com.thenewboston.utils.Page
 import com.thenewboston.utils.Some
 import io.kotest.matchers.should
 import io.kotest.matchers.types.beInstanceOf
@@ -60,7 +59,7 @@ class BankRepositoryTest {
 
     @Test
     fun `verify banks result is success`() = runBlockingTest {
-        coEvery { bankDataSource.fetchBanks() } returns Outcome.Success(Mocks.banks(Page.DEFAULT))
+        coEvery { bankDataSource.fetchBanks() } returns Outcome.Success(Mocks.banks())
 
         repository.banks() should beInstanceOf<Outcome.Success<BankList>>()
     }

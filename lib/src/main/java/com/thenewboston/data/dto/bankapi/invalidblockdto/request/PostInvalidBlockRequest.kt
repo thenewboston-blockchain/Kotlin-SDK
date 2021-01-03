@@ -1,13 +1,10 @@
 package com.thenewboston.data.dto.bankapi.invalidblockdto.request
 
-
-import com.thenewboston.data.dto.bankapi.common.request.PostRequest
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PostInvalidBlockRequest (
+data class PostInvalidBlockRequest(
 
     @SerialName("message")
     val message: InvalidBlockMessage,

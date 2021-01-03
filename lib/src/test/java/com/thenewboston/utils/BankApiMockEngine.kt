@@ -40,29 +40,37 @@ class BankApiMockEngine {
             it.addHandler { request ->
                 when (request.url.encodedPath) {
                     BankAPIJsonMapper.ACCOUNTS_ENDPOINT -> {
-                        val content = BankAPIJsonMapper.mapAccountsToJson()
+                        val offset = request.url.parameters.get("offset")!!.toInt()
+                        val limit = request.url.parameters.get("limit")!!.toInt()
+                        val content = BankAPIJsonMapper.mapAccountsToJson(offset, limit)
                         val emptyContent = BankAPIJsonMapper.mapEmptyAccountsToJson()
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
                     }
                     BankAPIJsonMapper.BANKS_ENDPOINT -> {
-                        val limit = request.url.parameters.get("limit")!!.toInt()
                         val offset = request.url.parameters.get("offset")!!.toInt()
+                        val limit = request.url.parameters.get("limit")!!.toInt()
                         val content = BankAPIJsonMapper.mapBanksToJson(offset = offset, limit = limit)
                         val emptyContent = BankAPIJsonMapper.mapEmptyBanksToJson()
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
                     }
                     BankAPIJsonMapper.BANK_TRANSACTIONS_ENDPOINT -> {
-                        val content = BankAPIJsonMapper.mapBankTransactionsToJson()
+                        val offset = request.url.parameters.get("offset")!!.toInt()
+                        val limit = request.url.parameters.get("limit")!!.toInt()
+                        val content = BankAPIJsonMapper.mapBankTransactionsToJson(offset, limit)
                         val emptyContent = BankAPIJsonMapper.mapEmptyBankTransactionsToJson()
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
                     }
                     BankAPIJsonMapper.BLOCKS_ENDPOINT -> {
-                        val content = BankAPIJsonMapper.mapBlocksToJson()
+                        val offset = request.url.parameters.get("offset")!!.toInt()
+                        val limit = request.url.parameters.get("limit")!!.toInt()
+                        val content = BankAPIJsonMapper.mapBlocksToJson(offset, limit)
                         val emptyContent = BankAPIJsonMapper.mapEmptyBlocksToJson()
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
                     }
                     BankAPIJsonMapper.VALIDATORS_ENDPOINT -> {
-                        val content = BankAPIJsonMapper.mapValidatorsToJson()
+                        val offset = request.url.parameters.get("offset")!!.toInt()
+                        val limit = request.url.parameters.get("limit")!!.toInt()
+                        val content = BankAPIJsonMapper.mapValidatorsToJson(offset, limit)
                         val emptyContent = BankAPIJsonMapper.mapEmptyValidatorsToJson()
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
                     }
@@ -77,12 +85,16 @@ class BankApiMockEngine {
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
                     }
                     BankAPIJsonMapper.INVALID_BLOCKS_ENDPOINT -> {
-                        val content = BankAPIJsonMapper.mapInvalidBlocksToJson()
+                        val offset = request.url.parameters.get("offset")!!.toInt()
+                        val limit = request.url.parameters.get("limit")!!.toInt()
+                        val content = BankAPIJsonMapper.mapInvalidBlocksToJson(offset, limit)
                         val emptyContent = BankAPIJsonMapper.mapEmptyInvalidBlocksToJson()
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
                     }
                     BankAPIJsonMapper.VALIDATOR_CONFIRMATION_SERVICES_ENDPOINT -> {
-                        val content = BankAPIJsonMapper.mapValidatorConfirmationServicesToJson()
+                        val offset = request.url.parameters.get("offset")!!.toInt()
+                        val limit = request.url.parameters.get("limit")!!.toInt()
+                        val content = BankAPIJsonMapper.mapValidatorConfirmationServicesToJson(offset, limit)
                         val emptyContent = BankAPIJsonMapper.mapEmptyValidatorConfirmationServicesToJson()
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
                     }

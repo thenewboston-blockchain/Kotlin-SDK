@@ -9,7 +9,6 @@ import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
-import com.thenewboston.data.dto.bankapi.common.request.PostRequest
 import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
@@ -24,15 +23,13 @@ import com.thenewboston.data.dto.bankapi.upgradenoticedto.UpgradeNoticeRequest
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
-import com.thenewboston.utils.Page
-import com.thenewboston.utils.PaginationOptions
 import io.ktor.util.*
 import javax.inject.Inject
 
 @KtorExperimentalAPI
 class BankRepository @Inject constructor(private val dataSource: BankDataSource) {
 
-    suspend fun banks(pagination: PaginationOptions = Page.DEFAULT): Outcome<BankList> = dataSource.fetchBanks(pagination)
+    suspend fun banks(): Outcome<BankList> = dataSource.fetchBanks()
 
     suspend fun bankDetail(): Outcome<BankDetails> = dataSource.fetchBankDetails()
 

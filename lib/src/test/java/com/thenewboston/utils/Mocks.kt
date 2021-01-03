@@ -9,7 +9,6 @@ import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.blockdto.request.BlockMessage
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
-import com.thenewboston.data.dto.bankapi.common.request.PostRequest
 import com.thenewboston.data.dto.bankapi.clean.request.Data
 import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
@@ -31,13 +30,11 @@ import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.reques
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
 import com.thenewboston.data.dto.bankapi.validatordto.Validator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
-import com.thenewboston.utils.PaginationOptions
-import com.thenewboston.utils.PaginationResult
 import kotlinx.datetime.LocalDateTime
 
 object Mocks {
 
-    fun banks(pagination:PaginationOptions) = BankList(
+    fun banks(pagination: PaginationOptions = PAGE.DEFAULT) = BankList(
         count = 20,
         banks = PaginationResult<Bank>(pagination.limit, bank()).toList()
     )
@@ -91,11 +88,11 @@ object Mocks {
         0
     )
 
-    fun validators() = ValidatorList(
+    fun validators(pagination: PaginationOptions = PAGE.DEFAULT) = ValidatorList(
         count = 1,
         previous = null,
         next = null,
-        results = listOf(validator(), validator())
+        results = PaginationResult<Validator>(pagination.limit, validator()).toList()
     )
 
     fun emptyValidators() = ValidatorList(
@@ -162,11 +159,11 @@ object Mocks {
         signature = ""
     )
 
-    fun blocks() = BlockList(
+    fun blocks(pagination: PaginationOptions = PAGE.DEFAULT) = BlockList(
         count = 1,
         previous = null,
         next = null,
-        blocks = listOf(block(), block())
+        blocks = PaginationResult<Block>(pagination.limit, block()).toList()
     )
 
     fun emptyBlocks() = BlockList(
@@ -183,11 +180,11 @@ object Mocks {
         recipient = "String"
     )
 
-    fun bankTransactions() = BankTransactionList(
+    fun bankTransactions(pagination: PaginationOptions = PAGE.DEFAULT) = BankTransactionList(
         count = 1,
         next = null,
         previous = null,
-        bankTransactions = listOf(bankTransaction(), bankTransaction())
+        bankTransactions = PaginationResult<BankTransactions>(pagination.limit, bankTransaction()).toList()
     )
 
     fun emptyBankTransactions() = BankTransactionList(
@@ -197,11 +194,11 @@ object Mocks {
         bankTransactions = emptyList()
     )
 
-    fun accounts() = AccountList(
+    fun accounts(pagination: PaginationOptions = PAGE.DEFAULT) = AccountList(
         count = 1,
         previous = null,
         next = null,
-        results = listOf(account(), account())
+        results = PaginationResult<Account>(pagination.limit, account()).toList()
     )
 
     fun emptyAccounts() = AccountList(
@@ -227,11 +224,11 @@ object Mocks {
         trust = 0.00
     )
 
-    fun invalidBlocks() = InvalidBlockList(
+    fun invalidBlocks(pagination: PaginationOptions = PAGE.DEFAULT) = InvalidBlockList(
         count = 2,
         previous = null,
         next = null,
-        results = listOf(invalidBlock(), invalidBlock())
+        results = PaginationResult<InvalidBlock>(pagination.limit, invalidBlock()).toList()
     )
 
     fun emptyInvalidBlocks() = InvalidBlockList(
@@ -300,11 +297,12 @@ object Mocks {
         signature = Some.signature
     )
 
-    fun confirmationServicesList() = ConfirmationServicesList(
-        1,
-        null,
-        null,
-        listOf(confirmationServices())
+    fun confirmationServicesList(pagination: PaginationOptions = PAGE.DEFAULT) = ConfirmationServicesList(
+        count = 1,
+        previous = null,
+        next = null,
+        services = PaginationResult<ConfirmationServices>(pagination.limit, confirmationServices()).toList()
+
     )
 
     fun emptyConfirmationServicesList() = ConfirmationServicesList(

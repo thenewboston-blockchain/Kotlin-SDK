@@ -7,10 +7,10 @@ import kotlinx.serialization.Serializable
 data class ConfirmationServicesList(
     @SerialName("count")
     val count: Int,
-    @SerialName("next")
-    val next: String? = null,
     @SerialName("previous")
     val previous: String? = null,
+    @SerialName("next")
+    val next: String? = null,
     @SerialName("results")
     val services: List<ConfirmationServices>
 )
