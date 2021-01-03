@@ -206,7 +206,6 @@ class BankDataSourceTest {
                 val response = bankDataSource.fetchInvalidBlocks(PAGE.PAGE_2)
 
                 check(response is Outcome.Success)
-                response.value.count shouldBeGreaterThan 0
                 response.value.results.shouldNotBeEmpty()
                 response.value.count shouldBeGreaterThan 20
                 response.value.results.size shouldBeLessThanOrEqual 20
@@ -227,7 +226,6 @@ class BankDataSourceTest {
                 val response = bankDataSource.fetchValidatorConfirmationServices(PAGE.PAGE_2)
 
                 check(response is Outcome.Success)
-                response.value.count shouldBeGreaterThan 0
                 response.value.services.shouldNotBeEmpty()
                 response.value.count shouldBeGreaterThan 20
                 response.value.services.size shouldBeLessThanOrEqual 20
@@ -238,7 +236,6 @@ class BankDataSourceTest {
                 val response = bankDataSource.fetchValidatorConfirmationServices(PAGE.THIRTY_ITEMS)
 
                 check(response is Outcome.Success)
-                response.value.count shouldBeGreaterThan 0
                 response.value.services.shouldNotBeEmpty()
                 response.value.services.size shouldBeLessThanOrEqual 30
             }
