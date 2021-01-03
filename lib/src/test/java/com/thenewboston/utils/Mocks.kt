@@ -35,12 +35,12 @@ import kotlinx.datetime.LocalDateTime
 object Mocks {
 
     fun banks(pagination: PaginationOptions = PAGE.DEFAULT) = BankList(
-        count = 20,
+        count = 30,
         banks = PaginationResult<Bank>(pagination.limit, bank()).toList()
     )
 
     fun emptyBanks() = BankList(
-        count = 0,
+        count = 30,
         banks = emptyList()
     )
 
@@ -89,7 +89,7 @@ object Mocks {
     )
 
     fun validators(pagination: PaginationOptions = PAGE.DEFAULT) = ValidatorList(
-        count = 1,
+        count = 30,
         previous = null,
         next = null,
         results = PaginationResult<Validator>(pagination.limit, validator()).toList()
@@ -160,7 +160,7 @@ object Mocks {
     )
 
     fun blocks(pagination: PaginationOptions = PAGE.DEFAULT) = BlockList(
-        count = 1,
+        count = 30,
         previous = null,
         next = null,
         blocks = PaginationResult<Block>(pagination.limit, block()).toList()
@@ -181,7 +181,7 @@ object Mocks {
     )
 
     fun bankTransactions(pagination: PaginationOptions = PAGE.DEFAULT) = BankTransactionList(
-        count = 1,
+        count = 30,
         next = null,
         previous = null,
         bankTransactions = PaginationResult<BankTransactions>(pagination.limit, bankTransaction()).toList()
@@ -195,7 +195,7 @@ object Mocks {
     )
 
     fun accounts(pagination: PaginationOptions = PAGE.DEFAULT) = AccountList(
-        count = 1,
+        count = 30,
         previous = null,
         next = null,
         results = PaginationResult<Account>(pagination.limit, account()).toList()
@@ -225,7 +225,7 @@ object Mocks {
     )
 
     fun invalidBlocks(pagination: PaginationOptions = PAGE.DEFAULT) = InvalidBlockList(
-        count = 2,
+        count = 30,
         previous = null,
         next = null,
         results = PaginationResult<InvalidBlock>(pagination.limit, invalidBlock()).toList()
@@ -298,7 +298,7 @@ object Mocks {
     )
 
     fun confirmationServicesList(pagination: PaginationOptions = PAGE.DEFAULT) = ConfirmationServicesList(
-        count = 1,
+        count = 30,
         previous = null,
         next = null,
         services = PaginationResult<ConfirmationServices>(pagination.limit, confirmationServices()).toList()

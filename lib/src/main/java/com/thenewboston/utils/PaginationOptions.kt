@@ -4,7 +4,7 @@ data class PaginationOptions(
     val offset: Int,
     val limit: Int
 ) {
-    fun toQuery() = "?offset=$limit&limit=$limit"
+    fun toQuery() = "?offset=$offset&limit=$limit"
 }
 
 object PAGE {
@@ -13,21 +13,13 @@ object PAGE {
         limit = 20
     )
 
+    var PAGE_2: PaginationOptions = PaginationOptions(
+        offset = 20,
+        limit = 20
+    )
+
     var THIRTY_ITEMS: PaginationOptions = PaginationOptions(
         offset = 0,
-        limit = 10
+        limit = 30
     )
-}
-
-data class PaginationResult<T> (
-    val limit: Int,
-    val item: T
-) {
-
-    fun toList(): List<T> {
-        val list: ArrayList<T> = arrayListOf()
-        for (i in 1..limit) list.add(item)
-
-        return list
-    }
 }
