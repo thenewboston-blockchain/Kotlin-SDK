@@ -4,7 +4,7 @@ data class PaginationOptions(
     val offset: Int,
     val limit: Int
 ) {
-    fun toQuery() = "?offset=$limit&limit=$limit"
+    fun toQuery() = "?offset=$offset&limit=$limit"
 }
 
 object PAGE {
