@@ -29,6 +29,8 @@ import com.thenewboston.data.dto.bankapi.validatordto.Validator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import com.thenewboston.utils.BankAPIEndpoints
 import com.thenewboston.utils.ErrorMessages
+import com.thenewboston.utils.PAGE
+import com.thenewboston.utils.PaginationOptions
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -39,13 +41,14 @@ import javax.inject.Inject
 @KtorExperimentalAPI
 class BankDataSource @Inject constructor(private val networkClient: NetworkClient) {
 
-    suspend fun fetchBanks() = makeApiCall(
-        call = { banks() },
+    suspend fun fetchBanks(pagination: PaginationOptions = PAGE.DEFAULT) = makeApiCall(
+        call = { banks(pagination) },
         errorMessage = "Failed to retrieve banks"
     )
 
-    private suspend fun banks(): Outcome<BankList> {
-        val result = networkClient.defaultClient.get<BankList>(BankAPIEndpoints.BANKS_ENDPOINT)
+    private suspend fun banks(pagination: PaginationOptions): Outcome<BankList> {
+        val endpoint = BankAPIEndpoints.BANKS_ENDPOINT + pagination.toQuery()
+        val result = networkClient.defaultClient.get<BankList>(endpoint)
 
         return when {
             result.banks.isEmpty() -> Outcome.Error(ErrorMessages.EMPTY_LIST_MESSAGE, IOException())
@@ -64,13 +67,13 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         return Outcome.Success(result)
     }
 
-    suspend fun fetchBankTransactions() = makeApiCall(
-        call = { bankTransactions() },
+    suspend fun fetchBankTransactions(pagination: PaginationOptions = PAGE.DEFAULT) = makeApiCall(
+        call = { bankTransactions(pagination) },
         errorMessage = "Failed to retrieve bank transactions"
     )
 
-    private suspend fun bankTransactions(): Outcome<BankTransactionList> {
-        val endpoint = BankAPIEndpoints.BANK_TRANSACTIONS_ENDPOINT
+    private suspend fun bankTransactions(pagination: PaginationOptions): Outcome<BankTransactionList> {
+        val endpoint = BankAPIEndpoints.BANK_TRANSACTIONS_ENDPOINT + pagination.toQuery()
         val result = networkClient.defaultClient.get<BankTransactionList>(endpoint)
 
         return when {
@@ -80,13 +83,13 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         }
     }
 
-    suspend fun fetchValidators(): Outcome<ValidatorList> = makeApiCall(
-        call = { doFetchValidators() },
+    suspend fun fetchValidators(pagination: PaginationOptions = PAGE.DEFAULT): Outcome<ValidatorList> = makeApiCall(
+        call = { doFetchValidators(pagination) },
         errorMessage = "Could not fetch list of validators"
     )
 
-    private suspend fun doFetchValidators(): Outcome<ValidatorList> {
-        val endpoint = BankAPIEndpoints.VALIDATORS_ENDPOINT
+    private suspend fun doFetchValidators(pagination: PaginationOptions): Outcome<ValidatorList> {
+        val endpoint = BankAPIEndpoints.VALIDATORS_ENDPOINT + pagination.toQuery()
         val validators = networkClient.defaultClient.get<ValidatorList>(endpoint)
 
         return when {
@@ -108,14 +111,14 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         return Outcome.Success(response)
     }
 
-    suspend fun fetchAccounts(): Outcome<AccountList> = makeApiCall(
-        call = { accounts() },
+    suspend fun fetchAccounts(pagination: PaginationOptions = PAGE.DEFAULT): Outcome<AccountList> = makeApiCall(
+        call = { accounts(pagination) },
         errorMessage = "Could not fetch list of accounts"
     )
 
-    private suspend fun accounts(): Outcome<AccountList> {
-        val urlString = BankAPIEndpoints.ACCOUNTS_ENDPOINT
-        val accounts = networkClient.defaultClient.get<AccountList>(urlString)
+    private suspend fun accounts(pagination: PaginationOptions): Outcome<AccountList> {
+        val endpoint = BankAPIEndpoints.ACCOUNTS_ENDPOINT + pagination.toQuery()
+        val accounts = networkClient.defaultClient.get<AccountList>(endpoint)
 
         return when {
             accounts.results.isEmpty() -> Outcome.Error(
@@ -126,13 +129,14 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         }
     }
 
-    suspend fun fetchBlocks(): Outcome<BlockList> = makeApiCall(
-        call = { blocks() },
+    suspend fun fetchBlocks(pagination: PaginationOptions = PAGE.DEFAULT): Outcome<BlockList> = makeApiCall(
+        call = { blocks(pagination) },
         errorMessage = "Could not fetch list of blocks"
     )
 
-    private suspend fun blocks(): Outcome<BlockList> {
-        val response = networkClient.defaultClient.get<BlockList>(BankAPIEndpoints.BLOCKS_ENDPOINT)
+    private suspend fun blocks(pagination: PaginationOptions): Outcome<BlockList> {
+        val endpoint = BankAPIEndpoints.BLOCKS_ENDPOINT + pagination.toQuery()
+        val response = networkClient.defaultClient.get<BlockList>(endpoint)
 
         return when {
             response.blocks.isEmpty() -> Outcome.Error(
@@ -191,14 +195,15 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         }
     }
 
-    suspend fun fetchInvalidBlocks(): Outcome<InvalidBlockList> = makeApiCall(
-        call = { getInvalidBlocks() },
+    suspend fun fetchInvalidBlocks(pagination: PaginationOptions = PAGE.DEFAULT): Outcome<InvalidBlockList> = makeApiCall(
+        call = { getInvalidBlocks(pagination) },
         errorMessage = "Could not fetch list of invalid blocks"
     )
 
-    private suspend fun getInvalidBlocks(): Outcome<InvalidBlockList> {
+    private suspend fun getInvalidBlocks(pagination: PaginationOptions): Outcome<InvalidBlockList> {
+        val endpoint = BankAPIEndpoints.INVALID_BLOCKS_ENDPOINT + pagination.toQuery()
         val invalidBlocks = networkClient.defaultClient
-            .get<InvalidBlockList>(BankAPIEndpoints.INVALID_BLOCKS_ENDPOINT)
+            .get<InvalidBlockList>(endpoint)
 
         return when {
             invalidBlocks.results.isEmpty() -> Outcome.Error(
@@ -251,13 +256,13 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         }
     }
 
-    suspend fun fetchValidatorConfirmationServices() = makeApiCall(
-        call = { getValidatorConfirmationServices() },
+    suspend fun fetchValidatorConfirmationServices(pagination: PaginationOptions = PAGE.DEFAULT) = makeApiCall(
+        call = { getValidatorConfirmationServices(pagination) },
         errorMessage = "An error occurred while fetching validator confirmation services"
     )
 
-    private suspend fun getValidatorConfirmationServices(): Outcome<ConfirmationServicesList> {
-        val endpoint = BankAPIEndpoints.VALIDATOR_CONFIRMATION_SERVICES_ENDPOINT
+    private suspend fun getValidatorConfirmationServices(pagination: PaginationOptions): Outcome<ConfirmationServicesList> {
+        val endpoint = BankAPIEndpoints.VALIDATOR_CONFIRMATION_SERVICES_ENDPOINT + pagination.toQuery()
         val response = networkClient.defaultClient.get<ConfirmationServicesList>(endpoint)
 
         return when {
