@@ -29,7 +29,6 @@ import com.thenewboston.data.dto.bankapi.validatordto.Validator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import com.thenewboston.utils.BankAPIEndpoints
 import com.thenewboston.utils.ErrorMessages
-import com.thenewboston.utils.PAGE
 import com.thenewboston.utils.PaginationOptions
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -41,7 +40,7 @@ import javax.inject.Inject
 @KtorExperimentalAPI
 class BankDataSource @Inject constructor(private val networkClient: NetworkClient) {
 
-    suspend fun fetchBanks(pagination: PaginationOptions = PAGE.DEFAULT) = makeApiCall(
+    suspend fun fetchBanks(pagination: PaginationOptions = PaginationOptions()) = makeApiCall(
         call = { banks(pagination) },
         errorMessage = "Failed to retrieve banks"
     )
@@ -67,7 +66,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         return Outcome.Success(result)
     }
 
-    suspend fun fetchBankTransactions(pagination: PaginationOptions = PAGE.DEFAULT) = makeApiCall(
+    suspend fun fetchBankTransactions(pagination: PaginationOptions = PaginationOptions()) = makeApiCall(
         call = { bankTransactions(pagination) },
         errorMessage = "Failed to retrieve bank transactions"
     )
@@ -83,7 +82,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         }
     }
 
-    suspend fun fetchValidators(pagination: PaginationOptions = PAGE.DEFAULT): Outcome<ValidatorList> = makeApiCall(
+    suspend fun fetchValidators(pagination: PaginationOptions = PaginationOptions()): Outcome<ValidatorList> = makeApiCall(
         call = { doFetchValidators(pagination) },
         errorMessage = "Could not fetch list of validators"
     )
@@ -111,7 +110,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         return Outcome.Success(response)
     }
 
-    suspend fun fetchAccounts(pagination: PaginationOptions = PAGE.DEFAULT): Outcome<AccountList> = makeApiCall(
+    suspend fun fetchAccounts(pagination: PaginationOptions = PaginationOptions()): Outcome<AccountList> = makeApiCall(
         call = { accounts(pagination) },
         errorMessage = "Could not fetch list of accounts"
     )
@@ -129,7 +128,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         }
     }
 
-    suspend fun fetchBlocks(pagination: PaginationOptions = PAGE.DEFAULT): Outcome<BlockList> = makeApiCall(
+    suspend fun fetchBlocks(pagination: PaginationOptions = PaginationOptions()): Outcome<BlockList> = makeApiCall(
         call = { blocks(pagination) },
         errorMessage = "Could not fetch list of blocks"
     )
@@ -195,7 +194,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         }
     }
 
-    suspend fun fetchInvalidBlocks(pagination: PaginationOptions = PAGE.DEFAULT): Outcome<InvalidBlockList> = makeApiCall(
+    suspend fun fetchInvalidBlocks(pagination: PaginationOptions = PaginationOptions()): Outcome<InvalidBlockList> = makeApiCall(
         call = { getInvalidBlocks(pagination) },
         errorMessage = "Could not fetch list of invalid blocks"
     )
@@ -256,7 +255,7 @@ class BankDataSource @Inject constructor(private val networkClient: NetworkClien
         }
     }
 
-    suspend fun fetchValidatorConfirmationServices(pagination: PaginationOptions = PAGE.DEFAULT) = makeApiCall(
+    suspend fun fetchValidatorConfirmationServices(pagination: PaginationOptions = PaginationOptions()) = makeApiCall(
         call = { getValidatorConfirmationServices(pagination) },
         errorMessage = "An error occurred while fetching validator confirmation services"
     )

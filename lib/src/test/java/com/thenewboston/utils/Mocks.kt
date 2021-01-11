@@ -36,7 +36,7 @@ import kotlinx.datetime.LocalDateTime
 
 object Mocks {
 
-    fun banks(pagination: PaginationOptions = PAGE.DEFAULT) = BankList(
+    fun banks(pagination: PaginationOptions = PaginationOptions()) = BankList(
         count = 30,
         banks = PaginationResult<Bank>(pagination.limit, bank()).toList()
     )
@@ -90,7 +90,7 @@ object Mocks {
         0
     )
 
-    fun validators(pagination: PaginationOptions = PAGE.DEFAULT) = ValidatorList(
+    fun validators(pagination: PaginationOptions = PaginationOptions()) = ValidatorList(
         count = 30,
         previous = null,
         next = null,
@@ -161,7 +161,7 @@ object Mocks {
         signature = ""
     )
 
-    fun blocks(pagination: PaginationOptions = PAGE.DEFAULT) = BlockList(
+    fun blocks(pagination: PaginationOptions = PaginationOptions()) = BlockList(
         count = 30,
         previous = null,
         next = null,
@@ -182,7 +182,7 @@ object Mocks {
         recipient = "String"
     )
 
-    fun bankTransactions(pagination: PaginationOptions = PAGE.DEFAULT) = BankTransactionList(
+    fun bankTransactions(pagination: PaginationOptions = PaginationOptions()) = BankTransactionList(
         count = 30,
         next = null,
         previous = null,
@@ -196,7 +196,7 @@ object Mocks {
         bankTransactions = emptyList()
     )
 
-    fun accounts(pagination: PaginationOptions = PAGE.DEFAULT) = AccountList(
+    fun accounts(pagination: PaginationOptions = PaginationOptions()) = AccountList(
         count = 30,
         previous = null,
         next = null,
@@ -226,7 +226,7 @@ object Mocks {
         trust = 0.00
     )
 
-    fun invalidBlocks(pagination: PaginationOptions = PAGE.DEFAULT) = InvalidBlockList(
+    fun invalidBlocks(pagination: PaginationOptions = PaginationOptions()) = InvalidBlockList(
         count = 30,
         previous = null,
         next = null,
@@ -299,7 +299,7 @@ object Mocks {
         signature = Some.signature
     )
 
-    fun confirmationServicesList(pagination: PaginationOptions = PAGE.DEFAULT) = ConfirmationServicesList(
+    fun confirmationServicesList(pagination: PaginationOptions = PaginationOptions()) = ConfirmationServicesList(
         30,
         null,
         null,

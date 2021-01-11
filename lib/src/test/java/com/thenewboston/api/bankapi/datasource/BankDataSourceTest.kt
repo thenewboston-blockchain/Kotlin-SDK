@@ -5,7 +5,7 @@ import com.thenewboston.common.http.Outcome
 import com.thenewboston.utils.BankApiMockEngine
 import com.thenewboston.utils.ErrorMessages
 import com.thenewboston.utils.Mocks
-import com.thenewboston.utils.PAGE
+import com.thenewboston.utils.PaginationOptions
 import com.thenewboston.utils.Some
 import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.ints.shouldBeGreaterThan
@@ -64,7 +64,7 @@ class BankDataSourceTest {
 
             @Test
             fun `should fetch list of 20 available banks`() = runBlockingTest {
-                val response = bankDataSource.fetchBanks(PAGE.PAGE_2)
+                val response = bankDataSource.fetchBanks(PaginationOptions(20, 20))
 
                 check(response is Outcome.Success)
                 response.value.banks.shouldNotBeEmpty()
@@ -73,7 +73,7 @@ class BankDataSourceTest {
             }
 
             fun `should fetch list of 30 available banks`() = runBlockingTest {
-                val response = bankDataSource.fetchBanks(PAGE.THIRTY_ITEMS)
+                val response = bankDataSource.fetchBanks(PaginationOptions(0, 30))
 
                 check(response is Outcome.Success)
                 response.value.banks.shouldNotBeEmpty()
@@ -91,7 +91,7 @@ class BankDataSourceTest {
 
             @Test
             fun `should fetch list of 20 available bank transactions`() = runBlockingTest {
-                val response = bankDataSource.fetchBankTransactions(PAGE.PAGE_2)
+                val response = bankDataSource.fetchBankTransactions(PaginationOptions(20, 20))
 
                 check(response is Outcome.Success)
                 response.value.bankTransactions.shouldNotBeEmpty()
@@ -100,7 +100,7 @@ class BankDataSourceTest {
             }
 
             fun `should fetch list of 30 available bank transactions`() = runBlockingTest {
-                val response = bankDataSource.fetchBankTransactions(PAGE.THIRTY_ITEMS)
+                val response = bankDataSource.fetchBankTransactions(PaginationOptions(20, 20))
 
                 check(response is Outcome.Success)
                 response.value.bankTransactions.shouldNotBeEmpty()
@@ -111,7 +111,7 @@ class BankDataSourceTest {
             @Test
             fun `should fetch list of 20 validators successfully`() = runBlockingTest {
                 // when
-                val response = bankDataSource.fetchValidators(PAGE.PAGE_2)
+                val response = bankDataSource.fetchValidators(PaginationOptions(20, 20))
 
                 // then
                 check(response is Outcome.Success)
@@ -122,7 +122,7 @@ class BankDataSourceTest {
 
             fun `should fetch list of 30 validators successfully`() = runBlockingTest {
                 // when
-                val response = bankDataSource.fetchValidators(PAGE.THIRTY_ITEMS)
+                val response = bankDataSource.fetchValidators(PaginationOptions(20, 20))
 
                 // then
                 check(response is Outcome.Success)
@@ -148,7 +148,7 @@ class BankDataSourceTest {
 
             @Test
             fun `should fetch list of 20 accounts successfully`() = runBlockingTest {
-                val response = bankDataSource.fetchAccounts(PAGE.PAGE_2)
+                val response = bankDataSource.fetchAccounts(PaginationOptions(20, 20))
 
                 check(response is Outcome.Success)
                 response.value.results.shouldNotBeEmpty()
@@ -157,7 +157,7 @@ class BankDataSourceTest {
             }
 
             fun `should fetch list of 30 accounts successfully`() = runBlockingTest {
-                val response = bankDataSource.fetchAccounts(PAGE.THIRTY_ITEMS)
+                val response = bankDataSource.fetchAccounts(PaginationOptions(20, 20))
 
                 check(response is Outcome.Success)
                 response.value.results.shouldNotBeEmpty()
@@ -167,7 +167,7 @@ class BankDataSourceTest {
 
             @Test
             fun `should fetch list of 20 blocks successfully`() = runBlockingTest {
-                val response = bankDataSource.fetchBlocks(PAGE.PAGE_2)
+                val response = bankDataSource.fetchBlocks(PaginationOptions(20, 20))
 
                 check(response is Outcome.Success)
                 response.value.blocks.shouldNotBeEmpty()
@@ -176,7 +176,7 @@ class BankDataSourceTest {
             }
 
             fun `should fetch list of 30 blocks successfully`() = runBlockingTest {
-                val response = bankDataSource.fetchBlocks(PAGE.THIRTY_ITEMS)
+                val response = bankDataSource.fetchBlocks(PaginationOptions(20, 20))
 
                 check(response is Outcome.Success)
                 response.value.blocks.shouldNotBeEmpty()
@@ -199,7 +199,7 @@ class BankDataSourceTest {
 
             @Test
             fun `test fetch list of 20 invalid blocks successfully`() = runBlockingTest {
-                val response = bankDataSource.fetchInvalidBlocks(PAGE.PAGE_2)
+                val response = bankDataSource.fetchInvalidBlocks(PaginationOptions(20, 20))
 
                 check(response is Outcome.Success)
                 response.value.results.shouldNotBeEmpty()
@@ -208,7 +208,7 @@ class BankDataSourceTest {
             }
 
             fun `test fetch list of 30 invalid blocks successfully`() = runBlockingTest {
-                val response = bankDataSource.fetchInvalidBlocks(PAGE.THIRTY_ITEMS)
+                val response = bankDataSource.fetchInvalidBlocks(PaginationOptions(20, 20))
 
                 check(response is Outcome.Success)
                 response.value.results.shouldNotBeEmpty()
@@ -218,7 +218,7 @@ class BankDataSourceTest {
 
             @Test
             fun `test fetch list of 20 validator confirmation services successfully`() = runBlockingTest {
-                val response = bankDataSource.fetchValidatorConfirmationServices(PAGE.PAGE_2)
+                val response = bankDataSource.fetchValidatorConfirmationServices(PaginationOptions(20, 20))
 
                 check(response is Outcome.Success)
                 response.value.services.shouldNotBeEmpty()
@@ -227,7 +227,7 @@ class BankDataSourceTest {
             }
 
             fun `test fetch list of 30 validator confirmation services successfully`() = runBlockingTest {
-                val response = bankDataSource.fetchValidatorConfirmationServices(PAGE.THIRTY_ITEMS)
+                val response = bankDataSource.fetchValidatorConfirmationServices(PaginationOptions(20, 20))
 
                 check(response is Outcome.Success)
                 response.value.services.shouldNotBeEmpty()
