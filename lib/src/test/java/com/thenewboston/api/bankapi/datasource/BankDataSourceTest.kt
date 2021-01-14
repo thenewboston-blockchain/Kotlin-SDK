@@ -413,7 +413,7 @@ class BankDataSourceTest {
             @Test
             fun `should return error outcome for IOException`() = runBlockingTest {
                 // when
-                val response = bankDataSource.fetchBanks()
+                val response = bankDataSource.fetchBanks(PaginationOptions())
 
                 // then
                 check(response is Outcome.Error)
@@ -435,7 +435,7 @@ class BankDataSourceTest {
             @Test
             fun `should return error outcome for bank transactions IOException`() = runBlockingTest {
                 // when
-                val response = bankDataSource.fetchBankTransactions()
+                val response = bankDataSource.fetchBankTransactions(PaginationOptions())
 
                 // then
                 check(response is Outcome.Error)
@@ -472,7 +472,7 @@ class BankDataSourceTest {
             @Test
             fun `should return error outcome for list of accounts IOException`() = runBlockingTest {
                 // when
-                val response = bankDataSource.fetchAccounts()
+                val response = bankDataSource.fetchAccounts(PaginationOptions())
 
                 // then
                 check(response is Outcome.Error)
@@ -483,7 +483,7 @@ class BankDataSourceTest {
             @Test
             fun `should return error outcome for list of blocks IOException`() = runBlockingTest {
                 // when
-                val response = bankDataSource.fetchBlocks()
+                val response = bankDataSource.fetchBlocks(PaginationOptions())
 
                 // then
                 check(response is Outcome.Error)
@@ -494,7 +494,7 @@ class BankDataSourceTest {
             @Test
             fun `should return error outcome for list of invalid blocks IOException`() = runBlockingTest {
                 // when
-                val response = bankDataSource.fetchInvalidBlocks()
+                val response = bankDataSource.fetchInvalidBlocks(PaginationOptions())
 
                 // then
                 check(response is Outcome.Error)
@@ -504,7 +504,7 @@ class BankDataSourceTest {
             @Test
             fun `should return error outcome for validator confirmation services`() = runBlockingTest {
                 // when
-                val response = bankDataSource.fetchValidatorConfirmationServices()
+                val response = bankDataSource.fetchValidatorConfirmationServices(PaginationOptions())
 
                 // then
                 check(response is Outcome.Error)
@@ -547,7 +547,7 @@ class BankDataSourceTest {
                 @Test
                 fun `should return error outcome for empty validator confirmation services`() = runBlockingTest {
                     // when
-                    val response = bankDataSource.fetchValidatorConfirmationServices()
+                    val response = bankDataSource.fetchValidatorConfirmationServices(PaginationOptions())
 
                     // then
                     check(response is Outcome.Error)
@@ -558,7 +558,7 @@ class BankDataSourceTest {
                 @Test
                 fun `should return error outcome for empty banks`() = runBlockingTest {
                     // when
-                    val response = bankDataSource.fetchBanks()
+                    val response = bankDataSource.fetchBanks(PaginationOptions())
 
                     // then
                     check(response is Outcome.Error)
@@ -569,7 +569,7 @@ class BankDataSourceTest {
                 @Test
                 fun `should return error outcome for empty accounts`() = runBlockingTest {
                     // when
-                    val response = bankDataSource.fetchAccounts()
+                    val response = bankDataSource.fetchAccounts(PaginationOptions())
 
                     // then
                     check(response is Outcome.Error)
@@ -580,7 +580,7 @@ class BankDataSourceTest {
                 @Test
                 fun `should return error outcome for empty validators`() = runBlockingTest {
                     // when
-                    val response = bankDataSource.fetchValidators()
+                    val response = bankDataSource.fetchValidators(PaginationOptions())
 
                     // then
                     check(response is Outcome.Error)
@@ -591,7 +591,7 @@ class BankDataSourceTest {
                 @Test
                 fun `should return error outcome for empty blocks`() = runBlockingTest {
                     // when
-                    val response = bankDataSource.fetchBlocks()
+                    val response = bankDataSource.fetchBlocks(PaginationOptions())
 
                     // then
                     check(response is Outcome.Error)
@@ -602,7 +602,7 @@ class BankDataSourceTest {
                 @Test
                 fun `should return error outcome for empty invalid blocks`() = runBlockingTest {
                     // when
-                    val response = bankDataSource.fetchInvalidBlocks()
+                    val response = bankDataSource.fetchInvalidBlocks(PaginationOptions())
 
                     // then
                     check(response is Outcome.Error)
@@ -613,7 +613,7 @@ class BankDataSourceTest {
                 @Test
                 fun `should return error outcome for empty bank transactions`() = runBlockingTest {
                     // when
-                    val response = bankDataSource.fetchBankTransactions()
+                    val response = bankDataSource.fetchBankTransactions(PaginationOptions())
 
                     // then
                     check(response is Outcome.Error)

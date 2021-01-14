@@ -17,6 +17,7 @@ import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.Confir
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import com.thenewboston.utils.Mocks
+import com.thenewboston.utils.PaginationOptions
 import com.thenewboston.utils.Some
 import io.kotest.matchers.should
 import io.kotest.matchers.types.beInstanceOf
@@ -52,14 +53,14 @@ class BankRepositoryTest {
 
     @Test
     fun `verify banks result is error`() = runBlockingTest {
-        coEvery { bankDataSource.fetchBanks() } returns Outcome.Error("", IOException())
+        coEvery { bankDataSource.fetchBanks(PaginationOptions()) } returns Outcome.Error("", IOException())
 
         repository.banks() should beInstanceOf<Outcome.Error>()
     }
 
     @Test
     fun `verify banks result is success`() = runBlockingTest {
-        coEvery { bankDataSource.fetchBanks() } returns Outcome.Success(Mocks.banks())
+        coEvery { bankDataSource.fetchBanks(PaginationOptions()) } returns Outcome.Success(Mocks.banks())
 
         repository.banks() should beInstanceOf<Outcome.Success<BankList>>()
     }
@@ -84,7 +85,7 @@ class BankRepositoryTest {
 
     @Test
     fun `verify transactions result is error`() = runBlockingTest {
-        coEvery { bankDataSource.fetchBankTransactions() } returns
+        coEvery { bankDataSource.fetchBankTransactions(PaginationOptions()) } returns
             Outcome.Error("", IOException())
 
         repository.bankTransactions() should beInstanceOf<Outcome.Error>()
@@ -92,7 +93,7 @@ class BankRepositoryTest {
 
     @Test
     fun `verify transactions result is success`() = runBlockingTest {
-        coEvery { bankDataSource.fetchBankTransactions() } returns
+        coEvery { bankDataSource.fetchBankTransactions(PaginationOptions()) } returns
             Outcome.Success(Mocks.bankTransactions())
 
         repository.bankTransactions() should beInstanceOf<Outcome.Success<BankTransactionList>>()
@@ -100,13 +101,13 @@ class BankRepositoryTest {
 
     @Test
     fun `verify validators result is error`() = runBlockingTest {
-        coEvery { bankDataSource.fetchValidators() } returns Outcome.Error("", IOException())
+        coEvery { bankDataSource.fetchValidators(PaginationOptions()) } returns Outcome.Error("", IOException())
 
         // when
         val result = repository.validators()
 
         // then
-        coVerify { bankDataSource.fetchValidators() }
+        coVerify { bankDataSource.fetchValidators(PaginationOptions()) }
         result should beInstanceOf<Outcome.Error>()
     }
 
@@ -126,13 +127,13 @@ class BankRepositoryTest {
 
     @Test
     fun `verify validators result is success outcome`() = runBlockingTest {
-        coEvery { bankDataSource.fetchValidators() } returns Outcome.Success(Mocks.validators())
+        coEvery { bankDataSource.fetchValidators(PaginationOptions()) } returns Outcome.Success(Mocks.validators())
 
         // when
         val result = repository.validators()
 
         // then
-        coVerify { bankDataSource.fetchValidators() }
+        coVerify { bankDataSource.fetchValidators(PaginationOptions()) }
         result should beInstanceOf<Outcome.Success<ValidatorList>>()
     }
 
@@ -152,49 +153,49 @@ class BankRepositoryTest {
 
     @Test
     fun `verify list of accounts is error outcome`() = runBlockingTest {
-        coEvery { bankDataSource.fetchAccounts() } returns Outcome.Error("", IOException())
+        coEvery { bankDataSource.fetchAccounts(PaginationOptions()) } returns Outcome.Error("", IOException())
 
         // when
         val result = repository.accounts()
 
         // then
-        coVerify { bankDataSource.fetchAccounts() }
+        coVerify { bankDataSource.fetchAccounts(PaginationOptions()) }
         result should beInstanceOf<Outcome.Error>()
     }
 
     @Test
     fun `verify list of accounts is success outcome`() = runBlockingTest {
-        coEvery { bankDataSource.fetchAccounts() } returns Outcome.Success(Mocks.accounts())
+        coEvery { bankDataSource.fetchAccounts(PaginationOptions()) } returns Outcome.Success(Mocks.accounts())
 
         // when
         val result = repository.accounts()
 
         // then
-        coVerify { bankDataSource.fetchAccounts() }
+        coVerify { bankDataSource.fetchAccounts(PaginationOptions()) }
         result should beInstanceOf<Outcome.Success<AccountList>>()
     }
 
     @Test
     fun `verify list of blocks is error outcome`() = runBlockingTest {
-        coEvery { bankDataSource.fetchBlocks() } returns Outcome.Error("", IOException())
+        coEvery { bankDataSource.fetchBlocks(PaginationOptions()) } returns Outcome.Error("", IOException())
 
         // when
         val result = repository.blocks()
 
         // then
-        coVerify { bankDataSource.fetchBlocks() }
+        coVerify { bankDataSource.fetchBlocks(PaginationOptions()) }
         result should beInstanceOf<Outcome.Error>()
     }
 
     @Test
     fun `verify list of blocks is success outcome`() = runBlockingTest {
-        coEvery { bankDataSource.fetchBlocks() } returns Outcome.Success(Mocks.blocks())
+        coEvery { bankDataSource.fetchBlocks(PaginationOptions()) } returns Outcome.Success(Mocks.blocks())
 
         // when
         val result = repository.blocks()
 
         // then
-        coVerify { bankDataSource.fetchBlocks() }
+        coVerify { bankDataSource.fetchBlocks(PaginationOptions()) }
         result should beInstanceOf<Outcome.Success<BlockList>>()
     }
 
@@ -271,26 +272,26 @@ class BankRepositoryTest {
 
     @Test
     fun `verify list of invalid blocks is error outcome`() = runBlockingTest {
-        coEvery { bankDataSource.fetchInvalidBlocks() } returns Outcome.Error("", IOException())
+        coEvery { bankDataSource.fetchInvalidBlocks(PaginationOptions()) } returns Outcome.Error("", IOException())
 
         // when
         val result = repository.invalidBlocks()
 
         // then
-        coVerify { bankDataSource.fetchInvalidBlocks() }
+        coVerify { bankDataSource.fetchInvalidBlocks(PaginationOptions()) }
         result should beInstanceOf<Outcome.Error>()
     }
 
     @Test
     fun `verify list of invalid blocks is success outcome`() = runBlockingTest {
-        coEvery { bankDataSource.fetchInvalidBlocks() } returns Outcome
+        coEvery { bankDataSource.fetchInvalidBlocks(PaginationOptions()) } returns Outcome
             .Success(Mocks.invalidBlocks())
 
         // when
         val result = repository.invalidBlocks()
 
         // then
-        coVerify { bankDataSource.fetchInvalidBlocks() }
+        coVerify { bankDataSource.fetchInvalidBlocks(PaginationOptions()) }
         result should beInstanceOf<Outcome.Success<*>>()
     }
 
@@ -352,19 +353,19 @@ class BankRepositoryTest {
 
     @Test
     fun `verify fetch validator confirmation services returns success outomce`() = runBlockingTest {
-        coEvery { bankDataSource.fetchValidatorConfirmationServices() } returns Outcome.Success(Mocks.confirmationServicesList())
+        coEvery { bankDataSource.fetchValidatorConfirmationServices(PaginationOptions()) } returns Outcome.Success(Mocks.confirmationServicesList())
 
         // when
         val result = repository.validatorConfirmationServices()
 
         // then
-        coVerify { bankDataSource.fetchValidatorConfirmationServices() }
+        coVerify { bankDataSource.fetchValidatorConfirmationServices(PaginationOptions()) }
         result should beInstanceOf<Outcome.Success<ConfirmationServicesList>>()
     }
 
     @Test
     fun `verify fetch validator confirmation services returns error outcome`() = runBlockingTest {
-        coEvery { bankDataSource.fetchValidatorConfirmationServices() } returns Outcome.Error(
+        coEvery { bankDataSource.fetchValidatorConfirmationServices(PaginationOptions()) } returns Outcome.Error(
             "Failed to fetch validator confirmation services",
             IOException()
         )
@@ -373,7 +374,7 @@ class BankRepositoryTest {
         val result = repository.validatorConfirmationServices()
 
         // then
-        coVerify { bankDataSource.fetchValidatorConfirmationServices() }
+        coVerify { bankDataSource.fetchValidatorConfirmationServices(PaginationOptions()) }
         result should beInstanceOf<Outcome.Error>()
     }
 
