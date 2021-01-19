@@ -24,40 +24,47 @@ import com.thenewboston.data.dto.bankapi.upgradenoticedto.UpgradeNoticeRequest
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
+import com.thenewboston.utils.PaginationOptions
 import io.ktor.util.*
 import javax.inject.Inject
 
 @KtorExperimentalAPI
 class BankRepository @Inject constructor(private val dataSource: BankDataSource) {
 
-    suspend fun banks(): Outcome<BankList> = dataSource.fetchBanks()
+    suspend fun banks(offset: Int, limit: Int): Outcome<BankList> =
+        dataSource.fetchBanks(PaginationOptions(offset, limit))
 
     suspend fun bankDetail(): Outcome<BankDetails> = dataSource.fetchBankDetails()
 
-    suspend fun bankTransactions(): Outcome<BankTransactionList> = dataSource.fetchBankTransactions()
+    suspend fun bankTransactions(offset: Int, limit: Int): Outcome<BankTransactionList> =
+        dataSource.fetchBankTransactions(PaginationOptions(offset, limit))
 
-    suspend fun validators(): Outcome<ValidatorList> = dataSource.fetchValidators()
+    suspend fun validators(offset: Int, limit: Int): Outcome<ValidatorList> =
+        dataSource.fetchValidators(PaginationOptions(offset, limit))
 
     suspend fun validator(nodeIdentifier: String) = dataSource.fetchValidator(nodeIdentifier)
 
-    suspend fun accounts(): Outcome<AccountList> = dataSource.fetchAccounts()
+    suspend fun accounts(offset: Int, limit: Int): Outcome<AccountList> =
+        dataSource.fetchAccounts(PaginationOptions(offset, limit))
 
-    suspend fun blocks(): Outcome<BlockList> = dataSource.fetchBlocks()
+    suspend fun blocks(offset: Int, limit: Int): Outcome<BlockList> =
+        dataSource.fetchBlocks(PaginationOptions(offset, limit))
 
     suspend fun updateBankTrust(request: UpdateTrustRequest): Outcome<Bank> = dataSource.updateBankTrust(request)
 
     suspend fun updateAccountTrust(accountNumber: String, request: UpdateTrustRequest): Outcome<Account> =
         dataSource.updateAccountTrust(accountNumber, request)
 
-    suspend fun invalidBlocks(): Outcome<InvalidBlockList> = dataSource.fetchInvalidBlocks()
+    suspend fun invalidBlocks(offset: Int, limit: Int): Outcome<InvalidBlockList> =
+        dataSource.fetchInvalidBlocks(PaginationOptions(offset, limit))
 
     suspend fun sendInvalidBlock(request: PostInvalidBlockRequest): Outcome<InvalidBlock> =
         dataSource.sendInvalidBlock(request)
 
     suspend fun sendBlock(request: PostBlockRequest): Outcome<Block> = dataSource.sendBlock(request)
 
-    suspend fun validatorConfirmationServices(): Outcome<ConfirmationServicesList> =
-        dataSource.fetchValidatorConfirmationServices()
+    suspend fun validatorConfirmationServices(offset: Int, limit: Int): Outcome<ConfirmationServicesList> =
+        dataSource.fetchValidatorConfirmationServices(PaginationOptions(offset, limit))
 
     suspend fun sendValidatorConfirmationServices(request: PostConfirmationServicesRequest) =
         dataSource.sendValidatorConfirmationServices(request)

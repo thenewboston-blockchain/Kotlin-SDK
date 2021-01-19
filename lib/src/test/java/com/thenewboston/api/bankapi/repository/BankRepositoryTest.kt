@@ -17,6 +17,7 @@ import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.Confir
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import com.thenewboston.utils.Mocks
+import com.thenewboston.utils.PaginationOptions
 import com.thenewboston.utils.Some
 import io.kotest.matchers.should
 import io.kotest.matchers.types.beInstanceOf
@@ -52,16 +53,16 @@ class BankRepositoryTest {
 
     @Test
     fun `verify banks result is error`() = runBlockingTest {
-        coEvery { bankDataSource.fetchBanks() } returns Outcome.Error("", IOException())
+        coEvery { bankDataSource.fetchBanks(PaginationOptions(0, 20)) } returns Outcome.Error("", IOException())
 
-        repository.banks() should beInstanceOf<Outcome.Error>()
+        repository.banks(0, 20) should beInstanceOf<Outcome.Error>()
     }
 
     @Test
     fun `verify banks result is success`() = runBlockingTest {
-        coEvery { bankDataSource.fetchBanks() } returns Outcome.Success(Mocks.banks())
+        coEvery { bankDataSource.fetchBanks(PaginationOptions(0, 20)) } returns Outcome.Success(Mocks.banks())
 
-        repository.banks() should beInstanceOf<Outcome.Success<BankList>>()
+        repository.banks(0, 20) should beInstanceOf<Outcome.Success<BankList>>()
     }
 
     @Test
@@ -84,29 +85,29 @@ class BankRepositoryTest {
 
     @Test
     fun `verify transactions result is error`() = runBlockingTest {
-        coEvery { bankDataSource.fetchBankTransactions() } returns
+        coEvery { bankDataSource.fetchBankTransactions(PaginationOptions(0, 20)) } returns
             Outcome.Error("", IOException())
 
-        repository.bankTransactions() should beInstanceOf<Outcome.Error>()
+        repository.bankTransactions(0, 20) should beInstanceOf<Outcome.Error>()
     }
 
     @Test
     fun `verify transactions result is success`() = runBlockingTest {
-        coEvery { bankDataSource.fetchBankTransactions() } returns
+        coEvery { bankDataSource.fetchBankTransactions(PaginationOptions(0, 20)) } returns
             Outcome.Success(Mocks.bankTransactions())
 
-        repository.bankTransactions() should beInstanceOf<Outcome.Success<BankTransactionList>>()
+        repository.bankTransactions(0, 20) should beInstanceOf<Outcome.Success<BankTransactionList>>()
     }
 
     @Test
     fun `verify validators result is error`() = runBlockingTest {
-        coEvery { bankDataSource.fetchValidators() } returns Outcome.Error("", IOException())
+        coEvery { bankDataSource.fetchValidators(PaginationOptions(0, 20)) } returns Outcome.Error("", IOException())
 
         // when
-        val result = repository.validators()
+        val result = repository.validators(0, 20)
 
         // then
-        coVerify { bankDataSource.fetchValidators() }
+        coVerify { bankDataSource.fetchValidators(PaginationOptions(0, 20)) }
         result should beInstanceOf<Outcome.Error>()
     }
 
@@ -126,13 +127,13 @@ class BankRepositoryTest {
 
     @Test
     fun `verify validators result is success outcome`() = runBlockingTest {
-        coEvery { bankDataSource.fetchValidators() } returns Outcome.Success(Mocks.validators())
+        coEvery { bankDataSource.fetchValidators(PaginationOptions(0, 20)) } returns Outcome.Success(Mocks.validators())
 
         // when
-        val result = repository.validators()
+        val result = repository.validators(0, 20)
 
         // then
-        coVerify { bankDataSource.fetchValidators() }
+        coVerify { bankDataSource.fetchValidators(PaginationOptions(0, 20)) }
         result should beInstanceOf<Outcome.Success<ValidatorList>>()
     }
 
@@ -152,49 +153,49 @@ class BankRepositoryTest {
 
     @Test
     fun `verify list of accounts is error outcome`() = runBlockingTest {
-        coEvery { bankDataSource.fetchAccounts() } returns Outcome.Error("", IOException())
+        coEvery { bankDataSource.fetchAccounts(PaginationOptions(0, 20)) } returns Outcome.Error("", IOException())
 
         // when
-        val result = repository.accounts()
+        val result = repository.accounts(0, 20)
 
         // then
-        coVerify { bankDataSource.fetchAccounts() }
+        coVerify { bankDataSource.fetchAccounts(PaginationOptions(0, 20)) }
         result should beInstanceOf<Outcome.Error>()
     }
 
     @Test
     fun `verify list of accounts is success outcome`() = runBlockingTest {
-        coEvery { bankDataSource.fetchAccounts() } returns Outcome.Success(Mocks.accounts())
+        coEvery { bankDataSource.fetchAccounts(PaginationOptions(0, 20)) } returns Outcome.Success(Mocks.accounts())
 
         // when
-        val result = repository.accounts()
+        val result = repository.accounts(0, 20)
 
         // then
-        coVerify { bankDataSource.fetchAccounts() }
+        coVerify { bankDataSource.fetchAccounts(PaginationOptions(0, 20)) }
         result should beInstanceOf<Outcome.Success<AccountList>>()
     }
 
     @Test
     fun `verify list of blocks is error outcome`() = runBlockingTest {
-        coEvery { bankDataSource.fetchBlocks() } returns Outcome.Error("", IOException())
+        coEvery { bankDataSource.fetchBlocks(PaginationOptions(0, 20)) } returns Outcome.Error("", IOException())
 
         // when
-        val result = repository.blocks()
+        val result = repository.blocks(0, 20)
 
         // then
-        coVerify { bankDataSource.fetchBlocks() }
+        coVerify { bankDataSource.fetchBlocks(PaginationOptions(0, 20)) }
         result should beInstanceOf<Outcome.Error>()
     }
 
     @Test
     fun `verify list of blocks is success outcome`() = runBlockingTest {
-        coEvery { bankDataSource.fetchBlocks() } returns Outcome.Success(Mocks.blocks())
+        coEvery { bankDataSource.fetchBlocks(PaginationOptions(0, 20)) } returns Outcome.Success(Mocks.blocks())
 
         // when
-        val result = repository.blocks()
+        val result = repository.blocks(0, 20)
 
         // then
-        coVerify { bankDataSource.fetchBlocks() }
+        coVerify { bankDataSource.fetchBlocks(PaginationOptions(0, 20)) }
         result should beInstanceOf<Outcome.Success<BlockList>>()
     }
 
@@ -271,26 +272,26 @@ class BankRepositoryTest {
 
     @Test
     fun `verify list of invalid blocks is error outcome`() = runBlockingTest {
-        coEvery { bankDataSource.fetchInvalidBlocks() } returns Outcome.Error("", IOException())
+        coEvery { bankDataSource.fetchInvalidBlocks(PaginationOptions(0, 20)) } returns Outcome.Error("", IOException())
 
         // when
-        val result = repository.invalidBlocks()
+        val result = repository.invalidBlocks(0, 20)
 
         // then
-        coVerify { bankDataSource.fetchInvalidBlocks() }
+        coVerify { bankDataSource.fetchInvalidBlocks(PaginationOptions(0, 20)) }
         result should beInstanceOf<Outcome.Error>()
     }
 
     @Test
     fun `verify list of invalid blocks is success outcome`() = runBlockingTest {
-        coEvery { bankDataSource.fetchInvalidBlocks() } returns Outcome
+        coEvery { bankDataSource.fetchInvalidBlocks(PaginationOptions(0, 20)) } returns Outcome
             .Success(Mocks.invalidBlocks())
 
         // when
-        val result = repository.invalidBlocks()
+        val result = repository.invalidBlocks(0, 20)
 
         // then
-        coVerify { bankDataSource.fetchInvalidBlocks() }
+        coVerify { bankDataSource.fetchInvalidBlocks(PaginationOptions(0, 20)) }
         result should beInstanceOf<Outcome.Success<*>>()
     }
 
@@ -352,28 +353,28 @@ class BankRepositoryTest {
 
     @Test
     fun `verify fetch validator confirmation services returns success outomce`() = runBlockingTest {
-        coEvery { bankDataSource.fetchValidatorConfirmationServices() } returns Outcome.Success(Mocks.confirmationServicesList())
+        coEvery { bankDataSource.fetchValidatorConfirmationServices(PaginationOptions(0, 20)) } returns Outcome.Success(Mocks.confirmationServicesList())
 
         // when
-        val result = repository.validatorConfirmationServices()
+        val result = repository.validatorConfirmationServices(0, 20)
 
         // then
-        coVerify { bankDataSource.fetchValidatorConfirmationServices() }
+        coVerify { bankDataSource.fetchValidatorConfirmationServices(PaginationOptions(0, 20)) }
         result should beInstanceOf<Outcome.Success<ConfirmationServicesList>>()
     }
 
     @Test
     fun `verify fetch validator confirmation services returns error outcome`() = runBlockingTest {
-        coEvery { bankDataSource.fetchValidatorConfirmationServices() } returns Outcome.Error(
+        coEvery { bankDataSource.fetchValidatorConfirmationServices(PaginationOptions(0, 20)) } returns Outcome.Error(
             "Failed to fetch validator confirmation services",
             IOException()
         )
 
         // when
-        val result = repository.validatorConfirmationServices()
+        val result = repository.validatorConfirmationServices(0, 20)
 
         // then
-        coVerify { bankDataSource.fetchValidatorConfirmationServices() }
+        coVerify { bankDataSource.fetchValidatorConfirmationServices(PaginationOptions(0, 20)) }
         result should beInstanceOf<Outcome.Error>()
     }
 

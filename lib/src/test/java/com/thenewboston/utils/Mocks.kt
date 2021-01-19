@@ -36,13 +36,13 @@ import kotlinx.datetime.LocalDateTime
 
 object Mocks {
 
-    fun banks() = BankList(
-        count = 2,
-        banks = listOf(bank(), bank())
+    fun banks(pagination: PaginationOptions = PaginationOptions(0, 20)) = BankList(
+        count = 30,
+        banks = PaginationResult<Bank>(pagination.limit, bank()).toList()
     )
 
     fun emptyBanks() = BankList(
-        count = 0,
+        count = 30,
         banks = emptyList()
     )
 
@@ -90,11 +90,11 @@ object Mocks {
         0
     )
 
-    fun validators() = ValidatorList(
-        count = 1,
+    fun validators(pagination: PaginationOptions = PaginationOptions(0, 20)) = ValidatorList(
+        count = 30,
         previous = null,
         next = null,
-        results = listOf(validator(), validator())
+        results = PaginationResult<Validator>(pagination.limit, validator()).toList()
     )
 
     fun emptyValidators() = ValidatorList(
@@ -161,11 +161,11 @@ object Mocks {
         signature = ""
     )
 
-    fun blocks() = BlockList(
-        count = 1,
+    fun blocks(pagination: PaginationOptions = PaginationOptions(0, 20)) = BlockList(
+        count = 30,
         previous = null,
         next = null,
-        blocks = listOf(block(), block())
+        blocks = PaginationResult<Block>(pagination.limit, block()).toList()
     )
 
     fun emptyBlocks() = BlockList(
@@ -182,11 +182,11 @@ object Mocks {
         recipient = "String"
     )
 
-    fun bankTransactions() = BankTransactionList(
-        count = 1,
+    fun bankTransactions(pagination: PaginationOptions = PaginationOptions(0, 20)) = BankTransactionList(
+        count = 30,
         next = null,
         previous = null,
-        bankTransactions = listOf(bankTransaction(), bankTransaction())
+        PaginationResult<BankTransactions>(pagination.limit, bankTransaction()).toList()
     )
 
     fun emptyBankTransactions() = BankTransactionList(
@@ -196,11 +196,11 @@ object Mocks {
         bankTransactions = emptyList()
     )
 
-    fun accounts() = AccountList(
-        count = 1,
+    fun accounts(pagination: PaginationOptions = PaginationOptions(0, 20)) = AccountList(
+        count = 30,
         previous = null,
         next = null,
-        results = listOf(account(), account())
+        results = PaginationResult<Account>(pagination.limit, account()).toList()
     )
 
     fun emptyAccounts() = AccountList(
@@ -226,11 +226,11 @@ object Mocks {
         trust = 0.00
     )
 
-    fun invalidBlocks() = InvalidBlockList(
-        count = 2,
+    fun invalidBlocks(pagination: PaginationOptions = PaginationOptions(0, 20)) = InvalidBlockList(
+        count = 30,
         previous = null,
         next = null,
-        results = listOf(invalidBlock(), invalidBlock())
+        results = PaginationResult<InvalidBlock>(pagination.limit, invalidBlock()).toList()
     )
 
     fun emptyInvalidBlocks() = InvalidBlockList(
@@ -299,11 +299,11 @@ object Mocks {
         signature = Some.signature
     )
 
-    fun confirmationServicesList() = ConfirmationServicesList(
-        1,
+    fun confirmationServicesList(pagination: PaginationOptions = PaginationOptions(0, 20)) = ConfirmationServicesList(
+        30,
         null,
         null,
-        listOf(confirmationServices())
+        PaginationResult<ConfirmationServices>(pagination.limit, confirmationServices()).toList()
     )
 
     fun emptyConfirmationServicesList() = ConfirmationServicesList(
