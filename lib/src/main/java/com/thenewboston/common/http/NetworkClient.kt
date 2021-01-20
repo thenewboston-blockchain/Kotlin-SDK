@@ -1,9 +1,10 @@
 package com.thenewboston.common.http
 
-import io.ktor.client.HttpClient
-import io.ktor.util.KtorExperimentalAPI
+import io.ktor.client.*
+import io.ktor.util.*
+import javax.inject.Inject
 
-class NetworkClient(
+class NetworkClient @Inject constructor(
     private val client: HttpClient
 ) {
 
