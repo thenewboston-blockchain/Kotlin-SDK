@@ -49,7 +49,7 @@ class GetDataSource @Inject constructor(private val networkClient: NetworkClient
         }
     }
 
-    suspend fun doFetchValidators(pagination: PaginationOptions): Outcome<ValidatorList> {
+    suspend fun validators(pagination: PaginationOptions): Outcome<ValidatorList> {
         val endpoint = BankAPIEndpoints.VALIDATORS_ENDPOINT + pagination.toQuery()
         val validators = networkClient.defaultClient.get<ValidatorList>(endpoint)
 
@@ -59,7 +59,7 @@ class GetDataSource @Inject constructor(private val networkClient: NetworkClient
         }
     }
 
-    suspend fun doFetchValidator(nodeIdentifier: String): Outcome<Validator> {
+    suspend fun validator(nodeIdentifier: String): Outcome<Validator> {
         val validatorsEndpoint = BankAPIEndpoints.VALIDATORS_ENDPOINT
         val urlSuffix = "$validatorsEndpoint/$nodeIdentifier"
         val response = networkClient.defaultClient.get<Validator>(urlSuffix)
@@ -93,7 +93,7 @@ class GetDataSource @Inject constructor(private val networkClient: NetworkClient
         }
     }
 
-    suspend fun getInvalidBlocks(pagination: PaginationOptions): Outcome<InvalidBlockList> {
+    suspend fun invalidBlocks(pagination: PaginationOptions): Outcome<InvalidBlockList> {
         val endpoint = BankAPIEndpoints.INVALID_BLOCKS_ENDPOINT + pagination.toQuery()
         val invalidBlocks = networkClient.defaultClient
             .get<InvalidBlockList>(endpoint)
@@ -107,7 +107,7 @@ class GetDataSource @Inject constructor(private val networkClient: NetworkClient
         }
     }
 
-    suspend fun getValidatorConfirmationServices(pagination: PaginationOptions): Outcome<ConfirmationServicesList> {
+    suspend fun validatorConfirmationServices(pagination: PaginationOptions): Outcome<ConfirmationServicesList> {
         val endpoint = BankAPIEndpoints.VALIDATOR_CONFIRMATION_SERVICES_ENDPOINT + pagination.toQuery()
         val response = networkClient.defaultClient.get<ConfirmationServicesList>(endpoint)
 
@@ -120,7 +120,7 @@ class GetDataSource @Inject constructor(private val networkClient: NetworkClient
         }
     }
 
-    suspend fun getClean(): Outcome<Clean> {
+    suspend fun clean(): Outcome<Clean> {
         val response = networkClient.defaultClient.get<Clean>(BankAPIEndpoints.CLEAN_ENDPOINT)
 
         return when {
@@ -132,7 +132,7 @@ class GetDataSource @Inject constructor(private val networkClient: NetworkClient
         }
     }
 
-    suspend fun getCrawl(): Outcome<Crawl> {
+    suspend fun crawl(): Outcome<Crawl> {
         val response = networkClient.defaultClient.get<Crawl>(BankAPIEndpoints.CRAWL_ENDPOINT)
 
         return when {

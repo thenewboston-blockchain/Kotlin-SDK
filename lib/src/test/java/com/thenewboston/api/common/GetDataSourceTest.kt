@@ -104,7 +104,7 @@ class GetDataSourceTest {
         @Test
         fun `should fetch list of 20 validators successfully`() = runBlockingTest {
             // when
-            val response = getDataSource.doFetchValidators(PaginationOptions(20, 20))
+            val response = getDataSource.validators(PaginationOptions(20, 20))
 
             // then
             check(response is Outcome.Success)
@@ -116,7 +116,7 @@ class GetDataSourceTest {
         @Test
         fun `should fetch list of 30 validators successfully`() = runBlockingTest {
             // when
-            val response = getDataSource.doFetchValidators(PaginationOptions(20, 20))
+            val response = getDataSource.validators(PaginationOptions(20, 20))
 
             // then
             check(response is Outcome.Success)
@@ -132,7 +132,7 @@ class GetDataSourceTest {
                 "6871913581c3e689c9f39853a77e7263a96fd38596e9139f40a367e28364da53"
 
             // when
-            val body = getDataSource.doFetchValidator(nodeIdentifier)
+            val body = getDataSource.validator(nodeIdentifier)
 
             // then
             check(body is Outcome.Success)
@@ -182,7 +182,7 @@ class GetDataSourceTest {
 
         @Test
         fun `test fetch list of 20 invalid blocks successfully`() = runBlockingTest {
-            val response = getDataSource.getInvalidBlocks(PaginationOptions(20, 20))
+            val response = getDataSource.invalidBlocks(PaginationOptions(20, 20))
 
             check(response is Outcome.Success)
             response.value.results.shouldNotBeEmpty()
@@ -192,7 +192,7 @@ class GetDataSourceTest {
 
         @Test
         fun `test fetch list of 30 invalid blocks successfully`() = runBlockingTest {
-            val response = getDataSource.getInvalidBlocks(PaginationOptions(20, 20))
+            val response = getDataSource.invalidBlocks(PaginationOptions(20, 20))
 
             check(response is Outcome.Success)
             response.value.results.shouldNotBeEmpty()
@@ -202,7 +202,7 @@ class GetDataSourceTest {
 
         @Test
         fun `test fetch list of 20 validator confirmation services successfully`() = runBlockingTest {
-            val response = getDataSource.getValidatorConfirmationServices(PaginationOptions(20, 20))
+            val response = getDataSource.validatorConfirmationServices(PaginationOptions(20, 20))
 
             check(response is Outcome.Success)
             response.value.services.shouldNotBeEmpty()
@@ -212,7 +212,7 @@ class GetDataSourceTest {
 
         @Test
         fun `test fetch list of 30 validator confirmation services successfully`() = runBlockingTest {
-            val response = getDataSource.getValidatorConfirmationServices(PaginationOptions(20, 20))
+            val response = getDataSource.validatorConfirmationServices(PaginationOptions(20, 20))
 
             check(response is Outcome.Success)
             response.value.services.shouldNotBeEmpty()
@@ -222,7 +222,7 @@ class GetDataSourceTest {
 
         @Test
         fun `should fetch clean successfully`() = runBlockingTest {
-            val response = getDataSource.getClean()
+            val response = getDataSource.clean()
 
             check(response is Outcome.Success)
             response.value.cleanStatus.shouldNotBeEmpty()
@@ -230,7 +230,7 @@ class GetDataSourceTest {
 
         @Test
         fun `should fetch crawl successfully`() = runBlockingTest {
-            val response = getDataSource.getCrawl()
+            val response = getDataSource.crawl()
 
             check(response is Outcome.Success)
             response.value.crawlStatus.shouldNotBeEmpty()
@@ -250,7 +250,7 @@ class GetDataSourceTest {
         @Test
         fun `should return error outcome for empty validator confirmation services`() = runBlockingTest {
             // when
-            val response = getDataSource.getValidatorConfirmationServices(Mocks.paginationOptionsDefault())
+            val response = getDataSource.validatorConfirmationServices(Mocks.paginationOptionsDefault())
 
             // then
             check(response is Outcome.Error)
@@ -283,7 +283,7 @@ class GetDataSourceTest {
         @Test
         fun `should return error outcome for empty validators`() = runBlockingTest {
             // when
-            val response = getDataSource.doFetchValidators(Mocks.paginationOptionsDefault())
+            val response = getDataSource.validators(Mocks.paginationOptionsDefault())
 
             // then
             check(response is Outcome.Error)
@@ -305,7 +305,7 @@ class GetDataSourceTest {
         @Test
         fun `should return error outcome for empty invalid blocks`() = runBlockingTest {
             // when
-            val response = getDataSource.getInvalidBlocks(Mocks.paginationOptionsDefault())
+            val response = getDataSource.invalidBlocks(Mocks.paginationOptionsDefault())
 
             // then
             check(response is Outcome.Error)
@@ -327,7 +327,7 @@ class GetDataSourceTest {
         @Test
         fun `should return error outcome for empty clean process`() = runBlockingTest {
             // when
-            val response = getDataSource.getClean()
+            val response = getDataSource.clean()
 
             // then
             check(response is Outcome.Error)
@@ -338,13 +338,12 @@ class GetDataSourceTest {
         @Test
         fun `should return error outcome for empty crawling process`() = runBlockingTest {
             // when
-            val response = getDataSource.getCrawl()
+            val response = getDataSource.crawl()
 
             // then
             check(response is Outcome.Error)
             response.cause should beInstanceOf<IOException>()
             response.message shouldBe "The network crawling process is not successful"
         }
-
     }
 }

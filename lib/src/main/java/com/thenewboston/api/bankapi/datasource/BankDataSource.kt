@@ -51,12 +51,12 @@ class BankDataSource @Inject constructor(
     )
 
     suspend fun fetchValidators(pagination: PaginationOptions): Outcome<ValidatorList> = makeApiCall(
-        call = { getDataSource.doFetchValidators(pagination) },
+        call = { getDataSource.validators(pagination) },
         errorMessage = "Could not fetch list of validators"
     )
 
     suspend fun fetchValidator(nodeIdentifier: String): Outcome<Validator> = makeApiCall(
-        call = { getDataSource.doFetchValidator(nodeIdentifier) },
+        call = { getDataSource.validator(nodeIdentifier) },
         errorMessage = "Could not fetch validator with NID $nodeIdentifier"
     )
 
@@ -81,7 +81,7 @@ class BankDataSource @Inject constructor(
     )
 
     suspend fun fetchInvalidBlocks(pagination: PaginationOptions): Outcome<InvalidBlockList> = makeApiCall(
-        call = { getDataSource.getInvalidBlocks(pagination) },
+        call = { getDataSource.invalidBlocks(pagination) },
         errorMessage = "Could not fetch list of invalid blocks"
     )
 
@@ -96,12 +96,12 @@ class BankDataSource @Inject constructor(
     )
 
     suspend fun fetchValidatorConfirmationServices(pagination: PaginationOptions) = makeApiCall(
-        call = { getDataSource.getValidatorConfirmationServices(pagination) },
+        call = { getDataSource.validatorConfirmationServices(pagination) },
         errorMessage = "An error occurred while fetching validator confirmation services"
     )
 
     suspend fun sendValidatorConfirmationServices(request: PostConfirmationServicesRequest) = makeApiCall(
-        call = { postDataSource.doSendValidatorConfirmationServices(request) },
+        call = { postDataSource.doSendConfirmationServices(request) },
         errorMessage = "An error occurred while sending validator confirmation services"
     )
 
@@ -111,12 +111,12 @@ class BankDataSource @Inject constructor(
     )
 
     suspend fun fetchClean() = makeApiCall(
-        call = { getDataSource.getClean() },
+        call = { getDataSource.clean() },
         errorMessage = "Failed to update the network"
     )
 
     suspend fun fetchCrawl() = makeApiCall(
-        call = { getDataSource.getCrawl() },
+        call = { getDataSource.crawl() },
         errorMessage = "An error occurred while sending crawl request"
     )
 
@@ -131,7 +131,7 @@ class BankDataSource @Inject constructor(
     )
 
     suspend fun sendCrawl(request: PostCrawlRequest): Outcome<Crawl> = makeApiCall(
-        call = { postDataSource.doSendCrawl(request)},
+        call = { postDataSource.doSendCrawl(request) },
         errorMessage = "An error occurred while sending the crawl request"
     )
 }

@@ -263,8 +263,7 @@ object Mocks {
     fun internalServerError() = BankAPIError(500, "Internal Server Error")
 
     fun trustRequest(trust: Double = Some.trust): UpdateTrustRequest {
-        val signature =
-            "93952df29ae3885fd9c9f88721314236bdb53ca5632b2959dcf5cf3c38cb8b96ca57ff84c5337eb164f803237f901abcb0c41a9f71e14aa2fb3159c7ad7a7509"
+        val signature = "93952df29ae3885fd9c9f88721314236bdb53ca5632b2959dcf5cf3c38cb8b96ca57ff84c5337eb164f803237f901abcb0c41a9f71e14aa2fb3159c7ad7a7509"
         val nodeIdentifier = "35f4c988f425809ca7f5d0b319cdf8f7d7aba1b064fd0efc85d61fa0f4d05145"
         return UpdateTrustRequest(
             TrustMessage(trust),

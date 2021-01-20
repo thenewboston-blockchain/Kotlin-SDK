@@ -4,7 +4,6 @@ import com.thenewboston.api.common.GetDataSource
 import com.thenewboston.api.common.PatchDataSource
 import com.thenewboston.api.common.PostDataSource
 import com.thenewboston.common.http.Outcome
-import com.thenewboston.utils.BankApiMockEngine
 import com.thenewboston.utils.Mocks
 import com.thenewboston.utils.PaginationOptions
 import com.thenewboston.utils.Some
@@ -67,7 +66,8 @@ class BankDataSourceTest {
 
             @Test
             fun `should fetch list of 20 available banks`() = runBlockingTest {
-                coEvery { getDataSource.banks(paginationTwenty) } returns Outcome.Success(Mocks.banks(paginationTwenty))
+                val value = Mocks.banks(paginationTwenty)
+                coEvery { getDataSource.banks(paginationTwenty) } returns Outcome.Success(value)
 
                 val response = bankDataSource.fetchBanks(paginationTwenty)
 
@@ -79,7 +79,8 @@ class BankDataSourceTest {
 
             @Test
             fun `should fetch list of 30 available banks`() = runBlockingTest {
-                coEvery { getDataSource.banks(paginationThirty) } returns Outcome.Success(Mocks.banks(paginationThirty))
+                val value = Mocks.banks(paginationThirty)
+                coEvery { getDataSource.banks(paginationThirty) } returns Outcome.Success(value)
 
                 val response = bankDataSource.fetchBanks(paginationThirty)
 
@@ -101,7 +102,8 @@ class BankDataSourceTest {
 
             @Test
             fun `should fetch list of 20 available bank transactions`() = runBlockingTest {
-                coEvery { getDataSource.bankTransactions(paginationTwenty) } returns Outcome.Success(Mocks.bankTransactions(paginationTwenty))
+                val value = Mocks.bankTransactions(paginationTwenty)
+                coEvery { getDataSource.bankTransactions(paginationTwenty) } returns Outcome.Success(value)
 
                 val response = bankDataSource.fetchBankTransactions(paginationTwenty)
 
@@ -113,7 +115,8 @@ class BankDataSourceTest {
 
             @Test
             fun `should fetch list of 30 available bank transactions`() = runBlockingTest {
-                coEvery { getDataSource.bankTransactions(paginationThirty) } returns Outcome.Success(Mocks.bankTransactions(paginationTwenty))
+                val value = Mocks.bankTransactions(paginationTwenty)
+                coEvery { getDataSource.bankTransactions(paginationThirty) } returns Outcome.Success(value)
 
                 val response = bankDataSource.fetchBankTransactions(paginationThirty)
 
@@ -125,7 +128,8 @@ class BankDataSourceTest {
 
             @Test
             fun `should fetch list of 20 validators successfully`() = runBlockingTest {
-                coEvery { getDataSource.doFetchValidators(paginationTwenty) } returns Outcome.Success(Mocks.validators(paginationTwenty))
+                val value = Mocks.validators(paginationTwenty)
+                coEvery { getDataSource.validators(paginationTwenty) } returns Outcome.Success(value)
                 // when
                 val response = bankDataSource.fetchValidators(paginationTwenty)
 
@@ -138,7 +142,8 @@ class BankDataSourceTest {
 
             @Test
             fun `should fetch list of 30 validators successfully`() = runBlockingTest {
-                coEvery { getDataSource.doFetchValidators(paginationThirty) } returns Outcome.Success(Mocks.validators(paginationThirty))
+                val value = Mocks.validators(paginationThirty)
+                coEvery { getDataSource.validators(paginationThirty) } returns Outcome.Success(value)
 
                 // when
                 val response = bankDataSource.fetchValidators(paginationThirty)
@@ -156,7 +161,7 @@ class BankDataSourceTest {
                 val nodeIdentifier =
                     "6871913581c3e689c9f39853a77e7263a96fd38596e9139f40a367e28364da53"
 
-                coEvery { getDataSource.doFetchValidator(nodeIdentifier) } returns Outcome.Success(Mocks.validator())
+                coEvery { getDataSource.validator(nodeIdentifier) } returns Outcome.Success(Mocks.validator())
 
                 // when
                 val response = bankDataSource.fetchValidator(nodeIdentifier)
@@ -169,7 +174,8 @@ class BankDataSourceTest {
 
             @Test
             fun `should fetch list of 20 accounts successfully`() = runBlockingTest {
-                coEvery { getDataSource.accounts(paginationTwenty) } returns Outcome.Success(Mocks.accounts(paginationTwenty))
+                val value = Mocks.accounts(paginationTwenty)
+                coEvery { getDataSource.accounts(paginationTwenty) } returns Outcome.Success(value)
 
                 val response = bankDataSource.fetchAccounts(paginationTwenty)
 
@@ -181,7 +187,8 @@ class BankDataSourceTest {
 
             @Test
             fun `should fetch list of 30 accounts successfully`() = runBlockingTest {
-                coEvery { getDataSource.accounts(paginationThirty) } returns Outcome.Success(Mocks.accounts(paginationThirty))
+                val value = Mocks.accounts(paginationThirty)
+                coEvery { getDataSource.accounts(paginationThirty) } returns Outcome.Success(value)
 
                 val response = bankDataSource.fetchAccounts(paginationThirty)
 
@@ -193,7 +200,8 @@ class BankDataSourceTest {
 
             @Test
             fun `should fetch list of 20 blocks successfully`() = runBlockingTest {
-                coEvery { getDataSource.blocks(paginationTwenty) } returns Outcome.Success(Mocks.blocks(paginationTwenty))
+                val value = Mocks.blocks(paginationTwenty)
+                coEvery { getDataSource.blocks(paginationTwenty) } returns Outcome.Success(value)
 
                 val response = bankDataSource.fetchBlocks(paginationTwenty)
 
@@ -205,7 +213,8 @@ class BankDataSourceTest {
 
             @Test
             fun `should fetch list of 30 blocks successfully`() = runBlockingTest {
-                coEvery { getDataSource.blocks(paginationThirty) } returns Outcome.Success(Mocks.blocks(paginationThirty))
+                val value = Mocks.blocks(paginationThirty)
+                coEvery { getDataSource.blocks(paginationThirty) } returns Outcome.Success(value)
 
                 val response = bankDataSource.fetchBlocks(paginationThirty)
 
@@ -217,7 +226,8 @@ class BankDataSourceTest {
 
             @Test
             fun `test fetch list of 20 invalid blocks successfully`() = runBlockingTest {
-                coEvery { getDataSource.getInvalidBlocks(paginationTwenty) } returns Outcome.Success(Mocks.invalidBlocks(paginationTwenty))
+                val value = Mocks.invalidBlocks(paginationTwenty)
+                coEvery { getDataSource.invalidBlocks(paginationTwenty) } returns Outcome.Success(value)
 
                 val response = bankDataSource.fetchInvalidBlocks(paginationTwenty)
 
@@ -229,7 +239,8 @@ class BankDataSourceTest {
 
             @Test
             fun `test fetch list of 30 invalid blocks successfully`() = runBlockingTest {
-                coEvery { getDataSource.getInvalidBlocks(paginationThirty) } returns Outcome.Success(Mocks.invalidBlocks(paginationThirty))
+                val value = Mocks.invalidBlocks(paginationThirty)
+                coEvery { getDataSource.invalidBlocks(paginationThirty) } returns Outcome.Success(value)
 
                 val response = bankDataSource.fetchInvalidBlocks(paginationThirty)
 
@@ -241,7 +252,8 @@ class BankDataSourceTest {
 
             @Test
             fun `test fetch list of 20 validator confirmation services successfully`() = runBlockingTest {
-                coEvery { getDataSource.getValidatorConfirmationServices(paginationTwenty) } returns Outcome.Success(Mocks.confirmationServicesList(paginationTwenty))
+                val value = Mocks.confirmationServicesList(paginationTwenty)
+                coEvery { getDataSource.validatorConfirmationServices(paginationTwenty) } returns Outcome.Success(value)
 
                 val response = bankDataSource.fetchValidatorConfirmationServices(paginationTwenty)
 
@@ -253,7 +265,7 @@ class BankDataSourceTest {
 
             @Test
             fun `test fetch list of 30 validator confirmation services successfully`() = runBlockingTest {
-                coEvery { getDataSource.getValidatorConfirmationServices(paginationThirty) } returns Outcome.Success(Mocks.confirmationServicesList(paginationThirty))
+                coEvery { getDataSource.validatorConfirmationServices(paginationThirty) } returns Outcome.Success(Mocks.confirmationServicesList(paginationThirty))
 
                 val response = bankDataSource.fetchValidatorConfirmationServices(paginationThirty)
 
@@ -265,7 +277,7 @@ class BankDataSourceTest {
 
             @Test
             fun `should fetch clean successfully`() = runBlockingTest {
-                coEvery { getDataSource.getClean() } returns Outcome.Success(Mocks.cleanSuccess())
+                coEvery { getDataSource.clean() } returns Outcome.Success(Mocks.cleanSuccess())
 
                 val response = bankDataSource.fetchClean()
 
@@ -275,7 +287,7 @@ class BankDataSourceTest {
 
             @Test
             fun `should fetch crawl successfully`() = runBlockingTest {
-                coEvery { getDataSource.getCrawl() } returns Outcome.Success(Mocks.crawlSuccess())
+                coEvery { getDataSource.crawl() } returns Outcome.Success(Mocks.crawlSuccess())
 
                 val response = bankDataSource.fetchCrawl()
 
@@ -292,7 +304,8 @@ class BankDataSourceTest {
             @Test
             fun `should send validator confirmation successfully`() = runBlockingTest {
                 val request = Mocks.confirmationServiceRequest()
-                coEvery { postDataSource.doSendValidatorConfirmationServices(request) } returns Outcome.Success(Mocks.confirmationServiceWithMessage(request.message))
+                val value = Mocks.confirmationServiceWithMessage(request.message)
+                coEvery { postDataSource.doSendConfirmationServices(request) } returns Outcome.Success(value)
 
                 // when
                 val response = bankDataSource.sendValidatorConfirmationServices(request)
@@ -320,7 +333,8 @@ class BankDataSourceTest {
             fun `should return success with clean status `() = runBlockingTest {
                 // given
                 val request = Mocks.postCleanRequest()
-                coEvery { postDataSource.doSendClean(request) } returns Outcome.Success(Mocks.postClean(request.data.clean))
+                val value = Mocks.postClean(request.data.clean)
+                coEvery { postDataSource.doSendClean(request) } returns Outcome.Success(value)
 
                 // when
                 val response = bankDataSource.sendClean(request)
@@ -348,7 +362,8 @@ class BankDataSourceTest {
             fun `should return success with crawl status `() = runBlockingTest {
                 // given
                 val request = Mocks.postCrawlRequest()
-                coEvery { postDataSource.doSendCrawl(request) } returns Outcome.Success(Mocks.postCrawl(request.data.crawl))
+                val value = Mocks.postCrawl(request.data.crawl)
+                coEvery { postDataSource.doSendCrawl(request) } returns Outcome.Success(value)
 
                 // when
                 val response = bankDataSource.sendCrawl(request)
@@ -370,7 +385,8 @@ class BankDataSourceTest {
                 // given
                 val request = Mocks.trustRequest(3.14)
 
-                coEvery { patchDataSource.doUpdateBankTrust(request) } returns Outcome.Success(Mocks.bank(request.message.trust))
+                val value = Mocks.bank(request.message.trust)
+                coEvery { patchDataSource.doUpdateBankTrust(request) } returns Outcome.Success(value)
 
                 // when
                 val response = bankDataSource.updateBankTrust(request)
@@ -386,7 +402,8 @@ class BankDataSourceTest {
                 // given
                 val trustRequest = Mocks.trustRequest(17.99)
                 val accountNumber = Some.accountNumber
-                coEvery { patchDataSource.doUpdateAccount(accountNumber, trustRequest) } returns Outcome.Success(Mocks.account(trustRequest.message.trust))
+                val value = Mocks.account(trustRequest.message.trust)
+                coEvery { patchDataSource.doUpdateAccount(accountNumber, trustRequest) } returns Outcome.Success(value)
 
                 // when
                 val response = bankDataSource.updateAccountTrust(accountNumber, trustRequest)
@@ -402,7 +419,8 @@ class BankDataSourceTest {
                 // given
                 val request = Mocks.postInvalidBlockRequest()
 
-                coEvery { patchDataSource.doSendInvalidBlock(request) } returns Outcome.Success(Mocks.invalidBlock(request.message.blockIdentifier))
+                val value = Mocks.invalidBlock(request.message.blockIdentifier)
+                coEvery { patchDataSource.doSendInvalidBlock(request) } returns Outcome.Success(value)
 
                 // when
                 val response = bankDataSource.sendInvalidBlock(request)
@@ -418,7 +436,8 @@ class BankDataSourceTest {
                 // given
                 val request = Mocks.postBlockRequest()
 
-                coEvery { patchDataSource.doSendBlock(request) } returns Outcome.Success(Mocks.postBlock(request.message.balanceKey))
+                val value = Mocks.postBlock(request.message.balanceKey)
+                coEvery { patchDataSource.doSendBlock(request) } returns Outcome.Success(value)
 
                 // when
                 val response = bankDataSource.sendBlock(request)
@@ -490,7 +509,7 @@ class BankDataSourceTest {
                 val nodeIdentifier = "6871913581c3e689c9f39853a77e7263a96fd38596e9139f40a367e28364da53"
                 val message = "Could not fetch validator with NID $nodeIdentifier"
 
-                coEvery { getDataSource.doFetchValidator(nodeIdentifier) } returns Outcome.Error(message, IOException())
+                coEvery { getDataSource.validator(nodeIdentifier) } returns Outcome.Error(message, IOException())
 
                 val response = bankDataSource.fetchValidator(nodeIdentifier)
 
@@ -505,7 +524,7 @@ class BankDataSourceTest {
                 val nonExistentNodeIdentifier = "foo"
                 val message = "Could not fetch validator with NID $nonExistentNodeIdentifier"
 
-                coEvery { getDataSource.doFetchValidator("foo") } returns Outcome.Error(message, IOException())
+                coEvery { getDataSource.validator("foo") } returns Outcome.Error(message, IOException())
 
                 // when
                 val response = bankDataSource.fetchValidator(nonExistentNodeIdentifier)
@@ -547,7 +566,7 @@ class BankDataSourceTest {
             @Test
             fun `should return error outcome for list of invalid blocks IOException`() = runBlockingTest {
                 val message = "Could not fetch list of invalid blocks"
-                coEvery { getDataSource.getInvalidBlocks(pagination) } returns Outcome.Error(message, IOException())
+                coEvery { getDataSource.invalidBlocks(pagination) } returns Outcome.Error(message, IOException())
 
                 // when
                 val response = bankDataSource.fetchInvalidBlocks(pagination)
@@ -561,7 +580,7 @@ class BankDataSourceTest {
             @Test
             fun `should return error outcome for validator confirmation services`() = runBlockingTest {
                 val message = "An error occurred while fetching validator confirmation services"
-                coEvery { getDataSource.getValidatorConfirmationServices(pagination) } returns Outcome.Error(message, IOException())
+                coEvery { getDataSource.validatorConfirmationServices(pagination) } returns Outcome.Error(message, IOException())
 
                 // when
                 val response = bankDataSource.fetchValidatorConfirmationServices(pagination)
@@ -575,7 +594,7 @@ class BankDataSourceTest {
             @Test
             fun `should return error outcome for clean process`() = runBlockingTest {
                 val message = "Failed to update the network"
-                coEvery { getDataSource.getClean() } returns Outcome.Error(message, IOException())
+                coEvery { getDataSource.clean() } returns Outcome.Error(message, IOException())
 
                 // when
                 val response = bankDataSource.fetchClean()
@@ -589,7 +608,7 @@ class BankDataSourceTest {
             @Test
             fun `should return error outcome for crawling process`() = runBlockingTest {
                 val message = "An error occurred while sending crawl request"
-                coEvery { getDataSource.getCrawl() } returns Outcome.Error(message, IOException())
+                coEvery { getDataSource.crawl() } returns Outcome.Error(message, IOException())
                 // when
                 val response = bankDataSource.fetchCrawl()
 
@@ -610,7 +629,7 @@ class BankDataSourceTest {
                 // given
                 val request = Mocks.confirmationServiceRequest()
                 val message = "An error occurred while sending validator confirmation services"
-                coEvery { postDataSource.doSendValidatorConfirmationServices(request) } returns Outcome.Error(message, IOException())
+                coEvery { postDataSource.doSendConfirmationServices(request) } returns Outcome.Error(message, IOException())
 
                 // when
                 val response = bankDataSource.sendValidatorConfirmationServices(request)

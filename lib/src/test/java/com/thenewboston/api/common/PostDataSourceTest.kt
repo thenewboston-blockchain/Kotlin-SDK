@@ -52,7 +52,7 @@ class PostDataSourceTest {
             val request = Mocks.confirmationServiceRequest()
 
             // when
-            val response = postDataSource.doSendValidatorConfirmationServices(request)
+            val response = postDataSource.doSendConfirmationServices(request)
 
             // then
             check(response is Outcome.Success)
@@ -95,8 +95,6 @@ class PostDataSourceTest {
             response.value shouldNot beEmpty()
             response.value shouldBe "Successfully sent connection requests"
         }
-
-
     }
 
     @Nested
@@ -111,35 +109,34 @@ class PostDataSourceTest {
 
         @Test
         fun `should return error outcome for sending invalid request for confirmation services`() = runBlockingTest {
-                // given
-                val request = Mocks.confirmationServiceRequest()
+            // given
+            val request = Mocks.confirmationServiceRequest()
 
-                // when
-                val response = postDataSource.doSendValidatorConfirmationServices(request)
+            // when
+            val response = postDataSource.doSendConfirmationServices(request)
 
-                // then
-                check(response is Outcome.Error)
-                response.cause should beInstanceOf<IOException>()
-                val nodeIdentifier = request.nodeIdentifier
-                val message =
-                    "Received invalid response sending confirmation services with node identifier: $nodeIdentifier"
-                response.message shouldBe message
-            }
+            // then
+            check(response is Outcome.Error)
+            response.cause should beInstanceOf<IOException>()
+            val nodeIdentifier = request.nodeIdentifier
+            val message =
+                "Received invalid response sending confirmation services with node identifier: $nodeIdentifier"
+            response.message shouldBe message
+        }
 
         @Test
         fun `should return error outcome when receiving invalid response for sending clean`() = runBlockingTest {
-                // given
-                val request = Mocks.postCleanRequest()
+            // given
+            val request = Mocks.postCleanRequest()
 
-                // when
-                val response = postDataSource.doSendClean(request)
+            // when
+            val response = postDataSource.doSendClean(request)
 
-                // then
-                check(response is Outcome.Error)
-                response.cause should beInstanceOf<IOException>()
-                response.message shouldBe "Received invalid response when sending block with clean: ${request.data.clean}"
-            }
-
-
+            // then
+            check(response is Outcome.Error)
+            response.cause should beInstanceOf<IOException>()
+            val message = "Received invalid response when sending block with clean: ${request.data.clean}"
+            response.message shouldBe message
+        }
     }
 }

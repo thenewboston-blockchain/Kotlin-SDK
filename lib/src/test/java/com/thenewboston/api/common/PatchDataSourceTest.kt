@@ -104,8 +104,6 @@ class PatchDataSourceTest {
             response.value.id shouldNot beEmpty()
             response.value.balanceKey shouldBe request.message.balanceKey
         }
-
-
     }
 
     @Nested
@@ -147,7 +145,8 @@ class PatchDataSourceTest {
                 // then
                 check(response is Outcome.Error)
                 response.cause should beInstanceOf<IOException>()
-                response.message shouldBe "Received unexpected response when updating trust level of account $accountNumber"
+                val message = "Received unexpected response when updating trust level of account $accountNumber"
+                response.message shouldBe message
             }
 
         @Test
@@ -161,7 +160,9 @@ class PatchDataSourceTest {
             // then
             check(response is Outcome.Error)
             response.cause should beInstanceOf<IOException>()
-            response.message shouldBe "Received invalid response when sending invalid block with identifier ${request.message.blockIdentifier}"
+            val message =
+                "Received invalid response when sending invalid block with identifier ${request.message.blockIdentifier}"
+            response.message shouldBe message
         }
 
         @Test
@@ -176,8 +177,8 @@ class PatchDataSourceTest {
                 // then
                 check(response is Outcome.Error)
                 response.cause should beInstanceOf<IOException>()
-                response.message shouldBe "Received invalid response when sending block with balance key: ${request.message.balanceKey}"
+                val message = "Received invalid response when sending block with balance key: ${request.message.balanceKey}"
+                response.message shouldBe message
             }
-
     }
 }

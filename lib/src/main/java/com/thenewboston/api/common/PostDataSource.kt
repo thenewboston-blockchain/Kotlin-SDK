@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 class PostDataSource @Inject constructor(private val networkClient: NetworkClient) {
 
-    suspend fun doSendValidatorConfirmationServices(request: PostConfirmationServicesRequest): Outcome<ConfirmationServices> {
+    suspend fun doSendConfirmationServices(request: PostConfirmationServicesRequest): Outcome<ConfirmationServices> {
         val response = networkClient.defaultClient.post<ConfirmationServices> {
             url(BankAPIEndpoints.VALIDATOR_CONFIRMATION_SERVICES_ENDPOINT)
             body = request
