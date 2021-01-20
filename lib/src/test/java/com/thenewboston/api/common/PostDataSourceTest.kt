@@ -86,6 +86,20 @@ class PostDataSourceTest {
         }
 
         @Test
+        fun `should return success with crawl status `() = runBlockingTest {
+            // given
+            val request = Mocks.postCrawlRequest()
+
+            // when
+            val response = postDataSource.doSendCrawl(request)
+
+            // then
+            check(response is Outcome.Success)
+            response.value.crawlStatus shouldNot beEmpty()
+            response.value.crawlStatus shouldBe request.data.crawl
+        }
+
+        @Test
         fun `should send connection requests successfully`() = runBlockingTest {
             val request = Mocks.connectionRequest()
 
@@ -136,6 +150,21 @@ class PostDataSourceTest {
             check(response is Outcome.Error)
             response.cause should beInstanceOf<IOException>()
             val message = "Received invalid response when sending block with clean: ${request.data.clean}"
+            response.message shouldBe message
+        }
+
+        @Test
+        fun `should return error outcome when receiving invalid response for sending crawl`() = runBlockingTest {
+            // given
+            val request = Mocks.postCrawlRequest()
+
+            // when
+            val response = postDataSource.doSendCrawl(request)
+
+            // then
+            check(response is Outcome.Error)
+            response.cause should beInstanceOf<IOException>()
+            val message = "Received invalid response when sending block with crawl: ${request.data.crawl}"
             response.message shouldBe message
         }
     }
