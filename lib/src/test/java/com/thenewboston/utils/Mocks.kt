@@ -9,7 +9,6 @@ import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.blockdto.request.BlockMessage
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
-import com.thenewboston.data.dto.bankapi.clean.request.Data as cleanData
 import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.common.request.TrustMessage
@@ -18,7 +17,6 @@ import com.thenewboston.data.dto.bankapi.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.connectionrequestsdto.ConnectionRequest
 import com.thenewboston.data.dto.bankapi.connectionrequestsdto.ConnectionRequestMessage
-import com.thenewboston.data.dto.bankapi.crawl.request.Data as crawlData
 import com.thenewboston.data.dto.bankapi.crawl.request.PostCrawlRequest
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
@@ -33,6 +31,8 @@ import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.reques
 import com.thenewboston.data.dto.bankapi.validatordto.Validator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import kotlinx.datetime.LocalDateTime
+import com.thenewboston.data.dto.bankapi.clean.request.Data as cleanData
+import com.thenewboston.data.dto.bankapi.crawl.request.Data as crawlData
 
 object Mocks {
 
@@ -424,6 +424,12 @@ object Mocks {
         port = 80,
         protocol = "http"
     )
+
+    fun paginationOptionsDefault(): PaginationOptions = PaginationOptions(0, 20)
+
+    fun paginationOptionsTwenty(): PaginationOptions = PaginationOptions(20, 20)
+
+    fun paginationOptionsThirty(): PaginationOptions = PaginationOptions(0, 30)
 }
 
 // Sample values taken from docs, see https://thenewboston.com/bank-api/
