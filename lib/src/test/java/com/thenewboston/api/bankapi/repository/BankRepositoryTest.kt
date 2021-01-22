@@ -353,13 +353,15 @@ class BankRepositoryTest {
 
     @Test
     fun `verify fetch validator confirmation services returns success outomce`() = runBlockingTest {
-        coEvery { bankDataSource.fetchValidatorConfirmationServices(PaginationOptions(0, 20)) } returns Outcome.Success(Mocks.confirmationServicesList())
+        val pagination = PaginationOptions(0, 20)
+        val value = Mocks.confirmationServicesList()
+        coEvery { bankDataSource.fetchValidatorConfirmationServices(pagination) } returns Outcome.Success(value)
 
         // when
         val result = repository.validatorConfirmationServices(0, 20)
 
         // then
-        coVerify { bankDataSource.fetchValidatorConfirmationServices(PaginationOptions(0, 20)) }
+        coVerify { bankDataSource.fetchValidatorConfirmationServices(pagination) }
         result should beInstanceOf<Outcome.Success<ConfirmationServicesList>>()
     }
 
@@ -398,7 +400,8 @@ class BankRepositoryTest {
     @Test
     fun `verify send validator confirmation services returns error outcome`() = runBlockingTest {
         val request = Mocks.confirmationServiceRequest()
-        coEvery { bankDataSource.sendValidatorConfirmationServices(request) } returns Outcome.Error("An error occurred while sending validator confirmation services")
+        val message = "An error occurred while sending validator confirmation services"
+        coEvery { bankDataSource.sendValidatorConfirmationServices(request) } returns Outcome.Error(message)
 
         // when
         val result = repository.sendValidatorConfirmationServices(request)
@@ -411,7 +414,8 @@ class BankRepositoryTest {
     @Test
     fun `verify send upgrade notice returns success outcome`() = runBlockingTest {
         val request = Mocks.upgradeNoticeRequest()
-        coEvery { bankDataSource.sendUpgradeNotice(request) } returns Outcome.Success("Successfully sent upgrade notice")
+        val value = "Successfully sent upgrade notice"
+        coEvery { bankDataSource.sendUpgradeNotice(request) } returns Outcome.Success(value)
 
         // when
         val result = repository.sendUpgradeNotice(request)
@@ -497,7 +501,8 @@ class BankRepositoryTest {
     @Test
     fun `verify connection requests returns success outcome`() = runBlockingTest {
         val request = Mocks.connectionRequest()
-        coEvery { bankDataSource.sendConnectionRequests(request) } returns Outcome.Success("Successfully sent connection requests")
+        val message = "Successfully sent connection requests"
+        coEvery { bankDataSource.sendConnectionRequests(request) } returns Outcome.Success(message)
 
         repository.sendConnectionRequests(request) should beInstanceOf<Outcome.Success<String>>()
     }

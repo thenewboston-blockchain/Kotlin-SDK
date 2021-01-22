@@ -9,7 +9,6 @@ import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.blockdto.request.BlockMessage
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
-import com.thenewboston.data.dto.bankapi.clean.request.Data as cleanData
 import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.common.request.TrustMessage
@@ -18,7 +17,6 @@ import com.thenewboston.data.dto.bankapi.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.connectionrequestsdto.ConnectionRequest
 import com.thenewboston.data.dto.bankapi.connectionrequestsdto.ConnectionRequestMessage
-import com.thenewboston.data.dto.bankapi.crawl.request.Data as crawlData
 import com.thenewboston.data.dto.bankapi.crawl.request.PostCrawlRequest
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
@@ -33,6 +31,8 @@ import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.reques
 import com.thenewboston.data.dto.bankapi.validatordto.Validator
 import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
 import kotlinx.datetime.LocalDateTime
+import com.thenewboston.data.dto.bankapi.clean.request.Data as cleanData
+import com.thenewboston.data.dto.bankapi.crawl.request.Data as crawlData
 
 object Mocks {
 
@@ -263,8 +263,7 @@ object Mocks {
     fun internalServerError() = BankAPIError(500, "Internal Server Error")
 
     fun trustRequest(trust: Double = Some.trust): UpdateTrustRequest {
-        val signature =
-            "93952df29ae3885fd9c9f88721314236bdb53ca5632b2959dcf5cf3c38cb8b96ca57ff84c5337eb164f803237f901abcb0c41a9f71e14aa2fb3159c7ad7a7509"
+        val signature = "93952df29ae3885fd9c9f88721314236bdb53ca5632b2959dcf5cf3c38cb8b96ca57ff84c5337eb164f803237f901abcb0c41a9f71e14aa2fb3159c7ad7a7509"
         val nodeIdentifier = "35f4c988f425809ca7f5d0b319cdf8f7d7aba1b064fd0efc85d61fa0f4d05145"
         return UpdateTrustRequest(
             TrustMessage(trust),
@@ -424,6 +423,12 @@ object Mocks {
         port = 80,
         protocol = "http"
     )
+
+    fun paginationOptionsDefault(): PaginationOptions = PaginationOptions(0, 20)
+
+    fun paginationOptionsTwenty(): PaginationOptions = PaginationOptions(20, 20)
+
+    fun paginationOptionsThirty(): PaginationOptions = PaginationOptions(0, 30)
 }
 
 // Sample values taken from docs, see https://thenewboston.com/bank-api/

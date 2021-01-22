@@ -23,11 +23,15 @@ object BankAPIJsonMapper {
     const val CRAWL_ENDPOINT = "crawl"
     const val CONNECTION_REQUESTS_ENDPOINT = "connection_requests"
 
-    fun mapBanksToJson(offset: Int?, limit: Int?): String = Json.encodeToString(Mocks.banks(PaginationOptions(offset, limit)))
+    fun mapBanksToJson(offset: Int?, limit: Int?): String {
+        return Json.encodeToString(Mocks.banks(PaginationOptions(offset, limit)))
+    }
 
     fun mapEmptyBanksToJson(): String = Json.encodeToString(Mocks.emptyBanks())
 
-    fun mapAccountsToJson(offset: Int?, limit: Int?): String = Json.encodeToString(Mocks.accounts(PaginationOptions(offset, limit)))
+    fun mapAccountsToJson(offset: Int?, limit: Int?): String {
+        return Json.encodeToString(Mocks.accounts(PaginationOptions(offset, limit)))
+    }
 
     fun mapEmptyAccountsToJson(): String = Json.encodeToString(Mocks.emptyAccounts())
 
@@ -35,7 +39,9 @@ object BankAPIJsonMapper {
 
     fun mapEmptyAccountToJson(): String = Json.encodeToString(Mocks.emptyAccount())
 
-    fun mapBlocksToJson(offset: Int?, limit: Int?): String = Json.encodeToString(Mocks.blocks(PaginationOptions(offset, limit)))
+    fun mapBlocksToJson(offset: Int?, limit: Int?): String {
+        return Json.encodeToString(Mocks.blocks(PaginationOptions(offset, limit)))
+    }
 
     fun mapEmptyBlocksToJson(): String = Json.encodeToString(Mocks.emptyBlocks())
 
@@ -43,7 +49,9 @@ object BankAPIJsonMapper {
 
     fun mapEmptyBankDetailToJson(): String = Json.encodeToString(Mocks.emptyBankDetails())
 
-    fun mapValidatorsToJson(offset: Int?, limit: Int?): String = Json.encodeToString(Mocks.validators(PaginationOptions(offset, limit)))
+    fun mapValidatorsToJson(offset: Int?, limit: Int?): String {
+        return Json.encodeToString(Mocks.validators(PaginationOptions(offset, limit)))
+    }
 
     fun mapEmptyValidatorsToJson(): String = Json.encodeToString(Mocks.emptyValidators())
 
@@ -51,7 +59,9 @@ object BankAPIJsonMapper {
 
     fun mapEmptyValidatorToJson(): String = Json.encodeToString(Mocks.emptyValidator())
 
-    fun mapBankTransactionsToJson(offset: Int?, limit: Int?): String = Json.encodeToString(Mocks.bankTransactions(PaginationOptions(offset, limit)))
+    fun mapBankTransactionsToJson(offset: Int?, limit: Int?): String {
+        return Json.encodeToString(Mocks.bankTransactions(PaginationOptions(offset, limit)))
+    }
 
     fun mapEmptyBankTransactionsToJson(): String = Json.encodeToString(Mocks.emptyBankTransactions())
 
@@ -61,28 +71,38 @@ object BankAPIJsonMapper {
 
     fun mapInvalidBankToJson(): String = Json.encodeToString(Mocks.emptyBank())
 
-    fun mapInvalidBlocksToJson(offset: Int?, limit: Int?): String = Json.encodeToString(Mocks.invalidBlocks(PaginationOptions(offset, limit)))
+    fun mapInvalidBlocksToJson(offset: Int?, limit: Int?): String {
+        return Json.encodeToString(Mocks.invalidBlocks(PaginationOptions(offset, limit)))
+    }
 
     fun mapEmptyInvalidBlocksToJson(): String = Json.encodeToString(Mocks.emptyInvalidBlocks())
 
     fun mapInvalidBlockToJson(blockIdentifier: String): String =
         Json.encodeToString(Mocks.invalidBlock(blockIdentifier))
 
-    fun mapInvalidResponseForInvalidBlocksRequest(): String = Json.encodeToString(Mocks.emptyInvalidBlock())
+    fun mapInvalidResponseForInvalidBlocksRequest(): String {
+        return Json.encodeToString(Mocks.emptyInvalidBlock())
+    }
 
     fun mapBlockToJson(balanceKey: String): String = Json.encodeToString(Mocks.postBlock(balanceKey))
 
     fun mapBlockResponseForBlockRequest(): String = Json.encodeToString(Mocks.emptyBlock())
 
-    fun mapValidatorConfirmationServicesToJson(offset: Int?, limit: Int?): String = Json.encodeToString(Mocks.confirmationServicesList(PaginationOptions(offset, limit)))
+    fun mapValidatorConfirmationServicesToJson(offset: Int?, limit: Int?): String {
+        return Json.encodeToString(Mocks.confirmationServicesList(PaginationOptions(offset, limit)))
+    }
 
-    fun mapValidatorConfirmationServiceToJson(message: Message): String =
-        Json.encodeToString(Mocks.confirmationServiceWithMessage(message))
+    fun mapValidatorConfirmationServiceToJson(message: Message): String {
+        return Json.encodeToString(Mocks.confirmationServiceWithMessage(message))
+    }
 
-    fun mapEmptyValidatorConfirmationServicesToJson(): String =
-        Json.encodeToString(Mocks.emptyConfirmationServicesList())
+    fun mapEmptyValidatorConfirmationServicesToJson(): String {
+        return Json.encodeToString(Mocks.emptyConfirmationServicesList())
+    }
 
-    fun mapEmptyValidatorConfirmationServiceToJson(): String = Json.encodeToString(Mocks.emptyConfirmationServices())
+    fun mapEmptyValidatorConfirmationServiceToJson(): String {
+        return Json.encodeToString(Mocks.emptyConfirmationServices())
+    }
 
     fun mapCleanToJson(): String = Json.encodeToString(Mocks.cleanSuccess())
 
