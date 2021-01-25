@@ -1,6 +1,6 @@
 package com.thenewboston.data.dto.bankapi.bankdto.response
 
-import com.thenewboston.data.dto.bankapi.common.response.Bank
+import com.thenewboston.data.dto.common.response.Bank
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

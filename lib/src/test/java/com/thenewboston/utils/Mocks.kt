@@ -11,9 +11,9 @@ import com.thenewboston.data.dto.bankapi.blockdto.request.BlockMessage
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
 import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
-import com.thenewboston.data.dto.bankapi.common.request.TrustMessage
-import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
-import com.thenewboston.data.dto.bankapi.common.response.Bank
+import com.thenewboston.data.dto.common.request.TrustMessage
+import com.thenewboston.data.dto.common.request.UpdateTrustRequest
+import com.thenewboston.data.dto.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.connectionrequestsdto.ConnectionRequest
 import com.thenewboston.data.dto.bankapi.connectionrequestsdto.ConnectionRequestMessage
