@@ -33,6 +33,7 @@ import com.thenewboston.data.dto.common.response.ValidatorList
 import kotlinx.datetime.LocalDateTime
 import com.thenewboston.data.dto.bankapi.clean.request.Data as cleanData
 import com.thenewboston.data.dto.bankapi.crawl.request.Data as crawlData
+import com.thenewboston.data.dto.primaryvalidatorapi.configdto.PrimaryValidatorDetails
 
 object Mocks {
 
@@ -88,6 +89,38 @@ object Mocks {
         "",
         "",
         0
+    )
+
+    fun primaryValidatorDetails() = PrimaryValidatorDetails(
+        validator(),
+        Some.accountNumber,
+        Some.ipAddress,
+        Some.nodeIdentifier,
+        80,
+        "http",
+        "v1",
+        1,
+        "http://20.188.33.93/media/root_account_file.json",
+        "b2885f94cd099a8c5ba5355ff9cdd69252b4cad2541e32d20152702397722cf5",
+        "",
+        100,
+        "PRIMARY_VALIDATOR"
+    )
+
+    fun emptyPrimaryValidatorDetails() = PrimaryValidatorDetails(
+        emptyValidator(),
+        "",
+        "",
+        "",
+        null,
+        "",
+        "",
+        0,
+        "",
+        "",
+        "",
+        0,
+        "PRIMARY_VALIDATOR"
     )
 
     fun validators(pagination: PaginationOptions = PaginationOptions(0, 20)) = ValidatorList(
