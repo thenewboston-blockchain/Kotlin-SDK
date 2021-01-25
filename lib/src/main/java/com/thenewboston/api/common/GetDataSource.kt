@@ -11,8 +11,8 @@ import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
-import com.thenewboston.data.dto.bankapi.validatordto.Validator
-import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
+import com.thenewboston.data.dto.common.response.Validator
+import com.thenewboston.data.dto.common.response.ValidatorList
 import com.thenewboston.utils.BankAPIEndpoints
 import com.thenewboston.utils.ErrorMessages
 import com.thenewboston.utils.PaginationOptions

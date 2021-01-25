@@ -28,8 +28,8 @@ import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.Confir
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.Message
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
-import com.thenewboston.data.dto.bankapi.validatordto.Validator
-import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
+import com.thenewboston.data.dto.common.response.Validator
+import com.thenewboston.data.dto.common.response.ValidatorList
 import kotlinx.datetime.LocalDateTime
 import com.thenewboston.data.dto.bankapi.clean.request.Data as cleanData
 import com.thenewboston.data.dto.bankapi.crawl.request.Data as crawlData

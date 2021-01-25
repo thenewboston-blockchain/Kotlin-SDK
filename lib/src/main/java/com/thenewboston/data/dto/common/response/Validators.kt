@@ -1,4 +1,4 @@
-package com.thenewboston.data.dto.bankapi.validatordto
+package com.thenewboston.data.dto.common.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

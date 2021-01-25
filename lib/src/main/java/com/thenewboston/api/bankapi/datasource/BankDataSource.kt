@@ -22,8 +22,8 @@ import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.PostInvalidBlockRequest
 import com.thenewboston.data.dto.bankapi.upgradenoticedto.UpgradeNoticeRequest
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
-import com.thenewboston.data.dto.bankapi.validatordto.Validator
-import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
+import com.thenewboston.data.dto.common.response.Validator
+import com.thenewboston.data.dto.common.response.ValidatorList
 import com.thenewboston.utils.PaginationOptions
 import io.ktor.util.*
 import javax.inject.Inject
