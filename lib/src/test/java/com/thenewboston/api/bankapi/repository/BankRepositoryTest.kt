@@ -9,13 +9,13 @@ import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
-import com.thenewboston.data.dto.bankapi.common.response.Bank
+import com.thenewboston.data.dto.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServices
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
-import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
+import com.thenewboston.data.dto.common.response.ValidatorList
 import com.thenewboston.utils.Mocks
 import com.thenewboston.utils.PaginationOptions
 import com.thenewboston.utils.Some

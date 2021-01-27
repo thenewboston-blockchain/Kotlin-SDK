@@ -5,8 +5,8 @@ import com.thenewboston.common.http.Outcome
 import com.thenewboston.data.dto.bankapi.accountdto.response.Account
 import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
-import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
-import com.thenewboston.data.dto.bankapi.common.response.Bank
+import com.thenewboston.data.dto.common.request.UpdateTrustRequest
+import com.thenewboston.data.dto.common.response.Bank
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.PostInvalidBlockRequest
 import com.thenewboston.utils.BankAPIEndpoints

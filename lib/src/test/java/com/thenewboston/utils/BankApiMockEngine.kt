@@ -2,7 +2,7 @@ package com.thenewboston.utils
 
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
 import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
-import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
+import com.thenewboston.data.dto.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.crawl.request.PostCrawlRequest
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.PostInvalidBlockRequest
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.Message

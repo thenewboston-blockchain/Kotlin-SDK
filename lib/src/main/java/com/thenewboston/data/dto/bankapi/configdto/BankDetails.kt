@@ -1,6 +1,6 @@
 package com.thenewboston.data.dto.bankapi.configdto
 
-import com.thenewboston.data.dto.bankapi.validatordto.Validator
+import com.thenewboston.data.dto.common.response.Validator
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

@@ -11,9 +11,9 @@ import com.thenewboston.data.dto.bankapi.blockdto.request.BlockMessage
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
 import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
-import com.thenewboston.data.dto.bankapi.common.request.TrustMessage
-import com.thenewboston.data.dto.bankapi.common.request.UpdateTrustRequest
-import com.thenewboston.data.dto.bankapi.common.response.Bank
+import com.thenewboston.data.dto.common.request.TrustMessage
+import com.thenewboston.data.dto.common.request.UpdateTrustRequest
+import com.thenewboston.data.dto.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.connectionrequestsdto.ConnectionRequest
 import com.thenewboston.data.dto.bankapi.connectionrequestsdto.ConnectionRequestMessage
@@ -28,11 +28,12 @@ import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.Confir
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.Message
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
-import com.thenewboston.data.dto.bankapi.validatordto.Validator
-import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
+import com.thenewboston.data.dto.common.response.Validator
+import com.thenewboston.data.dto.common.response.ValidatorList
 import kotlinx.datetime.LocalDateTime
 import com.thenewboston.data.dto.bankapi.clean.request.Data as cleanData
 import com.thenewboston.data.dto.bankapi.crawl.request.Data as crawlData
+import com.thenewboston.data.dto.primaryvalidatorapi.configdto.PrimaryValidatorDetails
 
 object Mocks {
 
@@ -88,6 +89,38 @@ object Mocks {
         "",
         "",
         0
+    )
+
+    fun primaryValidatorDetails() = PrimaryValidatorDetails(
+        validator(),
+        Some.accountNumber,
+        Some.ipAddress,
+        Some.nodeIdentifier,
+        80,
+        "http",
+        "v1",
+        1,
+        "http://20.188.33.93/media/root_account_file.json",
+        "b2885f94cd099a8c5ba5355ff9cdd69252b4cad2541e32d20152702397722cf5",
+        "",
+        100,
+        "PRIMARY_VALIDATOR"
+    )
+
+    fun emptyPrimaryValidatorDetails() = PrimaryValidatorDetails(
+        emptyValidator(),
+        "",
+        "",
+        "",
+        null,
+        "",
+        "",
+        0,
+        "",
+        "",
+        "",
+        0,
+        ""
     )
 
     fun validators(pagination: PaginationOptions = PaginationOptions(0, 20)) = ValidatorList(

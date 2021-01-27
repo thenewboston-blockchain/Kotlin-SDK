@@ -3,6 +3,7 @@ package com.thenewboston.api.common
 import com.thenewboston.common.http.NetworkClient
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.utils.BankApiMockEngine
+import com.thenewboston.utils.PrimaryValidatorApiMockEngine
 import com.thenewboston.utils.ErrorMessages
 import com.thenewboston.utils.Mocks
 import com.thenewboston.utils.PaginationOptions
@@ -32,7 +33,8 @@ class GetDataSourceTest {
     @MockK
     lateinit var networkClient: NetworkClient
 
-    private val mockEngine = BankApiMockEngine()
+    private val bankMockEngine = BankApiMockEngine()
+    private val primaryMockEngine = PrimaryValidatorApiMockEngine()
 
     private lateinit var getDataSource: GetDataSource
 
@@ -44,13 +46,13 @@ class GetDataSourceTest {
     }
 
     @Nested
-    @DisplayName("Given successful request")
+    @DisplayName("Bank: Given successful request")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class GivenSucceedingRequest {
 
         @BeforeEach
         fun setup() {
-            every { networkClient.defaultClient } returns mockEngine.getSuccess()
+            every { networkClient.defaultClient } returns bankMockEngine.getSuccess()
         }
 
         @Test
@@ -238,13 +240,13 @@ class GetDataSourceTest {
     }
 
     @Nested
-    @DisplayName("Given empty or invalid response body")
+    @DisplayName("Bank: Given empty or invalid response body")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class GivenInvalidResponseBody {
 
         @BeforeEach
         fun given() {
-            every { networkClient.defaultClient } returns mockEngine.getEmptySuccess()
+            every { networkClient.defaultClient } returns bankMockEngine.getEmptySuccess()
         }
 
         @Test
@@ -344,6 +346,50 @@ class GetDataSourceTest {
             check(response is Outcome.Error)
             response.cause should beInstanceOf<IOException>()
             response.message shouldBe "The network crawling process is not successful"
+        }
+    }
+
+    @Nested
+    @DisplayName("Primary Validator: Given successful request")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class PrimaryGivenSucceedingRequest {
+
+        @BeforeEach
+        fun setup() {
+            every { networkClient.defaultClient } returns primaryMockEngine.getSuccess()
+        }
+
+        @Test
+        fun `should fetch primary validator details from config`() = runBlockingTest {
+            val response = getDataSource.primaryValidatorDetails()
+
+            check(response is Outcome.Success)
+            response.value.nodeType shouldBe "PRIMARY_VALIDATOR"
+            response.value.rootAccountFile shouldBe "http://20.188.33.93/media/root_account_file.json"
+            response.value.ipAddress should contain("172.19.0.13")
+        }
+    }
+
+    @Nested
+    @DisplayName("Primary Validator: Given empty or invalid response body")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class PrimaryGivenInvalidResponseBody {
+
+        @BeforeEach
+        fun given() {
+            every { networkClient.defaultClient } returns primaryMockEngine.getEmptySuccess()
+        }
+
+        @Test
+        fun `should return error outcome for primary validator details IOException`() = runBlockingTest {
+
+            val message = "Failed to retrieve primary validator details"
+
+            val response = getDataSource.primaryValidatorDetails()
+
+            check(response is Outcome.Error)
+            response.cause should beInstanceOf<IOException>()
+            response.message shouldBe message
         }
     }
 }

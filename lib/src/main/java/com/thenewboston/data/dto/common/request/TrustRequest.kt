@@ -1,4 +1,4 @@
-package com.thenewboston.data.dto.bankapi.common.request
+package com.thenewboston.data.dto.common.request
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

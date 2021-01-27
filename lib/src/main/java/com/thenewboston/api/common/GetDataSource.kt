@@ -11,11 +11,13 @@ import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
-import com.thenewboston.data.dto.bankapi.validatordto.Validator
-import com.thenewboston.data.dto.bankapi.validatordto.ValidatorList
+import com.thenewboston.data.dto.common.response.Validator
+import com.thenewboston.data.dto.common.response.ValidatorList
+import com.thenewboston.data.dto.primaryvalidatorapi.configdto.PrimaryValidatorDetails
 import com.thenewboston.utils.BankAPIEndpoints
 import com.thenewboston.utils.ErrorMessages
 import com.thenewboston.utils.PaginationOptions
+import com.thenewboston.utils.PrimaryValidatorAPIEndpoints
 import io.ktor.client.request.*
 import io.ktor.utils.io.errors.*
 import javax.inject.Inject
@@ -36,6 +38,15 @@ class GetDataSource @Inject constructor(private val networkClient: NetworkClient
         val result = networkClient.defaultClient.get<BankDetails>(BankAPIEndpoints.CONFIG_ENDPOINT)
 
         return Outcome.Success(result)
+    }
+
+    suspend fun primaryValidatorDetails(): Outcome<PrimaryValidatorDetails> {
+        val result = networkClient.defaultClient.get<PrimaryValidatorDetails>(PrimaryValidatorAPIEndpoints.CONFIG_ENDPOINT)
+        val errorMessage = "Failed to retrieve primary validator details"
+        return when {
+            result.nodeType.isEmpty() -> Outcome.Error(errorMessage, IOException())
+            else -> Outcome.Success(result)
+        }
     }
 
     suspend fun bankTransactions(pagination: PaginationOptions): Outcome<BankTransactionList> {
