@@ -30,16 +30,13 @@ class PrimaryDataSourceTest {
     @MockK
     lateinit var postDataSource: PostDataSource
 
-    @MockK
-    lateinit var patchDataSource: PatchDataSource
-
     private lateinit var primaryDataSource: PrimaryDataSource
 
     @BeforeAll
     fun setup() {
         MockKAnnotations.init(this)
 
-        primaryDataSource = PrimaryDataSource(getDataSource, patchDataSource, postDataSource)
+        primaryDataSource = PrimaryDataSource(getDataSource, postDataSource)
     }
 
     @Nested

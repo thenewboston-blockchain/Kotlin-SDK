@@ -10,7 +10,6 @@ import javax.inject.Inject
 @KtorExperimentalAPI
 class PrimaryDataSource @Inject constructor(
     private val getDataSource: GetDataSource,
-    private val patchDataSource: PatchDataSource,
     private val postDataSource: PostDataSource
 ) {
 
