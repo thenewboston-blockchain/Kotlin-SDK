@@ -120,7 +120,7 @@ object Mocks {
         "",
         "",
         0,
-        "PRIMARY_VALIDATOR"
+        ""
     )
 
     fun validators(pagination: PaginationOptions = PaginationOptions(0, 20)) = ValidatorList(

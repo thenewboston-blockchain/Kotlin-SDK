@@ -13,11 +13,9 @@ object PrimaryValidatorAPIJsonMapper {
     const val CONNECTION_REQUESTS_ENDPOINT = "connection_requests"
     const val VALIDATORS_ENDPOINT = "validators"
 
-
     fun mapPrimaryValidatorDetailsToJson(): String = Json.encodeToString(Mocks.primaryValidatorDetails())
 
     fun mapEmptyPrimaryValidatorDetailsToJson(): String = Json.encodeToString(Mocks.emptyPrimaryValidatorDetails())
 
     fun mapInternalServerErrorToJson(): String = Json.encodeToString(Mocks.internalServerError())
-
 }

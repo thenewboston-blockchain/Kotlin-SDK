@@ -36,7 +36,6 @@ class GetDataSourceTest {
     private val bankMockEngine = BankApiMockEngine()
     private val primaryMockEngine = PrimaryValidatorApiMockEngine()
 
-
     private lateinit var getDataSource: GetDataSource
 
     @BeforeAll
@@ -362,8 +361,6 @@ class GetDataSourceTest {
 
         @Test
         fun `should fetch primary validator details from config`() = runBlockingTest {
-            every { networkClient.defaultClient } returns primaryMockEngine.getSuccess()
-            
             val response = getDataSource.primaryValidatorDetails()
 
             check(response is Outcome.Success)
@@ -381,6 +378,18 @@ class GetDataSourceTest {
         @BeforeEach
         fun given() {
             every { networkClient.defaultClient } returns primaryMockEngine.getEmptySuccess()
+        }
+
+        @Test
+        fun `should return error outcome for primary validator details IOException`() = runBlockingTest {
+
+            val message = "Failed to retrieve primary validator details"
+
+            val response = getDataSource.primaryValidatorDetails()
+
+            check(response is Outcome.Error)
+            response.cause should beInstanceOf<IOException>()
+            response.message shouldBe message
         }
     }
 }

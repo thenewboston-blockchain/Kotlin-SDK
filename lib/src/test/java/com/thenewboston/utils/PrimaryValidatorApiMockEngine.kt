@@ -3,10 +3,8 @@ package com.thenewboston.utils
 import io.ktor.client.engine.mock.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import io.ktor.http.HttpStatusCode.Companion.Accepted
 import io.ktor.http.HttpStatusCode.Companion.InternalServerError
 import io.ktor.http.content.*
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 class PrimaryValidatorApiMockEngine {
@@ -25,7 +23,7 @@ class PrimaryValidatorApiMockEngine {
             val errorContent = PrimaryValidatorAPIJsonMapper.mapInternalServerErrorToJson()
             it.addHandler { request ->
                 when (request.url.encodedPath) {
-                    PrimaryValidatorAPIJsonMapper.CONFIG_ENDPOINT->{
+                    PrimaryValidatorAPIJsonMapper.CONFIG_ENDPOINT -> {
                         val content = PrimaryValidatorAPIJsonMapper.mapPrimaryValidatorDetailsToJson()
                         val emptyContent = PrimaryValidatorAPIJsonMapper.mapEmptyPrimaryValidatorDetailsToJson()
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
@@ -37,7 +35,7 @@ class PrimaryValidatorApiMockEngine {
             }
         }
 
-        private fun MockRequestHandleScope.sendResponse(
+    private fun MockRequestHandleScope.sendResponse(
         content: String,
         errorContent: String,
         emptyContent: String,
@@ -48,5 +46,4 @@ class PrimaryValidatorApiMockEngine {
         isInvalidResponse -> respond(emptyContent, HttpStatusCode.OK, responseHeaders)
         else -> respond(content, HttpStatusCode.OK, responseHeaders)
     }
-
 }

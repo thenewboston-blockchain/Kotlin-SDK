@@ -42,8 +42,11 @@ class GetDataSource @Inject constructor(private val networkClient: NetworkClient
 
     suspend fun primaryValidatorDetails(): Outcome<PrimaryValidatorDetails> {
         val result = networkClient.defaultClient.get<PrimaryValidatorDetails>(PrimaryValidatorAPIEndpoints.CONFIG_ENDPOINT)
-
-        return Outcome.Success(result)
+        val errorMessage = "Failed to retrieve primary validator details"
+        return when {
+            result.nodeType.isEmpty() -> Outcome.Error(errorMessage, IOException())
+            else -> Outcome.Success(result)
+        }
     }
 
     suspend fun bankTransactions(pagination: PaginationOptions): Outcome<BankTransactionList> {

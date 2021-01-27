@@ -1,7 +1,6 @@
 package com.thenewboston.api.primaryvalidatorapi.datasource
 
 import com.thenewboston.api.common.GetDataSource
-import com.thenewboston.api.common.PatchDataSource
 import com.thenewboston.api.common.PostDataSource
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.utils.Mocks
