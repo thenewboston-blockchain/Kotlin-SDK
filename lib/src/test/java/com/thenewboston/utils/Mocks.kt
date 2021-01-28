@@ -34,6 +34,8 @@ import kotlinx.datetime.LocalDateTime
 import com.thenewboston.data.dto.bankapi.clean.request.Data as cleanData
 import com.thenewboston.data.dto.bankapi.crawl.request.Data as crawlData
 import com.thenewboston.data.dto.primaryvalidatorapi.configdto.PrimaryValidatorDetails
+import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
+import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
 
 object Mocks {
 
@@ -66,6 +68,40 @@ object Mocks {
         "",
         "",
         0,
+        0.0
+    )
+
+    fun banksFromValidator(pagination: PaginationOptions = PaginationOptions(0, 20)) = BankFromValidatorList(
+        count = 30,
+        banks = PaginationResult<BankFromValidator>(pagination.limit, bankFromValidator()).toList()
+    )
+
+    fun emptyBanksFromValidator() = BankFromValidatorList(
+        count = 30,
+        banks = emptyList()
+    )
+
+    fun bankFromValidator() = BankFromValidator(
+        "dfddf07ec15cbf363ecb52eedd7133b70b3ec896b488460bcecaba63e8e36be5",
+        "127.0.0.1",
+        Some.nodeIdentifier,
+        80,
+        "http",
+        "v1",
+        1,
+        null,
+        Some.trust
+    )
+
+    fun emptyBankFromValidator() = BankFromValidator(
+        "",
+        "",
+        "",
+        null,
+        "",
+        "",
+        0,
+        null,
         0.0
     )
 
