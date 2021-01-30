@@ -76,7 +76,7 @@ class GetDataSource @Inject constructor(private val networkClient: NetworkClient
         val response = networkClient.defaultClient.get<Validator>(urlSuffix)
 
         return when {
-            response.nodeIdentifier.length != 64 ->
+            response.nodeIdentifier.isEmpty()  ->
                 Outcome.Error("Could not fetch validator with NID $nodeIdentifier", IOException())
             else -> Outcome.Success(response)
         }
