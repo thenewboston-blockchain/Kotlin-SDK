@@ -41,7 +41,7 @@ class GetDataSource @Inject constructor(private val networkClient: NetworkClient
         val result = networkClient.defaultClient.get<BankFromValidator>(endpoint)
 
         return when {
-            result.nodeIdentifier.length != 64 -> Outcome.Error("Failed to retrieve bank from validator", IOException())
+            result.nodeIdentifier.isEmpty() -> Outcome.Error("Failed to retrieve bank from validator", IOException())
             else -> Outcome.Success(result)
         }
     }
