@@ -75,11 +75,7 @@ class GetDataSource @Inject constructor(private val networkClient: NetworkClient
         val urlSuffix = "$validatorsEndpoint/$nodeIdentifier"
         val response = networkClient.defaultClient.get<Validator>(urlSuffix)
 
-        return when {
-            response.nodeIdentifier.isEmpty()  ->
-                Outcome.Error("Could not fetch validator with NID $nodeIdentifier", IOException())
-            else -> Outcome.Success(response)
-        }
+        return Outcome.Success(response)
     }
 
     suspend fun accounts(pagination: PaginationOptions): Outcome<AccountList> {

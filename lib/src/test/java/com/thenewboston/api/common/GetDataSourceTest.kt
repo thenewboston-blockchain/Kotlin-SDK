@@ -439,17 +439,5 @@ class GetDataSourceTest {
             response.cause should beInstanceOf<IOException>()
             response.message shouldBe ErrorMessages.EMPTY_LIST_MESSAGE
         }
-
-        @Test
-        fun `should return error outcome for single validator`() = runBlockingTest {
-            val nodeIdentifier = "6871913581c3e689c9f39853a77e7263a96fd38596e9139f40a367e28364da53"
-            val message = "Could not fetch validator with NID $nodeIdentifier"
-
-            val response = getDataSource.validator(nodeIdentifier)
-
-            check(response is Outcome.Error)
-            response.cause should beInstanceOf<IOException>()
-            response.message shouldBe message
-        }
     }
 }
