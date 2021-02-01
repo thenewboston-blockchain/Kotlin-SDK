@@ -354,6 +354,9 @@ class GetDataSourceTest {
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class PrimaryGivenSucceedingRequest {
 
+        private val paginationTwenty = Mocks.paginationOptionsTwenty()
+        private val paginationThirty = Mocks.paginationOptionsThirty()
+
         @BeforeEach
         fun setup() {
             every { networkClient.defaultClient } returns primaryMockEngine.getSuccess()
@@ -368,12 +371,46 @@ class GetDataSourceTest {
             response.value.rootAccountFile shouldBe "http://20.188.33.93/media/root_account_file.json"
             response.value.ipAddress should contain("172.19.0.13")
         }
+
+        @Test
+        fun `should fetch list of 20 validators successfully`() = runBlockingTest {
+            val response = getDataSource.validators(paginationTwenty)
+
+            check(response is Outcome.Success)
+            response.value.results.shouldNotBeEmpty()
+            response.value.count shouldBeGreaterThan 20
+            response.value.results.size shouldBeLessThanOrEqual 20
+        }
+
+        @Test
+        fun `should fetch list of 30 validators successfully`() = runBlockingTest {
+
+            val response = getDataSource.validators(paginationThirty)
+
+            check(response is Outcome.Success)
+            response.value.results.shouldNotBeEmpty()
+            response.value.count shouldBeGreaterThan 0
+            response.value.results.size shouldBeLessThanOrEqual 30
+        }
+
+        @Test
+        fun `should fetch single validator successfully`() = runBlockingTest {
+            val nodeIdentifier =
+                "6871913581c3e689c9f39853a77e7263a96fd38596e9139f40a367e28364da53"
+            val response = getDataSource.validator(nodeIdentifier)
+
+            check(response is Outcome.Success)
+            response.value.nodeIdentifier should contain(nodeIdentifier)
+            response.value.ipAddress should contain("127.0.0.1")
+        }
     }
 
     @Nested
     @DisplayName("Primary Validator: Given empty or invalid response body")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class PrimaryGivenInvalidResponseBody {
+
+        private val pagination = Mocks.paginationOptionsDefault()
 
         @BeforeEach
         fun given() {
@@ -390,6 +427,17 @@ class GetDataSourceTest {
             check(response is Outcome.Error)
             response.cause should beInstanceOf<IOException>()
             response.message shouldBe message
+        }
+
+        @Test
+        fun `should return error outcome for empty validators`() = runBlockingTest {
+            // when
+            val response = getDataSource.validators(pagination)
+
+            // then
+            check(response is Outcome.Error)
+            response.cause should beInstanceOf<IOException>()
+            response.message shouldBe ErrorMessages.EMPTY_LIST_MESSAGE
         }
     }
 }
