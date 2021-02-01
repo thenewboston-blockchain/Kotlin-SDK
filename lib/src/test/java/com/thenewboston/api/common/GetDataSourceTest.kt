@@ -422,18 +422,6 @@ class GetDataSourceTest {
         }
 
         @Test
-        fun `should return error outcome for single bank`() = runBlockingTest {
-            val nodeIdentifier = Some.nodeIdentifier
-            val message = "Failed to retrieve bank from validator"
-
-            val response = getDataSource.bankFromValidator(nodeIdentifier)
-
-            check(response is Outcome.Error)
-            response.cause should beInstanceOf<IOException>()
-            response.message shouldBe message
-        }
-
-        @Test
         fun `should return error outcome for banks IOException`() = runBlockingTest {
             val response = getDataSource.banksFromValidator(pagination)
 

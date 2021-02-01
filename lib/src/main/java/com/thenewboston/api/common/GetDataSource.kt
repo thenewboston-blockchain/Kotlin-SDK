@@ -40,10 +40,7 @@ class GetDataSource @Inject constructor(private val networkClient: NetworkClient
         val endpoint = BankAPIEndpoints.BANKS_ENDPOINT.plus("/$nodeIdentifier")
         val result = networkClient.defaultClient.get<BankFromValidator>(endpoint)
 
-        return when {
-            result.nodeIdentifier.isEmpty() -> Outcome.Error("Failed to retrieve bank from validator", IOException())
-            else -> Outcome.Success(result)
-        }
+        return Outcome.Success(result)
     }
 
     suspend fun banksFromValidator(pagination: PaginationOptions): Outcome<BankFromValidatorList> {
