@@ -6,6 +6,7 @@ import com.thenewboston.utils.BankApiMockEngine
 import com.thenewboston.utils.PrimaryValidatorApiMockEngine
 import com.thenewboston.utils.ErrorMessages
 import com.thenewboston.utils.Mocks
+import com.thenewboston.utils.Some
 import com.thenewboston.utils.PaginationOptions
 import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.ints.shouldBeGreaterThan
@@ -368,6 +369,44 @@ class GetDataSourceTest {
             response.value.rootAccountFile shouldBe "http://20.188.33.93/media/root_account_file.json"
             response.value.ipAddress should contain("172.19.0.13")
         }
+
+        @Test
+        fun `should fetch list of 20 available accounts from primary validator`() = runBlockingTest {
+            val response = getDataSource.accountsFromValidator(PaginationOptions(20, 20))
+
+            check(response is Outcome.Success)
+            response.value.results.shouldNotBeEmpty()
+            response.value.count shouldBeGreaterThan 20
+            response.value.results.size shouldBeLessThanOrEqual 20
+        }
+
+        @Test
+        fun `should fetch list of 30 available accounts from primary validator`() = runBlockingTest {
+            val response = getDataSource.accountsFromValidator(PaginationOptions(20, 20))
+
+            check(response is Outcome.Success)
+            response.value.results.shouldNotBeEmpty()
+            response.value.count shouldBeGreaterThan 0
+            response.value.results.size shouldBeLessThanOrEqual 30
+        }
+
+        @Test
+        fun `should fetch account balance successfully from primary validator`() = runBlockingTest {
+            val accountNumber = Some.accountNumber
+            val response = getDataSource.accountBalance(accountNumber)
+
+            check(response is Outcome.Success)
+            response.value.balance shouldBe Some.balance
+        }
+
+        @Test
+        fun `should fetch account balance lock successfully from primary validator`() = runBlockingTest {
+            val accountNumber = Some.accountNumber
+            val response = getDataSource.accountBalanceLock(accountNumber)
+
+            check(response is Outcome.Success)
+            response.value.balanceLock shouldBe Some.balanceLock
+        }
     }
 
     @Nested
@@ -390,6 +429,15 @@ class GetDataSourceTest {
             check(response is Outcome.Error)
             response.cause should beInstanceOf<IOException>()
             response.message shouldBe message
+        }
+
+        @Test
+        fun `should return error outcome for empty accounts from primary validator`() = runBlockingTest {
+            val response = getDataSource.accountsFromValidator(Mocks.paginationOptionsDefault())
+
+            check(response is Outcome.Error)
+            response.cause should beInstanceOf<IOException>()
+            response.message shouldBe ErrorMessages.EMPTY_LIST_MESSAGE
         }
     }
 }

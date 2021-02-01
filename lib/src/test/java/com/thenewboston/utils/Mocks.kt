@@ -33,6 +33,10 @@ import com.thenewboston.data.dto.common.response.ValidatorList
 import kotlinx.datetime.LocalDateTime
 import com.thenewboston.data.dto.bankapi.clean.request.Data as cleanData
 import com.thenewboston.data.dto.bankapi.crawl.request.Data as crawlData
+import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountBalance
+import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountBalanceLock
+import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountFromValidator
+import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountFromValidatorList
 import com.thenewboston.data.dto.primaryvalidatorapi.configdto.PrimaryValidatorDetails
 
 object Mocks {
@@ -259,6 +263,50 @@ object Mocks {
         trust = 0.00
     )
 
+    fun accountsFromValidator(pagination: PaginationOptions = PaginationOptions(0, 20)) = AccountFromValidatorList(
+        count = 30,
+        previous = null,
+        next = null,
+        results = PaginationResult<AccountFromValidator>(pagination.limit, accountFromValidator()).toList()
+    )
+
+    fun emptyAccountsFromValidator() = AccountList(
+        count = 0,
+        next = null,
+        previous = null,
+        results = emptyList()
+    )
+
+    fun accountFromValidator() = AccountFromValidator(
+        id = Some.id,
+        accountNumber = Some.accountNumber,
+        balance = Some.balance,
+        balanceLock = Some.balanceLock
+    )
+
+    fun emptyAccountFromValidator() = AccountFromValidator(
+        id = "",
+        accountNumber = "",
+        balance = 0,
+        balanceLock = ""
+    )
+
+    fun accountBalance() = AccountBalance(
+        balance = Some.balance
+    )
+
+    fun accountBalanceLock() = AccountBalanceLock(
+        balanceLock = Some.balanceLock
+    )
+
+    fun emptyAccountBalance() = AccountBalance(
+        balance = 0
+    )
+
+    fun emptyAccountBalanceLock() = AccountBalanceLock(
+        balanceLock = ""
+    )
+
     fun invalidBlocks(pagination: PaginationOptions = PaginationOptions(0, 20)) = InvalidBlockList(
         count = 30,
         previous = null,
@@ -480,4 +528,6 @@ object Some {
     const val ipAddress = "172.19.0.13"
     const val port = 8080
     const val protocol = "http"
+    const val balance = 403
+    const val balanceLock = "aca94f4d2f472c6b9b662f60aab247b9c6aef2079d63b870e2cc02308a7c822b"
 }

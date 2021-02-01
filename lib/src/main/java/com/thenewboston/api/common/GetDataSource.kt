@@ -13,6 +13,9 @@ import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
 import com.thenewboston.data.dto.common.response.Validator
 import com.thenewboston.data.dto.common.response.ValidatorList
+import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountBalance
+import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountBalanceLock
+import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountFromValidatorList
 import com.thenewboston.data.dto.primaryvalidatorapi.configdto.PrimaryValidatorDetails
 import com.thenewboston.utils.BankAPIEndpoints
 import com.thenewboston.utils.ErrorMessages
@@ -89,6 +92,33 @@ class GetDataSource @Inject constructor(private val networkClient: NetworkClient
             )
             else -> Outcome.Success(accounts)
         }
+    }
+
+    suspend fun accountsFromValidator(pagination: PaginationOptions): Outcome<AccountFromValidatorList> {
+        val endpoint = BankAPIEndpoints.ACCOUNTS_ENDPOINT + pagination.toQuery()
+        val accounts = networkClient.defaultClient.get<AccountFromValidatorList>(endpoint)
+
+        return when {
+            accounts.results.isEmpty() -> Outcome.Error(
+                ErrorMessages.EMPTY_LIST_MESSAGE,
+                IOException()
+            )
+            else -> Outcome.Success(accounts)
+        }
+    }
+
+    suspend fun accountBalance(accountNumber: String): Outcome<AccountBalance> {
+        val endpoint = PrimaryValidatorAPIEndpoints.accountsBalanceEndpoint(accountNumber)
+        val balance = networkClient.defaultClient.get<AccountBalance>(endpoint)
+
+        return Outcome.Success(balance)
+    }
+
+    suspend fun accountBalanceLock(accountNumber: String): Outcome<AccountBalanceLock> {
+        val endpoint = PrimaryValidatorAPIEndpoints.accountsBalanceLockEndpoint(accountNumber)
+        val balanceLock = networkClient.defaultClient.get<AccountBalanceLock>(endpoint)
+
+        return Outcome.Success(balanceLock)
     }
 
     suspend fun blocks(pagination: PaginationOptions): Outcome<BlockList> {

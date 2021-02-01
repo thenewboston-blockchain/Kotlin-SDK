@@ -28,6 +28,24 @@ class PrimaryValidatorApiMockEngine {
                         val emptyContent = PrimaryValidatorAPIJsonMapper.mapEmptyPrimaryValidatorDetailsToJson()
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
                     }
+                    PrimaryValidatorAPIJsonMapper.ACCOUNTS_ENDPOINT -> {
+                        val offset = request.url.parameters.get("offset")?.toInt()
+                        val limit = request.url.parameters.get("limit")?.toInt()
+                        val content = PrimaryValidatorAPIJsonMapper.mapAccountsFromValidatorToJson(offset, limit)
+                        val emptyContent = PrimaryValidatorAPIJsonMapper.mapEmptyAccountsFromValidatorToJson()
+                        sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
+                    }
+                    PrimaryValidatorAPIJsonMapper.ACCOUNT_BALANCE_ENDPOINT -> {
+                        val content = PrimaryValidatorAPIJsonMapper.mapAccountBalanceToJson()
+                        val emptyContent = PrimaryValidatorAPIJsonMapper.mapEmptyAccountBalanceToJson()
+                        sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
+                    }
+                    PrimaryValidatorAPIJsonMapper.ACCOUNT_BALANCE_LOCK_ENDPOINT -> {
+                        val content = PrimaryValidatorAPIJsonMapper.mapAccountBalanceLockToJson()
+                        val emptyContent = PrimaryValidatorAPIJsonMapper.mapEmptyAccountBalanceLockToJson()
+                        sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
+                    }
+
                     else -> {
                         error("Unhandled ${request.url.encodedPath}")
                     }
