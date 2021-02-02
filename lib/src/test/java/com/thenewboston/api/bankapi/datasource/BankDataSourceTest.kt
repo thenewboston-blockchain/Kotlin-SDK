@@ -463,13 +463,11 @@ class BankDataSourceTest {
             private val pagination = Mocks.paginationOptionsDefault()
 
             @Test
-            fun `should return error outcome for IOException`() = runBlockingTest {
-                // when
+            fun `should return error outcome for banks IOException`() = runBlockingTest {
                 val message = "Failed to retrieve banks"
                 coEvery { getDataSource.banks(pagination) } returns Outcome.Error(message, IOException())
                 val response = bankDataSource.fetchBanks(pagination)
 
-                // then
                 check(response is Outcome.Error)
                 response.cause should beInstanceOf<IOException>()
                 response.message shouldBe "Failed to retrieve banks"

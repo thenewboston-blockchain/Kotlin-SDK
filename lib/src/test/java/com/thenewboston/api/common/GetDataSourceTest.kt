@@ -6,6 +6,7 @@ import com.thenewboston.utils.BankApiMockEngine
 import com.thenewboston.utils.PrimaryValidatorApiMockEngine
 import com.thenewboston.utils.ErrorMessages
 import com.thenewboston.utils.Mocks
+import com.thenewboston.utils.Some
 import com.thenewboston.utils.PaginationOptions
 import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.ints.shouldBeGreaterThan
@@ -363,6 +364,41 @@ class GetDataSourceTest {
         }
 
         @Test
+        fun `should fetch single bank successfully`() = runBlockingTest {
+            val nodeIdentifier = Some.nodeIdentifier
+
+            val response = getDataSource.bankFromValidator(nodeIdentifier)
+
+            check(response is Outcome.Success)
+            response.value.nodeIdentifier should contain(nodeIdentifier)
+            response.value.ipAddress should contain("127.0.0.1")
+        }
+
+        @Test
+        fun `should fetch list of 20 available banks sent from validator`() = runBlockingTest {
+            val value = Mocks.banksFromValidator(paginationTwenty)
+
+            val response = getDataSource.banksFromValidator(paginationTwenty)
+
+            check(response is Outcome.Success)
+            response.value.banks.shouldNotBeEmpty()
+            response.value.count shouldBeGreaterThan 20 // offset = 20
+            response.value.banks.size shouldBeLessThanOrEqual 20 // limit = 30
+        }
+
+        @Test
+        fun `should fetch list of 30 available banks sent from validator`() = runBlockingTest {
+            val value = Mocks.banksFromValidator(paginationThirty)
+
+            val response = getDataSource.banksFromValidator(paginationThirty)
+
+            check(response is Outcome.Success)
+            response.value.banks.shouldNotBeEmpty()
+            response.value.count shouldBeGreaterThan 0 // offset = 0
+            response.value.banks.size shouldBeLessThanOrEqual 30 // limit = 30
+        }
+
+        @Test
         fun `should fetch primary validator details from config`() = runBlockingTest {
             val response = getDataSource.primaryValidatorDetails()
 
@@ -415,6 +451,15 @@ class GetDataSourceTest {
         @BeforeEach
         fun given() {
             every { networkClient.defaultClient } returns primaryMockEngine.getEmptySuccess()
+        }
+
+        @Test
+        fun `should return error outcome for banks IOException`() = runBlockingTest {
+            val response = getDataSource.banksFromValidator(pagination)
+
+            check(response is Outcome.Error)
+            response.cause should beInstanceOf<IOException>()
+            response.message shouldBe ErrorMessages.EMPTY_LIST_MESSAGE
         }
 
         @Test

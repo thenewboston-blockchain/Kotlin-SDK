@@ -14,6 +14,8 @@ import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.Confir
 import com.thenewboston.data.dto.common.response.Validator
 import com.thenewboston.data.dto.common.response.ValidatorList
 import com.thenewboston.data.dto.primaryvalidatorapi.configdto.PrimaryValidatorDetails
+import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
+import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
 import com.thenewboston.utils.BankAPIEndpoints
 import com.thenewboston.utils.ErrorMessages
 import com.thenewboston.utils.PaginationOptions
@@ -27,6 +29,23 @@ class GetDataSource @Inject constructor(private val networkClient: NetworkClient
     suspend fun banks(pagination: PaginationOptions): Outcome<BankList> {
         val endpoint = BankAPIEndpoints.BANKS_ENDPOINT + pagination.toQuery()
         val result = networkClient.defaultClient.get<BankList>(endpoint)
+
+        return when {
+            result.banks.isEmpty() -> Outcome.Error(ErrorMessages.EMPTY_LIST_MESSAGE, IOException())
+            else -> Outcome.Success(result)
+        }
+    }
+
+    suspend fun bankFromValidator(nodeIdentifier: String): Outcome<BankFromValidator> {
+        val endpoint = BankAPIEndpoints.BANKS_ENDPOINT.plus("/$nodeIdentifier")
+        val result = networkClient.defaultClient.get<BankFromValidator>(endpoint)
+
+        return Outcome.Success(result)
+    }
+
+    suspend fun banksFromValidator(pagination: PaginationOptions): Outcome<BankFromValidatorList> {
+        val endpoint = BankAPIEndpoints.BANKS_ENDPOINT + pagination.toQuery()
+        val result = networkClient.defaultClient.get<BankFromValidatorList>(endpoint)
 
         return when {
             result.banks.isEmpty() -> Outcome.Error(ErrorMessages.EMPTY_LIST_MESSAGE, IOException())

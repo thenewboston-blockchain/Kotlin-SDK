@@ -23,6 +23,18 @@ class PrimaryValidatorApiMockEngine {
             val errorContent = PrimaryValidatorAPIJsonMapper.mapInternalServerErrorToJson()
             it.addHandler { request ->
                 when (request.url.encodedPath) {
+                    PrimaryValidatorAPIJsonMapper.SINGLE_BANKS_ENDPOINT -> {
+                        val content = PrimaryValidatorAPIJsonMapper.mapBankFromValidatorToJson()
+                        val emptyContent = PrimaryValidatorAPIJsonMapper.mapEmptyBankFromValidatorToJson()
+                        sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
+                    }
+                    PrimaryValidatorAPIJsonMapper.BANKS_ENDPOINT -> {
+                        val offset = request.url.parameters.get("offset")?.toInt()
+                        val limit = request.url.parameters.get("limit")?.toInt()
+                        val content = PrimaryValidatorAPIJsonMapper.mapBanksFromValidatorToJson(offset, limit)
+                        val emptyContent = PrimaryValidatorAPIJsonMapper.mapEmptyBanksFromValidatorToJson()
+                        sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
+                    }
                     PrimaryValidatorAPIJsonMapper.CONFIG_ENDPOINT -> {
                         val content = PrimaryValidatorAPIJsonMapper.mapPrimaryValidatorDetailsToJson()
                         val emptyContent = PrimaryValidatorAPIJsonMapper.mapEmptyPrimaryValidatorDetailsToJson()
