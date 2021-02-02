@@ -6,6 +6,7 @@ import com.thenewboston.common.http.Outcome
 import com.thenewboston.utils.Mocks
 import com.thenewboston.utils.Some
 import io.kotest.matchers.collections.shouldNotBeEmpty
+import io.kotest.matchers.ints.shouldBeGreaterThan
 import io.kotest.matchers.ints.shouldBeLessThanOrEqual
 import io.kotest.matchers.longs.shouldBeGreaterThan
 import io.kotest.matchers.should
@@ -57,6 +58,45 @@ class PrimaryDataSourceTest {
             private val paginationThirty = Mocks.paginationOptionsThirty()
 
             @Test
+            fun `should fetch single bank successfully`() = runBlockingTest {
+                val nodeIdentifier = Some.nodeIdentifier
+
+                coEvery { getDataSource.bankFromValidator(nodeIdentifier) } returns Outcome.Success(Mocks.bankFromValidator())
+
+                val response = getDataSource.bankFromValidator(nodeIdentifier)
+
+                check(response is Outcome.Success)
+                response.value.nodeIdentifier should contain(nodeIdentifier)
+                response.value.ipAddress should contain("127.0.0.1")
+            }
+
+            @Test
+            fun `should fetch list of 20 available banks sent from validator`() = runBlockingTest {
+                val value = Mocks.banksFromValidator(paginationTwenty)
+                coEvery { getDataSource.banksFromValidator(paginationTwenty) } returns Outcome.Success(value)
+
+                val response = primaryDataSource.fetchBanksFromValidator(paginationTwenty)
+
+                check(response is Outcome.Success)
+                response.value.banks.shouldNotBeEmpty()
+                response.value.count shouldBeGreaterThan 20 // offset = 20
+                response.value.banks.size shouldBeLessThanOrEqual 20 // limit = 30
+            }
+
+            @Test
+            fun `should fetch list of 30 available banks sent from validator`() = runBlockingTest {
+                val value = Mocks.banksFromValidator(paginationThirty)
+                coEvery { getDataSource.banksFromValidator(paginationThirty) } returns Outcome.Success(value)
+
+                val response = primaryDataSource.fetchBanksFromValidator(paginationThirty)
+
+                check(response is Outcome.Success)
+                response.value.banks.shouldNotBeEmpty()
+                response.value.count shouldBeGreaterThan 0 // offset = 0
+                response.value.banks.size shouldBeLessThanOrEqual 30 // limit = 30
+            }
+
+            @Test
             fun `should fetch primary validator details from config`() = runBlockingTest {
                 coEvery { getDataSource.primaryValidatorDetails() } returns Outcome.Success(Mocks.primaryValidatorDetails())
 
@@ -74,6 +114,19 @@ class PrimaryDataSourceTest {
                 coEvery { getDataSource.accountsFromValidator(paginationTwenty) } returns Outcome.Success(value)
 
                 val response = primaryDataSource.fetchAccountsFromValidator(paginationTwenty)
+              
+                check(response is Outcome.Success)
+                response.value.results.shouldNotBeEmpty()
+                response.value.count shouldBeGreaterThan 20
+                response.value.results.size shouldBeLessThanOrEqual 20
+            }
+
+            @Test
+            fun `should fetch list of 20 validators successfully`() = runBlockingTest {
+                val value = Mocks.validators(paginationTwenty)
+
+                coEvery { getDataSource.validators(paginationTwenty) } returns Outcome.Success(value)
+                val response = primaryDataSource.fetchValidators(paginationTwenty)
 
                 check(response is Outcome.Success)
                 response.value.results.shouldNotBeEmpty()
@@ -87,6 +140,19 @@ class PrimaryDataSourceTest {
                 coEvery { getDataSource.accountsFromValidator(paginationThirty) } returns Outcome.Success(value)
 
                 val response = primaryDataSource.fetchAccountsFromValidator(paginationThirty)
+              
+                check(response is Outcome.Success)
+                response.value.results.shouldNotBeEmpty()
+                response.value.count shouldBeGreaterThan 0
+                response.value.results.size shouldBeLessThanOrEqual 30
+            }
+
+            @Test
+            fun `should fetch list of 30 validators successfully`() = runBlockingTest {
+                val value = Mocks.validators(paginationThirty)
+                coEvery { getDataSource.validators(paginationThirty) } returns Outcome.Success(value)
+
+                val response = primaryDataSource.fetchValidators(paginationThirty)
 
                 check(response is Outcome.Success)
                 response.value.results.shouldNotBeEmpty()
@@ -117,6 +183,20 @@ class PrimaryDataSourceTest {
                 check(response is Outcome.Success)
                 response.value.balanceLock shouldBe Some.balanceLock
             }
+
+            @Test
+            fun `should fetch single validator successfully`() = runBlockingTest {
+                val nodeIdentifier =
+                    "6871913581c3e689c9f39853a77e7263a96fd38596e9139f40a367e28364da53"
+
+                coEvery { getDataSource.validator(nodeIdentifier) } returns Outcome.Success(Mocks.validator())
+
+                val response = primaryDataSource.fetchValidator(nodeIdentifier)
+
+                check(response is Outcome.Success)
+                response.value.nodeIdentifier should contain(nodeIdentifier)
+                response.value.ipAddress should contain("127.0.0.1")
+            }
         }
     }
 
@@ -131,6 +211,34 @@ class PrimaryDataSourceTest {
         @DisplayName("When performing GET request...")
         @TestInstance(Lifecycle.PER_CLASS)
         inner class WhenGetRequest {
+
+            private val pagination = Mocks.paginationOptionsDefault()
+
+            @Test
+            fun `should return error outcome for single bank`() = runBlockingTest {
+                val nodeIdentifier = Some.nodeIdentifier
+                val message = "Failed to retrieve bank from validator"
+
+                coEvery { getDataSource.bankFromValidator(nodeIdentifier) } returns Outcome.Error(message, IOException())
+
+                val response = primaryDataSource.fetchBankFromValidator(nodeIdentifier)
+
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.message shouldBe message
+            }
+
+            @Test
+            fun `should return error outcome for banks IOException`() = runBlockingTest {
+                val message = "Failed to retrieve banks from validator"
+                coEvery { getDataSource.banksFromValidator(pagination) } returns Outcome.Error(message, IOException())
+                val response = primaryDataSource.fetchBanksFromValidator(pagination)
+
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.message shouldBe message
+            }
+
             @Test
             fun `should return error outcome for primary validator details IOException`() = runBlockingTest {
 
@@ -150,6 +258,18 @@ class PrimaryDataSourceTest {
                 coEvery { getDataSource.accountsFromValidator(pagination) } returns Outcome.Error(message, IOException())
 
                 val response = primaryDataSource.fetchAccountsFromValidator(pagination)
+              
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.message shouldBe message
+            }
+
+            @Test
+            fun `should return error outcome for list of validators IOException`() = runBlockingTest {
+                val message = "Could not fetch list of accounts"
+                coEvery { getDataSource.validators(pagination) } returns Outcome.Error(message, IOException())
+
+                val response = primaryDataSource.fetchValidators(pagination)
 
                 check(response is Outcome.Error)
                 response.cause should beInstanceOf<IOException>()
@@ -167,6 +287,7 @@ class PrimaryDataSourceTest {
                 check(response is Outcome.Error)
                 response.cause should beInstanceOf<IOException>()
                 response.message shouldBe message
+              
             }
 
             @Test
@@ -176,6 +297,20 @@ class PrimaryDataSourceTest {
                 coEvery { getDataSource.accountBalanceLock(accountNumber) } returns Outcome.Error(message, IOException())
 
                 val response = primaryDataSource.fetchAccountBalanceLock(accountNumber)
+              
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.message shouldBe message
+            }
+
+            @Test
+            fun `should return error outcome for single validator`() = runBlockingTest {
+                val nodeIdentifier = "6871913581c3e689c9f39853a77e7263a96fd38596e9139f40a367e28364da53"
+                val message = "Could not fetch validator with NID $nodeIdentifier"
+
+                coEvery { getDataSource.validator(nodeIdentifier) } returns Outcome.Error(message, IOException())
+
+                val response = primaryDataSource.fetchValidator(nodeIdentifier)
 
                 check(response is Outcome.Error)
                 response.cause should beInstanceOf<IOException>()

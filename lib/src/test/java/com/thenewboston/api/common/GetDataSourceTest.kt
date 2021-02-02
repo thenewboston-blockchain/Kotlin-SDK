@@ -355,9 +355,47 @@ class GetDataSourceTest {
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class PrimaryGivenSucceedingRequest {
 
+        private val paginationTwenty = Mocks.paginationOptionsTwenty()
+        private val paginationThirty = Mocks.paginationOptionsThirty()
+
         @BeforeEach
         fun setup() {
             every { networkClient.defaultClient } returns primaryMockEngine.getSuccess()
+        }
+
+        @Test
+        fun `should fetch single bank successfully`() = runBlockingTest {
+            val nodeIdentifier = Some.nodeIdentifier
+
+            val response = getDataSource.bankFromValidator(nodeIdentifier)
+
+            check(response is Outcome.Success)
+            response.value.nodeIdentifier should contain(nodeIdentifier)
+            response.value.ipAddress should contain("127.0.0.1")
+        }
+
+        @Test
+        fun `should fetch list of 20 available banks sent from validator`() = runBlockingTest {
+            val value = Mocks.banksFromValidator(paginationTwenty)
+
+            val response = getDataSource.banksFromValidator(paginationTwenty)
+
+            check(response is Outcome.Success)
+            response.value.banks.shouldNotBeEmpty()
+            response.value.count shouldBeGreaterThan 20 // offset = 20
+            response.value.banks.size shouldBeLessThanOrEqual 20 // limit = 30
+        }
+
+        @Test
+        fun `should fetch list of 30 available banks sent from validator`() = runBlockingTest {
+            val value = Mocks.banksFromValidator(paginationThirty)
+
+            val response = getDataSource.banksFromValidator(paginationThirty)
+
+            check(response is Outcome.Success)
+            response.value.banks.shouldNotBeEmpty()
+            response.value.count shouldBeGreaterThan 0 // offset = 0
+            response.value.banks.size shouldBeLessThanOrEqual 30 // limit = 30
         }
 
         @Test
@@ -373,6 +411,15 @@ class GetDataSourceTest {
         @Test
         fun `should fetch list of 20 available accounts from primary validator`() = runBlockingTest {
             val response = getDataSource.accountsFromValidator(PaginationOptions(20, 20))
+          
+            check(response is Outcome.Success)
+            response.value.results.shouldNotBeEmpty()
+            response.value.count shouldBeGreaterThan 20
+            response.value.results.size shouldBeLessThanOrEqual 20
+        }
+
+        fun `should fetch list of 20 validators successfully`() = runBlockingTest {
+            val response = getDataSource.validators(paginationTwenty)
 
             check(response is Outcome.Success)
             response.value.results.shouldNotBeEmpty()
@@ -383,6 +430,16 @@ class GetDataSourceTest {
         @Test
         fun `should fetch list of 30 available accounts from primary validator`() = runBlockingTest {
             val response = getDataSource.accountsFromValidator(PaginationOptions(20, 20))
+          
+            check(response is Outcome.Success)
+            response.value.results.shouldNotBeEmpty()
+            response.value.count shouldBeGreaterThan 0
+            response.value.results.size shouldBeLessThanOrEqual 30
+        }
+
+        @Test
+        fun `should fetch list of 30 validators successfully`() = runBlockingTest {
+            val response = getDataSource.validators(paginationThirty)
 
             check(response is Outcome.Success)
             response.value.results.shouldNotBeEmpty()
@@ -406,6 +463,18 @@ class GetDataSourceTest {
 
             check(response is Outcome.Success)
             response.value.balanceLock shouldBe Some.balanceLock
+            response.value.ipAddress should contain("127.0.0.1")
+        }
+
+        @Test
+        fun `should fetch single validator successfully`() = runBlockingTest {
+            val nodeIdentifier =
+                "6871913581c3e689c9f39853a77e7263a96fd38596e9139f40a367e28364da53"
+            val response = getDataSource.validator(nodeIdentifier)
+
+            check(response is Outcome.Success)
+            response.value.nodeIdentifier should contain(nodeIdentifier)
+            response.value.ipAddress should contain("127.0.0.1")
         }
     }
 
@@ -414,9 +483,20 @@ class GetDataSourceTest {
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class PrimaryGivenInvalidResponseBody {
 
+        private val pagination = Mocks.paginationOptionsDefault()
+
         @BeforeEach
         fun given() {
             every { networkClient.defaultClient } returns primaryMockEngine.getEmptySuccess()
+        }
+
+        @Test
+        fun `should return error outcome for banks IOException`() = runBlockingTest {
+            val response = getDataSource.banksFromValidator(pagination)
+
+            check(response is Outcome.Error)
+            response.cause should beInstanceOf<IOException>()
+            response.message shouldBe ErrorMessages.EMPTY_LIST_MESSAGE
         }
 
         @Test
@@ -434,6 +514,15 @@ class GetDataSourceTest {
         @Test
         fun `should return error outcome for empty accounts from primary validator`() = runBlockingTest {
             val response = getDataSource.accountsFromValidator(Mocks.paginationOptionsDefault())
+          
+            check(response is Outcome.Error)
+            response.cause should beInstanceOf<IOException>()
+            response.message shouldBe ErrorMessages.EMPTY_LIST_MESSAGE
+        }
+          
+        @Test
+        fun `should return error outcome for empty validators`() = runBlockingTest {
+            val response = getDataSource.validators(pagination)
 
             check(response is Outcome.Error)
             response.cause should beInstanceOf<IOException>()
