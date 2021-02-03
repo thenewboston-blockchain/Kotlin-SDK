@@ -216,9 +216,9 @@ class PrimaryRepositoryTest {
 
         coVerify { primaryDataSource.fetchAccountBalanceLock(accountNumber) }
         result should beInstanceOf<Outcome.Success<AccountBalanceLock>>()
-     }
+    }
 
-    @Test   
+    @Test
     fun `verify single validator result is success outcome`() = runBlockingTest {
         coEvery { primaryDataSource.fetchValidator(any()) } returns Outcome.Success(Mocks.validator())
 

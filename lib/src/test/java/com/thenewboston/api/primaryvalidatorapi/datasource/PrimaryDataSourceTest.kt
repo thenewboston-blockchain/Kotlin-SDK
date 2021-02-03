@@ -114,7 +114,7 @@ class PrimaryDataSourceTest {
                 coEvery { getDataSource.accountsFromValidator(paginationTwenty) } returns Outcome.Success(value)
 
                 val response = primaryDataSource.fetchAccountsFromValidator(paginationTwenty)
-              
+
                 check(response is Outcome.Success)
                 response.value.results.shouldNotBeEmpty()
                 response.value.count shouldBeGreaterThan 20
@@ -140,7 +140,7 @@ class PrimaryDataSourceTest {
                 coEvery { getDataSource.accountsFromValidator(paginationThirty) } returns Outcome.Success(value)
 
                 val response = primaryDataSource.fetchAccountsFromValidator(paginationThirty)
-              
+
                 check(response is Outcome.Success)
                 response.value.results.shouldNotBeEmpty()
                 response.value.count shouldBeGreaterThan 0
@@ -258,7 +258,7 @@ class PrimaryDataSourceTest {
                 coEvery { getDataSource.accountsFromValidator(pagination) } returns Outcome.Error(message, IOException())
 
                 val response = primaryDataSource.fetchAccountsFromValidator(pagination)
-              
+
                 check(response is Outcome.Error)
                 response.cause should beInstanceOf<IOException>()
                 response.message shouldBe message
@@ -287,7 +287,6 @@ class PrimaryDataSourceTest {
                 check(response is Outcome.Error)
                 response.cause should beInstanceOf<IOException>()
                 response.message shouldBe message
-              
             }
 
             @Test
@@ -297,7 +296,7 @@ class PrimaryDataSourceTest {
                 coEvery { getDataSource.accountBalanceLock(accountNumber) } returns Outcome.Error(message, IOException())
 
                 val response = primaryDataSource.fetchAccountBalanceLock(accountNumber)
-              
+
                 check(response is Outcome.Error)
                 response.cause should beInstanceOf<IOException>()
                 response.message shouldBe message

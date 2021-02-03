@@ -411,7 +411,7 @@ class GetDataSourceTest {
         @Test
         fun `should fetch list of 20 available accounts from primary validator`() = runBlockingTest {
             val response = getDataSource.accountsFromValidator(PaginationOptions(20, 20))
-          
+
             check(response is Outcome.Success)
             response.value.results.shouldNotBeEmpty()
             response.value.count shouldBeGreaterThan 20
@@ -430,7 +430,7 @@ class GetDataSourceTest {
         @Test
         fun `should fetch list of 30 available accounts from primary validator`() = runBlockingTest {
             val response = getDataSource.accountsFromValidator(PaginationOptions(20, 20))
-          
+
             check(response is Outcome.Success)
             response.value.results.shouldNotBeEmpty()
             response.value.count shouldBeGreaterThan 0
@@ -463,7 +463,6 @@ class GetDataSourceTest {
 
             check(response is Outcome.Success)
             response.value.balanceLock shouldBe Some.balanceLock
-            response.value.ipAddress should contain("127.0.0.1")
         }
 
         @Test
@@ -514,12 +513,12 @@ class GetDataSourceTest {
         @Test
         fun `should return error outcome for empty accounts from primary validator`() = runBlockingTest {
             val response = getDataSource.accountsFromValidator(Mocks.paginationOptionsDefault())
-          
+
             check(response is Outcome.Error)
             response.cause should beInstanceOf<IOException>()
             response.message shouldBe ErrorMessages.EMPTY_LIST_MESSAGE
         }
-          
+
         @Test
         fun `should return error outcome for empty validators`() = runBlockingTest {
             val response = getDataSource.validators(pagination)

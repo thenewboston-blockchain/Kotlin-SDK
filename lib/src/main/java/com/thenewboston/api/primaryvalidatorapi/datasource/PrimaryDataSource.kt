@@ -32,7 +32,6 @@ class PrimaryDataSource @Inject constructor(
         errorMessage = "Failed to retrieve primary validator details"
     )
 
-<<<<<<< pvAccounts
     suspend fun fetchAccountsFromValidator(pagination: PaginationOptions) = makeApiCall(
         call = { getDataSource.accountsFromValidator(pagination) },
         errorMessage = "Failed to retrieve accounts from primary validator"
