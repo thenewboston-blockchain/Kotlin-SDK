@@ -6,6 +6,10 @@ import kotlinx.serialization.json.Json
 object PrimaryValidatorAPIJsonMapper {
 
     const val ACCOUNTS_ENDPOINT = "accounts"
+    const val ACCOUNT_BALANCE_ENDPOINT = ACCOUNTS_ENDPOINT
+        .plus("/" + Some.accountNumber + "/balance")
+    const val ACCOUNT_BALANCE_LOCK_ENDPOINT = ACCOUNTS_ENDPOINT
+        .plus("/" + Some.accountNumber + "/balance_lock")
     const val BANK_BLOCKS_ENDPOINT = "bank_blocks"
     const val BANKS_ENDPOINT = "banks"
     const val SINGLE_BANKS_ENDPOINT = "banks"
@@ -32,6 +36,19 @@ object PrimaryValidatorAPIJsonMapper {
     fun mapPrimaryValidatorDetailsToJson(): String = Json.encodeToString(Mocks.primaryValidatorDetails())
 
     fun mapEmptyPrimaryValidatorDetailsToJson(): String = Json.encodeToString(Mocks.emptyPrimaryValidatorDetails())
+
+    fun mapAccountsFromValidatorToJson(offset: Int?, limit: Int?): String =
+        Json.encodeToString(Mocks.accountsFromValidator(PaginationOptions(offset, limit)))
+
+    fun mapEmptyAccountsFromValidatorToJson(): String = Json.encodeToString(Mocks.emptyAccountsFromValidator())
+
+    fun mapAccountBalanceToJson(): String = Json.encodeToString(Mocks.accountBalance())
+
+    fun mapEmptyAccountBalanceToJson(): String = Json.encodeToString(Mocks.emptyAccountBalance())
+
+    fun mapAccountBalanceLockToJson(): String = Json.encodeToString(Mocks.accountBalanceLock())
+
+    fun mapEmptyAccountBalanceLockToJson(): String = Json.encodeToString(Mocks.emptyAccountBalanceLock())
 
     fun mapValidatorsToJson(offset: Int?, limit: Int?): String {
         return Json.encodeToString(Mocks.validators(PaginationOptions(offset, limit)))
