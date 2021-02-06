@@ -555,10 +555,10 @@ object Mocks {
                 Some.blockIdentifier,
                 listOf(
                     UpdatedBalance(
-                    Some.accountNumber,
-                    10,
-                    Some.balanceLock
-                )
+                        Some.accountNumber,
+                        10,
+                        Some.balanceLock
+                    )
                 )
             ),
             Some.nodeIdentifier,
