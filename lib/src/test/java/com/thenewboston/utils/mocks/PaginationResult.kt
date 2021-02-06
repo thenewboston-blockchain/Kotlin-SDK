@@ -1,4 +1,4 @@
-package com.thenewboston.utils
+package com.thenewboston.utils.mocks
 
 data class PaginationResult<T> (
     val limit: Int?,

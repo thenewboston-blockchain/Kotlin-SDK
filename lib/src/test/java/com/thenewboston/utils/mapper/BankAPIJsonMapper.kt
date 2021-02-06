@@ -1,6 +1,8 @@
-package com.thenewboston.utils
+package com.thenewboston.utils.mapper
 
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.Message
+import com.thenewboston.utils.Mocks
+import com.thenewboston.utils.PaginationOptions
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 

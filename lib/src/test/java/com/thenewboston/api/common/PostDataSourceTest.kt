@@ -2,7 +2,7 @@ package com.thenewboston.api.common
 
 import com.thenewboston.common.http.NetworkClient
 import com.thenewboston.common.http.Outcome
-import com.thenewboston.utils.BankApiMockEngine
+import com.thenewboston.utils.mockEngine.bank.BankApiMockEngine
 import com.thenewboston.utils.Mocks
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe

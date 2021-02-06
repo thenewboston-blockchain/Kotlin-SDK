@@ -1,11 +1,10 @@
-package com.thenewboston.utils
+package com.thenewboston.utils.mockEngine.primaryValidator
 
+import com.thenewboston.utils.mapper.PrimaryValidatorAPIJsonMapper
+import com.thenewboston.utils.mockEngine.manager.MockHttpClientManager
 import io.ktor.client.engine.mock.*
-import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.http.HttpStatusCode.Companion.InternalServerError
-import io.ktor.http.content.*
-import kotlinx.serialization.json.Json
 
 class PrimaryValidatorApiMockEngine {
 
@@ -29,8 +28,8 @@ class PrimaryValidatorApiMockEngine {
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
                     }
                     PrimaryValidatorAPIJsonMapper.BANKS_ENDPOINT -> {
-                        val offset = request.url.parameters.get("offset")?.toInt()
-                        val limit = request.url.parameters.get("limit")?.toInt()
+                        val offset = request.url.parameters["offset"]?.toInt()
+                        val limit = request.url.parameters["limit"]?.toInt()
                         val content = PrimaryValidatorAPIJsonMapper.mapBanksFromValidatorToJson(offset, limit)
                         val emptyContent = PrimaryValidatorAPIJsonMapper.mapEmptyBanksFromValidatorToJson()
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
@@ -41,8 +40,8 @@ class PrimaryValidatorApiMockEngine {
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
                     }
                     PrimaryValidatorAPIJsonMapper.ACCOUNTS_ENDPOINT -> {
-                        val offset = request.url.parameters.get("offset")?.toInt()
-                        val limit = request.url.parameters.get("limit")?.toInt()
+                        val offset = request.url.parameters["offset"]?.toInt()
+                        val limit = request.url.parameters["limit"]?.toInt()
                         val content = PrimaryValidatorAPIJsonMapper.mapAccountsFromValidatorToJson(offset, limit)
                         val emptyContent = PrimaryValidatorAPIJsonMapper.mapEmptyAccountsFromValidatorToJson()
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
@@ -58,8 +57,8 @@ class PrimaryValidatorApiMockEngine {
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
                     }
                     PrimaryValidatorAPIJsonMapper.VALIDATORS_ENDPOINT -> {
-                        val offset = request.url.parameters.get("offset")?.toInt()
-                        val limit = request.url.parameters.get("limit")?.toInt()
+                        val offset = request.url.parameters["offset"]?.toInt()
+                        val limit = request.url.parameters["limit"]?.toInt()
                         val content = PrimaryValidatorAPIJsonMapper.mapValidatorsToJson(offset, limit)
                         val emptyContent = PrimaryValidatorAPIJsonMapper.mapEmptyValidatorsToJson()
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
@@ -68,6 +67,10 @@ class PrimaryValidatorApiMockEngine {
                         val content = PrimaryValidatorAPIJsonMapper.mapValidatorToJson()
                         val emptyContent = PrimaryValidatorAPIJsonMapper.mapEmptyValidatorToJson()
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
+                    }
+                    PrimaryValidatorAPIJsonMapper.CONFIRMATION_BLOCKS_ENDPOINT -> {
+                        val content = PrimaryValidatorAPIJsonMapper.mapConfirmationBlocksToJson()
+                        sendResponse(content, errorContent, "", sendOnlyErrorResponses, sendInvalidResponses)
                     }
                     else -> {
                         error("Unhandled ${request.url.encodedPath}")

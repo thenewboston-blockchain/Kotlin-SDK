@@ -2,17 +2,18 @@ package com.thenewboston.api.primaryvalidatorapi.repository
 
 import com.thenewboston.api.primaryvalidatorapi.datasource.PrimaryDataSource
 import com.thenewboston.common.http.Outcome
+import com.thenewboston.data.dto.common.response.ConfirmationBlocks
 import com.thenewboston.data.dto.common.response.Validator
 import com.thenewboston.data.dto.common.response.ValidatorList
 import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountBalance
 import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountBalanceLock
 import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountFromValidatorList
-import com.thenewboston.data.dto.primaryvalidatorapi.configdto.PrimaryValidatorDetails
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
+import com.thenewboston.data.dto.primaryvalidatorapi.configdto.PrimaryValidatorDetails
 import com.thenewboston.utils.Mocks
-import com.thenewboston.utils.Some
 import com.thenewboston.utils.PaginationOptions
+import com.thenewboston.utils.Some
 import io.kotest.matchers.should
 import io.kotest.matchers.types.beInstanceOf
 import io.ktor.util.*
@@ -20,12 +21,12 @@ import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
+import java.io.IOException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import java.io.IOException
 
 @ExperimentalCoroutinesApi
 @KtorExperimentalAPI
@@ -229,5 +230,25 @@ class PrimaryRepositoryTest {
         // then
         coVerify { primaryDataSource.fetchValidator(nodeIdentifier) }
         result should beInstanceOf<Outcome.Success<Validator>>()
+    }
+
+    @Test
+    fun `verify confirmations blocks is success outcome`() = runBlockingTest {
+        coEvery { primaryDataSource.fetchConfirmationBlocks(Some.blockIdentifier) } returns Outcome.Success(Mocks.confirmationBlocks())
+
+        val result = repository.confirmationBlocks(Some.blockIdentifier)
+
+        coVerify { primaryDataSource.fetchConfirmationBlocks(Some.blockIdentifier) }
+        result should beInstanceOf<Outcome.Success<ConfirmationBlocks>>()
+    }
+
+    @Test
+    fun `verify confirmation blocks is error outcome`() = runBlockingTest {
+        coEvery { primaryDataSource.fetchConfirmationBlocks(Some.blockIdentifier) } returns Outcome.Error("An error occurred", IOException())
+
+        val result = repository.confirmationBlocks(Some.blockIdentifier)
+
+        coEvery { primaryDataSource.fetchConfirmationBlocks(Some.blockIdentifier) }
+        result should beInstanceOf<Outcome.Error>()
     }
 }

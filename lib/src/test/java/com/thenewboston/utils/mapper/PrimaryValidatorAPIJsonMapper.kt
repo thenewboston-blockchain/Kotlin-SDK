@@ -1,5 +1,8 @@
-package com.thenewboston.utils
+package com.thenewboston.utils.mapper
 
+import com.thenewboston.utils.Mocks
+import com.thenewboston.utils.PaginationOptions
+import com.thenewboston.utils.Some
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -20,6 +23,7 @@ object PrimaryValidatorAPIJsonMapper {
     const val VALIDATORS_ENDPOINT = "validators"
     const val SINGLE_VALIDATOR_ENDPOINT = VALIDATORS_ENDPOINT
         .plus("/6871913581c3e689c9f39853a77e7263a96fd38596e9139f40a367e28364da53")
+    const val CONFIRMATION_BLOCKS_ENDPOINT = CONFIRMATION_BLOCKS.plus("/${Some.blockIdentifier}/valid")
 
     fun mapBankFromValidatorToJson(): String {
         return Json.encodeToString(Mocks.bankFromValidator())
@@ -61,4 +65,6 @@ object PrimaryValidatorAPIJsonMapper {
     fun mapEmptyValidatorToJson(): String = Json.encodeToString(Mocks.emptyValidator())
 
     fun mapInternalServerErrorToJson(): String = Json.encodeToString(Mocks.internalServerError())
+
+    fun mapConfirmationBlocksToJson(): String = Json.encodeToString(Mocks.confirmationBlocks())
 }

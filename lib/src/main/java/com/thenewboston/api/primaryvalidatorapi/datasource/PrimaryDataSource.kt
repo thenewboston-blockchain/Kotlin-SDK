@@ -1,9 +1,9 @@
 package com.thenewboston.api.primaryvalidatorapi.datasource
 
 import com.thenewboston.api.common.GetDataSource
-import com.thenewboston.api.common.PostDataSource
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.common.http.makeApiCall
+import com.thenewboston.data.dto.common.response.ConfirmationBlocks
 import com.thenewboston.data.dto.common.response.Validator
 import com.thenewboston.data.dto.common.response.ValidatorList
 import com.thenewboston.utils.ErrorMessages
@@ -12,10 +12,7 @@ import io.ktor.util.*
 import javax.inject.Inject
 
 @KtorExperimentalAPI
-class PrimaryDataSource @Inject constructor(
-    private val getDataSource: GetDataSource,
-    private val postDataSource: PostDataSource
-) {
+class PrimaryDataSource @Inject constructor(private val getDataSource: GetDataSource) {
 
     suspend fun fetchBankFromValidator(nodeIdentifier: String) = makeApiCall(
         call = { getDataSource.bankFromValidator(nodeIdentifier) },
@@ -55,5 +52,10 @@ class PrimaryDataSource @Inject constructor(
     suspend fun fetchValidator(nodeIdentifier: String): Outcome<Validator> = makeApiCall(
         call = { getDataSource.validator(nodeIdentifier) },
         errorMessage = "Could not fetch validator with NID $nodeIdentifier"
+    )
+
+    suspend fun fetchConfirmationBlocks(blockIdentifier: String): Outcome<ConfirmationBlocks> = makeApiCall(
+        call = { getDataSource.confirmationBlocks(blockIdentifier) },
+        errorMessage = "Could not fetch confirmation blocks with block identifier $blockIdentifier"
     )
 }
