@@ -1,12 +1,14 @@
-package com.thenewboston.utils
+package com.thenewboston.utils.mockEngine.bank
 
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
 import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
-import com.thenewboston.data.dto.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.bankapi.crawl.request.PostCrawlRequest
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.PostInvalidBlockRequest
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.Message
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
+import com.thenewboston.data.dto.common.request.UpdateTrustRequest
+import com.thenewboston.utils.mapper.BankAPIJsonMapper
+import com.thenewboston.utils.mockEngine.manager.MockHttpClientManager
 import io.ktor.client.engine.mock.*
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -41,36 +43,36 @@ class BankApiMockEngine {
             it.addHandler { request ->
                 when (request.url.encodedPath) {
                     BankAPIJsonMapper.ACCOUNTS_ENDPOINT -> {
-                        val offset = request.url.parameters.get("offset")?.toInt()
-                        val limit = request.url.parameters.get("limit")?.toInt()
+                        val offset = request.url.parameters["offset"]?.toInt()
+                        val limit = request.url.parameters["limit"]?.toInt()
                         val content = BankAPIJsonMapper.mapAccountsToJson(offset, limit)
                         val emptyContent = BankAPIJsonMapper.mapEmptyAccountsToJson()
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
                     }
                     BankAPIJsonMapper.BANKS_ENDPOINT -> {
-                        val offset = request.url.parameters.get("offset")?.toInt()
-                        val limit = request.url.parameters.get("limit")?.toInt()
+                        val offset = request.url.parameters["offset"]?.toInt()
+                        val limit = request.url.parameters["limit"]?.toInt()
                         val content = BankAPIJsonMapper.mapBanksToJson(offset, limit)
                         val emptyContent = BankAPIJsonMapper.mapEmptyBanksToJson()
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
                     }
                     BankAPIJsonMapper.BANK_TRANSACTIONS_ENDPOINT -> {
-                        val offset = request.url.parameters.get("offset")?.toInt()
-                        val limit = request.url.parameters.get("limit")?.toInt()
+                        val offset = request.url.parameters["offset"]?.toInt()
+                        val limit = request.url.parameters["limit"]?.toInt()
                         val content = BankAPIJsonMapper.mapBankTransactionsToJson(offset, limit)
                         val emptyContent = BankAPIJsonMapper.mapEmptyBankTransactionsToJson()
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
                     }
                     BankAPIJsonMapper.BLOCKS_ENDPOINT -> {
-                        val offset = request.url.parameters.get("offset")?.toInt()
-                        val limit = request.url.parameters.get("limit")?.toInt()
+                        val offset = request.url.parameters["offset"]?.toInt()
+                        val limit = request.url.parameters["limit"]?.toInt()
                         val content = BankAPIJsonMapper.mapBlocksToJson(offset, limit)
                         val emptyContent = BankAPIJsonMapper.mapEmptyBlocksToJson()
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
                     }
                     BankAPIJsonMapper.VALIDATORS_ENDPOINT -> {
-                        val offset = request.url.parameters.get("offset")?.toInt()
-                        val limit = request.url.parameters.get("limit")?.toInt()
+                        val offset = request.url.parameters["offset"]?.toInt()
+                        val limit = request.url.parameters["limit"]?.toInt()
                         val content = BankAPIJsonMapper.mapValidatorsToJson(offset, limit)
                         val emptyContent = BankAPIJsonMapper.mapEmptyValidatorsToJson()
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
@@ -86,15 +88,15 @@ class BankApiMockEngine {
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
                     }
                     BankAPIJsonMapper.INVALID_BLOCKS_ENDPOINT -> {
-                        val offset = request.url.parameters.get("offset")?.toInt()
-                        val limit = request.url.parameters.get("limit")?.toInt()
+                        val offset = request.url.parameters["offset"]?.toInt()
+                        val limit = request.url.parameters["limit"]?.toInt()
                         val content = BankAPIJsonMapper.mapInvalidBlocksToJson(offset, limit)
                         val emptyContent = BankAPIJsonMapper.mapEmptyInvalidBlocksToJson()
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
                     }
                     BankAPIJsonMapper.VALIDATOR_CONFIRMATION_SERVICES_ENDPOINT -> {
-                        val offset = request.url.parameters.get("offset")?.toInt()
-                        val limit = request.url.parameters.get("limit")?.toInt()
+                        val offset = request.url.parameters["offset"]?.toInt()
+                        val limit = request.url.parameters["limit"]?.toInt()
                         val content = BankAPIJsonMapper.mapValidatorConfirmationServicesToJson(offset, limit)
                         val emptyContent = BankAPIJsonMapper.mapEmptyValidatorConfirmationServicesToJson()
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)

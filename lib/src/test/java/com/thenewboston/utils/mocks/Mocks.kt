@@ -9,14 +9,13 @@ import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.blockdto.request.BlockMessage
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
+import com.thenewboston.data.dto.bankapi.clean.request.Data as cleanData
 import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
-import com.thenewboston.data.dto.common.request.TrustMessage
-import com.thenewboston.data.dto.common.request.UpdateTrustRequest
-import com.thenewboston.data.dto.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.connectionrequestsdto.ConnectionRequest
 import com.thenewboston.data.dto.bankapi.connectionrequestsdto.ConnectionRequestMessage
+import com.thenewboston.data.dto.bankapi.crawl.request.Data as crawlData
 import com.thenewboston.data.dto.bankapi.crawl.request.PostCrawlRequest
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
@@ -28,18 +27,19 @@ import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.Confir
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.Message
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
-import com.thenewboston.data.dto.common.response.Validator
-import com.thenewboston.data.dto.common.response.ValidatorList
-import kotlinx.datetime.LocalDateTime
-import com.thenewboston.data.dto.bankapi.clean.request.Data as cleanData
-import com.thenewboston.data.dto.bankapi.crawl.request.Data as crawlData
+import com.thenewboston.data.dto.common.request.TrustMessage
+import com.thenewboston.data.dto.common.request.UpdateTrustRequest
+import com.thenewboston.data.dto.common.response.*
 import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountBalance
 import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountBalanceLock
 import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountFromValidatorList
-import com.thenewboston.data.dto.primaryvalidatorapi.configdto.PrimaryValidatorDetails
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
+import com.thenewboston.data.dto.primaryvalidatorapi.configdto.PrimaryValidatorDetails
+import com.thenewboston.utils.mocks.BankAPIError
+import com.thenewboston.utils.mocks.PaginationResult
+import kotlinx.datetime.LocalDateTime
 
 object Mocks {
 
@@ -541,6 +541,31 @@ object Mocks {
         protocol = "http"
     )
 
+    fun confirmationBlocks(): ConfirmationBlocks {
+        return ConfirmationBlocks(
+            ConfirmationBlockMessage(
+                ConfirmationBlock(
+                    Some.accountNumber,
+                    MessageBalance(
+                        Some.balanceKey,
+                        listOf(Tx(100, Some.recipient))
+                    ),
+                    Some.signature
+                ),
+                Some.blockIdentifier,
+                listOf(
+                    UpdatedBalance(
+                    Some.accountNumber,
+                    10,
+                    Some.balanceLock
+                )
+                )
+            ),
+            Some.nodeIdentifier,
+            Some.signature
+        )
+    }
+
     fun paginationOptionsDefault(): PaginationOptions = PaginationOptions(0, 20)
 
     fun paginationOptionsTwenty(): PaginationOptions = PaginationOptions(20, 20)
@@ -566,4 +591,6 @@ object Some {
     const val protocol = "http"
     const val balance = 403
     const val balanceLock = "aca94f4d2f472c6b9b662f60aab247b9c6aef2079d63b870e2cc02308a7c822b"
+    const val recipient = "fdae688d9e879ce89f164c6eb793d5a3c9e714bc6962a671275c0e2e1e6ea599"
+    const val blockIdentifier = "d5356888dc9303e44ce52b1e06c3165a7759b9df1e6a6dfbd33ee1c3df1ab4d1"
 }

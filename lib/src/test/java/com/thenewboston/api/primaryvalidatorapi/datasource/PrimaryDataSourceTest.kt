@@ -1,7 +1,6 @@
 package com.thenewboston.api.primaryvalidatorapi.datasource
 
 import com.thenewboston.api.common.GetDataSource
-import com.thenewboston.api.common.PostDataSource
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.utils.Mocks
 import com.thenewboston.utils.Some
@@ -12,7 +11,6 @@ import io.kotest.matchers.longs.shouldBeGreaterThan
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.contain
-import io.kotest.matchers.string.shouldNotBeEmpty
 import io.kotest.matchers.types.beInstanceOf
 import io.ktor.util.*
 import io.ktor.utils.io.errors.*
@@ -32,16 +30,13 @@ class PrimaryDataSourceTest {
     @MockK
     lateinit var getDataSource: GetDataSource
 
-    @MockK
-    lateinit var postDataSource: PostDataSource
-
     private lateinit var primaryDataSource: PrimaryDataSource
 
     @BeforeAll
     fun setup() {
         MockKAnnotations.init(this)
 
-        primaryDataSource = PrimaryDataSource(getDataSource, postDataSource)
+        primaryDataSource = PrimaryDataSource(getDataSource)
     }
 
     @Nested
@@ -197,6 +192,18 @@ class PrimaryDataSourceTest {
                 response.value.nodeIdentifier should contain(nodeIdentifier)
                 response.value.ipAddress should contain("127.0.0.1")
             }
+
+            @Test
+            fun `should fetch confirmations blocks successfully`() = runBlockingTest {
+                val blockIdentifier = Some.blockIdentifier
+
+                coEvery { getDataSource.confirmationBlocks(blockIdentifier) } returns Outcome.Success(Mocks.confirmationBlocks())
+
+                val response = primaryDataSource.fetchConfirmationBlocks(Some.blockIdentifier)
+
+                check(response is Outcome.Success)
+                response.value.message.blockIdentifier shouldBe Some.blockIdentifier
+            }
         }
     }
 
@@ -204,8 +211,6 @@ class PrimaryDataSourceTest {
     @DisplayName("Given request that should fail")
     @TestInstance(Lifecycle.PER_CLASS)
     inner class GivenFailingRequest {
-
-        private val pagination = Mocks.paginationOptionsDefault()
 
         @Nested
         @DisplayName("When performing GET request...")
@@ -310,6 +315,19 @@ class PrimaryDataSourceTest {
                 coEvery { getDataSource.validator(nodeIdentifier) } returns Outcome.Error(message, IOException())
 
                 val response = primaryDataSource.fetchValidator(nodeIdentifier)
+
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.message shouldBe message
+            }
+
+            @Test
+            fun `should return error outcome for confirmation blocks`() = runBlockingTest {
+                val message = "Could not fetch validator with block identifier $Some.blockIdentifier"
+
+                coEvery { getDataSource.validator(Some.blockIdentifier) } returns Outcome.Error(message, IOException())
+
+                val response = primaryDataSource.fetchValidator(Some.blockIdentifier)
 
                 check(response is Outcome.Error)
                 response.cause should beInstanceOf<IOException>()

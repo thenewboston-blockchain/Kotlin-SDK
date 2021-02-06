@@ -11,14 +11,15 @@ import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
+import com.thenewboston.data.dto.common.response.ConfirmationBlocks
 import com.thenewboston.data.dto.common.response.Validator
 import com.thenewboston.data.dto.common.response.ValidatorList
 import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountBalance
 import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountBalanceLock
 import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountFromValidatorList
-import com.thenewboston.data.dto.primaryvalidatorapi.configdto.PrimaryValidatorDetails
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
+import com.thenewboston.data.dto.primaryvalidatorapi.configdto.PrimaryValidatorDetails
 import com.thenewboston.utils.BankAPIEndpoints
 import com.thenewboston.utils.ErrorMessages
 import com.thenewboston.utils.PaginationOptions
@@ -202,5 +203,12 @@ class GetDataSource @Inject constructor(private val networkClient: NetworkClient
             )
             else -> Outcome.Success(response)
         }
+    }
+
+    suspend fun confirmationBlocks(blockIdentifier: String): Outcome<ConfirmationBlocks> {
+        val endpoint = PrimaryValidatorAPIEndpoints.confirmationBlocksEndpoint(blockIdentifier)
+        val response = networkClient.defaultClient.get<ConfirmationBlocks>(endpoint)
+
+        return Outcome.Success(response)
     }
 }

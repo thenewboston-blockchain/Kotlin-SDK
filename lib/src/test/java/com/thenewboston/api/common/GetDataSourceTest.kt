@@ -2,12 +2,12 @@ package com.thenewboston.api.common
 
 import com.thenewboston.common.http.NetworkClient
 import com.thenewboston.common.http.Outcome
-import com.thenewboston.utils.BankApiMockEngine
-import com.thenewboston.utils.PrimaryValidatorApiMockEngine
 import com.thenewboston.utils.ErrorMessages
 import com.thenewboston.utils.Mocks
-import com.thenewboston.utils.Some
 import com.thenewboston.utils.PaginationOptions
+import com.thenewboston.utils.Some
+import com.thenewboston.utils.mockEngine.bank.BankApiMockEngine
+import com.thenewboston.utils.mockEngine.primaryValidator.PrimaryValidatorApiMockEngine
 import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.ints.shouldBeGreaterThan
 import io.kotest.matchers.ints.shouldBeLessThanOrEqual
@@ -376,8 +376,6 @@ class GetDataSourceTest {
 
         @Test
         fun `should fetch list of 20 available banks sent from validator`() = runBlockingTest {
-            val value = Mocks.banksFromValidator(paginationTwenty)
-
             val response = getDataSource.banksFromValidator(paginationTwenty)
 
             check(response is Outcome.Success)
@@ -388,8 +386,6 @@ class GetDataSourceTest {
 
         @Test
         fun `should fetch list of 30 available banks sent from validator`() = runBlockingTest {
-            val value = Mocks.banksFromValidator(paginationThirty)
-
             val response = getDataSource.banksFromValidator(paginationThirty)
 
             check(response is Outcome.Success)
@@ -418,6 +414,7 @@ class GetDataSourceTest {
             response.value.results.size shouldBeLessThanOrEqual 20
         }
 
+        @Test
         fun `should fetch list of 20 validators successfully`() = runBlockingTest {
             val response = getDataSource.validators(paginationTwenty)
 
@@ -474,6 +471,14 @@ class GetDataSourceTest {
             check(response is Outcome.Success)
             response.value.nodeIdentifier should contain(nodeIdentifier)
             response.value.ipAddress should contain("127.0.0.1")
+        }
+
+        @Test
+        fun `should fetch confirmation blocks successfully`() = runBlockingTest {
+            val response = getDataSource.confirmationBlocks(Some.blockIdentifier)
+
+            check(response is Outcome.Success)
+            response.value.message.blockIdentifier shouldBe Some.blockIdentifier
         }
     }
 

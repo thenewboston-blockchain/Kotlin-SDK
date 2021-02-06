@@ -38,4 +38,6 @@ class PrimaryRepository @Inject constructor(private val dataSource: PrimaryDataS
         dataSource.fetchValidators(PaginationOptions(offset, limit))
 
     suspend fun validator(nodeIdentifier: String) = dataSource.fetchValidator(nodeIdentifier)
+
+    suspend fun confirmationBlocks(blockIdentifier: String) = dataSource.fetchConfirmationBlocks(blockIdentifier)
 }
