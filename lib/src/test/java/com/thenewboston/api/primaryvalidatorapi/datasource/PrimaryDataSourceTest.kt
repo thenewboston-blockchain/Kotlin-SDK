@@ -1,6 +1,7 @@
 package com.thenewboston.api.primaryvalidatorapi.datasource
 
 import com.thenewboston.api.common.GetDataSource
+import com.thenewboston.api.common.PostDataSource
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.utils.Mocks
 import com.thenewboston.utils.Some
@@ -30,13 +31,16 @@ class PrimaryDataSourceTest {
     @MockK
     lateinit var getDataSource: GetDataSource
 
+    @MockK
+    lateinit var postDataSource: PostDataSource
+
     private lateinit var primaryDataSource: PrimaryDataSource
 
     @BeforeAll
     fun setup() {
         MockKAnnotations.init(this)
 
-        primaryDataSource = PrimaryDataSource(getDataSource)
+        primaryDataSource = PrimaryDataSource(getDataSource, postDataSource)
     }
 
     @Nested
@@ -204,6 +208,19 @@ class PrimaryDataSourceTest {
                 check(response is Outcome.Success)
                 response.value.message.blockIdentifier shouldBe Some.blockIdentifier
             }
+
+            @Test
+            fun `should send connection request successfully`() = runBlockingTest {
+                val request = Mocks.connectionRequest()
+                val message = "Successfully sent connection requests"
+
+                coEvery { postDataSource.doSendConnectionRequests(request) } returns Outcome.Success(message)
+
+                val response = primaryDataSource.sendConnectionRequest(request)
+
+                check(response is Outcome.Success)
+                response.value shouldBe message
+            }
         }
     }
 
@@ -328,6 +345,20 @@ class PrimaryDataSourceTest {
                 coEvery { getDataSource.validator(Some.blockIdentifier) } returns Outcome.Error(message, IOException())
 
                 val response = primaryDataSource.fetchValidator(Some.blockIdentifier)
+
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.message shouldBe message
+            }
+
+            @Test
+            fun `should return error outcome for connection requests`() = runBlockingTest {
+                val message = "Could not send connection request"
+                val request = Mocks.connectionRequest()
+
+                coEvery { postDataSource.doSendConnectionRequests(request) } returns Outcome.Error(message, IOException())
+
+                val response = postDataSource.doSendConnectionRequests(request)
 
                 check(response is Outcome.Error)
                 response.cause should beInstanceOf<IOException>()

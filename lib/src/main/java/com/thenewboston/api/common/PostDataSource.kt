@@ -4,7 +4,7 @@ import com.thenewboston.common.http.NetworkClient
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
-import com.thenewboston.data.dto.bankapi.connectionrequestsdto.ConnectionRequest
+import com.thenewboston.data.dto.common.request.ConnectionRequest
 import com.thenewboston.data.dto.bankapi.crawl.request.PostCrawlRequest
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.upgradenoticedto.UpgradeNoticeRequest

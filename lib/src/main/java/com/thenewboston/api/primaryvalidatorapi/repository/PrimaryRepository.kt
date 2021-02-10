@@ -2,6 +2,7 @@ package com.thenewboston.api.primaryvalidatorapi.repository
 
 import com.thenewboston.api.primaryvalidatorapi.datasource.PrimaryDataSource
 import com.thenewboston.common.http.Outcome
+import com.thenewboston.data.dto.common.request.ConnectionRequest
 import com.thenewboston.data.dto.common.response.ValidatorList
 import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountBalance
 import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountBalanceLock
@@ -40,4 +41,6 @@ class PrimaryRepository @Inject constructor(private val dataSource: PrimaryDataS
     suspend fun validator(nodeIdentifier: String) = dataSource.fetchValidator(nodeIdentifier)
 
     suspend fun confirmationBlocks(blockIdentifier: String) = dataSource.fetchConfirmationBlocks(blockIdentifier)
+
+    suspend fun sendConnectionRequests(request: ConnectionRequest) = dataSource.sendConnectionRequest(request)
 }

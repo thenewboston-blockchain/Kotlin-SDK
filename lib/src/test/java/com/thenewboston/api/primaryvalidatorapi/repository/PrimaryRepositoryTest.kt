@@ -181,7 +181,14 @@ class PrimaryRepositoryTest {
 
     @Test
     fun `verify validators result is success outcome`() = runBlockingTest {
-        coEvery { primaryDataSource.fetchValidators(PaginationOptions(0, 20)) } returns Outcome.Success(Mocks.validators())
+        coEvery {
+            primaryDataSource.fetchValidators(
+                PaginationOptions(
+                    0,
+                    20
+                )
+            )
+        } returns Outcome.Success(Mocks.validators())
 
         // when
         val result = repository.validators(0, 20)
@@ -244,11 +251,38 @@ class PrimaryRepositoryTest {
 
     @Test
     fun `verify confirmation blocks is error outcome`() = runBlockingTest {
-        coEvery { primaryDataSource.fetchConfirmationBlocks(Some.blockIdentifier) } returns Outcome.Error("An error occurred", IOException())
+        coEvery { primaryDataSource.fetchConfirmationBlocks(Some.blockIdentifier) } returns Outcome.Error(
+            "An error occurred",
+            IOException()
+        )
 
         val result = repository.confirmationBlocks(Some.blockIdentifier)
 
-        coEvery { primaryDataSource.fetchConfirmationBlocks(Some.blockIdentifier) }
+        coVerify { primaryDataSource.fetchConfirmationBlocks(Some.blockIdentifier) }
+        result should beInstanceOf<Outcome.Error>()
+    }
+
+    @Test
+    fun `verify connection request is success outcome`() = runBlockingTest {
+        val connectionRequest = Mocks.connectionRequest()
+        coEvery { primaryDataSource.sendConnectionRequest(connectionRequest) } returns Outcome.Success("Successfully sent connection requests")
+
+        val result = repository.sendConnectionRequests(connectionRequest)
+
+        coVerify { primaryDataSource.sendConnectionRequest(connectionRequest) }
+        result should beInstanceOf<Outcome.Success<String>>()
+    }
+
+    @Test
+    fun `verify connection request is error outcome`() = runBlockingTest {
+        val connectionRequest = Mocks.connectionRequest()
+        val message = "Could not send connection request"
+
+        coEvery { primaryDataSource.sendConnectionRequest(connectionRequest) } returns Outcome.Error(message, IOException())
+
+        val result = repository.sendConnectionRequests(connectionRequest)
+
+        coVerify { primaryDataSource.sendConnectionRequest(connectionRequest) }
         result should beInstanceOf<Outcome.Error>()
     }
 }

@@ -14,7 +14,7 @@ import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.common.response.Bank
-import com.thenewboston.data.dto.bankapi.connectionrequestsdto.ConnectionRequest
+import com.thenewboston.data.dto.common.request.ConnectionRequest
 import com.thenewboston.data.dto.bankapi.crawl.request.PostCrawlRequest
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock

@@ -13,8 +13,8 @@ import com.thenewboston.data.dto.bankapi.clean.request.Data as cleanData
 import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
-import com.thenewboston.data.dto.bankapi.connectionrequestsdto.ConnectionRequest
-import com.thenewboston.data.dto.bankapi.connectionrequestsdto.ConnectionRequestMessage
+import com.thenewboston.data.dto.common.request.ConnectionRequest
+import com.thenewboston.data.dto.common.request.ConnectionRequestMessage
 import com.thenewboston.data.dto.bankapi.crawl.request.Data as crawlData
 import com.thenewboston.data.dto.bankapi.crawl.request.PostCrawlRequest
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
