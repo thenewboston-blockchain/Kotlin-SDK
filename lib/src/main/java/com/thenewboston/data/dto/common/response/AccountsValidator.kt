@@ -1,18 +1,18 @@
-package com.thenewboston.data.dto.primaryvalidatorapi.accountdto
+package com.thenewboston.data.dto.common.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AccountFromValidatorList(
-    val count: Long,
+data class AccountListValidator(
+    val count: Int,
     val next: String?,
     val previous: String?,
-    val results: List<AccountFromValidator>
+    val results: List<AccountValidator>
 )
 
 @Serializable
-data class AccountFromValidator(
+data class AccountValidator(
     @SerialName("id")
     val id: String,
 

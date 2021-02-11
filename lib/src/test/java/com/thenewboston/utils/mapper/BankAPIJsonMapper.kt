@@ -32,12 +32,12 @@ object BankAPIJsonMapper {
     fun mapEmptyBanksToJson(): String = Json.encodeToString(Mocks.emptyBanks())
 
     fun mapAccountsToJson(offset: Int?, limit: Int?): String {
-        return Json.encodeToString(Mocks.accounts(PaginationOptions(offset, limit)))
+        return Json.encodeToString(Mocks.accountsBanks(PaginationOptions(offset, limit)))
     }
 
     fun mapEmptyAccountsToJson(): String = Json.encodeToString(Mocks.emptyAccounts())
 
-    fun mapAccountToJson(trust: Double): String = Json.encodeToString(Mocks.account(trust))
+    fun mapAccountToJson(trust: Double): String = Json.encodeToString(Mocks.accountBank(trust))
 
     fun mapEmptyAccountToJson(): String = Json.encodeToString(Mocks.emptyAccount())
 

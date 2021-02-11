@@ -11,12 +11,7 @@ import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
-import com.thenewboston.data.dto.common.response.ConfirmationBlocks
-import com.thenewboston.data.dto.common.response.Validator
-import com.thenewboston.data.dto.common.response.ValidatorList
-import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountBalance
-import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountBalanceLock
-import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountFromValidatorList
+import com.thenewboston.data.dto.common.response.*
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
 import com.thenewboston.data.dto.primaryvalidatorapi.configdto.PrimaryValidatorDetails
@@ -114,9 +109,9 @@ class GetDataSource @Inject constructor(private val networkClient: NetworkClient
         }
     }
 
-    suspend fun accountsFromValidator(pagination: PaginationOptions): Outcome<AccountFromValidatorList> {
+    suspend fun accountsFromValidator(pagination: PaginationOptions): Outcome<AccountListValidator> {
         val endpoint = BankAPIEndpoints.ACCOUNTS_ENDPOINT + pagination.toQuery()
-        val accounts = networkClient.defaultClient.get<AccountFromValidatorList>(endpoint)
+        val accounts = networkClient.defaultClient.get<AccountListValidator>(endpoint)
 
         return when {
             accounts.results.isEmpty() -> Outcome.Error(

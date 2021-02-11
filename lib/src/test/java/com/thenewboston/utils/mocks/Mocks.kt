@@ -13,8 +13,6 @@ import com.thenewboston.data.dto.bankapi.clean.request.Data as cleanData
 import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
-import com.thenewboston.data.dto.common.request.ConnectionRequest
-import com.thenewboston.data.dto.common.request.ConnectionRequestMessage
 import com.thenewboston.data.dto.bankapi.crawl.request.Data as crawlData
 import com.thenewboston.data.dto.bankapi.crawl.request.PostCrawlRequest
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
@@ -27,13 +25,11 @@ import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.Confir
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.Message
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
+import com.thenewboston.data.dto.common.request.ConnectionRequest
+import com.thenewboston.data.dto.common.request.ConnectionRequestMessage
 import com.thenewboston.data.dto.common.request.TrustMessage
 import com.thenewboston.data.dto.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.common.response.*
-import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountBalance
-import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountBalanceLock
-import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountFromValidator
-import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountFromValidatorList
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
 import com.thenewboston.data.dto.primaryvalidatorapi.configdto.PrimaryValidatorDetails
@@ -259,7 +255,7 @@ object Mocks {
         count = 30,
         next = null,
         previous = null,
-        PaginationResult<BankTransactions>(pagination.limit, bankTransaction()).toList()
+        PaginationResult(pagination.limit, bankTransaction()).toList()
     )
 
     fun emptyBankTransactions() = BankTransactionList(
@@ -269,26 +265,40 @@ object Mocks {
         bankTransactions = emptyList()
     )
 
-    fun accounts(pagination: PaginationOptions = PaginationOptions(0, 20)) = AccountList(
+    fun accountsValidator(pagination: PaginationOptions = PaginationOptions(0, 20)) = AccountListValidator(
         count = 30,
         previous = null,
         next = null,
-        results = PaginationResult<Account>(pagination.limit, account()).toList()
+        results = PaginationResult(pagination.limit, accountFromValidator()).toList()
     )
 
-    fun emptyAccounts() = AccountList(
+    fun accountsBanks(pagination: PaginationOptions = PaginationOptions(0, 20)) = AccountList(
+        count = 30,
+        previous = null,
+        next = null,
+        results = PaginationResult(pagination.limit, accountBank()).toList()
+    )
+
+    fun emptyAccounts() = AccountListValidator(
         count = 0,
         next = null,
         previous = null,
         results = emptyList()
     )
 
-    fun account(trust: Double = 100.0) = Account(
+    fun accountBank(trust: Double = 100.0) = Account(
         id = Some.id,
         createdDate = LocalDateTime(2020, 8, 8, 12, 12, 23),
         modifiedDate = LocalDateTime(2020, 8, 8, 12, 13, 23),
         accountNumber = Some.accountNumber,
         trust = trust
+    )
+
+    fun accountValidator() = AccountValidator(
+        id = Some.id,
+        accountNumber = Some.accountNumber,
+        balance = Some.balance,
+        balanceLock = Some.balanceLock
     )
 
     fun emptyAccount() = Account(
@@ -299,28 +309,28 @@ object Mocks {
         trust = 0.00
     )
 
-    fun accountsFromValidator(pagination: PaginationOptions = PaginationOptions(0, 20)) = AccountFromValidatorList(
+    fun accountsFromValidator(pagination: PaginationOptions = PaginationOptions(0, 20)) = AccountListValidator(
         count = 30,
         previous = null,
         next = null,
-        results = PaginationResult<AccountFromValidator>(pagination.limit, accountFromValidator()).toList()
+        results = PaginationResult<AccountValidator>(pagination.limit, accountFromValidator()).toList()
     )
 
-    fun emptyAccountsFromValidator() = AccountList(
+    fun emptyAccountsFromValidator() = AccountListValidator(
         count = 0,
         next = null,
         previous = null,
         results = emptyList()
     )
 
-    fun accountFromValidator() = AccountFromValidator(
+    fun accountFromValidator() = AccountValidator(
         id = Some.id,
         accountNumber = Some.accountNumber,
         balance = Some.balance,
         balanceLock = Some.balanceLock
     )
 
-    fun emptyAccountFromValidator() = AccountFromValidator(
+    fun emptyAccountFromValidator() = AccountValidator(
         id = "",
         accountNumber = "",
         balance = 0,
