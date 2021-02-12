@@ -4,13 +4,10 @@ import com.thenewboston.api.primaryvalidatorapi.datasource.PrimaryDataSource
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.data.dto.common.request.ConnectionRequest
 import com.thenewboston.data.dto.common.response.ValidatorList
-import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountBalance
-import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountBalanceLock
-import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountFromValidatorList
-import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.request.BankBlockRequest
 import com.thenewboston.data.dto.common.response.AccountBalance
 import com.thenewboston.data.dto.common.response.AccountBalanceLock
 import com.thenewboston.data.dto.common.response.AccountListValidator
+import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.request.BankBlockRequest
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
 import com.thenewboston.data.dto.primaryvalidatorapi.configdto.PrimaryValidatorDetails

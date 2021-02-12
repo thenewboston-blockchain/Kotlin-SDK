@@ -30,10 +30,6 @@ import com.thenewboston.data.dto.common.request.ConnectionRequestMessage
 import com.thenewboston.data.dto.common.request.TrustMessage
 import com.thenewboston.data.dto.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.common.response.*
-import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountBalance
-import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountBalanceLock
-import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountFromValidator
-import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountFromValidatorList
 import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.BankBlock
 import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.BankBlockMessageBalance
 import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.BankBlockTx

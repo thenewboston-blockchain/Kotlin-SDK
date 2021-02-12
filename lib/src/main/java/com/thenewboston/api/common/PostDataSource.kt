@@ -27,15 +27,7 @@ class PostDataSource @Inject constructor(private val networkClient: NetworkClien
             body = request
         }
 
-        return when {
-            response.accountNumber.isBlank() -> {
-                val nodeIdentifier = request.nodeIdentifier
-                val message =
-                    "Received invalid response sending bank block with node identifier: $nodeIdentifier"
-                return Outcome.Error(message, IOException())
-            }
-            else -> Outcome.Success(response)
-        }
+        return Outcome.Success(response)
     }
 
     suspend fun doSendConfirmationServices(request: PostConfirmationServicesRequest): Outcome<ConfirmationServices> {

@@ -203,17 +203,5 @@ class PostDataSourceTest {
         fun given() {
             every { networkClient.defaultClient } returns primaryMockEngine.postInvalidSuccess()
         }
-
-        @Test
-        fun `should return error outcome when receiving invalid response for sending bank block`() = runBlockingTest {
-            val request = Mocks.bankBlockRequest()
-
-            val response = postDataSource.doSendBankBlock(request)
-
-            check(response is Outcome.Error)
-            response.cause should beInstanceOf<IOException>()
-            val message = "Received invalid response sending bank block with node identifier: ${request.nodeIdentifier}"
-            response.message shouldBe message
-        }
     }
 }

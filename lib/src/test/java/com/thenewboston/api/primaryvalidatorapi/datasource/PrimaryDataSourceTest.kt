@@ -97,7 +97,9 @@ class PrimaryDataSourceTest {
 
             @Test
             fun `should fetch primary validator details from config`() = runBlockingTest {
-                coEvery { getDataSource.primaryValidatorDetails() } returns Outcome.Success(Mocks.primaryValidatorDetails())
+                coEvery {
+                    getDataSource.primaryValidatorDetails()
+                } returns Outcome.Success(Mocks.primaryValidatorDetails())
 
                 val response = primaryDataSource.fetchPrimaryValidatorDetails()
 
@@ -291,7 +293,9 @@ class PrimaryDataSourceTest {
             @Test
             fun `should return error outcome for list of accounts from primary validator IOException`() = runBlockingTest {
                 val message = "Failed to retrieve accounts from primary validator"
-                coEvery { getDataSource.accountsFromValidator(pagination) } returns Outcome.Error(message, IOException())
+                coEvery {
+                    getDataSource.accountsFromValidator(pagination)
+                } returns Outcome.Error(message, IOException())
 
                 val response = primaryDataSource.fetchAccountsFromValidator(pagination)
 
@@ -329,7 +333,9 @@ class PrimaryDataSourceTest {
             fun `should return error outcome for account balance lock IOException`() = runBlockingTest {
                 val accountNumber = Some.accountNumber
                 val message = "Failed to retrieve account balance lock from primary validator"
-                coEvery { getDataSource.accountBalanceLock(accountNumber) } returns Outcome.Error(message, IOException())
+                coEvery {
+                    getDataSource.accountBalanceLock(accountNumber)
+                } returns Outcome.Error(message, IOException())
 
                 val response = primaryDataSource.fetchAccountBalanceLock(accountNumber)
 
@@ -370,7 +376,9 @@ class PrimaryDataSourceTest {
                 val message = "Could not send bank block request"
                 val request = Mocks.bankBlockRequest()
 
-                coEvery { postDataSource.doSendBankBlock(request) } returns Outcome.Error(message, IOException())
+                coEvery {
+                    postDataSource.doSendBankBlock(request)
+                } returns Outcome.Error(message, IOException())
 
                 val response = postDataSource.doSendBankBlock(request)
 
@@ -384,7 +392,9 @@ class PrimaryDataSourceTest {
                 val message = "Could not send connection request"
                 val request = Mocks.connectionRequest()
 
-                coEvery { postDataSource.doSendConnectionRequests(request) } returns Outcome.Error(message, IOException())
+                coEvery {
+                    postDataSource.doSendConnectionRequests(request)
+                } returns Outcome.Error(message, IOException())
 
                 val response = postDataSource.doSendConnectionRequests(request)
 
