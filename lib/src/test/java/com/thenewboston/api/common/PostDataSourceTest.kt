@@ -3,7 +3,9 @@ package com.thenewboston.api.common
 import com.thenewboston.common.http.NetworkClient
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.utils.mockEngine.bank.BankApiMockEngine
+import com.thenewboston.utils.mockEngine.primaryValidator.PrimaryValidatorApiMockEngine
 import com.thenewboston.utils.Mocks
+import com.thenewboston.utils.Some
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNot
@@ -26,7 +28,8 @@ class PostDataSourceTest {
     @MockK
     lateinit var networkClient: NetworkClient
 
-    private val mockEngine = BankApiMockEngine()
+    private val bankMockEngine = BankApiMockEngine()
+    private val primaryMockEngine = PrimaryValidatorApiMockEngine()
 
     private lateinit var postDataSource: PostDataSource
 
@@ -38,13 +41,13 @@ class PostDataSourceTest {
     }
 
     @Nested
-    @DisplayName("Given successful request")
+    @DisplayName("Bank: Given successful request")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class GivenSucceedingRequest {
 
         @BeforeEach
         fun setup() {
-            every { networkClient.defaultClient } returns mockEngine.postSuccess()
+            every { networkClient.defaultClient } returns bankMockEngine.postSuccess()
         }
 
         @Test
@@ -112,13 +115,13 @@ class PostDataSourceTest {
     }
 
     @Nested
-    @DisplayName("Given empty or invalid response body")
+    @DisplayName("Bank: Given empty or invalid response body")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class GivenInvalidResponseBody {
 
         @BeforeEach
         fun given() {
-            every { networkClient.defaultClient } returns mockEngine.postInvalidSuccess()
+            every { networkClient.defaultClient } returns bankMockEngine.postInvalidSuccess()
         }
 
         @Test
@@ -165,6 +168,51 @@ class PostDataSourceTest {
             check(response is Outcome.Error)
             response.cause should beInstanceOf<IOException>()
             val message = "Received invalid response when sending block with crawl: ${request.data.crawl}"
+            response.message shouldBe message
+        }
+    }
+
+    @Nested
+    @DisplayName("Primary Validator: Given successful request")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class PrimaryGivenSucceedingRequest {
+
+        @BeforeEach
+        fun setup() {
+            every { networkClient.defaultClient } returns primaryMockEngine.postSuccess()
+        }
+
+        @Test
+        fun `should send bank block successfully`() = runBlockingTest {
+            val request = Mocks.bankBlockRequest()
+
+            val response = postDataSource.doSendBankBlock(request)
+
+            check(response is Outcome.Success)
+            response.value.accountNumber shouldBe Some.accountNumber
+            response.value.message.balanceKey shouldBe Some.balanceKey
+        }
+    }
+
+    @Nested
+    @DisplayName("Primary Validator: Given empty or invalid response body")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class PrimaryGivenInvalidResponseBody {
+
+        @BeforeEach
+        fun given() {
+            every { networkClient.defaultClient } returns primaryMockEngine.postInvalidSuccess()
+        }
+
+        @Test
+        fun `should return error outcome when receiving invalid response for sending bank block`() = runBlockingTest {
+            val request = Mocks.bankBlockRequest()
+
+            val response = postDataSource.doSendBankBlock(request)
+
+            check(response is Outcome.Error)
+            response.cause should beInstanceOf<IOException>()
+            val message = "Received invalid response sending bank block with node identifier: ${request.nodeIdentifier}"
             response.message shouldBe message
         }
     }

@@ -10,13 +10,33 @@ import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.upgradenoticedto.UpgradeNoticeRequest
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServices
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
+import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.BankBlock
+import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.request.BankBlockRequest
 import com.thenewboston.utils.BankAPIEndpoints
+import com.thenewboston.utils.PrimaryValidatorAPIEndpoints
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.utils.io.errors.*
 import javax.inject.Inject
 
 class PostDataSource @Inject constructor(private val networkClient: NetworkClient) {
+
+    suspend fun doSendBankBlock(request: BankBlockRequest): Outcome<BankBlock> {
+        val response = networkClient.defaultClient.post<BankBlock> {
+            url(PrimaryValidatorAPIEndpoints.BANK_BLOCKS_ENDPOINT)
+            body = request
+        }
+
+        return when {
+            response.accountNumber.isBlank() -> {
+                val nodeIdentifier = request.nodeIdentifier
+                val message =
+                    "Received invalid response sending bank block with node identifier: $nodeIdentifier"
+                return Outcome.Error(message, IOException())
+            }
+            else -> Outcome.Success(response)
+        }
+    }
 
     suspend fun doSendConfirmationServices(request: PostConfirmationServicesRequest): Outcome<ConfirmationServices> {
         val response = networkClient.defaultClient.post<ConfirmationServices> {

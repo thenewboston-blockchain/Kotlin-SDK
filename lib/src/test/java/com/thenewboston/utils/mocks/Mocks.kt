@@ -34,6 +34,10 @@ import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountBalance
 import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountBalanceLock
 import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountFromValidatorList
+import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.BankBlock
+import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.BankBlockMessageBalance
+import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.BankBlockTx
+import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.request.BankBlockRequest
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
 import com.thenewboston.data.dto.primaryvalidatorapi.configdto.PrimaryValidatorDetails
@@ -445,6 +449,30 @@ object Mocks {
         "",
         "",
         ""
+    )
+
+    fun bankBlock() = BankBlock(
+        Some.accountNumber,
+        BankBlockMessageBalance(
+            Some.balanceKey,
+            listOf(BankBlockTx(100, Some.recipient))
+        ),
+        Some.signature
+    )
+
+    fun emptyBankBlock() = BankBlock(
+        "",
+        BankBlockMessageBalance(
+            "",
+            listOf(BankBlockTx(0, ""))
+        ),
+        ""
+    )
+
+    fun bankBlockRequest() = BankBlockRequest(
+        bankBlock(),
+        Some.nodeIdentifier,
+        Some.signature
     )
 
     fun confirmationServiceWithMessage(message: Message) = ConfirmationServices(

@@ -210,6 +210,20 @@ class PrimaryDataSourceTest {
             }
 
             @Test
+            fun `should send bank block request successfully`() = runBlockingTest {
+                val request = Mocks.bankBlockRequest()
+                val value = Mocks.bankBlock()
+
+                coEvery { postDataSource.doSendBankBlock(request) } returns Outcome.Success(value)
+
+                val response = primaryDataSource.sendBankBlock(request)
+
+                check(response is Outcome.Success)
+                response.value.accountNumber shouldBe Some.accountNumber
+                response.value.message.balanceKey shouldBe Some.balanceKey
+            }
+
+            @Test
             fun `should send connection request successfully`() = runBlockingTest {
                 val request = Mocks.connectionRequest()
                 val message = "Successfully sent connection requests"
@@ -345,6 +359,20 @@ class PrimaryDataSourceTest {
                 coEvery { getDataSource.validator(Some.blockIdentifier) } returns Outcome.Error(message, IOException())
 
                 val response = primaryDataSource.fetchValidator(Some.blockIdentifier)
+
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.message shouldBe message
+            }
+
+            @Test
+            fun `should return error outcome for bank block requests`() = runBlockingTest {
+                val message = "Could not send bank block request"
+                val request = Mocks.bankBlockRequest()
+
+                coEvery { postDataSource.doSendBankBlock(request) } returns Outcome.Error(message, IOException())
+
+                val response = postDataSource.doSendBankBlock(request)
 
                 check(response is Outcome.Error)
                 response.cause should beInstanceOf<IOException>()

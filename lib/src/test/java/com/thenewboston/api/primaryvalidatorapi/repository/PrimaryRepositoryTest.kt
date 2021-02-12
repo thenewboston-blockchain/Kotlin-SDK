@@ -8,6 +8,7 @@ import com.thenewboston.data.dto.common.response.ValidatorList
 import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountBalance
 import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountBalanceLock
 import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountFromValidatorList
+import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.BankBlock
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
 import com.thenewboston.data.dto.primaryvalidatorapi.configdto.PrimaryValidatorDetails
@@ -259,6 +260,33 @@ class PrimaryRepositoryTest {
         val result = repository.confirmationBlocks(Some.blockIdentifier)
 
         coVerify { primaryDataSource.fetchConfirmationBlocks(Some.blockIdentifier) }
+        result should beInstanceOf<Outcome.Error>()
+    }
+
+    @Test
+    fun `verify send bank block returns success outcome`() = runBlockingTest {
+        val postRequest = Mocks.bankBlockRequest()
+        val response = Mocks.bankBlock()
+        coEvery {
+            primaryDataSource.sendBankBlock(postRequest)
+        } returns Outcome.Success(response)
+
+        val result = repository.sendBankBlock(postRequest)
+
+        coVerify { primaryDataSource.sendBankBlock(postRequest) }
+        result should beInstanceOf<Outcome.Success<BankBlock>>()
+    }
+
+    @Test
+    fun `verify send bank block returns error outcome`() = runBlockingTest {
+        val postRequest = Mocks.bankBlockRequest()
+        coEvery {
+            primaryDataSource.sendBankBlock(postRequest)
+        } returns Outcome.Error("Failed to send bank block", IOException())
+
+        val result = repository.sendBankBlock(postRequest)
+
+        coVerify { primaryDataSource.sendBankBlock(postRequest) }
         result should beInstanceOf<Outcome.Error>()
     }
 
