@@ -9,12 +9,12 @@ import com.thenewboston.data.dto.bankapi.banktransactiondto.BankTransactionList
 import com.thenewboston.data.dto.bankapi.blockdto.Block
 import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
-import com.thenewboston.data.dto.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServices
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
+import com.thenewboston.data.dto.common.response.Bank
 import com.thenewboston.data.dto.common.response.ValidatorList
 import com.thenewboston.utils.Mocks
 import com.thenewboston.utils.PaginationOptions
@@ -26,13 +26,13 @@ import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
+import java.io.IOException
+import javax.xml.validation.Validator
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import java.io.IOException
-import javax.xml.validation.Validator
 
 @ExperimentalCoroutinesApi
 @KtorExperimentalAPI
@@ -165,7 +165,7 @@ class BankRepositoryTest {
 
     @Test
     fun `verify list of accounts is success outcome`() = runBlockingTest {
-        coEvery { bankDataSource.fetchAccounts(PaginationOptions(0, 20)) } returns Outcome.Success(Mocks.accounts())
+        coEvery { bankDataSource.fetchAccounts(PaginationOptions(0, 20)) } returns Outcome.Success(Mocks.accountsBanks())
 
         // when
         val result = repository.accounts(0, 20)
@@ -234,7 +234,7 @@ class BankRepositoryTest {
         // given
         val accountNumber = Some.accountNumber
         val request = Mocks.trustRequest()
-        val response = Mocks.account(42.0)
+        val response = Mocks.accountBank(42.0)
         coEvery {
             bankDataSource.updateAccountTrust(
                 accountNumber,

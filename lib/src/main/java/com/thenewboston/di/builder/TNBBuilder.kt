@@ -1,6 +1,8 @@
 package com.thenewboston.di.builder
 
 import com.thenewboston.api.bankapi.repository.BankRepository
+import com.thenewboston.api.confirmationvalidatorapi.repository.ConfirmationRepository
+import com.thenewboston.api.primaryvalidatorapi.repository.PrimaryRepository
 import com.thenewboston.common.http.NetworkClient
 import com.thenewboston.common.http.config.Config
 import dagger.Component
@@ -14,15 +16,15 @@ import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import kotlinx.serialization.json.Json
 import javax.inject.Scope
+import kotlinx.serialization.json.Json
 
 @Retention(AnnotationRetention.RUNTIME)
 @Scope
 annotation class TNBScope
 
 @Module
-class TNBBankNetworkModule(private val config: Config) {
+class TNBNetworkModule(private val config: Config) {
 
     @TNBScope
     @Provides
@@ -43,7 +45,7 @@ class TNBBankNetworkModule(private val config: Config) {
 
     @TNBScope
     @Provides
-    fun provideBankHttpClient(
+    fun provideHttpClient(
         engine: HttpClientEngine,
         json: Json
     ): HttpClient =
@@ -61,7 +63,9 @@ class TNBBankNetworkModule(private val config: Config) {
 }
 
 @TNBScope
-@Component(modules = [TNBBankNetworkModule::class])
+@Component(modules = [TNBNetworkModule::class])
 interface TNBComponent {
-    fun repository(): BankRepository
+    fun bankRepository(): BankRepository
+    fun primaryValidatorRepository(): PrimaryRepository
+    fun confirmationValidatorRepository(): ConfirmationRepository
 }

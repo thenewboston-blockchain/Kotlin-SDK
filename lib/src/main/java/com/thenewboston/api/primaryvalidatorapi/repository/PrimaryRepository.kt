@@ -4,9 +4,9 @@ import com.thenewboston.api.primaryvalidatorapi.datasource.PrimaryDataSource
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.data.dto.common.request.ConnectionRequest
 import com.thenewboston.data.dto.common.response.ValidatorList
-import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountBalance
-import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountBalanceLock
-import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountFromValidatorList
+import com.thenewboston.data.dto.common.response.AccountBalance
+import com.thenewboston.data.dto.common.response.AccountBalanceLock
+import com.thenewboston.data.dto.common.response.AccountListValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
 import com.thenewboston.data.dto.primaryvalidatorapi.configdto.PrimaryValidatorDetails
@@ -26,7 +26,7 @@ class PrimaryRepository @Inject constructor(private val dataSource: PrimaryDataS
     suspend fun primaryValidatorDetails(): Outcome<PrimaryValidatorDetails> =
         dataSource.fetchPrimaryValidatorDetails()
 
-    suspend fun accountsFromValidator(offset: Int, limit: Int): Outcome<AccountFromValidatorList> =
+    suspend fun accountsFromValidator(offset: Int, limit: Int): Outcome<AccountListValidator> =
         dataSource.fetchAccountsFromValidator(PaginationOptions(offset, limit))
 
     suspend fun accountBalance(accountNumber: String): Outcome<AccountBalance> =
