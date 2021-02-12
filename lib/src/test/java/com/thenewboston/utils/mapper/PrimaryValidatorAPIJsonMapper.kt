@@ -67,4 +67,8 @@ object PrimaryValidatorAPIJsonMapper {
     fun mapInternalServerErrorToJson(): String = Json.encodeToString(Mocks.internalServerError())
 
     fun mapConfirmationBlocksToJson(): String = Json.encodeToString(Mocks.confirmationBlocks())
+
+    fun mapBankBlockToJson(): String = Json.encodeToString(Mocks.bankBlock())
+
+    fun mapEmptyBankBlockToJson(): String = Json.encodeToString(Mocks.emptyBankBlock())
 }

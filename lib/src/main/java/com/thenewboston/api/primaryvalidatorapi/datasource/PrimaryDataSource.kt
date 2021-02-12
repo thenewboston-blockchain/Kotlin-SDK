@@ -8,6 +8,7 @@ import com.thenewboston.data.dto.common.request.ConnectionRequest
 import com.thenewboston.data.dto.common.response.ConfirmationBlocks
 import com.thenewboston.data.dto.common.response.Validator
 import com.thenewboston.data.dto.common.response.ValidatorList
+import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.request.BankBlockRequest
 import com.thenewboston.utils.ErrorMessages
 import com.thenewboston.utils.PaginationOptions
 import io.ktor.util.*
@@ -62,6 +63,11 @@ class PrimaryDataSource @Inject constructor(
     suspend fun fetchConfirmationBlocks(blockIdentifier: String): Outcome<ConfirmationBlocks> = makeApiCall(
         call = { getDataSource.confirmationBlocks(blockIdentifier) },
         errorMessage = "Could not fetch confirmation blocks with block identifier $blockIdentifier"
+    )
+
+    suspend fun sendBankBlock(request: BankBlockRequest) = makeApiCall(
+        call = { postDataSource.doSendBankBlock(request) },
+        errorMessage = "An error occurred while sending bank block"
     )
 
     suspend fun sendConnectionRequest(request: ConnectionRequest): Outcome<String> = makeApiCall(

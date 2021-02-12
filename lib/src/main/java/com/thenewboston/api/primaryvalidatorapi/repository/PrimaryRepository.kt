@@ -7,6 +7,7 @@ import com.thenewboston.data.dto.common.response.ValidatorList
 import com.thenewboston.data.dto.common.response.AccountBalance
 import com.thenewboston.data.dto.common.response.AccountBalanceLock
 import com.thenewboston.data.dto.common.response.AccountListValidator
+import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.request.BankBlockRequest
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
 import com.thenewboston.data.dto.primaryvalidatorapi.configdto.PrimaryValidatorDetails
@@ -43,4 +44,6 @@ class PrimaryRepository @Inject constructor(private val dataSource: PrimaryDataS
     suspend fun confirmationBlocks(blockIdentifier: String) = dataSource.fetchConfirmationBlocks(blockIdentifier)
 
     suspend fun sendConnectionRequests(request: ConnectionRequest) = dataSource.sendConnectionRequest(request)
+
+    suspend fun sendBankBlock(request: BankBlockRequest) = dataSource.sendBankBlock(request)
 }

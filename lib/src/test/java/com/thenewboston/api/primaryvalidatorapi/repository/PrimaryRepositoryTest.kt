@@ -3,6 +3,7 @@ package com.thenewboston.api.primaryvalidatorapi.repository
 import com.thenewboston.api.primaryvalidatorapi.datasource.PrimaryDataSource
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.data.dto.common.response.*
+import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.BankBlock
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
 import com.thenewboston.data.dto.primaryvalidatorapi.configdto.PrimaryValidatorDetails
@@ -56,7 +57,9 @@ class PrimaryRepositoryTest {
     @Test
     fun `verify single bank from validator is success outcome`() = runBlockingTest {
         val nodeIdentifier = Some.nodeIdentifier
-        coEvery { primaryDataSource.fetchBankFromValidator(nodeIdentifier) } returns Outcome.Success(Mocks.bankFromValidator())
+        coEvery {
+            primaryDataSource.fetchBankFromValidator(nodeIdentifier)
+        } returns Outcome.Success(Mocks.bankFromValidator())
 
         val result = repository.bankFromValidator(nodeIdentifier)
 
@@ -114,7 +117,9 @@ class PrimaryRepositoryTest {
 
     @Test
     fun `verify validators result is error`() = runBlockingTest {
-        coEvery { primaryDataSource.fetchValidators(PaginationOptions(0, 20)) } returns Outcome.Error("", IOException())
+        coEvery {
+            primaryDataSource.fetchValidators(PaginationOptions(0, 20))
+        } returns Outcome.Error("", IOException())
 
         // when
         val result = repository.validators(0, 20)
@@ -126,7 +131,9 @@ class PrimaryRepositoryTest {
 
     @Test
     fun `verify list of accounts from primary validator is success outcome`() = runBlockingTest {
-        coEvery { primaryDataSource.fetchAccountsFromValidator(pagination) } returns Outcome.Success(Mocks.accountsFromValidator())
+        coEvery {
+            primaryDataSource.fetchAccountsFromValidator(pagination)
+        } returns Outcome.Success(Mocks.accountsFromValidator())
 
         val result = repository.accountsFromValidator(0, 20)
 
@@ -236,7 +243,9 @@ class PrimaryRepositoryTest {
 
     @Test
     fun `verify confirmations blocks is success outcome`() = runBlockingTest {
-        coEvery { primaryDataSource.fetchConfirmationBlocks(Some.blockIdentifier) } returns Outcome.Success(Mocks.confirmationBlocks())
+        coEvery {
+            primaryDataSource.fetchConfirmationBlocks(Some.blockIdentifier)
+        } returns Outcome.Success(Mocks.confirmationBlocks())
 
         val result = repository.confirmationBlocks(Some.blockIdentifier)
 
@@ -258,9 +267,38 @@ class PrimaryRepositoryTest {
     }
 
     @Test
+    fun `verify send bank block returns success outcome`() = runBlockingTest {
+        val postRequest = Mocks.bankBlockRequest()
+        val response = Mocks.bankBlock()
+        coEvery {
+            primaryDataSource.sendBankBlock(postRequest)
+        } returns Outcome.Success(response)
+
+        val result = repository.sendBankBlock(postRequest)
+
+        coVerify { primaryDataSource.sendBankBlock(postRequest) }
+        result should beInstanceOf<Outcome.Success<BankBlock>>()
+    }
+
+    @Test
+    fun `verify send bank block returns error outcome`() = runBlockingTest {
+        val postRequest = Mocks.bankBlockRequest()
+        coEvery {
+            primaryDataSource.sendBankBlock(postRequest)
+        } returns Outcome.Error("Failed to send bank block", IOException())
+
+        val result = repository.sendBankBlock(postRequest)
+
+        coVerify { primaryDataSource.sendBankBlock(postRequest) }
+        result should beInstanceOf<Outcome.Error>()
+    }
+
+    @Test
     fun `verify connection request is success outcome`() = runBlockingTest {
         val connectionRequest = Mocks.connectionRequest()
-        coEvery { primaryDataSource.sendConnectionRequest(connectionRequest) } returns Outcome.Success("Successfully sent connection requests")
+        coEvery {
+            primaryDataSource.sendConnectionRequest(connectionRequest)
+        } returns Outcome.Success("Successfully sent connection requests")
 
         val result = repository.sendConnectionRequests(connectionRequest)
 
@@ -273,7 +311,9 @@ class PrimaryRepositoryTest {
         val connectionRequest = Mocks.connectionRequest()
         val message = "Could not send connection request"
 
-        coEvery { primaryDataSource.sendConnectionRequest(connectionRequest) } returns Outcome.Error(message, IOException())
+        coEvery {
+            primaryDataSource.sendConnectionRequest(connectionRequest)
+        } returns Outcome.Error(message, IOException())
 
         val result = repository.sendConnectionRequests(connectionRequest)
 

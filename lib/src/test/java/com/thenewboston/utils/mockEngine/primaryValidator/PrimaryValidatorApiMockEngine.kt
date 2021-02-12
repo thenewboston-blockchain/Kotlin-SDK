@@ -12,6 +12,10 @@ class PrimaryValidatorApiMockEngine {
     fun getErrors() = getPrimaryMockEngine(sendOnlyErrorResponses = true)
     fun getEmptySuccess() = getPrimaryMockEngine(sendInvalidResponses = true)
 
+    fun postSuccess() = postPrimaryMockEngine()
+    fun postErrors() = postPrimaryMockEngine(sendOnlyErrorResponses = true)
+    fun postInvalidSuccess() = postPrimaryMockEngine(sendInvalidResponses = true)
+
     private val json = listOf(ContentType.Application.Json.toString())
     private val responseHeaders = headersOf("Content-Type" to json)
 
@@ -89,5 +93,26 @@ class PrimaryValidatorApiMockEngine {
         isError -> respond(errorContent, InternalServerError, responseHeaders)
         isInvalidResponse -> respond(emptyContent, HttpStatusCode.OK, responseHeaders)
         else -> respond(content, HttpStatusCode.OK, responseHeaders)
+    }
+
+    private fun postPrimaryMockEngine(
+        sendOnlyErrorResponses: Boolean = false,
+        sendInvalidResponses: Boolean = false
+    ) = mockHttpClient.httpClient {
+        val errorContent = PrimaryValidatorAPIJsonMapper.mapInternalServerErrorToJson()
+
+        it.addHandler { request ->
+            when {
+                request.url.encodedPath.startsWith(PrimaryValidatorAPIJsonMapper.BANK_BLOCKS_ENDPOINT) -> {
+                    val content =
+                        PrimaryValidatorAPIJsonMapper.mapBankBlockToJson()
+                    val invalidContent = PrimaryValidatorAPIJsonMapper.mapEmptyBankBlockToJson()
+                    sendResponse(content, errorContent, invalidContent, sendOnlyErrorResponses, sendInvalidResponses)
+                }
+                else -> {
+                    error("Unhandled ${request.url.encodedPath}")
+                }
+            }
+        }
     }
 }

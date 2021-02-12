@@ -97,7 +97,9 @@ class PrimaryDataSourceTest {
 
             @Test
             fun `should fetch primary validator details from config`() = runBlockingTest {
-                coEvery { getDataSource.primaryValidatorDetails() } returns Outcome.Success(Mocks.primaryValidatorDetails())
+                coEvery {
+                    getDataSource.primaryValidatorDetails()
+                } returns Outcome.Success(Mocks.primaryValidatorDetails())
 
                 val response = primaryDataSource.fetchPrimaryValidatorDetails()
 
@@ -210,6 +212,20 @@ class PrimaryDataSourceTest {
             }
 
             @Test
+            fun `should send bank block request successfully`() = runBlockingTest {
+                val request = Mocks.bankBlockRequest()
+                val value = Mocks.bankBlock()
+
+                coEvery { postDataSource.doSendBankBlock(request) } returns Outcome.Success(value)
+
+                val response = primaryDataSource.sendBankBlock(request)
+
+                check(response is Outcome.Success)
+                response.value.accountNumber shouldBe Some.accountNumber
+                response.value.message.balanceKey shouldBe Some.balanceKey
+            }
+
+            @Test
             fun `should send connection request successfully`() = runBlockingTest {
                 val request = Mocks.connectionRequest()
                 val message = "Successfully sent connection requests"
@@ -277,7 +293,9 @@ class PrimaryDataSourceTest {
             @Test
             fun `should return error outcome for list of accounts from primary validator IOException`() = runBlockingTest {
                 val message = "Failed to retrieve accounts from primary validator"
-                coEvery { getDataSource.accountsFromValidator(pagination) } returns Outcome.Error(message, IOException())
+                coEvery {
+                    getDataSource.accountsFromValidator(pagination)
+                } returns Outcome.Error(message, IOException())
 
                 val response = primaryDataSource.fetchAccountsFromValidator(pagination)
 
@@ -315,7 +333,9 @@ class PrimaryDataSourceTest {
             fun `should return error outcome for account balance lock IOException`() = runBlockingTest {
                 val accountNumber = Some.accountNumber
                 val message = "Failed to retrieve account balance lock from primary validator"
-                coEvery { getDataSource.accountBalanceLock(accountNumber) } returns Outcome.Error(message, IOException())
+                coEvery {
+                    getDataSource.accountBalanceLock(accountNumber)
+                } returns Outcome.Error(message, IOException())
 
                 val response = primaryDataSource.fetchAccountBalanceLock(accountNumber)
 
@@ -352,11 +372,29 @@ class PrimaryDataSourceTest {
             }
 
             @Test
+            fun `should return error outcome for bank block requests`() = runBlockingTest {
+                val message = "Could not send bank block request"
+                val request = Mocks.bankBlockRequest()
+
+                coEvery {
+                    postDataSource.doSendBankBlock(request)
+                } returns Outcome.Error(message, IOException())
+
+                val response = postDataSource.doSendBankBlock(request)
+
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.message shouldBe message
+            }
+
+            @Test
             fun `should return error outcome for connection requests`() = runBlockingTest {
                 val message = "Could not send connection request"
                 val request = Mocks.connectionRequest()
 
-                coEvery { postDataSource.doSendConnectionRequests(request) } returns Outcome.Error(message, IOException())
+                coEvery {
+                    postDataSource.doSendConnectionRequests(request)
+                } returns Outcome.Error(message, IOException())
 
                 val response = postDataSource.doSendConnectionRequests(request)
 
