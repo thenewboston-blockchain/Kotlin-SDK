@@ -174,7 +174,7 @@ class BankDataSourceTest {
 
             @Test
             fun `should fetch list of 20 accounts successfully`() = runBlockingTest {
-                val value = Mocks.accounts(paginationTwenty)
+                val value = Mocks.accountsBanks(paginationTwenty)
                 coEvery { getDataSource.accounts(paginationTwenty) } returns Outcome.Success(value)
 
                 val response = bankDataSource.fetchAccounts(paginationTwenty)
@@ -187,7 +187,7 @@ class BankDataSourceTest {
 
             @Test
             fun `should fetch list of 30 accounts successfully`() = runBlockingTest {
-                val value = Mocks.accounts(paginationThirty)
+                val value = Mocks.accountsBanks(paginationThirty)
                 coEvery { getDataSource.accounts(paginationThirty) } returns Outcome.Success(value)
 
                 val response = bankDataSource.fetchAccounts(paginationThirty)
@@ -402,7 +402,7 @@ class BankDataSourceTest {
                 // given
                 val trustRequest = Mocks.trustRequest(17.99)
                 val accountNumber = Some.accountNumber
-                val value = Mocks.account(trustRequest.message.trust)
+                val value = Mocks.accountBank(trustRequest.message.trust)
                 coEvery { patchDataSource.doUpdateAccount(accountNumber, trustRequest) } returns Outcome.Success(value)
 
                 // when

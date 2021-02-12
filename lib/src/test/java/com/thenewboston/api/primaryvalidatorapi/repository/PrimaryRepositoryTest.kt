@@ -2,9 +2,7 @@ package com.thenewboston.api.primaryvalidatorapi.repository
 
 import com.thenewboston.api.primaryvalidatorapi.datasource.PrimaryDataSource
 import com.thenewboston.common.http.Outcome
-import com.thenewboston.data.dto.common.response.ConfirmationBlocks
-import com.thenewboston.data.dto.common.response.Validator
-import com.thenewboston.data.dto.common.response.ValidatorList
+import com.thenewboston.data.dto.common.response.*
 import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountBalance
 import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountBalanceLock
 import com.thenewboston.data.dto.primaryvalidatorapi.accountdto.AccountFromValidatorList
@@ -137,7 +135,7 @@ class PrimaryRepositoryTest {
         val result = repository.accountsFromValidator(0, 20)
 
         coVerify { primaryDataSource.fetchAccountsFromValidator(pagination) }
-        result should beInstanceOf<Outcome.Success<AccountFromValidatorList>>()
+        result should beInstanceOf<Outcome.Success<AccountListValidator>>()
     }
 
     @Test
