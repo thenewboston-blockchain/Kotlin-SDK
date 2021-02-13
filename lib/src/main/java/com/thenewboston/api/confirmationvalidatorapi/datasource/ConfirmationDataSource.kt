@@ -13,6 +13,11 @@ class ConfirmationDataSource @Inject constructor(private val getDataSource: GetD
         errorMessage = "Error while retrieving accounts"
     )
 
+    suspend fun fetchValidatorDetails() = makeApiCall(
+        call = { getDataSource.validatorDetails() },
+        errorMessage = "Failed to retrieve confirmation validator details"
+    )
+
     suspend fun fetchBankFromValidator(nodeIdentifier: String) = makeApiCall(
         call = { getDataSource.bankFromValidator(nodeIdentifier) },
         errorMessage = "Failed to retrieve bank from validator"

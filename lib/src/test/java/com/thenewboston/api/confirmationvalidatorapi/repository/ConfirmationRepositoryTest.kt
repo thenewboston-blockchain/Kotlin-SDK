@@ -3,6 +3,7 @@ package com.thenewboston.api.confirmationvalidatorapi.repository
 import com.thenewboston.api.confirmationvalidatorapi.datasource.ConfirmationDataSource
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.data.dto.common.response.AccountListValidator
+import com.thenewboston.data.dto.common.response.ValidatorDetails
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
 import com.thenewboston.utils.Mocks
@@ -58,6 +59,24 @@ class ConfirmationRepositoryTest {
         val response = repository.accounts(0, 20)
         coVerify { dataSource.fetchAccounts(pagination) }
         response should beInstanceOf<Outcome.Error>()
+    }
+
+    @Test
+    fun `verify confirmation validator detail is success`() = runBlockingTest {
+        coEvery {
+            dataSource.fetchValidatorDetails()
+        } returns Outcome.Success(Mocks.validatorDetails("CONFIRMATION_VALIDATOR"))
+
+        repository.validatorDetails() should beInstanceOf<Outcome.Success<ValidatorDetails>>()
+    }
+
+    @Test
+    fun `verify confirmation validator details is error`() = runBlockingTest {
+        coEvery {
+            dataSource.fetchValidatorDetails()
+        } returns Outcome.Error("", IOException())
+
+        repository.validatorDetails() should beInstanceOf<Outcome.Error>()
     }
 
     @Test

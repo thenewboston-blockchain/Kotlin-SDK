@@ -6,7 +6,6 @@ import com.thenewboston.data.dto.common.response.*
 import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.BankBlock
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
-import com.thenewboston.data.dto.primaryvalidatorapi.configdto.PrimaryValidatorDetails
 import com.thenewboston.utils.Mocks
 import com.thenewboston.utils.PaginationOptions
 import com.thenewboston.utils.Some
@@ -88,19 +87,19 @@ class PrimaryRepositoryTest {
     @Test
     fun `verify primary validator details is error`() = runBlockingTest {
         coEvery {
-            primaryDataSource.fetchPrimaryValidatorDetails()
+            primaryDataSource.fetchValidatorDetails()
         } returns Outcome.Error("", IOException())
 
-        repository.primaryValidatorDetails() should beInstanceOf<Outcome.Error>()
+        repository.validatorDetails() should beInstanceOf<Outcome.Error>()
     }
 
     @Test
     fun `verify primary validator detail is success`() = runBlockingTest {
         coEvery {
-            primaryDataSource.fetchPrimaryValidatorDetails()
-        } returns Outcome.Success(Mocks.primaryValidatorDetails())
+            primaryDataSource.fetchValidatorDetails()
+        } returns Outcome.Success(Mocks.validatorDetails("PRIMARY_VALIDATOR"))
 
-        repository.primaryValidatorDetails() should beInstanceOf<Outcome.Success<PrimaryValidatorDetails>>()
+        repository.validatorDetails() should beInstanceOf<Outcome.Success<ValidatorDetails>>()
     }
 
     @Test
