@@ -130,7 +130,7 @@ object Mocks {
         0
     )
 
-    fun validatorDetails(nodeType:String) = ValidatorDetails(
+    fun validatorDetails(nodeType: String) = ValidatorDetails(
         validator(),
         Some.accountNumber,
         Some.ipAddress,

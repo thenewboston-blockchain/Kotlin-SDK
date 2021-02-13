@@ -1,6 +1,5 @@
 package com.thenewboston.data.dto.common.response
 
-import com.thenewboston.data.dto.common.response.Validator
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
