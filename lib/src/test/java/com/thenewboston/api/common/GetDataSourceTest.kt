@@ -396,10 +396,10 @@ class GetDataSourceTest {
 
         @Test
         fun `should fetch primary validator details from config`() = runBlockingTest {
-            val response = getDataSource.primaryValidatorDetails()
+            val response = getDataSource.validatorDetails()
 
             check(response is Outcome.Success)
-            response.value.nodeType shouldBe "PRIMARY_VALIDATOR"
+            response.value.nodeType should contain("VALIDATOR")
             response.value.rootAccountFile shouldBe "http://20.188.33.93/media/root_account_file.json"
             response.value.ipAddress should contain("172.19.0.13")
         }
@@ -501,18 +501,6 @@ class GetDataSourceTest {
             check(response is Outcome.Error)
             response.cause should beInstanceOf<IOException>()
             response.message shouldBe ErrorMessages.EMPTY_LIST_MESSAGE
-        }
-
-        @Test
-        fun `should return error outcome for primary validator details IOException`() = runBlockingTest {
-
-            val message = "Failed to retrieve primary validator details"
-
-            val response = getDataSource.primaryValidatorDetails()
-
-            check(response is Outcome.Error)
-            response.cause should beInstanceOf<IOException>()
-            response.message shouldBe message
         }
 
         @Test

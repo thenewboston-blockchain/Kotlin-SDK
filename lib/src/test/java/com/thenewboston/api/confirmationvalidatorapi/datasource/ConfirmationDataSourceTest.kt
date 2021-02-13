@@ -8,6 +8,7 @@ import io.kotest.matchers.ints.shouldBeGreaterThan
 import io.kotest.matchers.ints.shouldBeLessThanOrEqual
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.contain
 import io.kotest.matchers.types.beInstanceOf
 import io.ktor.util.*
 import io.ktor.utils.io.errors.*
@@ -50,7 +51,21 @@ class ConfirmationDataSourceTest {
         inner class WhenGetRequest {
 
             @Test
-            fun `should fetch list of 20 accounts successfully from primary validator`() = runBlockingTest {
+            fun `should fetch confirmation validator details from config`() = runBlockingTest {
+                coEvery {
+                    getDataSource.validatorDetails()
+                } returns Outcome.Success(Mocks.validatorDetails("CONFIRMATION_VALIDATOR"))
+
+                val response = confirmationDataSource.fetchValidatorDetails()
+
+                check(response is Outcome.Success)
+                response.value.nodeType shouldBe "CONFIRMATION_VALIDATOR"
+                response.value.rootAccountFile shouldBe "http://20.188.33.93/media/root_account_file.json"
+                response.value.ipAddress should contain("172.19.0.13")
+            }
+
+            @Test
+            fun `should fetch list of 20 accounts successfully from confirmation validator`() = runBlockingTest {
                 val value = Mocks.accountsFromValidator(paginationTwenty)
                 coEvery { getDataSource.accountsFromValidator(paginationTwenty) } returns Outcome.Success(value)
 
@@ -90,8 +105,21 @@ class ConfirmationDataSourceTest {
         inner class WhenGetRequest {
 
             @Test
-            fun `should return error outcome for list of accounts from primary validator IOException`() = runBlockingTest {
-                val message = "Failed to retrieve accounts from primary validator"
+            fun `should return error outcome for confirmation validator details IOException`() = runBlockingTest {
+
+                val message = "Failed to retrieve confirmation validator details"
+                coEvery { getDataSource.validatorDetails() } returns Outcome.Error(message, IOException())
+
+                val response = confirmationDataSource.fetchValidatorDetails()
+
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.message shouldBe message
+            }
+
+            @Test
+            fun `should return error outcome for list of accounts from confirmation validator IOException`() = runBlockingTest {
+                val message = "Failed to retrieve accounts from confirmation validator"
                 coEvery { getDataSource.accountsFromValidator(pagination) } returns Outcome.Error(message, IOException())
 
                 val response = confirmationDataSource.fetchAccounts(pagination)
