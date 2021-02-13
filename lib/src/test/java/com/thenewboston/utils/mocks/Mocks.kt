@@ -36,7 +36,6 @@ import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.BankBlockTx
 import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.request.BankBlockRequest
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
-import com.thenewboston.data.dto.primaryvalidatorapi.configdto.PrimaryValidatorDetails
 import com.thenewboston.utils.mocks.BankAPIError
 import com.thenewboston.utils.mocks.PaginationResult
 import kotlinx.datetime.LocalDateTime
@@ -131,7 +130,7 @@ object Mocks {
         0
     )
 
-    fun primaryValidatorDetails() = PrimaryValidatorDetails(
+    fun validatorDetails(nodeType:String) = ValidatorDetails(
         validator(),
         Some.accountNumber,
         Some.ipAddress,
@@ -144,10 +143,10 @@ object Mocks {
         "b2885f94cd099a8c5ba5355ff9cdd69252b4cad2541e32d20152702397722cf5",
         "",
         100,
-        "PRIMARY_VALIDATOR"
+        nodeType
     )
 
-    fun emptyPrimaryValidatorDetails() = PrimaryValidatorDetails(
+    fun emptyValidatorDetails() = ValidatorDetails(
         emptyValidator(),
         "",
         "",

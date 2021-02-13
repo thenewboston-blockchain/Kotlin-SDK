@@ -1,11 +1,11 @@
-package com.thenewboston.data.dto.primaryvalidatorapi.configdto
+package com.thenewboston.data.dto.common.response
 
 import com.thenewboston.data.dto.common.response.Validator
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PrimaryValidatorDetails(
+data class ValidatorDetails(
     @SerialName("primary_validator")
     val primaryValidator: Validator,
     @SerialName("account_number")

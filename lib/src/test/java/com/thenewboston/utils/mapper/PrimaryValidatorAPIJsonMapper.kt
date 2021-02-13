@@ -37,9 +37,9 @@ object PrimaryValidatorAPIJsonMapper {
 
     fun mapEmptyBanksFromValidatorToJson(): String = Json.encodeToString(Mocks.emptyBanksFromValidator())
 
-    fun mapPrimaryValidatorDetailsToJson(): String = Json.encodeToString(Mocks.primaryValidatorDetails())
+    fun mapValidatorDetailsToJson(): String = Json.encodeToString(Mocks.validatorDetails("PRIMARY_VALIDATOR"))
 
-    fun mapEmptyPrimaryValidatorDetailsToJson(): String = Json.encodeToString(Mocks.emptyPrimaryValidatorDetails())
+    fun mapEmptyValidatorDetailsToJson(): String = Json.encodeToString(Mocks.emptyValidatorDetails())
 
     fun mapAccountsFromValidatorToJson(offset: Int?, limit: Int?): String =
         Json.encodeToString(Mocks.accountsFromValidator(PaginationOptions(offset, limit)))
