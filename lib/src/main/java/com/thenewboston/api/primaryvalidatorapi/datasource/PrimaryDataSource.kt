@@ -30,8 +30,8 @@ class PrimaryDataSource @Inject constructor(
         errorMessage = ErrorMessages.EMPTY_LIST_MESSAGE
     )
 
-    suspend fun fetchPrimaryValidatorDetails() = makeApiCall(
-        call = { getDataSource.primaryValidatorDetails() },
+    suspend fun fetchValidatorDetails() = makeApiCall(
+        call = { getDataSource.validatorDetails() },
         errorMessage = "Failed to retrieve primary validator details"
     )
 
