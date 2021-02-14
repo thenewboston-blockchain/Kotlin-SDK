@@ -10,6 +10,7 @@ import io.kotest.matchers.ints.shouldBeLessThanOrEqual
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.contain
+import io.kotest.matchers.string.shouldNotBeEmpty
 import io.kotest.matchers.types.beInstanceOf
 import io.ktor.util.*
 import io.ktor.utils.io.errors.*
@@ -129,6 +130,16 @@ class ConfirmationDataSourceTest {
                 response.value.count shouldBeGreaterThan 0 // offset = 0
                 response.value.banks.size shouldBeLessThanOrEqual 30 // limit = 30
             }
+
+            @Test
+            fun `should fetch clean successfully`() = runBlockingTest {
+                coEvery { getDataSource.clean() } returns Outcome.Success(Mocks.cleanSuccess())
+
+                val response = confirmationDataSource.fetchClean()
+
+                check(response is Outcome.Success)
+                response.value.cleanStatus.shouldNotBeEmpty()
+            }
         }
     }
 
@@ -189,6 +200,20 @@ class ConfirmationDataSourceTest {
                 coEvery { getDataSource.banksFromValidator(pagination) } returns Outcome.Error(message, IOException())
                 val response = confirmationDataSource.fetchBanksFromValidator(pagination)
 
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.message shouldBe message
+            }
+
+            @Test
+            fun `should return error outcome for clean process`() = runBlockingTest {
+                val message = "Failed to update the network"
+                coEvery { getDataSource.clean() } returns Outcome.Error(message, IOException())
+
+                // when
+                val response = confirmationDataSource.fetchClean()
+
+                // then
                 check(response is Outcome.Error)
                 response.cause should beInstanceOf<IOException>()
                 response.message shouldBe message

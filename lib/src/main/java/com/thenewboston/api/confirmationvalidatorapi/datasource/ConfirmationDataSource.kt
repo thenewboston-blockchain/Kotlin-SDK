@@ -27,4 +27,9 @@ class ConfirmationDataSource @Inject constructor(private val getDataSource: GetD
         call = { getDataSource.banksFromValidator(paginationOptions) },
         errorMessage = ErrorMessages.EMPTY_LIST_MESSAGE
     )
+
+    suspend fun fetchClean() = makeApiCall(
+        call = { getDataSource.clean() },
+        errorMessage = "Failed to update the network"
+    )
 }

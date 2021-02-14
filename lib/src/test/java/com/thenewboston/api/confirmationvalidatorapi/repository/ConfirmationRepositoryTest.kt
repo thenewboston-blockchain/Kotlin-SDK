@@ -2,6 +2,7 @@ package com.thenewboston.api.confirmationvalidatorapi.repository
 
 import com.thenewboston.api.confirmationvalidatorapi.datasource.ConfirmationDataSource
 import com.thenewboston.common.http.Outcome
+import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.common.response.AccountListValidator
 import com.thenewboston.data.dto.common.response.ValidatorDetails
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
@@ -119,5 +120,21 @@ class ConfirmationRepositoryTest {
         } returns Outcome.Success(Mocks.banksFromValidator())
 
         repository.banksFromValidator(0, 20) should beInstanceOf<Outcome.Success<BankFromValidatorList>>()
+    }
+
+    @Test
+    fun `verify clean result returns success outcome`() = runBlockingTest {
+        coEvery { dataSource.fetchClean() } returns Outcome.Success(Mocks.cleanSuccess())
+
+        repository.clean() should beInstanceOf<Outcome.Success<Clean>>()
+    }
+
+    @Test
+    fun `verify clean result returns error outcome`() = runBlockingTest {
+        coEvery {
+            dataSource.fetchClean()
+        } returns Outcome.Error("The network clean process is not successful", IOException())
+
+        repository.clean() should beInstanceOf<Outcome.Error>()
     }
 }
