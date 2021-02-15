@@ -39,8 +39,8 @@ class PrimaryValidatorApiMockEngine {
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
                     }
                     PrimaryValidatorAPIJsonMapper.CONFIG_ENDPOINT -> {
-                        val content = PrimaryValidatorAPIJsonMapper.mapPrimaryValidatorDetailsToJson()
-                        val emptyContent = PrimaryValidatorAPIJsonMapper.mapEmptyPrimaryValidatorDetailsToJson()
+                        val content = PrimaryValidatorAPIJsonMapper.mapValidatorDetailsToJson()
+                        val emptyContent = PrimaryValidatorAPIJsonMapper.mapEmptyValidatorDetailsToJson()
                         sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
                     }
                     PrimaryValidatorAPIJsonMapper.ACCOUNTS_ENDPOINT -> {

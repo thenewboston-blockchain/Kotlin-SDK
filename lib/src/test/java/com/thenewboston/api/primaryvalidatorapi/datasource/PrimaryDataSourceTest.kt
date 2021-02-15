@@ -98,10 +98,10 @@ class PrimaryDataSourceTest {
             @Test
             fun `should fetch primary validator details from config`() = runBlockingTest {
                 coEvery {
-                    getDataSource.primaryValidatorDetails()
-                } returns Outcome.Success(Mocks.primaryValidatorDetails())
+                    getDataSource.validatorDetails()
+                } returns Outcome.Success(Mocks.validatorDetails("PRIMARY_VALIDATOR"))
 
-                val response = primaryDataSource.fetchPrimaryValidatorDetails()
+                val response = primaryDataSource.fetchValidatorDetails()
 
                 check(response is Outcome.Success)
                 response.value.nodeType shouldBe "PRIMARY_VALIDATOR"
@@ -281,9 +281,9 @@ class PrimaryDataSourceTest {
             fun `should return error outcome for primary validator details IOException`() = runBlockingTest {
 
                 val message = "Failed to retrieve primary validator details"
-                coEvery { getDataSource.primaryValidatorDetails() } returns Outcome.Error(message, IOException())
+                coEvery { getDataSource.validatorDetails() } returns Outcome.Error(message, IOException())
 
-                val response = primaryDataSource.fetchPrimaryValidatorDetails()
+                val response = primaryDataSource.fetchValidatorDetails()
 
                 check(response is Outcome.Error)
                 response.cause should beInstanceOf<IOException>()

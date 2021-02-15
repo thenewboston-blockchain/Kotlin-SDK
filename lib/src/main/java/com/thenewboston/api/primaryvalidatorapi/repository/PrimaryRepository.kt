@@ -7,10 +7,10 @@ import com.thenewboston.data.dto.common.response.ValidatorList
 import com.thenewboston.data.dto.common.response.AccountBalance
 import com.thenewboston.data.dto.common.response.AccountBalanceLock
 import com.thenewboston.data.dto.common.response.AccountListValidator
+import com.thenewboston.data.dto.common.response.ValidatorDetails
 import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.request.BankBlockRequest
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
-import com.thenewboston.data.dto.primaryvalidatorapi.configdto.PrimaryValidatorDetails
 import com.thenewboston.utils.PaginationOptions
 import io.ktor.util.*
 import javax.inject.Inject
@@ -24,8 +24,8 @@ class PrimaryRepository @Inject constructor(private val dataSource: PrimaryDataS
     suspend fun banksFromValidator(offset: Int, limit: Int): Outcome<BankFromValidatorList> =
         dataSource.fetchBanksFromValidator(PaginationOptions(offset, limit))
 
-    suspend fun primaryValidatorDetails(): Outcome<PrimaryValidatorDetails> =
-        dataSource.fetchPrimaryValidatorDetails()
+    suspend fun validatorDetails(): Outcome<ValidatorDetails> =
+        dataSource.fetchValidatorDetails()
 
     suspend fun accountsFromValidator(offset: Int, limit: Int): Outcome<AccountListValidator> =
         dataSource.fetchAccountsFromValidator(PaginationOptions(offset, limit))
