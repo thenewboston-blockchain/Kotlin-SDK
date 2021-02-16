@@ -4,6 +4,7 @@ import com.thenewboston.api.confirmationvalidatorapi.datasource.ConfirmationData
 import com.thenewboston.data.dto.common.response.ValidatorDetails
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
+import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.common.response.AccountListValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
@@ -25,4 +26,6 @@ class ConfirmationRepository @Inject constructor(private val dataSource: Confirm
         dataSource.fetchBanksFromValidator(PaginationOptions(offset, limit))
 
     suspend fun clean(): Outcome<Clean> = dataSource.fetchClean()
+
+    suspend fun sendClean(request: PostCleanRequest): Outcome<Clean> = dataSource.sendClean(request)
 }

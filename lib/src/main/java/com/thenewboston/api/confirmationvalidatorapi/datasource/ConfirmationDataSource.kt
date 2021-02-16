@@ -1,12 +1,20 @@
 package com.thenewboston.api.confirmationvalidatorapi.datasource
 
 import com.thenewboston.api.common.GetDataSource
+import com.thenewboston.api.common.PostDataSource
+import com.thenewboston.common.http.Outcome
 import com.thenewboston.common.http.makeApiCall
 import com.thenewboston.utils.ErrorMessages
+import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
+import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.utils.PaginationOptions
 import javax.inject.Inject
 
-class ConfirmationDataSource @Inject constructor(private val getDataSource: GetDataSource) {
+class ConfirmationDataSource @Inject constructor(
+    private val getDataSource: GetDataSource,
+    private val postDataSource: PostDataSource
+
+) {
 
     suspend fun fetchAccounts(paginationOptions: PaginationOptions) = makeApiCall(
         call = { getDataSource.accountsFromValidator(paginationOptions) },
@@ -31,5 +39,10 @@ class ConfirmationDataSource @Inject constructor(private val getDataSource: GetD
     suspend fun fetchClean() = makeApiCall(
         call = { getDataSource.clean() },
         errorMessage = "Failed to update the network"
+    )
+
+    suspend fun sendClean(request: PostCleanRequest): Outcome<Clean> = makeApiCall(
+        call = { postDataSource.doSendClean(request) },
+        errorMessage = "An error occurred while sending the clean request"
     )
 }
