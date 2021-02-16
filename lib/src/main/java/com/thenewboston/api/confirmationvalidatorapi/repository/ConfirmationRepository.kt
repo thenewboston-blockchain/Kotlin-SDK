@@ -5,7 +5,6 @@ import com.thenewboston.data.dto.common.response.ValidatorDetails
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
-import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.common.response.AccountListValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
