@@ -18,6 +18,7 @@ import com.thenewboston.utils.BankAPIEndpoints
 import com.thenewboston.utils.ErrorMessages
 import com.thenewboston.utils.PaginationOptions
 import com.thenewboston.utils.PrimaryValidatorAPIEndpoints
+import com.thenewboston.utils.ConfirmationValidatorAPIEndpoints
 import io.ktor.client.request.*
 import io.ktor.utils.io.errors.*
 import javax.inject.Inject
@@ -196,8 +197,15 @@ class GetDataSource @Inject constructor(private val networkClient: NetworkClient
         }
     }
 
-    suspend fun confirmationBlocks(blockIdentifier: String): Outcome<ConfirmationBlocks> {
+    suspend fun validConfirmationBlocks(blockIdentifier: String): Outcome<ConfirmationBlocks> {
         val endpoint = PrimaryValidatorAPIEndpoints.confirmationBlocksEndpoint(blockIdentifier)
+        val response = networkClient.defaultClient.get<ConfirmationBlocks>(endpoint)
+
+        return Outcome.Success(response)
+    }
+
+    suspend fun queuedConfirmationBlocks(blockIdentifier: String): Outcome<ConfirmationBlocks> {
+        val endpoint = ConfirmationValidatorAPIEndpoints.queuedConfirmationBlocksEndpoint(blockIdentifier)
         val response = networkClient.defaultClient.get<ConfirmationBlocks>(endpoint)
 
         return Outcome.Success(response)

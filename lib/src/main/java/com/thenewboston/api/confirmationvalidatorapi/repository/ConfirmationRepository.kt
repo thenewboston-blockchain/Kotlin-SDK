@@ -28,4 +28,10 @@ class ConfirmationRepository @Inject constructor(private val dataSource: Confirm
     suspend fun clean(): Outcome<Clean> = dataSource.fetchClean()
 
     suspend fun sendClean(request: PostCleanRequest): Outcome<Clean> = dataSource.sendClean(request)
+
+    suspend fun validConfirmationBlocks(blockIdentifier: String) =
+        dataSource.fetchValidConfirmationBlocks(blockIdentifier)
+
+    suspend fun queuedConfirmationBlocks(blockIdentifier: String) =
+        dataSource.fetchQueuedConfirmationBlocks(blockIdentifier)
 }

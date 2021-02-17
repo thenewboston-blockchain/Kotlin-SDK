@@ -8,6 +8,7 @@ import com.thenewboston.utils.PaginationOptions
 import com.thenewboston.utils.Some
 import com.thenewboston.utils.mockEngine.bank.BankApiMockEngine
 import com.thenewboston.utils.mockEngine.primaryValidator.PrimaryValidatorApiMockEngine
+import com.thenewboston.utils.mockEngine.confirmationValidator.ConfirmationValidatorApiMockEngine
 import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.ints.shouldBeGreaterThan
 import io.kotest.matchers.ints.shouldBeLessThanOrEqual
@@ -36,6 +37,7 @@ class GetDataSourceTest {
 
     private val bankMockEngine = BankApiMockEngine()
     private val primaryMockEngine = PrimaryValidatorApiMockEngine()
+    private val confirmationMockEngine = ConfirmationValidatorApiMockEngine()
 
     private lateinit var getDataSource: GetDataSource
 
@@ -475,7 +477,7 @@ class GetDataSourceTest {
 
         @Test
         fun `should fetch confirmation blocks successfully`() = runBlockingTest {
-            val response = getDataSource.confirmationBlocks(Some.blockIdentifier)
+            val response = getDataSource.validConfirmationBlocks(Some.blockIdentifier)
 
             check(response is Outcome.Success)
             response.value.message.blockIdentifier shouldBe Some.blockIdentifier
@@ -519,6 +521,49 @@ class GetDataSourceTest {
             check(response is Outcome.Error)
             response.cause should beInstanceOf<IOException>()
             response.message shouldBe ErrorMessages.EMPTY_LIST_MESSAGE
+        }
+    }
+
+    @Nested
+    @DisplayName("Confirmation Validator: Given successful request")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class ConfirmationGivenSucceedingRequest {
+
+        private val paginationTwenty = Mocks.paginationOptionsTwenty()
+        private val paginationThirty = Mocks.paginationOptionsThirty()
+
+        @BeforeEach
+        fun setup() {
+            every { networkClient.defaultClient } returns confirmationMockEngine.getSuccess()
+        }
+
+        @Test
+        fun `should fetch valid confirmation blocks successfully`() = runBlockingTest {
+            val response = getDataSource.validConfirmationBlocks(Some.blockIdentifier)
+
+            check(response is Outcome.Success)
+            response.value.message.blockIdentifier shouldBe Some.blockIdentifier
+        }
+
+        @Test
+        fun `should fetch queued confirmation blocks successfully`() = runBlockingTest {
+            val response = getDataSource.queuedConfirmationBlocks(Some.blockIdentifier)
+
+            check(response is Outcome.Success)
+            response.value.message.blockIdentifier shouldBe Some.blockIdentifier
+        }
+    }
+
+    @Nested
+    @DisplayName("Confirmation Validator: Given empty or invalid response body")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class ConfirmationGivenInvalidResponseBody {
+
+        private val pagination = Mocks.paginationOptionsDefault()
+
+        @BeforeEach
+        fun given() {
+            every { networkClient.defaultClient } returns confirmationMockEngine.getEmptySuccess()
         }
     }
 }
