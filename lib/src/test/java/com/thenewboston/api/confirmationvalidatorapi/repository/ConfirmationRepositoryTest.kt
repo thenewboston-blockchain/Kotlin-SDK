@@ -3,6 +3,7 @@ package com.thenewboston.api.confirmationvalidatorapi.repository
 import com.thenewboston.api.confirmationvalidatorapi.datasource.ConfirmationDataSource
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
+import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.common.response.AccountListValidator
 import com.thenewboston.data.dto.common.response.ValidatorDetails
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
@@ -164,5 +165,20 @@ class ConfirmationRepositoryTest {
         // then
         coVerify { dataSource.sendClean(request) }
         result should beInstanceOf<Outcome.Error>()
+    }
+
+    @Test
+    fun `verify crawl result returns success outcome`() = runBlockingTest {
+        coEvery { dataSource.fetchCrawl() } returns Outcome.Success(Mocks.crawlSuccess())
+
+        repository.crawl() should beInstanceOf<Outcome.Success<Crawl>>()
+    }
+
+    @Test
+    fun `verify crawl result returns error outcome`() = runBlockingTest {
+        val message = "The network crawling process is not successful"
+        coEvery { dataSource.fetchCrawl() } returns Outcome.Error(message, IOException())
+
+        repository.crawl() should beInstanceOf<Outcome.Error>()
     }
 }
