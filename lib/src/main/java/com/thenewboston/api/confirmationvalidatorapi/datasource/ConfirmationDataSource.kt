@@ -45,4 +45,9 @@ class ConfirmationDataSource @Inject constructor(
         call = { postDataSource.doSendClean(request) },
         errorMessage = "An error occurred while sending the clean request"
     )
+
+    suspend fun fetchCrawl() = makeApiCall(
+        call = { getDataSource.crawl() },
+        errorMessage = "An error occurred while sending crawl request"
+    )
 }
