@@ -203,7 +203,7 @@ class PrimaryDataSourceTest {
             fun `should fetch confirmations blocks successfully`() = runBlockingTest {
                 val blockIdentifier = Some.blockIdentifier
 
-                coEvery { getDataSource.confirmationBlocks(blockIdentifier) } returns Outcome.Success(Mocks.confirmationBlocks())
+                coEvery { getDataSource.validConfirmationBlocks(blockIdentifier) } returns Outcome.Success(Mocks.confirmationBlocks())
 
                 val response = primaryDataSource.fetchConfirmationBlocks(Some.blockIdentifier)
 

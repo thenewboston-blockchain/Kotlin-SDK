@@ -5,6 +5,7 @@ import com.thenewboston.common.http.Outcome
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.common.response.AccountListValidator
+import com.thenewboston.data.dto.common.response.ConfirmationBlocks
 import com.thenewboston.data.dto.common.response.ValidatorDetails
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
@@ -164,6 +165,56 @@ class ConfirmationRepositoryTest {
 
         // then
         coVerify { dataSource.sendClean(request) }
+        result should beInstanceOf<Outcome.Error>()
+    }
+
+    @Test
+    fun `verify valid confirmations blocks is success outcome`() = runBlockingTest {
+        coEvery {
+            dataSource.fetchValidConfirmationBlocks(Some.blockIdentifier)
+        } returns Outcome.Success(Mocks.confirmationBlocks())
+
+        val result = repository.validConfirmationBlocks(Some.blockIdentifier)
+
+        coVerify { dataSource.fetchValidConfirmationBlocks(Some.blockIdentifier) }
+        result should beInstanceOf<Outcome.Success<ConfirmationBlocks>>()
+    }
+
+    @Test
+    fun `verify valid confirmation blocks is error outcome`() = runBlockingTest {
+        coEvery { dataSource.fetchValidConfirmationBlocks(Some.blockIdentifier) } returns Outcome.Error(
+            "An error occurred while fetching valid confirmation blocks",
+            IOException()
+        )
+
+        val result = repository.validConfirmationBlocks(Some.blockIdentifier)
+
+        coVerify { dataSource.fetchValidConfirmationBlocks(Some.blockIdentifier) }
+        result should beInstanceOf<Outcome.Error>()
+    }
+
+    @Test
+    fun `verify queued confirmations blocks is success outcome`() = runBlockingTest {
+        coEvery {
+            dataSource.fetchQueuedConfirmationBlocks(Some.blockIdentifier)
+        } returns Outcome.Success(Mocks.confirmationBlocks())
+
+        val result = repository.queuedConfirmationBlocks(Some.blockIdentifier)
+
+        coVerify { dataSource.fetchQueuedConfirmationBlocks(Some.blockIdentifier) }
+        result should beInstanceOf<Outcome.Success<ConfirmationBlocks>>()
+    }
+
+    @Test
+    fun `verify queued confirmation blocks is error outcome`() = runBlockingTest {
+        coEvery { dataSource.fetchQueuedConfirmationBlocks(Some.blockIdentifier) } returns Outcome.Error(
+            "An error occurred while fetching queued confirmation blocks",
+            IOException()
+        )
+
+        val result = repository.queuedConfirmationBlocks(Some.blockIdentifier)
+
+        coVerify { dataSource.fetchQueuedConfirmationBlocks(Some.blockIdentifier) }
         result should beInstanceOf<Outcome.Error>()
     }
 

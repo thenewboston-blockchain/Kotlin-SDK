@@ -7,6 +7,7 @@ import com.thenewboston.common.http.makeApiCall
 import com.thenewboston.utils.ErrorMessages
 import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
+import com.thenewboston.data.dto.common.response.ConfirmationBlocks
 import com.thenewboston.utils.PaginationOptions
 import javax.inject.Inject
 
@@ -44,6 +45,16 @@ class ConfirmationDataSource @Inject constructor(
     suspend fun sendClean(request: PostCleanRequest): Outcome<Clean> = makeApiCall(
         call = { postDataSource.doSendClean(request) },
         errorMessage = "An error occurred while sending the clean request"
+    )
+
+    suspend fun fetchValidConfirmationBlocks(blockIdentifier: String): Outcome<ConfirmationBlocks> = makeApiCall(
+        call = { getDataSource.validConfirmationBlocks(blockIdentifier) },
+        errorMessage = "Could not fetch valid confirmation blocks with block identifier $blockIdentifier"
+    )
+
+    suspend fun fetchQueuedConfirmationBlocks(blockIdentifier: String): Outcome<ConfirmationBlocks> = makeApiCall(
+        call = { getDataSource.queuedConfirmationBlocks(blockIdentifier) },
+        errorMessage = "Could not fetch queued confirmation blocks with block identifier $blockIdentifier"
     )
 
     suspend fun fetchCrawl() = makeApiCall(

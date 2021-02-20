@@ -61,7 +61,7 @@ class PrimaryDataSource @Inject constructor(
     )
 
     suspend fun fetchConfirmationBlocks(blockIdentifier: String): Outcome<ConfirmationBlocks> = makeApiCall(
-        call = { getDataSource.confirmationBlocks(blockIdentifier) },
+        call = { getDataSource.validConfirmationBlocks(blockIdentifier) },
         errorMessage = "Could not fetch confirmation blocks with block identifier $blockIdentifier"
     )
 

@@ -148,6 +148,34 @@ class ConfirmationDataSourceTest {
             }
 
             @Test
+            fun `should fetch valid confirmations blocks successfully`() = runBlockingTest {
+                val blockIdentifier = Some.blockIdentifier
+
+                coEvery {
+                    getDataSource.validConfirmationBlocks(blockIdentifier)
+                } returns Outcome.Success(Mocks.confirmationBlocks())
+
+                val response = confirmationDataSource.fetchValidConfirmationBlocks(blockIdentifier)
+
+                check(response is Outcome.Success)
+                response.value.message.blockIdentifier shouldBe blockIdentifier
+            }
+
+            @Test
+            fun `should fetch queued confirmations blocks successfully`() = runBlockingTest {
+                val blockIdentifier = Some.blockIdentifier
+
+                coEvery {
+                    getDataSource.queuedConfirmationBlocks(blockIdentifier)
+                } returns Outcome.Success(Mocks.confirmationBlocks())
+
+                val response = confirmationDataSource.fetchQueuedConfirmationBlocks(blockIdentifier)
+
+                check(response is Outcome.Success)
+                response.value.message.blockIdentifier shouldBe blockIdentifier
+            }
+
+            @Test
             fun `should fetch crawl successfully`() = runBlockingTest {
                 coEvery { getDataSource.crawl() } returns Outcome.Success(Mocks.crawlSuccess())
 
@@ -265,6 +293,38 @@ class ConfirmationDataSourceTest {
                 val response = confirmationDataSource.fetchCrawl()
 
                 // then
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.message shouldBe message
+            }
+
+            @Test
+            fun `should return error outcome for valid confirmation blocks`() = runBlockingTest {
+                val blockIdentifier = Some.blockIdentifier
+                val message = "Could not fetch valid confirmation blocks with block identifier $blockIdentifier"
+
+                coEvery {
+                    getDataSource.validConfirmationBlocks(blockIdentifier)
+                } returns Outcome.Error(message, IOException())
+
+                val response = confirmationDataSource.fetchValidConfirmationBlocks(blockIdentifier)
+
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.message shouldBe message
+            }
+
+            @Test
+            fun `should return error outcome for queued confirmation blocks`() = runBlockingTest {
+                val blockIdentifier = Some.blockIdentifier
+                val message = "Could not fetch queued confirmation blocks with block identifier $blockIdentifier"
+
+                coEvery {
+                    getDataSource.queuedConfirmationBlocks(blockIdentifier)
+                } returns Outcome.Error(message, IOException())
+
+                val response = confirmationDataSource.fetchQueuedConfirmationBlocks(blockIdentifier)
+
                 check(response is Outcome.Error)
                 response.cause should beInstanceOf<IOException>()
                 response.message shouldBe message
