@@ -66,7 +66,7 @@ class PrimaryDataSourceTest {
 
                 check(response is Outcome.Success)
                 response.value.nodeIdentifier should contain(nodeIdentifier)
-                response.value.ipAddress should contain("127.0.0.1")
+                response.value.ipAddress shouldBe "127.0.0.1"
             }
 
             @Test
@@ -196,7 +196,7 @@ class PrimaryDataSourceTest {
 
                 check(response is Outcome.Success)
                 response.value.nodeIdentifier should contain(nodeIdentifier)
-                response.value.ipAddress should contain("127.0.0.1")
+                response.value.ipAddress shouldBe "127.0.0.1"
             }
 
             @Test
@@ -306,7 +306,7 @@ class PrimaryDataSourceTest {
 
             @Test
             fun `should return error outcome for list of validators IOException`() = runBlockingTest {
-                val message = "Could not fetch list of accounts"
+                val message = "Could not fetch list of validators"
                 coEvery { getDataSource.validators(pagination) } returns Outcome.Error(message, IOException())
 
                 val response = primaryDataSource.fetchValidators(pagination)

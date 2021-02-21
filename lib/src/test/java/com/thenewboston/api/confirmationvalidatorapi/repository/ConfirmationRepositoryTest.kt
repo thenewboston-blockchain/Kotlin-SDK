@@ -4,9 +4,7 @@ import com.thenewboston.api.confirmationvalidatorapi.datasource.ConfirmationData
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
-import com.thenewboston.data.dto.common.response.AccountListValidator
-import com.thenewboston.data.dto.common.response.ConfirmationBlocks
-import com.thenewboston.data.dto.common.response.ValidatorDetails
+import com.thenewboston.data.dto.common.response.*
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
 import com.thenewboston.utils.Mocks
@@ -122,6 +120,56 @@ class ConfirmationRepositoryTest {
         } returns Outcome.Success(Mocks.banksFromValidator())
 
         repository.banksFromValidator(0, 20) should beInstanceOf<Outcome.Success<BankFromValidatorList>>()
+    }
+
+    @Test
+    fun `verify single validator result is success outcome`() = runBlockingTest {
+        coEvery { dataSource.fetchValidator(any()) } returns Outcome.Success(Mocks.validator())
+
+        val nodeIdentifier = "someNodeIdentifier"
+
+        val result = repository.validator(nodeIdentifier)
+
+        coVerify { dataSource.fetchValidator(nodeIdentifier) }
+        result should beInstanceOf<Outcome.Success<Validator>>()
+    }
+
+    @Test
+    fun `verify single validator is error outcome`() = runBlockingTest {
+        coEvery { dataSource.fetchValidator(any()) } returns Outcome.Error("", IOException())
+
+        val nodeIdentifier = "someNodeIdentifier"
+
+        val result = repository.validator(nodeIdentifier)
+
+        coVerify { dataSource.fetchValidator(nodeIdentifier) }
+        result should beInstanceOf<Outcome.Error>()
+    }
+
+    @Test
+    fun `verify validators result is success outcome`() = runBlockingTest {
+        coEvery {
+            dataSource.fetchValidators(PaginationOptions(0, 20))
+        } returns Outcome.Success(Mocks.validators())
+
+        val result = repository.validators(0, 20)
+
+        coVerify { dataSource.fetchValidators(PaginationOptions(0, 20)) }
+        result should beInstanceOf<Outcome.Success<ValidatorList>>()
+    }
+
+    @Test
+    fun `verify validators result is error`() = runBlockingTest {
+        coEvery {
+            dataSource.fetchValidators(PaginationOptions(0, 20))
+        } returns Outcome.Error("", IOException())
+
+        // when
+        val result = repository.validators(0, 20)
+
+        // then
+        coVerify { dataSource.fetchValidators(PaginationOptions(0, 20)) }
+        result should beInstanceOf<Outcome.Error>()
     }
 
     @Test

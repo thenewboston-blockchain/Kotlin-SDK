@@ -8,6 +8,8 @@ import com.thenewboston.utils.ErrorMessages
 import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.common.response.ConfirmationBlocks
+import com.thenewboston.data.dto.common.response.Validator
+import com.thenewboston.data.dto.common.response.ValidatorList
 import com.thenewboston.utils.PaginationOptions
 import javax.inject.Inject
 
@@ -34,6 +36,16 @@ class ConfirmationDataSource @Inject constructor(
 
     suspend fun fetchBanksFromValidator(paginationOptions: PaginationOptions) = makeApiCall(
         call = { getDataSource.banksFromValidator(paginationOptions) },
+        errorMessage = ErrorMessages.EMPTY_LIST_MESSAGE
+    )
+
+    suspend fun fetchValidator(nodeIdentifier: String): Outcome<Validator> = makeApiCall(
+        call = { getDataSource.validator(nodeIdentifier) },
+        errorMessage = "Could not fetch validator with NID $nodeIdentifier"
+    )
+
+    suspend fun fetchValidators(pagination: PaginationOptions): Outcome<ValidatorList> = makeApiCall(
+        call = { getDataSource.validators(pagination) },
         errorMessage = ErrorMessages.EMPTY_LIST_MESSAGE
     )
 
