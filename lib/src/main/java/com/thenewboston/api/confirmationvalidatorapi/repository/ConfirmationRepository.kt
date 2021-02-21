@@ -1,11 +1,12 @@
 package com.thenewboston.api.confirmationvalidatorapi.repository
 
 import com.thenewboston.api.confirmationvalidatorapi.datasource.ConfirmationDataSource
-import com.thenewboston.data.dto.common.response.ValidatorDetails
 import com.thenewboston.common.http.Outcome
-import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
+import com.thenewboston.data.dto.bankapi.clean.response.Clean
+import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.common.response.AccountListValidator
+import com.thenewboston.data.dto.common.response.ValidatorDetails
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
 import com.thenewboston.utils.PaginationOptions
@@ -34,4 +35,6 @@ class ConfirmationRepository @Inject constructor(private val dataSource: Confirm
 
     suspend fun queuedConfirmationBlocks(blockIdentifier: String) =
         dataSource.fetchQueuedConfirmationBlocks(blockIdentifier)
+
+    suspend fun crawl(): Outcome<Crawl> = dataSource.fetchCrawl()
 }

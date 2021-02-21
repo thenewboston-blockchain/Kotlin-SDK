@@ -56,4 +56,9 @@ class ConfirmationDataSource @Inject constructor(
         call = { getDataSource.queuedConfirmationBlocks(blockIdentifier) },
         errorMessage = "Could not fetch queued confirmation blocks with block identifier $blockIdentifier"
     )
+
+    suspend fun fetchCrawl() = makeApiCall(
+        call = { getDataSource.crawl() },
+        errorMessage = "An error occurred while sending crawl request"
+    )
 }

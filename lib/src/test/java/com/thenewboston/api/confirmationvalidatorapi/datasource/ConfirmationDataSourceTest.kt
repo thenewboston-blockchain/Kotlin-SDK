@@ -174,6 +174,16 @@ class ConfirmationDataSourceTest {
                 check(response is Outcome.Success)
                 response.value.message.blockIdentifier shouldBe blockIdentifier
             }
+
+            @Test
+            fun `should fetch crawl successfully`() = runBlockingTest {
+                coEvery { getDataSource.crawl() } returns Outcome.Success(Mocks.crawlSuccess())
+
+                val response = confirmationDataSource.fetchCrawl()
+
+                check(response is Outcome.Success)
+                response.value.crawlStatus.shouldNotBeEmpty()
+            }
         }
 
         @Nested
@@ -268,6 +278,19 @@ class ConfirmationDataSourceTest {
 
                 // when
                 val response = confirmationDataSource.fetchClean()
+
+                // then
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.message shouldBe message
+            }
+
+            @Test
+            fun `should return error outcome for crawling process`() = runBlockingTest {
+                val message = "An error occurred while sending crawl request"
+                coEvery { getDataSource.crawl() } returns Outcome.Error(message, IOException())
+                // when
+                val response = confirmationDataSource.fetchCrawl()
 
                 // then
                 check(response is Outcome.Error)
