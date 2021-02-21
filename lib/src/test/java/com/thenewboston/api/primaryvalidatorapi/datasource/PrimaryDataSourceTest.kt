@@ -306,7 +306,7 @@ class PrimaryDataSourceTest {
 
             @Test
             fun `should return error outcome for list of validators IOException`() = runBlockingTest {
-                val message = "Could not fetch list of accounts"
+                val message = "Could not fetch list of validators"
                 coEvery { getDataSource.validators(pagination) } returns Outcome.Error(message, IOException())
 
                 val response = primaryDataSource.fetchValidators(pagination)
