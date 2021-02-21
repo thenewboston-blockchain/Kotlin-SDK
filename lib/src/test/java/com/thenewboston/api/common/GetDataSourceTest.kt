@@ -142,7 +142,7 @@ class GetDataSourceTest {
             // then
             check(body is Outcome.Success)
             body.value.nodeIdentifier should contain(nodeIdentifier)
-            body.value.ipAddress should contain("127.0.0.1")
+            body.value.ipAddress shouldBe "127.0.0.1"
         }
 
         @Test
@@ -373,7 +373,7 @@ class GetDataSourceTest {
 
             check(response is Outcome.Success)
             response.value.nodeIdentifier should contain(nodeIdentifier)
-            response.value.ipAddress should contain("127.0.0.1")
+            response.value.ipAddress shouldBe "127.0.0.1"
         }
 
         @Test
@@ -472,7 +472,7 @@ class GetDataSourceTest {
 
             check(response is Outcome.Success)
             response.value.nodeIdentifier should contain(nodeIdentifier)
-            response.value.ipAddress should contain("127.0.0.1")
+            response.value.ipAddress shouldBe "127.0.0.1"
         }
 
         @Test

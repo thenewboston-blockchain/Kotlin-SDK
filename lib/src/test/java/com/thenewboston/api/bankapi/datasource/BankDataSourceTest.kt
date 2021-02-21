@@ -169,7 +169,7 @@ class BankDataSourceTest {
                 // then
                 check(response is Outcome.Success)
                 response.value.nodeIdentifier should contain(nodeIdentifier)
-                response.value.ipAddress should contain("127.0.0.1")
+                response.value.ipAddress shouldBe "127.0.0.1"
             }
 
             @Test
