@@ -217,7 +217,7 @@ class ConfirmationRepositoryTest {
     }
 
     @Test
-    fun `verify valid confirmations blocks is success outcome`() = runBlockingTest {
+    fun `verify valid confirmation blocks is success outcome`() = runBlockingTest {
         coEvery {
             dataSource.fetchValidConfirmationBlocks(Some.blockIdentifier)
         } returns Outcome.Success(Mocks.confirmationBlocks())
@@ -242,7 +242,7 @@ class ConfirmationRepositoryTest {
     }
 
     @Test
-    fun `verify queued confirmations blocks is success outcome`() = runBlockingTest {
+    fun `verify queued confirmation blocks is success outcome`() = runBlockingTest {
         coEvery {
             dataSource.fetchQueuedConfirmationBlocks(Some.blockIdentifier)
         } returns Outcome.Success(Mocks.confirmationBlocks())
@@ -263,6 +263,34 @@ class ConfirmationRepositoryTest {
         val result = repository.queuedConfirmationBlocks(Some.blockIdentifier)
 
         coVerify { dataSource.fetchQueuedConfirmationBlocks(Some.blockIdentifier) }
+        result should beInstanceOf<Outcome.Error>()
+    }
+
+    @Test
+    fun `verify send confirmation blocks is success outcome`() = runBlockingTest {
+        val request = Mocks.confirmationBlocks()
+        coEvery {
+            dataSource.sendConfirmationBlocks(request)
+        } returns Outcome.Success(Mocks.confirmationBlockMessage())
+
+        val result = repository.sendConfirmationBlocks(request)
+
+        coVerify { dataSource.sendConfirmationBlocks(request) }
+        result should beInstanceOf<Outcome.Success<ConfirmationBlocks>>()
+    }
+
+    @Test
+    fun `verify send confirmation blocks is error outcome`() = runBlockingTest {
+        val request = Mocks.confirmationBlocks()
+
+        coEvery { dataSource.sendConfirmationBlocks(request) } returns Outcome.Error(
+            "An error occurred while sending confirmation blocks",
+            IOException()
+        )
+
+        val result = repository.sendConfirmationBlocks(request)
+
+        coVerify { dataSource.sendConfirmationBlocks(request) }
         result should beInstanceOf<Outcome.Error>()
     }
 

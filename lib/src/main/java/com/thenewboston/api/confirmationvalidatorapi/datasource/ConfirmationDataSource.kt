@@ -7,6 +7,7 @@ import com.thenewboston.common.http.makeApiCall
 import com.thenewboston.utils.ErrorMessages
 import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
+import com.thenewboston.data.dto.common.response.ConfirmationBlockMessage
 import com.thenewboston.data.dto.common.response.ConfirmationBlocks
 import com.thenewboston.data.dto.common.response.Validator
 import com.thenewboston.data.dto.common.response.ValidatorList
@@ -67,6 +68,11 @@ class ConfirmationDataSource @Inject constructor(
     suspend fun fetchQueuedConfirmationBlocks(blockIdentifier: String): Outcome<ConfirmationBlocks> = makeApiCall(
         call = { getDataSource.queuedConfirmationBlocks(blockIdentifier) },
         errorMessage = "Could not fetch queued confirmation blocks with block identifier $blockIdentifier"
+    )
+
+    suspend fun sendConfirmationBlocks(request: ConfirmationBlocks): Outcome<ConfirmationBlockMessage> = makeApiCall(
+        call = { postDataSource.doSendConfirmationBlocks(request) },
+        errorMessage = "An error occurred while sending confirmation blocks"
     )
 
     suspend fun fetchCrawl() = makeApiCall(

@@ -11,6 +11,10 @@ class ConfirmationValidatorApiMockEngine {
     fun getErrors() = getConfirmationMockEngine(sendOnlyErrorResponses = true)
     fun getEmptySuccess() = getConfirmationMockEngine(sendInvalidResponses = true)
 
+    fun postSuccess() = postConfirmationMockEngine()
+    fun postErrors() = postConfirmationMockEngine(sendOnlyErrorResponses = true)
+    fun postInvalidSuccess() = postConfirmationMockEngine(sendInvalidResponses = true)
+
     private val json = listOf(ContentType.Application.Json.toString())
     private val responseHeaders = headersOf("Content-Type" to json)
 
@@ -46,5 +50,25 @@ class ConfirmationValidatorApiMockEngine {
         isError -> respond(errorContent, InternalServerError, responseHeaders)
         isInvalidResponse -> respond(emptyContent, HttpStatusCode.OK, responseHeaders)
         else -> respond(content, HttpStatusCode.OK, responseHeaders)
+    }
+
+    private fun postConfirmationMockEngine(
+        sendOnlyErrorResponses: Boolean = false,
+        sendInvalidResponses: Boolean = false
+    ) = mockHttpClient.httpClient {
+        val errorContent = ConfirmationValidatorAPIJsonMapper.mapInternalServerErrorToJson()
+
+        it.addHandler { request ->
+            when {
+                request.url.encodedPath.startsWith(ConfirmationValidatorAPIJsonMapper.CONFIRMATION_BLOCKS) -> {
+                    val content =
+                        ConfirmationValidatorAPIJsonMapper.mapConfirmationBlockResponseToJson()
+                    sendResponse(content, errorContent, "", sendOnlyErrorResponses, sendInvalidResponses)
+                }
+                else -> {
+                    error("Unhandled ${request.url.encodedPath}")
+                }
+            }
+        }
     }
 }

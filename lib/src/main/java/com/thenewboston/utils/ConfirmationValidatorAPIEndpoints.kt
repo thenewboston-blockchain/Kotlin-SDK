@@ -2,6 +2,8 @@ package com.thenewboston.utils
 
 object ConfirmationValidatorAPIEndpoints {
 
+    const val CONFIRMATION_BLOCKS_ENDPOINT = "/confirmation_blocks"
+
     fun validConfirmationBlocksEndpoint(blockID: String) =
         "/confirmation_blocks/$blockID/valid"
 
