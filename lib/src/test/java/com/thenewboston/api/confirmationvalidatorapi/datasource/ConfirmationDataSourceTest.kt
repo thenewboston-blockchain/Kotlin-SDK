@@ -247,6 +247,22 @@ class ConfirmationDataSourceTest {
                 response.value.cleanStatus shouldNot beEmpty()
                 response.value.cleanStatus shouldBe request.data.clean
             }
+
+            @Test
+            fun `should return success with crawl status `() = runBlockingTest {
+                // given
+                val request = Mocks.postCrawlRequest()
+                val value = Mocks.postCrawl(request.data.crawl)
+                coEvery { postDataSource.doSendCrawl(request) } returns Outcome.Success(value)
+
+                // when
+                val response = confirmationDataSource.sendCrawl(request)
+
+                // then
+                check(response is Outcome.Success)
+                response.value.crawlStatus shouldNot beEmpty()
+                response.value.crawlStatus shouldBe request.data.crawl
+            }
         }
     }
 
@@ -416,6 +432,22 @@ class ConfirmationDataSourceTest {
 
                 // when
                 val response = confirmationDataSource.sendClean(request)
+
+                // then
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.message shouldBe message
+            }
+
+            @Test
+            fun `should return error outcome when sending crawl`() = runBlockingTest {
+                // given
+                val request = Mocks.postCrawlRequest()
+                val message = "An error occurred while sending the crawl request"
+                coEvery { postDataSource.doSendCrawl(request) } returns Outcome.Error(message, IOException())
+
+                // when
+                val response = confirmationDataSource.sendCrawl(request)
 
                 // then
                 check(response is Outcome.Error)
