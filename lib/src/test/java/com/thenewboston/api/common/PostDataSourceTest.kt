@@ -4,6 +4,7 @@ import com.thenewboston.common.http.NetworkClient
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.utils.mockEngine.bank.BankApiMockEngine
 import com.thenewboston.utils.mockEngine.primaryValidator.PrimaryValidatorApiMockEngine
+import com.thenewboston.utils.mockEngine.confirmationValidator.ConfirmationValidatorApiMockEngine
 import com.thenewboston.utils.Mocks
 import com.thenewboston.utils.Some
 import io.kotest.matchers.should
@@ -30,6 +31,7 @@ class PostDataSourceTest {
 
     private val bankMockEngine = BankApiMockEngine()
     private val primaryMockEngine = PrimaryValidatorApiMockEngine()
+    private val confirmationMockEngine = ConfirmationValidatorApiMockEngine()
 
     private lateinit var postDataSource: PostDataSource
 
@@ -202,6 +204,39 @@ class PostDataSourceTest {
         @BeforeEach
         fun given() {
             every { networkClient.defaultClient } returns primaryMockEngine.postInvalidSuccess()
+        }
+    }
+
+    @Nested
+    @DisplayName("Confirmation Validator: Given successful request")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class ConfirmationGivenSucceedingRequest {
+
+        @BeforeEach
+        fun setup() {
+            every { networkClient.defaultClient } returns confirmationMockEngine.postSuccess()
+        }
+
+        @Test
+        fun `should send confirmation blocks successfully`() = runBlockingTest {
+            val request = Mocks.confirmationBlocks()
+
+            val response = postDataSource.doSendConfirmationBlocks(request)
+
+            check(response is Outcome.Success)
+            response.value.blockIdentifier shouldBe Some.blockIdentifier
+            response.value.block.message.balanceKey shouldBe Some.balanceKey
+        }
+    }
+
+    @Nested
+    @DisplayName("Confirmation Validator: Given empty or invalid response body")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class ConfirmationGivenInvalidResponseBody {
+
+        @BeforeEach
+        fun given() {
+            every { networkClient.defaultClient } returns confirmationMockEngine.postInvalidSuccess()
         }
     }
 }

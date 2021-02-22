@@ -189,7 +189,7 @@ class ConfirmationDataSourceTest {
             }
 
             @Test
-            fun `should fetch valid confirmations blocks successfully`() = runBlockingTest {
+            fun `should fetch valid confirmation blocks successfully`() = runBlockingTest {
                 val blockIdentifier = Some.blockIdentifier
 
                 coEvery {
@@ -203,7 +203,7 @@ class ConfirmationDataSourceTest {
             }
 
             @Test
-            fun `should fetch queued confirmations blocks successfully`() = runBlockingTest {
+            fun `should fetch queued confirmation blocks successfully`() = runBlockingTest {
                 val blockIdentifier = Some.blockIdentifier
 
                 coEvery {
@@ -246,6 +246,21 @@ class ConfirmationDataSourceTest {
                 check(response is Outcome.Success)
                 response.value.cleanStatus shouldNot beEmpty()
                 response.value.cleanStatus shouldBe request.data.clean
+            }
+
+            @Test
+            fun `should return success outcome when sending confirmation blocks `() = runBlockingTest {
+                val request = Mocks.confirmationBlocks()
+
+                coEvery {
+                    postDataSource.doSendConfirmationBlocks(request)
+                } returns Outcome.Success(Mocks.confirmationBlockMessage())
+
+                val response = confirmationDataSource.sendConfirmationBlocks(request)
+
+                check(response is Outcome.Success)
+                response.value.blockIdentifier shouldBe Some.blockIdentifier
+                response.value.block.message.balanceKey shouldBe Some.balanceKey
             }
         }
     }
@@ -418,6 +433,21 @@ class ConfirmationDataSourceTest {
                 val response = confirmationDataSource.sendClean(request)
 
                 // then
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.message shouldBe message
+            }
+
+            @Test
+            fun `should return error outcome when sending confimation blocks`() = runBlockingTest {
+                val request = Mocks.confirmationBlocks()
+                val message = "An error occurred while sending confirmation blocks"
+                coEvery {
+                    postDataSource.doSendConfirmationBlocks(request)
+                } returns Outcome.Error(message, IOException())
+
+                val response = confirmationDataSource.sendConfirmationBlocks(request)
+
                 check(response is Outcome.Error)
                 response.cause should beInstanceOf<IOException>()
                 response.message shouldBe message

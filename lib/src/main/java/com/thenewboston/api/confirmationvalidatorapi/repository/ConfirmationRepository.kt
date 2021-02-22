@@ -6,6 +6,8 @@ import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.common.response.AccountListValidator
+import com.thenewboston.data.dto.common.response.ConfirmationBlockMessage
+import com.thenewboston.data.dto.common.response.ConfirmationBlocks
 import com.thenewboston.data.dto.common.response.ValidatorDetails
 import com.thenewboston.data.dto.common.response.ValidatorList
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
@@ -41,6 +43,9 @@ class ConfirmationRepository @Inject constructor(private val dataSource: Confirm
 
     suspend fun queuedConfirmationBlocks(blockIdentifier: String) =
         dataSource.fetchQueuedConfirmationBlocks(blockIdentifier)
+
+    suspend fun sendConfirmationBlocks(request: ConfirmationBlocks): Outcome<ConfirmationBlockMessage> =
+        dataSource.sendConfirmationBlocks(request)
 
     suspend fun crawl(): Outcome<Crawl> = dataSource.fetchCrawl()
 }

@@ -241,7 +241,7 @@ class PrimaryRepositoryTest {
     }
 
     @Test
-    fun `verify confirmations blocks is success outcome`() = runBlockingTest {
+    fun `verify confirmation blocks is success outcome`() = runBlockingTest {
         coEvery {
             primaryDataSource.fetchConfirmationBlocks(Some.blockIdentifier)
         } returns Outcome.Success(Mocks.confirmationBlocks())

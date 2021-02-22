@@ -18,4 +18,6 @@ object ConfirmationValidatorAPIJsonMapper {
     fun mapValidConfirmationBlocksToJson(): String = Json.encodeToString(Mocks.confirmationBlocks())
 
     fun mapQueuedConfirmationBlocksToJson(): String = Json.encodeToString(Mocks.confirmationBlocks())
+
+    fun mapConfirmationBlockResponseToJson(): String = Json.encodeToString(Mocks.confirmationBlockMessage())
 }
