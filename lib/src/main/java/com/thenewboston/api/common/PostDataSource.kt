@@ -10,10 +10,13 @@ import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.upgradenoticedto.UpgradeNoticeRequest
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServices
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
+import com.thenewboston.data.dto.common.response.ConfirmationBlockMessage
+import com.thenewboston.data.dto.common.response.ConfirmationBlocks
 import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.BankBlock
 import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.request.BankBlockRequest
 import com.thenewboston.utils.BankAPIEndpoints
 import com.thenewboston.utils.PrimaryValidatorAPIEndpoints
+import com.thenewboston.utils.ConfirmationValidatorAPIEndpoints
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.utils.io.errors.*
@@ -45,6 +48,15 @@ class PostDataSource @Inject constructor(private val networkClient: NetworkClien
             }
             else -> Outcome.Success(response)
         }
+    }
+
+    suspend fun doSendConfirmationBlocks(request: ConfirmationBlocks): Outcome<ConfirmationBlockMessage> {
+        val response = networkClient.defaultClient.post<ConfirmationBlockMessage> {
+            url(ConfirmationValidatorAPIEndpoints.CONFIRMATION_BLOCKS_ENDPOINT)
+            body = request
+        }
+
+        return Outcome.Success(response)
     }
 
     suspend fun doSendUpgradeNotice(request: UpgradeNoticeRequest): Outcome<String> {

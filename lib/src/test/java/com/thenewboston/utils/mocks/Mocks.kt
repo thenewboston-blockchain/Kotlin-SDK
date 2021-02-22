@@ -578,26 +578,28 @@ object Mocks {
         protocol = "http"
     )
 
+    fun confirmationBlockMessage() = ConfirmationBlockMessage(
+        ConfirmationBlock(
+            Some.accountNumber,
+            MessageBalance(
+                Some.balanceKey,
+                listOf(Tx(100, Some.recipient))
+            ),
+            Some.signature
+        ),
+        Some.blockIdentifier,
+        listOf(
+            UpdatedBalance(
+                Some.accountNumber,
+                10,
+                Some.balanceLock
+            ),
+        ),
+    )
+
     fun confirmationBlocks(): ConfirmationBlocks {
         return ConfirmationBlocks(
-            ConfirmationBlockMessage(
-                ConfirmationBlock(
-                    Some.accountNumber,
-                    MessageBalance(
-                        Some.balanceKey,
-                        listOf(Tx(100, Some.recipient))
-                    ),
-                    Some.signature
-                ),
-                Some.blockIdentifier,
-                listOf(
-                    UpdatedBalance(
-                        Some.accountNumber,
-                        10,
-                        Some.balanceLock
-                    )
-                )
-            ),
+            confirmationBlockMessage(),
             Some.nodeIdentifier,
             Some.signature
         )
