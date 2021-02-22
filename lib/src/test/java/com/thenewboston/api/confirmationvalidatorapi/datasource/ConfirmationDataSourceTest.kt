@@ -11,10 +11,10 @@ import io.kotest.matchers.ints.shouldBeLessThanOrEqual
 import io.kotest.matchers.longs.shouldBeGreaterThan
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.string.contain
-import io.kotest.matchers.string.shouldNotBeEmpty
 import io.kotest.matchers.shouldNot
 import io.kotest.matchers.string.beEmpty
+import io.kotest.matchers.string.contain
+import io.kotest.matchers.string.shouldNotBeEmpty
 import io.kotest.matchers.types.beInstanceOf
 import io.ktor.util.*
 import io.ktor.utils.io.errors.*
@@ -307,23 +307,30 @@ class ConfirmationDataSourceTest {
             }
 
             @Test
-            fun `should return error outcome for list of accounts from confirmation validator IOException`() = runBlockingTest {
-                val message = "Failed to retrieve accounts from confirmation validator"
-                coEvery { getDataSource.accountsFromValidator(pagination) } returns Outcome.Error(message, IOException())
+            fun `should return error outcome for list of accounts from confirmation validator IOException`() =
+                runBlockingTest {
+                    val message = "Failed to retrieve accounts from confirmation validator"
+                    coEvery { getDataSource.accountsFromValidator(pagination) } returns Outcome.Error(
+                        message,
+                        IOException()
+                    )
 
-                val response = confirmationDataSource.fetchAccounts(pagination)
+                    val response = confirmationDataSource.fetchAccounts(pagination)
 
-                check(response is Outcome.Error)
-                response.cause should beInstanceOf<IOException>()
-                response.message shouldBe message
-            }
+                    check(response is Outcome.Error)
+                    response.cause should beInstanceOf<IOException>()
+                    response.message shouldBe message
+                }
 
             @Test
             fun `should return error outcome for single bank`() = runBlockingTest {
                 val nodeIdentifier = Some.nodeIdentifier
                 val message = "Failed to retrieve bank from validator"
 
-                coEvery { getDataSource.bankFromValidator(nodeIdentifier) } returns Outcome.Error(message, IOException())
+                coEvery { getDataSource.bankFromValidator(nodeIdentifier) } returns Outcome.Error(
+                    message,
+                    IOException()
+                )
 
                 val response = confirmationDataSource.fetchBankFromValidator(nodeIdentifier)
 
