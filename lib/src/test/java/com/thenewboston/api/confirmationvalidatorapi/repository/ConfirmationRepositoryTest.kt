@@ -308,4 +308,32 @@ class ConfirmationRepositoryTest {
 
         repository.crawl() should beInstanceOf<Outcome.Error>()
     }
+
+    @Test
+    fun `verify send crawl returns success outcome`() = runBlockingTest {
+        val response = Mocks.crawlSuccess()
+        coEvery { dataSource.sendCrawl(any()) } returns Outcome.Success(response)
+        val postRequest = Mocks.postCrawlRequest()
+
+        // when
+        val result = repository.sendCrawl(postRequest)
+
+        // then
+        coVerify { dataSource.sendCrawl(postRequest) }
+        result should beInstanceOf<Outcome.Success<Crawl>>()
+    }
+
+    @Test
+    fun `verify send crawl returns error outcome`() = runBlockingTest {
+        val error = Outcome.Error("An error occurred while sending the crawl request", IOException())
+        val request = Mocks.postCrawlRequest()
+        coEvery { dataSource.sendCrawl(request) } returns error
+
+        // when
+        val result = repository.sendCrawl(request)
+
+        // then
+        coVerify { dataSource.sendCrawl(request) }
+        result should beInstanceOf<Outcome.Error>()
+    }
 }

@@ -4,13 +4,15 @@ import com.thenewboston.api.common.GetDataSource
 import com.thenewboston.api.common.PostDataSource
 import com.thenewboston.common.http.Outcome
 import com.thenewboston.common.http.makeApiCall
-import com.thenewboston.utils.ErrorMessages
 import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
+import com.thenewboston.data.dto.bankapi.crawl.request.PostCrawlRequest
+import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.common.response.ConfirmationBlockMessage
 import com.thenewboston.data.dto.common.response.ConfirmationBlocks
 import com.thenewboston.data.dto.common.response.Validator
 import com.thenewboston.data.dto.common.response.ValidatorList
+import com.thenewboston.utils.ErrorMessages
 import com.thenewboston.utils.PaginationOptions
 import javax.inject.Inject
 
@@ -78,5 +80,10 @@ class ConfirmationDataSource @Inject constructor(
     suspend fun fetchCrawl() = makeApiCall(
         call = { getDataSource.crawl() },
         errorMessage = "An error occurred while sending crawl request"
+    )
+
+    suspend fun sendCrawl(request: PostCrawlRequest): Outcome<Crawl> = makeApiCall(
+        call = { postDataSource.doSendCrawl(request) },
+        errorMessage = "An error occurred while sending the crawl request"
     )
 }
