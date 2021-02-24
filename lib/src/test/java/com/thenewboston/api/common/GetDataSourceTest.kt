@@ -538,6 +538,26 @@ class GetDataSourceTest {
         }
 
         @Test
+        fun `test fetch list of 20 bank confirmation services successfully`() = runBlockingTest {
+            val response = getDataSource.bankConfirmationServices(PaginationOptions(20, 20))
+
+            check(response is Outcome.Success)
+            response.value.services.shouldNotBeEmpty()
+            response.value.count shouldBeGreaterThan 20
+            response.value.services.size shouldBeLessThanOrEqual 20
+        }
+
+        @Test
+        fun `test fetch list of 30 bank confirmation services successfully`() = runBlockingTest {
+            val response = getDataSource.bankConfirmationServices(PaginationOptions(20, 20))
+
+            check(response is Outcome.Success)
+            response.value.services.shouldNotBeEmpty()
+            response.value.count shouldBeGreaterThan 0
+            response.value.services.size shouldBeLessThanOrEqual 30
+        }
+
+        @Test
         fun `should fetch valid confirmation blocks successfully`() = runBlockingTest {
             val response = getDataSource.validConfirmationBlocks(Some.blockIdentifier)
 
@@ -564,6 +584,15 @@ class GetDataSourceTest {
         @BeforeEach
         fun given() {
             every { networkClient.defaultClient } returns confirmationMockEngine.getEmptySuccess()
+        }
+
+        @Test
+        fun `should return error outcome for empty bank confirmation services`() = runBlockingTest {
+            val response = getDataSource.bankConfirmationServices(pagination)
+
+            check(response is Outcome.Error)
+            response.cause should beInstanceOf<IOException>()
+            response.message shouldBe ErrorMessages.EMPTY_LIST_MESSAGE
         }
     }
 }

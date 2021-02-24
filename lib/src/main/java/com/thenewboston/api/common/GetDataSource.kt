@@ -10,8 +10,9 @@ import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
-import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ValidatorConfirmationServicesList
 import com.thenewboston.data.dto.common.response.*
+import com.thenewboston.data.dto.confirmationvalidatorapi.bankconfirmationservicesdto.BankConfirmationServicesList
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
 import com.thenewboston.utils.BankAPIEndpoints
@@ -160,9 +161,22 @@ class GetDataSource @Inject constructor(private val networkClient: NetworkClient
         }
     }
 
-    suspend fun validatorConfirmationServices(pagination: PaginationOptions): Outcome<ConfirmationServicesList> {
+    suspend fun bankConfirmationServices(pagination: PaginationOptions): Outcome<BankConfirmationServicesList> {
+        val endpoint = ConfirmationValidatorAPIEndpoints.BANK_CONFIRMATION_SERVICES + pagination.toQuery()
+        val response = networkClient.defaultClient.get<BankConfirmationServicesList>(endpoint)
+
+        return when {
+            response.services.isEmpty() -> {
+                val message = ErrorMessages.EMPTY_LIST_MESSAGE
+                Outcome.Error(message, IOException())
+            }
+            else -> Outcome.Success(response)
+        }
+    }
+
+    suspend fun validatorConfirmationServices(pagination: PaginationOptions): Outcome<ValidatorConfirmationServicesList> {
         val endpoint = BankAPIEndpoints.VALIDATOR_CONFIRMATION_SERVICES_ENDPOINT + pagination.toQuery()
-        val response = networkClient.defaultClient.get<ConfirmationServicesList>(endpoint)
+        val response = networkClient.defaultClient.get<ValidatorConfirmationServicesList>(endpoint)
 
         return when {
             response.services.isEmpty() -> {

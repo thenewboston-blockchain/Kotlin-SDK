@@ -21,8 +21,8 @@ import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.*
 import com.thenewboston.data.dto.bankapi.upgradenoticedto.UpgradeNoticeMessage
 import com.thenewboston.data.dto.bankapi.upgradenoticedto.UpgradeNoticeRequest
-import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServices
-import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ValidatorConfirmationServices
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ValidatorConfirmationServicesList
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.Message
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
 import com.thenewboston.data.dto.common.request.ConnectionRequest
@@ -30,6 +30,8 @@ import com.thenewboston.data.dto.common.request.ConnectionRequestMessage
 import com.thenewboston.data.dto.common.request.TrustMessage
 import com.thenewboston.data.dto.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.common.response.*
+import com.thenewboston.data.dto.confirmationvalidatorapi.bankconfirmationservicesdto.BankConfirmationServices
+import com.thenewboston.data.dto.confirmationvalidatorapi.bankconfirmationservicesdto.BankConfirmationServicesList
 import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.BankBlock
 import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.BankBlockMessageBalance
 import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.BankBlockTx
@@ -428,21 +430,21 @@ object Mocks {
         signature = Some.signature
     )
 
-    fun confirmationServicesList(pagination: PaginationOptions = PaginationOptions(0, 20)) = ConfirmationServicesList(
+    fun validatorConfirmationServicesList(pagination: PaginationOptions = PaginationOptions(0, 20)) = ValidatorConfirmationServicesList(
         30,
         null,
         null,
-        PaginationResult<ConfirmationServices>(pagination.limit, confirmationServices()).toList()
+        PaginationResult<ValidatorConfirmationServices>(pagination.limit, validatorConfirmationServices()).toList()
     )
 
-    fun emptyConfirmationServicesList() = ConfirmationServicesList(
+    fun emptyConfirmationServicesList() = ValidatorConfirmationServicesList(
         0,
         null,
         null,
         emptyList()
     )
 
-    private fun confirmationServices() = ConfirmationServices(
+    private fun validatorConfirmationServices() = ValidatorConfirmationServices(
         Some.id,
         Some.dateTime.toString(),
         Some.dateTime.toString(),
@@ -451,13 +453,36 @@ object Mocks {
         Some.signature
     )
 
-    fun emptyConfirmationServices() = ConfirmationServices(
+    fun emptyConfirmationServices() = ValidatorConfirmationServices(
         "",
         "",
         "",
         "",
         "",
         ""
+    )
+
+    fun bankConfirmationServicesList(pagination: PaginationOptions = PaginationOptions(0, 20)) = BankConfirmationServicesList(
+        30,
+        null,
+        null,
+        PaginationResult<BankConfirmationServices>(pagination.limit, bankConfirmationServices()).toList()
+    )
+
+    private fun bankConfirmationServices() = BankConfirmationServices(
+        Some.id,
+        Some.dateTime.toString(),
+        Some.dateTime.toString(),
+        Some.endDate,
+        Some.startDate,
+        Some.signature
+    )
+
+    fun emptyBankConfirmationServicesList() = BankConfirmationServicesList(
+        0,
+        null,
+        null,
+        emptyList()
     )
 
     fun bankBlock() = BankBlock(
@@ -484,7 +509,7 @@ object Mocks {
         Some.signature
     )
 
-    fun confirmationServiceWithMessage(message: Message) = ConfirmationServices(
+    fun confirmationServiceWithMessage(message: Message) = ValidatorConfirmationServices(
         Some.id,
         Some.dateTime.toString(),
         Some.dateTime.toString(),

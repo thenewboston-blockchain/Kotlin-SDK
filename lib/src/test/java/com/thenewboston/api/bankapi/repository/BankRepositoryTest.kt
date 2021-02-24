@@ -12,8 +12,8 @@ import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
-import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServices
-import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ValidatorConfirmationServices
+import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ValidatorConfirmationServicesList
 import com.thenewboston.data.dto.common.response.Bank
 import com.thenewboston.data.dto.common.response.ValidatorList
 import com.thenewboston.utils.Mocks
@@ -354,7 +354,7 @@ class BankRepositoryTest {
     @Test
     fun `verify fetch validator confirmation services returns success outomce`() = runBlockingTest {
         val pagination = PaginationOptions(0, 20)
-        val value = Mocks.confirmationServicesList()
+        val value = Mocks.validatorConfirmationServicesList()
         coEvery { bankDataSource.fetchValidatorConfirmationServices(pagination) } returns Outcome.Success(value)
 
         // when
@@ -362,7 +362,7 @@ class BankRepositoryTest {
 
         // then
         coVerify { bankDataSource.fetchValidatorConfirmationServices(pagination) }
-        result should beInstanceOf<Outcome.Success<ConfirmationServicesList>>()
+        result should beInstanceOf<Outcome.Success<ValidatorConfirmationServicesList>>()
     }
 
     @Test
@@ -394,7 +394,7 @@ class BankRepositoryTest {
 
         // then
         coVerify { bankDataSource.sendValidatorConfirmationServices(request) }
-        result should beInstanceOf<Outcome.Success<ConfirmationServices>>()
+        result should beInstanceOf<Outcome.Success<ValidatorConfirmationServices>>()
     }
 
     @Test

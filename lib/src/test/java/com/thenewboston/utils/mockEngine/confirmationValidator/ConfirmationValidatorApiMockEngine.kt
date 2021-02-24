@@ -25,6 +25,13 @@ class ConfirmationValidatorApiMockEngine {
             val errorContent = ConfirmationValidatorAPIJsonMapper.mapInternalServerErrorToJson()
             it.addHandler { request ->
                 when (request.url.encodedPath) {
+                    ConfirmationValidatorAPIJsonMapper.BANK_CONFIRMATION_SERVICES_ENDPOINT -> {
+                        val offset = request.url.parameters["offset"]?.toInt()
+                        val limit = request.url.parameters["limit"]?.toInt()
+                        val content = ConfirmationValidatorAPIJsonMapper.mapBankConfirmationServicesToJson(offset, limit)
+                        val emptyContent = ConfirmationValidatorAPIJsonMapper.mapEmptyBankConfirmationServicesToJson()
+                        sendResponse(content, errorContent, emptyContent, sendOnlyErrorResponses, sendInvalidResponses)
+                    }
                     ConfirmationValidatorAPIJsonMapper.VALID_CONFIRMATION_BLOCKS_ENDPOINT -> {
                         val content = ConfirmationValidatorAPIJsonMapper.mapValidConfirmationBlocksToJson()
                         sendResponse(content, errorContent, "", sendOnlyErrorResponses, sendInvalidResponses)

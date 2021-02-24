@@ -252,7 +252,7 @@ class BankDataSourceTest {
 
             @Test
             fun `test fetch list of 20 validator confirmation services successfully`() = runBlockingTest {
-                val value = Mocks.confirmationServicesList(paginationTwenty)
+                val value = Mocks.validatorConfirmationServicesList(paginationTwenty)
                 coEvery { getDataSource.validatorConfirmationServices(paginationTwenty) } returns Outcome.Success(value)
 
                 val response = bankDataSource.fetchValidatorConfirmationServices(paginationTwenty)
@@ -265,7 +265,7 @@ class BankDataSourceTest {
 
             @Test
             fun `test fetch list of 30 validator confirmation services successfully`() = runBlockingTest {
-                coEvery { getDataSource.validatorConfirmationServices(paginationThirty) } returns Outcome.Success(Mocks.confirmationServicesList(paginationThirty))
+                coEvery { getDataSource.validatorConfirmationServices(paginationThirty) } returns Outcome.Success(Mocks.validatorConfirmationServicesList(paginationThirty))
 
                 val response = bankDataSource.fetchValidatorConfirmationServices(paginationThirty)
 

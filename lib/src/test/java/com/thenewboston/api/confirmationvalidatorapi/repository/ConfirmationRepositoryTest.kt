@@ -5,6 +5,7 @@ import com.thenewboston.common.http.Outcome
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.common.response.*
+import com.thenewboston.data.dto.confirmationvalidatorapi.bankconfirmationservicesdto.BankConfirmationServicesList
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
 import com.thenewboston.utils.Mocks
@@ -120,6 +121,33 @@ class ConfirmationRepositoryTest {
         } returns Outcome.Success(Mocks.banksFromValidator())
 
         repository.banksFromValidator(0, 20) should beInstanceOf<Outcome.Success<BankFromValidatorList>>()
+    }
+
+    @Test
+    fun `verify fetch bank confirmation services returns success outcome`() = runBlockingTest {
+        val pagination = PaginationOptions(0, 20)
+        val value = Mocks.bankConfirmationServicesList()
+        coEvery { dataSource.fetchBankConfirmationServices(pagination) } returns Outcome.Success(value)
+
+        val result = repository.bankConfirmationServices(0, 20)
+
+        coVerify { dataSource.fetchBankConfirmationServices(pagination) }
+        result should beInstanceOf<Outcome.Success<BankConfirmationServicesList>>()
+    }
+
+    @Test
+    fun `verify fetch bank confirmation services returns error outcome`() = runBlockingTest {
+        coEvery { dataSource.fetchBankConfirmationServices(PaginationOptions(0, 20)) } returns Outcome.Error(
+            "Failed to fetch bank confirmation services",
+            IOException()
+        )
+
+        // when
+        val result = repository.bankConfirmationServices(0, 20)
+
+        // then
+        coVerify { dataSource.fetchBankConfirmationServices(PaginationOptions(0, 20)) }
+        result should beInstanceOf<Outcome.Error>()
     }
 
     @Test
