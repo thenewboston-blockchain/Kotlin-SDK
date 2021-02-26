@@ -10,7 +10,6 @@ import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
-import com.thenewboston.data.dto.common.response.ConfirmationServicesList
 import com.thenewboston.data.dto.common.response.*
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
