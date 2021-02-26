@@ -42,6 +42,11 @@ class ConfirmationDataSource @Inject constructor(
         errorMessage = ErrorMessages.EMPTY_LIST_MESSAGE
     )
 
+    suspend fun fetchBankConfirmationServices(pagination: PaginationOptions) = makeApiCall(
+        call = { getDataSource.bankConfirmationServices(pagination) },
+        errorMessage = "An error occurred while fetching bank confirmation services"
+    )
+
     suspend fun fetchValidator(nodeIdentifier: String): Outcome<Validator> = makeApiCall(
         call = { getDataSource.validator(nodeIdentifier) },
         errorMessage = "Could not fetch validator with NID $nodeIdentifier"

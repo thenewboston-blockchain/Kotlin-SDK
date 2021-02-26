@@ -91,7 +91,7 @@ object BankAPIJsonMapper {
     fun mapBlockResponseForBlockRequest(): String = Json.encodeToString(Mocks.emptyBlock())
 
     fun mapValidatorConfirmationServicesToJson(offset: Int?, limit: Int?): String {
-        return Json.encodeToString(Mocks.confirmationServicesList(PaginationOptions(offset, limit)))
+        return Json.encodeToString(Mocks.validatorConfirmationServicesList(PaginationOptions(offset, limit)))
     }
 
     fun mapValidatorConfirmationServiceToJson(message: Message): String {

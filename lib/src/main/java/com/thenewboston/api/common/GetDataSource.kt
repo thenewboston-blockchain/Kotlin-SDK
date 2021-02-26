@@ -10,7 +10,6 @@ import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
-import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
 import com.thenewboston.data.dto.common.response.*
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
@@ -157,6 +156,19 @@ class GetDataSource @Inject constructor(private val networkClient: NetworkClient
                 IOException()
             )
             else -> Outcome.Success(invalidBlocks)
+        }
+    }
+
+    suspend fun bankConfirmationServices(pagination: PaginationOptions): Outcome<ConfirmationServicesList> {
+        val endpoint = ConfirmationValidatorAPIEndpoints.BANK_CONFIRMATION_SERVICES + pagination.toQuery()
+        val response = networkClient.defaultClient.get<ConfirmationServicesList>(endpoint)
+
+        return when {
+            response.services.isEmpty() -> {
+                val message = ErrorMessages.EMPTY_LIST_MESSAGE
+                Outcome.Error(message, IOException())
+            }
+            else -> Outcome.Success(response)
         }
     }
 

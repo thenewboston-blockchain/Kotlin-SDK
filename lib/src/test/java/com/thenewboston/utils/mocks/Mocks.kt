@@ -21,8 +21,6 @@ import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.*
 import com.thenewboston.data.dto.bankapi.upgradenoticedto.UpgradeNoticeMessage
 import com.thenewboston.data.dto.bankapi.upgradenoticedto.UpgradeNoticeRequest
-import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServices
-import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ConfirmationServicesList
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.Message
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
 import com.thenewboston.data.dto.common.request.ConnectionRequest
@@ -30,6 +28,8 @@ import com.thenewboston.data.dto.common.request.ConnectionRequestMessage
 import com.thenewboston.data.dto.common.request.TrustMessage
 import com.thenewboston.data.dto.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.common.response.*
+import com.thenewboston.data.dto.common.response.ConfirmationServices
+import com.thenewboston.data.dto.common.response.ConfirmationServicesList
 import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.BankBlock
 import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.BankBlockMessageBalance
 import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.BankBlockTx
@@ -428,27 +428,11 @@ object Mocks {
         signature = Some.signature
     )
 
-    fun confirmationServicesList(pagination: PaginationOptions = PaginationOptions(0, 20)) = ConfirmationServicesList(
-        30,
-        null,
-        null,
-        PaginationResult<ConfirmationServices>(pagination.limit, confirmationServices()).toList()
-    )
-
     fun emptyConfirmationServicesList() = ConfirmationServicesList(
         0,
         null,
         null,
         emptyList()
-    )
-
-    private fun confirmationServices() = ConfirmationServices(
-        Some.id,
-        Some.dateTime.toString(),
-        Some.dateTime.toString(),
-        Some.endDate,
-        Some.startDate,
-        Some.signature
     )
 
     fun emptyConfirmationServices() = ConfirmationServices(
@@ -458,6 +442,38 @@ object Mocks {
         "",
         "",
         ""
+    )
+
+    fun validatorConfirmationServicesList(pagination: PaginationOptions = PaginationOptions(0, 20)) = ConfirmationServicesList(
+        30,
+        null,
+        null,
+        PaginationResult<ConfirmationServices>(pagination.limit, validatorConfirmationServices()).toList()
+    )
+
+    private fun validatorConfirmationServices() = ConfirmationServices(
+        Some.id,
+        Some.dateTime.toString(),
+        Some.dateTime.toString(),
+        Some.endDate,
+        Some.startDate,
+        validator = Some.signature
+    )
+
+    fun bankConfirmationServicesList(pagination: PaginationOptions = PaginationOptions(0, 20)) = ConfirmationServicesList(
+        30,
+        null,
+        null,
+        PaginationResult<ConfirmationServices>(pagination.limit, bankConfirmationServices()).toList()
+    )
+
+    private fun bankConfirmationServices() = ConfirmationServices(
+        Some.id,
+        Some.dateTime.toString(),
+        Some.dateTime.toString(),
+        Some.endDate,
+        Some.startDate,
+        bank = Some.signature
     )
 
     fun bankBlock() = BankBlock(

@@ -1,4 +1,4 @@
-package com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto
+package com.thenewboston.data.dto.common.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -28,5 +28,7 @@ data class ConfirmationServices(
     @SerialName("start")
     val start: String,
     @SerialName("validator")
-    val validator: String
+    val validator: String? = null,
+    @SerialName("bank")
+    val bank: String? = null
 )

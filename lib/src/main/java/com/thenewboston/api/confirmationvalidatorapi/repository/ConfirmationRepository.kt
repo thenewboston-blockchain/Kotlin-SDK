@@ -6,11 +6,7 @@ import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.crawl.request.PostCrawlRequest
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
-import com.thenewboston.data.dto.common.response.AccountListValidator
-import com.thenewboston.data.dto.common.response.ConfirmationBlockMessage
-import com.thenewboston.data.dto.common.response.ConfirmationBlocks
-import com.thenewboston.data.dto.common.response.ValidatorDetails
-import com.thenewboston.data.dto.common.response.ValidatorList
+import com.thenewboston.data.dto.common.response.*
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
 import com.thenewboston.utils.PaginationOptions
@@ -29,6 +25,9 @@ class ConfirmationRepository @Inject constructor(private val dataSource: Confirm
 
     suspend fun banksFromValidator(offset: Int, limit: Int): Outcome<BankFromValidatorList> =
         dataSource.fetchBanksFromValidator(PaginationOptions(offset, limit))
+
+    suspend fun bankConfirmationServices(offset: Int, limit: Int): Outcome<ConfirmationServicesList> =
+        dataSource.fetchBankConfirmationServices(PaginationOptions(offset, limit))
 
     suspend fun validators(offset: Int, limit: Int): Outcome<ValidatorList> =
         dataSource.fetchValidators(PaginationOptions(offset, limit))

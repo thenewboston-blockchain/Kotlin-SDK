@@ -37,13 +37,13 @@ class ConfirmationDataSourceTest {
     lateinit var postDataSource: PostDataSource
 
     @MockK
-    lateinit var confirmationDataSource: ConfirmationDataSource
+    lateinit var dataSource: ConfirmationDataSource
 
     @BeforeAll
     fun setup() {
         MockKAnnotations.init(this)
 
-        confirmationDataSource = ConfirmationDataSource(getDataSource, postDataSource)
+        dataSource = ConfirmationDataSource(getDataSource, postDataSource)
     }
 
     @Nested
@@ -65,7 +65,7 @@ class ConfirmationDataSourceTest {
                     getDataSource.validatorDetails()
                 } returns Outcome.Success(Mocks.validatorDetails("CONFIRMATION_VALIDATOR"))
 
-                val response = confirmationDataSource.fetchValidatorDetails()
+                val response = dataSource.fetchValidatorDetails()
 
                 check(response is Outcome.Success)
                 response.value.nodeType shouldBe "CONFIRMATION_VALIDATOR"
@@ -78,7 +78,7 @@ class ConfirmationDataSourceTest {
                 val value = Mocks.accountsFromValidator(paginationTwenty)
                 coEvery { getDataSource.accountsFromValidator(paginationTwenty) } returns Outcome.Success(value)
 
-                val response = confirmationDataSource.fetchAccounts(paginationTwenty)
+                val response = dataSource.fetchAccounts(paginationTwenty)
 
                 check(response is Outcome.Success)
                 response.value.results.shouldNotBeEmpty()
@@ -91,7 +91,7 @@ class ConfirmationDataSourceTest {
                 val value = Mocks.accountsFromValidator(paginationThirty)
 
                 coEvery { getDataSource.accountsFromValidator(paginationThirty) } returns Outcome.Success(value)
-                val response = confirmationDataSource.fetchAccounts(paginationThirty)
+                val response = dataSource.fetchAccounts(paginationThirty)
 
                 check(response is Outcome.Success)
                 response.value.results.shouldNotBeEmpty()
@@ -117,7 +117,7 @@ class ConfirmationDataSourceTest {
                 val value = Mocks.banksFromValidator(paginationTwenty)
                 coEvery { getDataSource.banksFromValidator(paginationTwenty) } returns Outcome.Success(value)
 
-                val response = confirmationDataSource.fetchBanksFromValidator(paginationTwenty)
+                val response = dataSource.fetchBanksFromValidator(paginationTwenty)
 
                 check(response is Outcome.Success)
                 response.value.banks.shouldNotBeEmpty()
@@ -130,7 +130,7 @@ class ConfirmationDataSourceTest {
                 val value = Mocks.banksFromValidator(paginationThirty)
                 coEvery { getDataSource.banksFromValidator(paginationThirty) } returns Outcome.Success(value)
 
-                val response = confirmationDataSource.fetchBanksFromValidator(paginationThirty)
+                val response = dataSource.fetchBanksFromValidator(paginationThirty)
 
                 check(response is Outcome.Success)
                 response.value.banks.shouldNotBeEmpty()
@@ -143,7 +143,7 @@ class ConfirmationDataSourceTest {
                 val value = Mocks.validators(paginationTwenty)
 
                 coEvery { getDataSource.validators(paginationTwenty) } returns Outcome.Success(value)
-                val response = confirmationDataSource.fetchValidators(paginationTwenty)
+                val response = dataSource.fetchValidators(paginationTwenty)
 
                 check(response is Outcome.Success)
                 response.value.results.shouldNotBeEmpty()
@@ -156,7 +156,7 @@ class ConfirmationDataSourceTest {
                 val value = Mocks.validators(paginationThirty)
                 coEvery { getDataSource.validators(paginationThirty) } returns Outcome.Success(value)
 
-                val response = confirmationDataSource.fetchValidators(paginationThirty)
+                val response = dataSource.fetchValidators(paginationThirty)
 
                 check(response is Outcome.Success)
                 response.value.results.shouldNotBeEmpty()
@@ -171,7 +171,7 @@ class ConfirmationDataSourceTest {
 
                 coEvery { getDataSource.validator(nodeIdentifier) } returns Outcome.Success(Mocks.validator())
 
-                val response = confirmationDataSource.fetchValidator(nodeIdentifier)
+                val response = dataSource.fetchValidator(nodeIdentifier)
 
                 check(response is Outcome.Success)
                 response.value.nodeIdentifier should contain(nodeIdentifier)
@@ -179,10 +179,35 @@ class ConfirmationDataSourceTest {
             }
 
             @Test
+            fun `test fetch list of 20 bank confirmation services successfully`() = runBlockingTest {
+                val value = Mocks.bankConfirmationServicesList(paginationTwenty)
+                coEvery { getDataSource.bankConfirmationServices(paginationTwenty) } returns Outcome.Success(value)
+
+                val response = dataSource.fetchBankConfirmationServices(paginationTwenty)
+
+                check(response is Outcome.Success)
+                response.value.services.shouldNotBeEmpty()
+                response.value.count shouldBeGreaterThan 20
+                response.value.services.size shouldBeLessThanOrEqual 20
+            }
+
+            @Test
+            fun `test fetch list of 30 bank confirmation services successfully`() = runBlockingTest {
+                coEvery { getDataSource.bankConfirmationServices(paginationThirty) } returns Outcome.Success(Mocks.bankConfirmationServicesList(paginationThirty))
+
+                val response = dataSource.fetchBankConfirmationServices(paginationThirty)
+
+                check(response is Outcome.Success)
+                response.value.services.shouldNotBeEmpty()
+                response.value.count shouldBeGreaterThan 0
+                response.value.services.size shouldBeLessThanOrEqual 30
+            }
+
+            @Test
             fun `should fetch clean successfully`() = runBlockingTest {
                 coEvery { getDataSource.clean() } returns Outcome.Success(Mocks.cleanSuccess())
 
-                val response = confirmationDataSource.fetchClean()
+                val response = dataSource.fetchClean()
 
                 check(response is Outcome.Success)
                 response.value.cleanStatus.shouldNotBeEmpty()
@@ -196,7 +221,7 @@ class ConfirmationDataSourceTest {
                     getDataSource.validConfirmationBlocks(blockIdentifier)
                 } returns Outcome.Success(Mocks.confirmationBlocks())
 
-                val response = confirmationDataSource.fetchValidConfirmationBlocks(blockIdentifier)
+                val response = dataSource.fetchValidConfirmationBlocks(blockIdentifier)
 
                 check(response is Outcome.Success)
                 response.value.message.blockIdentifier shouldBe blockIdentifier
@@ -210,7 +235,7 @@ class ConfirmationDataSourceTest {
                     getDataSource.queuedConfirmationBlocks(blockIdentifier)
                 } returns Outcome.Success(Mocks.confirmationBlocks())
 
-                val response = confirmationDataSource.fetchQueuedConfirmationBlocks(blockIdentifier)
+                val response = dataSource.fetchQueuedConfirmationBlocks(blockIdentifier)
 
                 check(response is Outcome.Success)
                 response.value.message.blockIdentifier shouldBe blockIdentifier
@@ -220,7 +245,7 @@ class ConfirmationDataSourceTest {
             fun `should fetch crawl successfully`() = runBlockingTest {
                 coEvery { getDataSource.crawl() } returns Outcome.Success(Mocks.crawlSuccess())
 
-                val response = confirmationDataSource.fetchCrawl()
+                val response = dataSource.fetchCrawl()
 
                 check(response is Outcome.Success)
                 response.value.crawlStatus.shouldNotBeEmpty()
@@ -240,7 +265,7 @@ class ConfirmationDataSourceTest {
                 coEvery { postDataSource.doSendClean(request) } returns Outcome.Success(value)
 
                 // when
-                val response = confirmationDataSource.sendClean(request)
+                val response = dataSource.sendClean(request)
 
                 // then
                 check(response is Outcome.Success)
@@ -256,7 +281,7 @@ class ConfirmationDataSourceTest {
                     postDataSource.doSendConfirmationBlocks(request)
                 } returns Outcome.Success(Mocks.confirmationBlockMessage())
 
-                val response = confirmationDataSource.sendConfirmationBlocks(request)
+                val response = dataSource.sendConfirmationBlocks(request)
 
                 check(response is Outcome.Success)
                 response.value.blockIdentifier shouldBe Some.blockIdentifier
@@ -271,7 +296,7 @@ class ConfirmationDataSourceTest {
                 coEvery { postDataSource.doSendCrawl(request) } returns Outcome.Success(value)
 
                 // when
-                val response = confirmationDataSource.sendCrawl(request)
+                val response = dataSource.sendCrawl(request)
 
                 // then
                 check(response is Outcome.Success)
@@ -299,7 +324,7 @@ class ConfirmationDataSourceTest {
                 val message = "Failed to retrieve confirmation validator details"
                 coEvery { getDataSource.validatorDetails() } returns Outcome.Error(message, IOException())
 
-                val response = confirmationDataSource.fetchValidatorDetails()
+                val response = dataSource.fetchValidatorDetails()
 
                 check(response is Outcome.Error)
                 response.cause should beInstanceOf<IOException>()
@@ -315,7 +340,7 @@ class ConfirmationDataSourceTest {
                         IOException()
                     )
 
-                    val response = confirmationDataSource.fetchAccounts(pagination)
+                    val response = dataSource.fetchAccounts(pagination)
 
                     check(response is Outcome.Error)
                     response.cause should beInstanceOf<IOException>()
@@ -332,7 +357,7 @@ class ConfirmationDataSourceTest {
                     IOException()
                 )
 
-                val response = confirmationDataSource.fetchBankFromValidator(nodeIdentifier)
+                val response = dataSource.fetchBankFromValidator(nodeIdentifier)
 
                 check(response is Outcome.Error)
                 response.cause should beInstanceOf<IOException>()
@@ -343,8 +368,22 @@ class ConfirmationDataSourceTest {
             fun `should return error outcome for banks IOException`() = runBlockingTest {
                 val message = "Failed to retrieve banks from validator"
                 coEvery { getDataSource.banksFromValidator(pagination) } returns Outcome.Error(message, IOException())
-                val response = confirmationDataSource.fetchBanksFromValidator(pagination)
+                val response = dataSource.fetchBanksFromValidator(pagination)
 
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.message shouldBe message
+            }
+
+            @Test
+            fun `should return error outcome for bank confirmation services`() = runBlockingTest {
+                val message = "An error occurred while fetching bank confirmation services"
+                coEvery { getDataSource.bankConfirmationServices(pagination) } returns Outcome.Error(message, IOException())
+
+                // when
+                val response = dataSource.fetchBankConfirmationServices(pagination)
+
+                // then
                 check(response is Outcome.Error)
                 response.cause should beInstanceOf<IOException>()
                 response.message shouldBe message
@@ -357,7 +396,7 @@ class ConfirmationDataSourceTest {
                     getDataSource.validators(pagination)
                 } returns Outcome.Error(message, IOException())
 
-                val response = confirmationDataSource.fetchValidators(pagination)
+                val response = dataSource.fetchValidators(pagination)
 
                 check(response is Outcome.Error)
                 response.cause should beInstanceOf<IOException>()
@@ -373,7 +412,7 @@ class ConfirmationDataSourceTest {
                     getDataSource.validator(nodeIdentifier)
                 } returns Outcome.Error(message, IOException())
 
-                val response = confirmationDataSource.fetchValidator(nodeIdentifier)
+                val response = dataSource.fetchValidator(nodeIdentifier)
 
                 check(response is Outcome.Error)
                 response.cause should beInstanceOf<IOException>()
@@ -386,7 +425,7 @@ class ConfirmationDataSourceTest {
                 coEvery { getDataSource.clean() } returns Outcome.Error(message, IOException())
 
                 // when
-                val response = confirmationDataSource.fetchClean()
+                val response = dataSource.fetchClean()
 
                 // then
                 check(response is Outcome.Error)
@@ -399,7 +438,7 @@ class ConfirmationDataSourceTest {
                 val message = "An error occurred while sending crawl request"
                 coEvery { getDataSource.crawl() } returns Outcome.Error(message, IOException())
                 // when
-                val response = confirmationDataSource.fetchCrawl()
+                val response = dataSource.fetchCrawl()
 
                 // then
                 check(response is Outcome.Error)
@@ -416,7 +455,7 @@ class ConfirmationDataSourceTest {
                     getDataSource.validConfirmationBlocks(blockIdentifier)
                 } returns Outcome.Error(message, IOException())
 
-                val response = confirmationDataSource.fetchValidConfirmationBlocks(blockIdentifier)
+                val response = dataSource.fetchValidConfirmationBlocks(blockIdentifier)
 
                 check(response is Outcome.Error)
                 response.cause should beInstanceOf<IOException>()
@@ -432,7 +471,7 @@ class ConfirmationDataSourceTest {
                     getDataSource.queuedConfirmationBlocks(blockIdentifier)
                 } returns Outcome.Error(message, IOException())
 
-                val response = confirmationDataSource.fetchQueuedConfirmationBlocks(blockIdentifier)
+                val response = dataSource.fetchQueuedConfirmationBlocks(blockIdentifier)
 
                 check(response is Outcome.Error)
                 response.cause should beInstanceOf<IOException>()
@@ -453,7 +492,7 @@ class ConfirmationDataSourceTest {
                 coEvery { postDataSource.doSendClean(request) } returns Outcome.Error(message, IOException())
 
                 // when
-                val response = confirmationDataSource.sendClean(request)
+                val response = dataSource.sendClean(request)
 
                 // then
                 check(response is Outcome.Error)
@@ -469,7 +508,7 @@ class ConfirmationDataSourceTest {
                 coEvery { postDataSource.doSendCrawl(request) } returns Outcome.Error(message, IOException())
 
                 // when
-                val response = confirmationDataSource.sendCrawl(request)
+                val response = dataSource.sendCrawl(request)
 
                 // then
                 check(response is Outcome.Error)
@@ -485,7 +524,7 @@ class ConfirmationDataSourceTest {
                     postDataSource.doSendConfirmationBlocks(request)
                 } returns Outcome.Error(message, IOException())
 
-                val response = confirmationDataSource.sendConfirmationBlocks(request)
+                val response = dataSource.sendConfirmationBlocks(request)
 
                 check(response is Outcome.Error)
                 response.cause should beInstanceOf<IOException>()
