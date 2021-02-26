@@ -5,7 +5,7 @@ import com.thenewboston.common.http.Outcome
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.common.response.*
-import com.thenewboston.data.dto.confirmationvalidatorapi.bankconfirmationservicesdto.BankConfirmationServicesList
+import com.thenewboston.data.dto.common.response.ConfirmationServicesList
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
 import com.thenewboston.utils.Mocks
@@ -132,7 +132,7 @@ class ConfirmationRepositoryTest {
         val result = repository.bankConfirmationServices(0, 20)
 
         coVerify { dataSource.fetchBankConfirmationServices(pagination) }
-        result should beInstanceOf<Outcome.Success<BankConfirmationServicesList>>()
+        result should beInstanceOf<Outcome.Success<ConfirmationServicesList>>()
     }
 
     @Test

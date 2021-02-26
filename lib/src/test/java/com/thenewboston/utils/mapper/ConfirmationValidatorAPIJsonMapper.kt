@@ -22,7 +22,7 @@ object ConfirmationValidatorAPIJsonMapper {
     }
 
     fun mapEmptyBankConfirmationServicesToJson(): String {
-        return Json.encodeToString(Mocks.emptyBankConfirmationServicesList())
+        return Json.encodeToString(Mocks.emptyConfirmationServicesList())
     }
 
     fun mapInternalServerErrorToJson(): String = Json.encodeToString(Mocks.internalServerError())

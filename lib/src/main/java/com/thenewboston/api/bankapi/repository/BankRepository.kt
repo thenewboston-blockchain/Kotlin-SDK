@@ -21,7 +21,7 @@ import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.PostInvalidBlockRequest
 import com.thenewboston.data.dto.bankapi.upgradenoticedto.UpgradeNoticeRequest
-import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ValidatorConfirmationServicesList
+import com.thenewboston.data.dto.common.response.ConfirmationServicesList
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
 import com.thenewboston.data.dto.common.response.ValidatorList
 import com.thenewboston.utils.PaginationOptions
@@ -63,7 +63,7 @@ class BankRepository @Inject constructor(private val dataSource: BankDataSource)
 
     suspend fun sendBlock(request: PostBlockRequest): Outcome<Block> = dataSource.sendBlock(request)
 
-    suspend fun validatorConfirmationServices(offset: Int, limit: Int): Outcome<ValidatorConfirmationServicesList> =
+    suspend fun validatorConfirmationServices(offset: Int, limit: Int): Outcome<ConfirmationServicesList> =
         dataSource.fetchValidatorConfirmationServices(PaginationOptions(offset, limit))
 
     suspend fun sendValidatorConfirmationServices(request: PostConfirmationServicesRequest) =

@@ -12,8 +12,8 @@ import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
-import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ValidatorConfirmationServices
-import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.ValidatorConfirmationServicesList
+import com.thenewboston.data.dto.common.response.ConfirmationServices
+import com.thenewboston.data.dto.common.response.ConfirmationServicesList
 import com.thenewboston.data.dto.common.response.Bank
 import com.thenewboston.data.dto.common.response.ValidatorList
 import com.thenewboston.utils.Mocks
@@ -362,7 +362,7 @@ class BankRepositoryTest {
 
         // then
         coVerify { bankDataSource.fetchValidatorConfirmationServices(pagination) }
-        result should beInstanceOf<Outcome.Success<ValidatorConfirmationServicesList>>()
+        result should beInstanceOf<Outcome.Success<ConfirmationServicesList>>()
     }
 
     @Test
@@ -394,7 +394,7 @@ class BankRepositoryTest {
 
         // then
         coVerify { bankDataSource.sendValidatorConfirmationServices(request) }
-        result should beInstanceOf<Outcome.Success<ValidatorConfirmationServices>>()
+        result should beInstanceOf<Outcome.Success<ConfirmationServices>>()
     }
 
     @Test

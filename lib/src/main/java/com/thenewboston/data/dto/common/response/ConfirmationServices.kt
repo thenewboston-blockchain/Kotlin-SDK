@@ -1,10 +1,10 @@
-package com.thenewboston.data.dto.confirmationvalidatorapi.bankconfirmationservicesdto
+package com.thenewboston.data.dto.common.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class BankConfirmationServicesList(
+data class ConfirmationServicesList(
     @SerialName("count")
     val count: Int,
     @SerialName("next")
@@ -12,11 +12,11 @@ data class BankConfirmationServicesList(
     @SerialName("previous")
     val previous: String? = null,
     @SerialName("results")
-    val services: List<BankConfirmationServices>
+    val services: List<ConfirmationServices>
 )
 
 @Serializable
-data class BankConfirmationServices(
+data class ConfirmationServices(
     @SerialName("id")
     val id: String,
     @SerialName("created_date")
@@ -28,5 +28,7 @@ data class BankConfirmationServices(
     @SerialName("start")
     val start: String,
     @SerialName("validator")
-    val bank: String
+    val validator: String? = null,
+    @SerialName("bank")
+    val bank: String? = null
 )
