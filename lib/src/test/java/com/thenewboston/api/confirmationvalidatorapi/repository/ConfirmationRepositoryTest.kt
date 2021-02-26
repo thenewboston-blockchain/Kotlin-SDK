@@ -363,4 +363,32 @@ class ConfirmationRepositoryTest {
         coVerify { dataSource.sendCrawl(request) }
         result should beInstanceOf<Outcome.Error>()
     }
+
+    @Test
+    fun `verify connection request is success outcome`() = runBlockingTest {
+        val connectionRequest = Mocks.connectionRequest()
+        coEvery {
+            dataSource.sendConnectionRequests(connectionRequest)
+        } returns Outcome.Success("Successfully sent connection requests")
+
+        val result = repository.sendConnectionRequests(connectionRequest)
+
+        coVerify { dataSource.sendConnectionRequests(connectionRequest) }
+        result should beInstanceOf<Outcome.Success<String>>()
+    }
+
+    @Test
+    fun `verify connection request is error outcome`() = runBlockingTest {
+        val connectionRequest = Mocks.connectionRequest()
+        val message = "Could not send connection request"
+
+        coEvery {
+            dataSource.sendConnectionRequests(connectionRequest)
+        } returns Outcome.Error(message, IOException())
+
+        val result = repository.sendConnectionRequests(connectionRequest)
+
+        coVerify { dataSource.sendConnectionRequests(connectionRequest) }
+        result should beInstanceOf<Outcome.Error>()
+    }
 }

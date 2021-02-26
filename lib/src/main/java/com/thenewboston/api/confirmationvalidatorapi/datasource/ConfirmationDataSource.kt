@@ -8,6 +8,7 @@ import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.crawl.request.PostCrawlRequest
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
+import com.thenewboston.data.dto.common.request.ConnectionRequest
 import com.thenewboston.data.dto.common.response.ConfirmationBlockMessage
 import com.thenewboston.data.dto.common.response.ConfirmationBlocks
 import com.thenewboston.data.dto.common.response.Validator
@@ -90,5 +91,10 @@ class ConfirmationDataSource @Inject constructor(
     suspend fun sendCrawl(request: PostCrawlRequest): Outcome<Crawl> = makeApiCall(
         call = { postDataSource.doSendCrawl(request) },
         errorMessage = "An error occurred while sending the crawl request"
+    )
+
+    suspend fun sendConnectionRequests(request: ConnectionRequest): Outcome<String> = makeApiCall(
+        call = { postDataSource.doSendConnectionRequests(request) },
+        errorMessage = "Could not send connection request"
     )
 }
