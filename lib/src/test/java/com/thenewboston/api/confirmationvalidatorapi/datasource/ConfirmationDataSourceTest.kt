@@ -303,6 +303,19 @@ class ConfirmationDataSourceTest {
                 response.value.crawlStatus shouldNot beEmpty()
                 response.value.crawlStatus shouldBe request.data.crawl
             }
+
+            @Test
+            fun `should send connection request successfully`() = runBlockingTest {
+                val request = Mocks.connectionRequest()
+                val message = "Successfully sent connection requests"
+
+                coEvery { postDataSource.doSendConnectionRequests(request) } returns Outcome.Success(message)
+
+                val response = dataSource.sendConnectionRequests(request)
+
+                check(response is Outcome.Success)
+                response.value shouldBe message
+            }
         }
     }
 
@@ -525,6 +538,22 @@ class ConfirmationDataSourceTest {
                 } returns Outcome.Error(message, IOException())
 
                 val response = dataSource.sendConfirmationBlocks(request)
+
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.message shouldBe message
+            }
+
+            @Test
+            fun `should return error outcome for connection requests`() = runBlockingTest {
+                val message = "Could not send connection request"
+                val request = Mocks.connectionRequest()
+
+                coEvery {
+                    postDataSource.doSendConnectionRequests(request)
+                } returns Outcome.Error(message, IOException())
+
+                val response = postDataSource.doSendConnectionRequests(request)
 
                 check(response is Outcome.Error)
                 response.cause should beInstanceOf<IOException>()
