@@ -72,6 +72,11 @@ class ConfirmationValidatorApiMockEngine {
                         ConfirmationValidatorAPIJsonMapper.mapConfirmationBlockResponseToJson()
                     sendResponse(content, errorContent, "", sendOnlyErrorResponses, sendInvalidResponses)
                 }
+                request.url.encodedPath.startsWith(ConfirmationValidatorAPIJsonMapper.PRIMARY_VALIDATOR_UPDATED_ENDPOINT) -> {
+                    val content = "Successfully sent primary validator updated"
+                    val invalidContent = ""
+                    sendResponse(content, errorContent, invalidContent, sendOnlyErrorResponses, sendInvalidResponses)
+                }
                 else -> {
                     error("Unhandled ${request.url.encodedPath}")
                 }
