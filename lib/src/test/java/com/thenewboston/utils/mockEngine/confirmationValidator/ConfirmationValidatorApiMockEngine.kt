@@ -73,7 +73,7 @@ class ConfirmationValidatorApiMockEngine {
                     sendResponse(content, errorContent, "", sendOnlyErrorResponses, sendInvalidResponses)
                 }
                 request.url.encodedPath.startsWith(ConfirmationValidatorAPIJsonMapper.PRIMARY_VALIDATOR_UPDATED_ENDPOINT) -> {
-                    val content = "Successfully sent primary validator updated"
+                    val content = "Successfully updated primary validator"
                     val invalidContent = ""
                     sendResponse(content, errorContent, invalidContent, sendOnlyErrorResponses, sendInvalidResponses)
                 }

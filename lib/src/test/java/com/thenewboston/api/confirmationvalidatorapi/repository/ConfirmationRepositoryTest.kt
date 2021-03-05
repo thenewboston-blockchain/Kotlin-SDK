@@ -393,11 +393,11 @@ class ConfirmationRepositoryTest {
     }
 
     @Test
-    fun `verify primary validator updated is success outcome`() = runBlockingTest {
+    fun `verify primary validator is updated outcome`() = runBlockingTest {
         val connectionRequest = Mocks.connectionRequest()
         coEvery {
             dataSource.sendPrimaryValidatorUpdated(connectionRequest)
-        } returns Outcome.Success("Successfully sent primary validator updated")
+        } returns Outcome.Success("Successfully updated primary validator")
 
         val result = repository.sendPrimaryValidatorUpdated(connectionRequest)
 
@@ -406,9 +406,9 @@ class ConfirmationRepositoryTest {
     }
 
     @Test
-    fun `verify primary validator updated is error outcome`() = runBlockingTest {
+    fun `verify primary validator did not update`() = runBlockingTest {
         val connectionRequest = Mocks.connectionRequest()
-        val message = "Could not send primary validator updated"
+        val message = "Could not update primary validator"
 
         coEvery {
             dataSource.sendPrimaryValidatorUpdated(connectionRequest)

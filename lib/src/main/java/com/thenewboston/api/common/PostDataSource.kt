@@ -100,7 +100,7 @@ class PostDataSource @Inject constructor(private val networkClient: NetworkClien
             body = request
         }
 
-        return Outcome.Success("Successfully sent primary validator updated")
+        return Outcome.Success("Successfully updated primary validator")
     }
 
     suspend fun doSendCrawl(request: PostCrawlRequest): Outcome<Crawl> {

@@ -318,9 +318,9 @@ class ConfirmationDataSourceTest {
             }
 
             @Test
-            fun `should send primary validator updated`() = runBlockingTest {
+            fun `should send updated primary validator notice`() = runBlockingTest {
                 val request = Mocks.connectionRequest()
-                val message = "Successfully sent primary validator updated"
+                val message = "Successfully updated primary validator"
 
                 coEvery { postDataSource.doSendPrimaryValidatorUpdated(request) } returns Outcome.Success(message)
 
@@ -574,8 +574,8 @@ class ConfirmationDataSourceTest {
             }
 
             @Test
-            fun `should return error outcome for primary validator updated`() = runBlockingTest {
-                val message = "Could not send primary validator updated"
+            fun `should return error outcome for updated primary validator`() = runBlockingTest {
+                val message = "Could update primary validator"
                 val request = Mocks.connectionRequest()
 
                 coEvery {
