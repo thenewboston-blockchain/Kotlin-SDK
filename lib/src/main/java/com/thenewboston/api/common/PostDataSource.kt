@@ -94,6 +94,15 @@ class PostDataSource @Inject constructor(private val networkClient: NetworkClien
         return Outcome.Success("Successfully sent connection requests")
     }
 
+    suspend fun doSendPrimaryValidatorUpdated(request: ConnectionRequest): Outcome<String> {
+        networkClient.defaultClient.post<HttpResponse> {
+            url(ConfirmationValidatorAPIEndpoints.PRIMARY_VALIDATOR_UPDATED)
+            body = request
+        }
+
+        return Outcome.Success("Successfully updated primary validator")
+    }
+
     suspend fun doSendCrawl(request: PostCrawlRequest): Outcome<Crawl> {
         val response = networkClient.defaultClient.post<Crawl> {
             url(BankAPIEndpoints.CRAWL_ENDPOINT)

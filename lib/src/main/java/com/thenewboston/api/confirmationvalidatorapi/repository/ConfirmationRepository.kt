@@ -53,4 +53,7 @@ class ConfirmationRepository @Inject constructor(private val dataSource: Confirm
     suspend fun sendCrawl(request: PostCrawlRequest): Outcome<Crawl> = dataSource.sendCrawl(request)
 
     suspend fun sendConnectionRequests(request: ConnectionRequest) = dataSource.sendConnectionRequests(request)
+
+    suspend fun sendPrimaryValidatorUpdated(request: ConnectionRequest) =
+        dataSource.sendPrimaryValidatorUpdated(request)
 }

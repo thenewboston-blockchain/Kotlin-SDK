@@ -316,6 +316,19 @@ class ConfirmationDataSourceTest {
                 check(response is Outcome.Success)
                 response.value shouldBe message
             }
+
+            @Test
+            fun `should send updated primary validator notice`() = runBlockingTest {
+                val request = Mocks.connectionRequest()
+                val message = "Successfully updated primary validator"
+
+                coEvery { postDataSource.doSendPrimaryValidatorUpdated(request) } returns Outcome.Success(message)
+
+                val response = dataSource.sendPrimaryValidatorUpdated(request)
+
+                check(response is Outcome.Success)
+                response.value shouldBe message
+            }
         }
     }
 
@@ -554,6 +567,22 @@ class ConfirmationDataSourceTest {
                 } returns Outcome.Error(message, IOException())
 
                 val response = postDataSource.doSendConnectionRequests(request)
+
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.message shouldBe message
+            }
+
+            @Test
+            fun `should return error outcome for updated primary validator`() = runBlockingTest {
+                val message = "Could update primary validator"
+                val request = Mocks.connectionRequest()
+
+                coEvery {
+                    postDataSource.doSendPrimaryValidatorUpdated(request)
+                } returns Outcome.Error(message, IOException())
+
+                val response = postDataSource.doSendPrimaryValidatorUpdated(request)
 
                 check(response is Outcome.Error)
                 response.cause should beInstanceOf<IOException>()

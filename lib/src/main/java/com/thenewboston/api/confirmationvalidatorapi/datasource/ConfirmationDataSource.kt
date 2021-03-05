@@ -97,4 +97,9 @@ class ConfirmationDataSource @Inject constructor(
         call = { postDataSource.doSendConnectionRequests(request) },
         errorMessage = "Could not send connection request"
     )
+
+    suspend fun sendPrimaryValidatorUpdated(request: ConnectionRequest): Outcome<String> = makeApiCall(
+        call = { postDataSource.doSendPrimaryValidatorUpdated(request) },
+        errorMessage = "Could not send primary validator update notice"
+    )
 }

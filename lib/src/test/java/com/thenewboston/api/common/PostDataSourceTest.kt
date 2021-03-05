@@ -227,6 +227,17 @@ class PostDataSourceTest {
             response.value.blockIdentifier shouldBe Some.blockIdentifier
             response.value.block.message.balanceKey shouldBe Some.balanceKey
         }
+
+        @Test
+        fun `should update primary validator successfully`() = runBlockingTest {
+            val request = Mocks.connectionRequest()
+
+            val response = postDataSource.doSendPrimaryValidatorUpdated(request)
+
+            check(response is Outcome.Success)
+            response.value shouldNot beEmpty()
+            response.value shouldBe "Successfully updated primary validator"
+        }
     }
 
     @Nested

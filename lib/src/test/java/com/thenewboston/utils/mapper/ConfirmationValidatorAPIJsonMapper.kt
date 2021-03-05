@@ -13,6 +13,8 @@ object ConfirmationValidatorAPIJsonMapper {
 
     const val CONFIRMATION_BLOCKS = "confirmation_blocks"
 
+    const val PRIMARY_VALIDATOR_UPDATED_ENDPOINT = "primary_validator_updated"
+
     const val VALID_CONFIRMATION_BLOCKS_ENDPOINT = CONFIRMATION_BLOCKS.plus("/${Some.blockIdentifier}/valid")
 
     const val QUEUED_CONFIRMATION_BLOCKS_ENDPOINT = CONFIRMATION_BLOCKS.plus("/${Some.blockIdentifier}/queued")
