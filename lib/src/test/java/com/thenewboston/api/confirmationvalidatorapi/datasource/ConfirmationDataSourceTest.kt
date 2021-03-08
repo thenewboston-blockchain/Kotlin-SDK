@@ -322,12 +322,31 @@ class ConfirmationDataSourceTest {
                 val request = Mocks.connectionRequest()
                 val message = "Successfully updated primary validator"
 
-                coEvery { postDataSource.doSendPrimaryValidatorUpdated(request) } returns Outcome.Success(message)
+                coEvery {
+                    postDataSource.doSendPrimaryValidatorUpdated(request)
+                } returns Outcome.Success(message)
 
                 val response = dataSource.sendPrimaryValidatorUpdated(request)
 
                 check(response is Outcome.Success)
                 response.value shouldBe message
+            }
+
+            @Test
+            fun `should send upgrade request`() = runBlockingTest {
+                val request = Mocks.upgradeRequest()
+                coEvery {
+                    postDataSource.doSendUpgradeRequest(request)
+                } returns Outcome.Success(Mocks.validatorDetails("PRIMARY_VALIDATOR"))
+
+                val response = dataSource.sendUpgradeRequest(request)
+                val rootAccountFile = "http://20.188.33.93/media/root_account_file.json"
+
+                check(response is Outcome.Success)
+                response.value.nodeType shouldBe "PRIMARY_VALIDATOR"
+                response.value.nodeIdentifier shouldBe Some.nodeIdentifier
+                response.value.rootAccountFile shouldBe rootAccountFile
+                response.value.ipAddress shouldBe "172.19.0.13"
             }
         }
     }
@@ -575,7 +594,7 @@ class ConfirmationDataSourceTest {
 
             @Test
             fun `should return error outcome for updated primary validator`() = runBlockingTest {
-                val message = "Could update primary validator"
+                val message = "Could not update primary validator"
                 val request = Mocks.connectionRequest()
 
                 coEvery {
@@ -583,6 +602,22 @@ class ConfirmationDataSourceTest {
                 } returns Outcome.Error(message, IOException())
 
                 val response = postDataSource.doSendPrimaryValidatorUpdated(request)
+
+                check(response is Outcome.Error)
+                response.cause should beInstanceOf<IOException>()
+                response.message shouldBe message
+            }
+
+            @Test
+            fun `should return error outcome when sending upgrade requests`() = runBlockingTest {
+                val message = "Could not send upgrade request"
+                val request = Mocks.upgradeRequest()
+
+                coEvery {
+                    postDataSource.doSendUpgradeRequest(request)
+                } returns Outcome.Error(message, IOException())
+
+                val response = postDataSource.doSendUpgradeRequest(request)
 
                 check(response is Outcome.Error)
                 response.cause should beInstanceOf<IOException>()

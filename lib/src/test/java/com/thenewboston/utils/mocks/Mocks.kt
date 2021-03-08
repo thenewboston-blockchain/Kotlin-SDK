@@ -30,6 +30,8 @@ import com.thenewboston.data.dto.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.common.response.*
 import com.thenewboston.data.dto.common.response.ConfirmationServices
 import com.thenewboston.data.dto.common.response.ConfirmationServicesList
+import com.thenewboston.data.dto.confirmationvalidatorapi.upgraderequestdto.UpgradeRequest
+import com.thenewboston.data.dto.confirmationvalidatorapi.upgraderequestdto.UpgradeRequestMessage
 import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.BankBlock
 import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.BankBlockMessageBalance
 import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.BankBlockTx
@@ -519,11 +521,19 @@ object Mocks {
     )
 
     fun upgradeNoticeRequest() = UpgradeNoticeRequest(
-        Some.nodeIdentifier,
+        Some.otherNodeIdentifier,
         Some.signature,
         UpgradeNoticeMessage(
-            Some.bankNodeIdentifier
+            Some.nodeIdentifier
         )
+    )
+
+    fun upgradeRequest() = UpgradeRequest(
+        UpgradeRequestMessage(
+            Some.otherNodeIdentifier
+        ),
+        Some.nodeIdentifier,
+        Some.signature,
     )
 
     fun cleanSuccess() = Clean(
@@ -640,7 +650,7 @@ object Some {
     val dateTime = LocalDateTime.parse("2020-11-19T19:57:31.799872")
     const val startDate = "2020-11-29T07:54:16.233806Z"
     const val endDate = "2020-12-15T07:54:16.233806Z"
-    const val bankNodeIdentifier = "d5356888dc9303e44ce52b1e06c3165a7759b9df1e6a6dfbd33ee1c3df1ab4d1"
+    const val otherNodeIdentifier = "d5356888dc9303e44ce52b1e06c3165a7759b9df1e6a6dfbd33ee1c3df1ab4d1"
     const val ipAddress = "172.19.0.13"
     const val port = 8080
     const val protocol = "http"

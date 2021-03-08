@@ -6,6 +6,8 @@ object ConfirmationValidatorAPIEndpoints {
 
     const val BANK_CONFIRMATION_SERVICES = "/bank_confirmation_services"
 
+    const val UPGRADE_REQUEST = "/upgrade_request"
+
     const val PRIMARY_VALIDATOR_UPDATED = "/primary_validator_updated"
 
     fun validConfirmationBlocksEndpoint(blockID: String) =

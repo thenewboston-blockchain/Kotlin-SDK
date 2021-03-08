@@ -77,6 +77,11 @@ class ConfirmationValidatorApiMockEngine {
                     val invalidContent = ""
                     sendResponse(content, errorContent, invalidContent, sendOnlyErrorResponses, sendInvalidResponses)
                 }
+                request.url.encodedPath.startsWith(ConfirmationValidatorAPIJsonMapper.UPGRADE_REQUEST_ENDPOINT) -> {
+                    val content = ConfirmationValidatorAPIJsonMapper.mapPrimaryValidatorValidatorDetailsToJson()
+                    val invalidContent = ConfirmationValidatorAPIJsonMapper.mapEmptyValidatorDetailsToJson()
+                    sendResponse(content, errorContent, invalidContent, sendOnlyErrorResponses, sendInvalidResponses)
+                }
                 else -> {
                     error("Unhandled ${request.url.encodedPath}")
                 }

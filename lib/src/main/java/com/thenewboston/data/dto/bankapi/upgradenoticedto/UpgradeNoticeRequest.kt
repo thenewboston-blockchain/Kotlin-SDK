@@ -16,5 +16,5 @@ data class UpgradeNoticeRequest(
 @Serializable
 data class UpgradeNoticeMessage(
     @SerialName("bank_node_identifier")
-    val bankNodeIdentifier: String
+    val otherNodeIdentifier: String
 )

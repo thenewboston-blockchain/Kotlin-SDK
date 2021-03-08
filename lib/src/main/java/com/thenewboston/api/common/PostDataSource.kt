@@ -12,6 +12,8 @@ import com.thenewboston.data.dto.common.response.ConfirmationServices
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
 import com.thenewboston.data.dto.common.response.ConfirmationBlockMessage
 import com.thenewboston.data.dto.common.response.ConfirmationBlocks
+import com.thenewboston.data.dto.common.response.ValidatorDetails
+import com.thenewboston.data.dto.confirmationvalidatorapi.upgraderequestdto.UpgradeRequest
 import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.BankBlock
 import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.request.BankBlockRequest
 import com.thenewboston.utils.BankAPIEndpoints
@@ -67,6 +69,15 @@ class PostDataSource @Inject constructor(private val networkClient: NetworkClien
 
         // Return success as response body is empty
         return Outcome.Success("Successfully sent upgrade notice")
+    }
+
+    suspend fun doSendUpgradeRequest(request: UpgradeRequest): Outcome<ValidatorDetails> {
+        val response = networkClient.defaultClient.post<ValidatorDetails> {
+            url(ConfirmationValidatorAPIEndpoints.UPGRADE_REQUEST)
+            body = request
+        }
+
+        return Outcome.Success(response)
     }
 
     suspend fun doSendClean(request: PostCleanRequest): Outcome<Clean> {
