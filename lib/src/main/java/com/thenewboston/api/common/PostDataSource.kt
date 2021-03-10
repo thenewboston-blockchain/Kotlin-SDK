@@ -5,13 +5,14 @@ import com.thenewboston.common.http.Outcome
 import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.common.request.ConnectionRequest
+import com.thenewboston.data.dto.common.request.UpgradeRequest
 import com.thenewboston.data.dto.bankapi.crawl.request.PostCrawlRequest
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
-import com.thenewboston.data.dto.bankapi.upgradenoticedto.UpgradeNoticeRequest
 import com.thenewboston.data.dto.common.response.ConfirmationServices
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
 import com.thenewboston.data.dto.common.response.ConfirmationBlockMessage
 import com.thenewboston.data.dto.common.response.ConfirmationBlocks
+import com.thenewboston.data.dto.common.response.ValidatorDetails
 import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.BankBlock
 import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.request.BankBlockRequest
 import com.thenewboston.utils.BankAPIEndpoints
@@ -59,7 +60,7 @@ class PostDataSource @Inject constructor(private val networkClient: NetworkClien
         return Outcome.Success(response)
     }
 
-    suspend fun doSendUpgradeNotice(request: UpgradeNoticeRequest): Outcome<String> {
+    suspend fun doSendUpgradeNotice(request: UpgradeRequest): Outcome<String> {
         networkClient.defaultClient.post<HttpResponse> {
             url(BankAPIEndpoints.UPGRADE_NOTICE_ENDPOINT)
             body = request
@@ -67,6 +68,15 @@ class PostDataSource @Inject constructor(private val networkClient: NetworkClien
 
         // Return success as response body is empty
         return Outcome.Success("Successfully sent upgrade notice")
+    }
+
+    suspend fun doSendUpgradeRequest(request: UpgradeRequest): Outcome<ValidatorDetails> {
+        val response = networkClient.defaultClient.post<ValidatorDetails> {
+            url(ConfirmationValidatorAPIEndpoints.UPGRADE_REQUEST)
+            body = request
+        }
+
+        return Outcome.Success(response)
     }
 
     suspend fun doSendClean(request: PostCleanRequest): Outcome<Clean> {

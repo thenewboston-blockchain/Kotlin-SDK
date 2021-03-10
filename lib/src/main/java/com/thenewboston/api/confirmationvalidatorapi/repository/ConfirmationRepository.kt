@@ -7,6 +7,7 @@ import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.crawl.request.PostCrawlRequest
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.common.request.ConnectionRequest
+import com.thenewboston.data.dto.common.request.UpgradeRequest
 import com.thenewboston.data.dto.common.response.*
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
@@ -56,4 +57,7 @@ class ConfirmationRepository @Inject constructor(private val dataSource: Confirm
 
     suspend fun sendPrimaryValidatorUpdated(request: ConnectionRequest) =
         dataSource.sendPrimaryValidatorUpdated(request)
+
+    suspend fun sendUpgradeRequest(request: UpgradeRequest): Outcome<ValidatorDetails> =
+        dataSource.sendUpgradeRequest(request)
 }

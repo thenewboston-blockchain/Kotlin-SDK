@@ -238,6 +238,20 @@ class PostDataSourceTest {
             response.value shouldNot beEmpty()
             response.value shouldBe "Successfully updated primary validator"
         }
+
+        @Test
+        fun `should send upgrade request successfully`() = runBlockingTest {
+            val request = Mocks.upgradeRequest()
+
+            val response = postDataSource.doSendUpgradeRequest(request)
+            val rootAccountFile = "http://20.188.33.93/media/root_account_file.json"
+
+            check(response is Outcome.Success)
+            response.value.nodeType shouldBe "PRIMARY_VALIDATOR"
+            response.value.nodeIdentifier shouldBe Some.nodeIdentifier
+            response.value.rootAccountFile shouldBe rootAccountFile
+            response.value.ipAddress shouldBe "172.19.0.13"
+        }
     }
 
     @Nested

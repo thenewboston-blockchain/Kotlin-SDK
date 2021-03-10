@@ -9,9 +9,11 @@ import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.crawl.request.PostCrawlRequest
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.common.request.ConnectionRequest
+import com.thenewboston.data.dto.common.request.UpgradeRequest
 import com.thenewboston.data.dto.common.response.ConfirmationBlockMessage
 import com.thenewboston.data.dto.common.response.ConfirmationBlocks
 import com.thenewboston.data.dto.common.response.Validator
+import com.thenewboston.data.dto.common.response.ValidatorDetails
 import com.thenewboston.data.dto.common.response.ValidatorList
 import com.thenewboston.utils.ErrorMessages
 import com.thenewboston.utils.PaginationOptions
@@ -101,5 +103,10 @@ class ConfirmationDataSource @Inject constructor(
     suspend fun sendPrimaryValidatorUpdated(request: ConnectionRequest): Outcome<String> = makeApiCall(
         call = { postDataSource.doSendPrimaryValidatorUpdated(request) },
         errorMessage = "Could not send primary validator update notice"
+    )
+
+    suspend fun sendUpgradeRequest(request: UpgradeRequest): Outcome<ValidatorDetails> = makeApiCall(
+        call = { postDataSource.doSendUpgradeRequest(request) },
+        errorMessage = "Could not send upgrade request"
     )
 }

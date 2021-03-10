@@ -419,4 +419,32 @@ class ConfirmationRepositoryTest {
         coVerify { dataSource.sendPrimaryValidatorUpdated(connectionRequest) }
         result should beInstanceOf<Outcome.Error>()
     }
+
+    @Test
+    fun `verify upgrade request is successful`() = runBlockingTest {
+        val request = Mocks.upgradeRequest()
+        coEvery {
+            dataSource.sendUpgradeRequest(request)
+        } returns Outcome.Success(Mocks.validatorDetails("PRIMARY_VALIDATOR"))
+
+        val result = repository.sendUpgradeRequest(request)
+
+        coVerify { dataSource.sendUpgradeRequest(request) }
+        result should beInstanceOf<Outcome.Success<ValidatorDetails>>()
+    }
+
+    @Test
+    fun `verify upgrade request has error outcome`() = runBlockingTest {
+        val request = Mocks.upgradeRequest()
+        val message = "Could not send upgrade request"
+
+        coEvery {
+            dataSource.sendUpgradeRequest(request)
+        } returns Outcome.Error(message, IOException())
+
+        val result = repository.sendUpgradeRequest(request)
+
+        coVerify { dataSource.sendUpgradeRequest(request) }
+        result should beInstanceOf<Outcome.Error>()
+    }
 }
