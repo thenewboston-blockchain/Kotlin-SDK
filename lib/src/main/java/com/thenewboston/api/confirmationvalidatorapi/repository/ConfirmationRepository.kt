@@ -7,8 +7,8 @@ import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.crawl.request.PostCrawlRequest
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.common.request.ConnectionRequest
+import com.thenewboston.data.dto.common.request.UpgradeRequest
 import com.thenewboston.data.dto.common.response.*
-import com.thenewboston.data.dto.confirmationvalidatorapi.upgraderequestdto.UpgradeRequest
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidator
 import com.thenewboston.data.dto.primaryvalidatorapi.bankdto.BankFromValidatorList
 import com.thenewboston.utils.PaginationOptions

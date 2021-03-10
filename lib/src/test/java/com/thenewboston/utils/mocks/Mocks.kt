@@ -19,19 +19,10 @@ import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.*
-import com.thenewboston.data.dto.bankapi.upgradenoticedto.UpgradeNoticeMessage
-import com.thenewboston.data.dto.bankapi.upgradenoticedto.UpgradeNoticeRequest
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.Message
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
-import com.thenewboston.data.dto.common.request.ConnectionRequest
-import com.thenewboston.data.dto.common.request.ConnectionRequestMessage
-import com.thenewboston.data.dto.common.request.TrustMessage
-import com.thenewboston.data.dto.common.request.UpdateTrustRequest
+import com.thenewboston.data.dto.common.request.*
 import com.thenewboston.data.dto.common.response.*
-import com.thenewboston.data.dto.common.response.ConfirmationServices
-import com.thenewboston.data.dto.common.response.ConfirmationServicesList
-import com.thenewboston.data.dto.confirmationvalidatorapi.upgraderequestdto.UpgradeRequest
-import com.thenewboston.data.dto.confirmationvalidatorapi.upgraderequestdto.UpgradeRequestMessage
 import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.BankBlock
 import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.BankBlockMessageBalance
 import com.thenewboston.data.dto.primaryvalidatorapi.bankblockdto.BankBlockTx
@@ -520,20 +511,20 @@ object Mocks {
         Some.signature
     )
 
-    fun upgradeNoticeRequest() = UpgradeNoticeRequest(
+    fun upgradeNoticeRequest() = UpgradeRequest(
         Some.otherNodeIdentifier,
         Some.signature,
-        UpgradeNoticeMessage(
-            Some.nodeIdentifier
+        UpgradeRequestMessage(
+            bankNodeIdentifier = Some.nodeIdentifier
         )
     )
 
     fun upgradeRequest() = UpgradeRequest(
-        UpgradeRequestMessage(
-            Some.otherNodeIdentifier
-        ),
         Some.nodeIdentifier,
         Some.signature,
+        UpgradeRequestMessage(
+            validatorNodeIdentifier = Some.otherNodeIdentifier
+        ),
     )
 
     fun cleanSuccess() = Clean(

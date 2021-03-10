@@ -12,16 +12,16 @@ import com.thenewboston.data.dto.bankapi.blockdto.BlockList
 import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
 import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
-import com.thenewboston.data.dto.common.request.UpdateTrustRequest
 import com.thenewboston.data.dto.common.response.Bank
-import com.thenewboston.data.dto.common.request.ConnectionRequest
 import com.thenewboston.data.dto.bankapi.crawl.request.PostCrawlRequest
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.PostInvalidBlockRequest
-import com.thenewboston.data.dto.bankapi.upgradenoticedto.UpgradeNoticeRequest
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
+import com.thenewboston.data.dto.common.request.UpdateTrustRequest
+import com.thenewboston.data.dto.common.request.UpgradeRequest
+import com.thenewboston.data.dto.common.request.ConnectionRequest
 import com.thenewboston.data.dto.common.response.Validator
 import com.thenewboston.data.dto.common.response.ValidatorList
 import com.thenewboston.utils.PaginationOptions
@@ -105,7 +105,7 @@ class BankDataSource @Inject constructor(
         errorMessage = "An error occurred while sending validator confirmation services"
     )
 
-    suspend fun sendUpgradeNotice(request: UpgradeNoticeRequest) = makeApiCall(
+    suspend fun sendUpgradeNotice(request: UpgradeRequest) = makeApiCall(
         call = { postDataSource.doSendUpgradeNotice(request) },
         errorMessage = "An error occurred while sending upgrade notice"
     )

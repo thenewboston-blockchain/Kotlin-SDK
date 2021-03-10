@@ -9,12 +9,12 @@ import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.bankapi.crawl.request.PostCrawlRequest
 import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.common.request.ConnectionRequest
+import com.thenewboston.data.dto.common.request.UpgradeRequest
 import com.thenewboston.data.dto.common.response.ConfirmationBlockMessage
 import com.thenewboston.data.dto.common.response.ConfirmationBlocks
 import com.thenewboston.data.dto.common.response.Validator
 import com.thenewboston.data.dto.common.response.ValidatorDetails
 import com.thenewboston.data.dto.common.response.ValidatorList
-import com.thenewboston.data.dto.confirmationvalidatorapi.upgraderequestdto.UpgradeRequest
 import com.thenewboston.utils.ErrorMessages
 import com.thenewboston.utils.PaginationOptions
 import javax.inject.Inject

@@ -12,6 +12,7 @@ import com.thenewboston.data.dto.bankapi.blockdto.request.PostBlockRequest
 import com.thenewboston.data.dto.bankapi.clean.request.PostCleanRequest
 import com.thenewboston.data.dto.bankapi.clean.response.Clean
 import com.thenewboston.data.dto.common.request.UpdateTrustRequest
+import com.thenewboston.data.dto.common.request.UpgradeRequest
 import com.thenewboston.data.dto.common.response.Bank
 import com.thenewboston.data.dto.bankapi.configdto.BankDetails
 import com.thenewboston.data.dto.common.request.ConnectionRequest
@@ -20,7 +21,6 @@ import com.thenewboston.data.dto.bankapi.crawl.response.Crawl
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlock
 import com.thenewboston.data.dto.bankapi.invalidblockdto.InvalidBlockList
 import com.thenewboston.data.dto.bankapi.invalidblockdto.request.PostInvalidBlockRequest
-import com.thenewboston.data.dto.bankapi.upgradenoticedto.UpgradeNoticeRequest
 import com.thenewboston.data.dto.common.response.ConfirmationServicesList
 import com.thenewboston.data.dto.bankapi.validatorconfirmationservicesdto.request.PostConfirmationServicesRequest
 import com.thenewboston.data.dto.common.response.ValidatorList
@@ -69,7 +69,7 @@ class BankRepository @Inject constructor(private val dataSource: BankDataSource)
     suspend fun sendValidatorConfirmationServices(request: PostConfirmationServicesRequest) =
         dataSource.sendValidatorConfirmationServices(request)
 
-    suspend fun sendUpgradeNotice(request: UpgradeNoticeRequest) = dataSource.sendUpgradeNotice(request)
+    suspend fun sendUpgradeNotice(request: UpgradeRequest) = dataSource.sendUpgradeNotice(request)
 
     suspend fun clean(): Outcome<Clean> = dataSource.fetchClean()
 
